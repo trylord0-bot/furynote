@@ -178,6 +178,8 @@ class RecordScreen extends StatefulWidget {
 class _RecordScreenState extends State<RecordScreen> {
   final PageController _controller = PageController();
   final TextEditingController _textController = TextEditingController();
+  final TextEditingController _customCategoryController =
+      TextEditingController();
   int _step = 0;
   RageChoice? _rage;
   CategoryChoice? _category;
@@ -187,6 +189,7 @@ class _RecordScreenState extends State<RecordScreen> {
   void dispose() {
     _controller.dispose();
     _textController.dispose();
+    _customCategoryController.dispose();
     super.dispose();
   }
 
@@ -203,7 +206,14 @@ class _RecordScreenState extends State<RecordScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final rage = _rage ?? RageChoice.choices(l10n).first;
-    final category = _category ?? CategoryChoice.choices(l10n).first;
+    final selectedCategory = _category ?? CategoryChoice.choices(l10n).first;
+    final category =
+        selectedCategory.key == 'custom' &&
+            _customCategoryController.text.trim().isNotEmpty
+        ? selectedCategory.copyWith(
+            label: _customCategoryController.text.trim(),
+          )
+        : selectedCategory;
 
     return Container(
       decoration: BoxDecoration(
@@ -261,21 +271,54 @@ class _RecordScreenState extends State<RecordScreen> {
                   title: l10n.stepCategory,
                   subtitle: l10n.stepCategorySub,
                   onBack: () => _goTo(0),
-                  child: Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
+                  child: Column(
                     children: [
-                      for (final choice in CategoryChoice.choices(l10n))
-                        ChoiceChipCard(
-                          selected: _category?.key == choice.key,
-                          color: const Color(0xFFFF9A3C),
-                          title: choice.emoji,
-                          subtitle: choice.label,
-                          onTap: () {
-                            setState(() => _category = choice);
-                            _goTo(2);
-                          },
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          for (final choice in CategoryChoice.choices(l10n))
+                            ChoiceChipCard(
+                              selected: _category?.key == choice.key,
+                              color: const Color(0xFFFF9A3C),
+                              title: choice.emoji,
+                              subtitle: choice.label,
+                              onTap: () {
+                                setState(() => _category = choice);
+                                if (choice.key != 'custom') {
+                                  _goTo(2);
+                                }
+                              },
+                            ),
+                        ],
+                      ),
+                      if (_category?.key == 'custom') ...[
+                        const SizedBox(height: 18),
+                        TextField(
+                          key: const ValueKey('custom-category-field'),
+                          controller: _customCategoryController,
+                          decoration: InputDecoration(
+                            labelText: '카테고리를 입력하세요',
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                         ),
+                        const SizedBox(height: 12),
+                        FilledButton(
+                          key: const ValueKey('custom-category-next'),
+                          onPressed: () {
+                            if (_customCategoryController.text
+                                .trim()
+                                .isNotEmpty) {
+                              _goTo(2);
+                            }
+                          },
+                          child: Text(l10n.next),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -312,6 +355,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         ],
                       ),
                       TextButton(
+                        key: const ValueKey('text-step-skip'),
                         onPressed: () => _goTo(3),
                         child: Text(l10n.skip),
                       ),
@@ -357,6 +401,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         child: Text(l10n.next),
                       ),
                       TextButton(
+                        key: const ValueKey('reminder-step-skip'),
                         onPressed: () => _goTo(4),
                         child: Text(l10n.skip),
                       ),
@@ -912,6 +957,10 @@ class CategoryChoice {
   final String key;
   final String emoji;
   final String label;
+
+  CategoryChoice copyWith({String? label}) {
+    return CategoryChoice(key, emoji, label ?? this.label);
+  }
 
   static List<CategoryChoice> choices(AppLocalizations l10n) => [
     CategoryChoice('family', '👨‍👩‍👧', l10n.family),
