@@ -1,9 +1,11 @@
 from fastapi.testclient import TestClient
 
 from app.main import create_app
+from app.repositories.memory import reset_store
 
 
 def client() -> TestClient:
+    reset_store()
     return TestClient(create_app())
 
 
@@ -149,3 +151,46 @@ def test_deleted_post_rejects_likes_and_comments() -> None:
     assert like.json()["detail"]["error"]["code"] == "POST_NOT_FOUND"
     assert comment.status_code == 404
     assert comment.json()["detail"]["error"]["code"] == "POST_NOT_FOUND"
+
+
+def test_post_creation_rate_limits_sixth_attempt_in_sixty_seconds() -> None:
+    api = client()
+    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+
+    responses = [
+        api.post(
+            "/v1/posts",
+            headers={"X-Device-ID": "device-1"},
+            json={"rage_level": 2, "category": "work", "text": f"attempt {index}"},
+        )
+        for index in range(6)
+    ]
+
+    assert [response.status_code for response in responses[:4]] == [201, 201, 201, 201]
+    assert responses[4].status_code == 429
+    assert responses[4].json()["detail"]["error"]["code"] == "RATE_LIMIT_EXCEEDED"
+    assert responses[5].status_code == 429
+
+
+def test_posts_cursor_pagination_returns_next_page() -> None:
+    api = client()
+    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+    for index in range(3):
+        api.post(
+            "/v1/posts",
+            headers={"X-Device-ID": "device-1"},
+            json={"rage_level": 2, "category": "work", "text": f"post {index}"},
+        )
+
+    first_page = api.get("/v1/posts?size=2", headers={"X-Device-ID": "device-1"})
+    next_cursor = first_page.json()["data"]["next_cursor"]
+    second_page = api.get(
+        f"/v1/posts?size=2&cursor={next_cursor}",
+        headers={"X-Device-ID": "device-1"},
+    )
+
+    assert first_page.json()["data"]["has_more"] is True
+    assert len(first_page.json()["data"]["posts"]) == 2
+    assert next_cursor is not None
+    assert len(second_page.json()["data"]["posts"]) == 1
+    assert second_page.json()["data"]["has_more"] is False

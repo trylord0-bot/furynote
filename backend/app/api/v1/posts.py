@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 
 from app.core.responses import error, ok
@@ -19,7 +21,7 @@ def create_post(
     if not text_result.allowed:
         raise HTTPException(status_code=400, detail=error(text_result.code or "INVALID_REQUEST", text_result.message or "Blocked"))
 
-    rate_result = check_rate_limit([])
+    rate_result = check_rate_limit([*store.recent_post_attempts(x_device_id), datetime.utcnow()])
     if not rate_result.allowed:
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
 
@@ -34,8 +36,7 @@ def list_posts(
     size: int = Query(default=20, ge=1, le=50),
     store: MemoryStore = Depends(get_store),
 ) -> dict:
-    posts = store.list_posts(x_device_id, size)
-    return ok({"posts": posts, "next_cursor": cursor, "has_more": False})
+    return ok(store.list_posts_page(x_device_id, size, cursor))
 
 
 @router.delete("/{post_id}")

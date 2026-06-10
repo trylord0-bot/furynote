@@ -19,6 +19,15 @@ class MemoryStore:
     likes: set[tuple[str, str]] = field(default_factory=set)
     comments: dict[str, dict] = field(default_factory=dict)
     purchases: dict[str, dict] = field(default_factory=dict)
+    post_attempts: dict[str, list[datetime]] = field(default_factory=dict)
+
+    def clear(self) -> None:
+        self.devices.clear()
+        self.posts.clear()
+        self.likes.clear()
+        self.comments.clear()
+        self.purchases.clear()
+        self.post_attempts.clear()
 
     def register_device(self, device_id: str, fcm_token: str) -> dict:
         device = self.devices.get(
@@ -49,6 +58,7 @@ class MemoryStore:
         return device
 
     def create_post(self, device_id: str, rage_level: int, category: str, text: str | None) -> dict:
+        now = datetime.utcnow()
         post_id = str(uuid4())
         post = {
             "post_id": post_id,
@@ -59,16 +69,30 @@ class MemoryStore:
             "text": text,
             "like_count": 0,
             "comment_count": 0,
-            "created_at": datetime.utcnow(),
+            "created_at": now,
             "deleted_at": None,
         }
         self.posts[post_id] = post
+        self.post_attempts.setdefault(device_id, []).append(now)
         return post
 
-    def list_posts(self, device_id: str, size: int) -> list[dict]:
+    def recent_post_attempts(self, device_id: str) -> list[datetime]:
+        return self.post_attempts.get(device_id, [])
+
+    def list_posts_page(self, device_id: str, size: int, cursor: str | None = None) -> dict:
         visible = [post for post in self.posts.values() if post["deleted_at"] is None]
         visible.sort(key=lambda post: post["created_at"], reverse=True)
-        return [self.serialize_post(post, device_id) for post in visible[:size]]
+        offset = int(cursor) if cursor else 0
+        page_items = visible[offset : offset + size]
+        next_offset = offset + size
+        has_more = len(visible) > next_offset
+        next_cursor = str(next_offset) if has_more else None
+
+        return {
+            "posts": [self.serialize_post(post, device_id) for post in page_items],
+            "next_cursor": next_cursor,
+            "has_more": has_more,
+        }
 
     def delete_post(self, post_id: str, device_id: str) -> DeleteResult:
         post = self.posts.get(post_id)
@@ -182,3 +206,7 @@ store = MemoryStore()
 
 def get_store() -> MemoryStore:
     return store
+
+
+def reset_store() -> None:
+    store.clear()

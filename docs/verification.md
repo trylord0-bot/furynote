@@ -14,7 +14,7 @@ python -m pytest
 Result:
 
 ```text
-15 passed
+17 passed
 ```
 
 Covered:
@@ -26,6 +26,7 @@ Covered:
 - Device registration upsert and notification setting sync.
 - Post create/list/delete, like toggle, comments, and PRO purchase status flow.
 - Ownership and deleted-post error handling for post/comment actions.
+- Real post rate limiting and opaque cursor pagination.
 - MariaDB schema asset includes required tables, UTF-8 charset, and soft-delete columns.
 
 ## Flutter
