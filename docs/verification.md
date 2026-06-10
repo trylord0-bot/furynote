@@ -14,7 +14,7 @@ python -m pytest
 Result:
 
 ```text
-11 passed
+13 passed
 ```
 
 Covered:
@@ -25,6 +25,7 @@ Covered:
 - URL, spam keyword, and 60-second post rate-limit policy checks.
 - Device registration upsert and notification setting sync.
 - Post create/list/delete, like toggle, comments, and PRO purchase status flow.
+- Ownership and deleted-post error handling for post/comment actions.
 
 ## Flutter
 

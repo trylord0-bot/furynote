@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 
 from app.core.responses import error, ok
-from app.repositories.memory import MemoryStore, get_store
+from app.repositories.memory import DeleteResult, MemoryStore, get_store
 from app.schemas.posts import CommentCreateRequest, PostCreateRequest
 from app.services.content_policy import check_rate_limit, check_text_policy
 
@@ -44,7 +44,10 @@ def delete_post(
     x_device_id: str = Header(alias="X-Device-ID"),
     store: MemoryStore = Depends(get_store),
 ) -> dict:
-    if not store.delete_post(post_id, x_device_id):
+    result = store.delete_post(post_id, x_device_id)
+    if result == DeleteResult.FORBIDDEN:
+        raise HTTPException(status_code=403, detail=error("FORBIDDEN", "본인 포스팅만 삭제할 수 있어요."))
+    if result == DeleteResult.NOT_FOUND:
         raise HTTPException(status_code=404, detail=error("POST_NOT_FOUND", "포스팅을 찾을 수 없어요."))
     return ok({"deleted": True})
 
@@ -92,6 +95,9 @@ def delete_comment(
     x_device_id: str = Header(alias="X-Device-ID"),
     store: MemoryStore = Depends(get_store),
 ) -> dict:
-    if not store.delete_comment(post_id, comment_id, x_device_id):
+    result = store.delete_comment(post_id, comment_id, x_device_id)
+    if result == DeleteResult.FORBIDDEN:
+        raise HTTPException(status_code=403, detail=error("FORBIDDEN", "본인 댓글만 삭제할 수 있어요."))
+    if result == DeleteResult.NOT_FOUND:
         raise HTTPException(status_code=404, detail=error("COMMENT_NOT_FOUND", "댓글을 찾을 수 없어요."))
     return ok({"deleted": True})

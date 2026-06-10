@@ -2,7 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
+from enum import Enum
 from uuid import uuid4
+
+
+class DeleteResult(str, Enum):
+    DELETED = "deleted"
+    FORBIDDEN = "forbidden"
+    NOT_FOUND = "not_found"
 
 
 @dataclass
@@ -63,15 +70,17 @@ class MemoryStore:
         visible.sort(key=lambda post: post["created_at"], reverse=True)
         return [self.serialize_post(post, device_id) for post in visible[:size]]
 
-    def delete_post(self, post_id: str, device_id: str) -> bool:
+    def delete_post(self, post_id: str, device_id: str) -> DeleteResult:
         post = self.posts.get(post_id)
-        if not post or post["device_id"] != device_id or post["deleted_at"] is not None:
-            return False
+        if not post or post["deleted_at"] is not None:
+            return DeleteResult.NOT_FOUND
+        if post["device_id"] != device_id:
+            return DeleteResult.FORBIDDEN
         post["deleted_at"] = datetime.utcnow()
         for comment in self.comments.values():
             if comment["post_id"] == post_id:
                 comment["deleted_at"] = datetime.utcnow()
-        return True
+        return DeleteResult.DELETED
 
     def toggle_like(self, post_id: str, device_id: str) -> dict | None:
         post = self.posts.get(post_id)
@@ -115,20 +124,17 @@ class MemoryStore:
         visible.sort(key=lambda comment: comment["created_at"])
         return [self.serialize_comment(comment, device_id) for comment in visible[:size]]
 
-    def delete_comment(self, post_id: str, comment_id: str, device_id: str) -> bool:
+    def delete_comment(self, post_id: str, comment_id: str, device_id: str) -> DeleteResult:
         comment = self.comments.get(comment_id)
-        if (
-            not comment
-            or comment["post_id"] != post_id
-            or comment["device_id"] != device_id
-            or comment["deleted_at"] is not None
-        ):
-            return False
+        if not comment or comment["post_id"] != post_id or comment["deleted_at"] is not None:
+            return DeleteResult.NOT_FOUND
+        if comment["device_id"] != device_id:
+            return DeleteResult.FORBIDDEN
         comment["deleted_at"] = datetime.utcnow()
         post = self.posts.get(post_id)
         if post:
             post["comment_count"] = max(0, post["comment_count"] - 1)
-        return True
+        return DeleteResult.DELETED
 
     def verify_purchase(self, device_id: str, platform: str, receipt_data: str) -> dict:
         purchase = {

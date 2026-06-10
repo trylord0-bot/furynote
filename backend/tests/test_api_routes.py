@@ -96,3 +96,56 @@ def test_purchase_verify_updates_status() -> None:
     assert verified.json()["data"]["pro_activated"] is True
     assert after.json()["data"]["is_pro"] is True
     assert after.json()["data"]["purchased_at"] is not None
+
+
+def test_other_device_cannot_delete_post_or_comment() -> None:
+    api = client()
+    api.post("/v1/device/register", json={"device_id": "owner", "fcm_token": "token"})
+    api.post("/v1/device/register", json={"device_id": "other", "fcm_token": "token"})
+    created = api.post(
+        "/v1/posts",
+        headers={"X-Device-ID": "owner"},
+        json={"rage_level": 3, "category": "people", "text": "말이 너무 날카로웠다"},
+    )
+    post_id = created.json()["data"]["post_id"]
+    comment = api.post(
+        f"/v1/posts/{post_id}/comments",
+        headers={"X-Device-ID": "owner"},
+        json={"text": "내 댓글"},
+    )
+    comment_id = comment.json()["data"]["comment_id"]
+
+    post_delete = api.delete(f"/v1/posts/{post_id}", headers={"X-Device-ID": "other"})
+    comment_delete = api.delete(
+        f"/v1/posts/{post_id}/comments/{comment_id}",
+        headers={"X-Device-ID": "other"},
+    )
+
+    assert post_delete.status_code == 403
+    assert post_delete.json()["detail"]["error"]["code"] == "FORBIDDEN"
+    assert comment_delete.status_code == 403
+    assert comment_delete.json()["detail"]["error"]["code"] == "FORBIDDEN"
+
+
+def test_deleted_post_rejects_likes_and_comments() -> None:
+    api = client()
+    api.post("/v1/device/register", json={"device_id": "owner", "fcm_token": "token"})
+    created = api.post(
+        "/v1/posts",
+        headers={"X-Device-ID": "owner"},
+        json={"rage_level": 5, "category": "work", "text": "삭제될 글"},
+    )
+    post_id = created.json()["data"]["post_id"]
+    api.delete(f"/v1/posts/{post_id}", headers={"X-Device-ID": "owner"})
+
+    like = api.post(f"/v1/posts/{post_id}/like", headers={"X-Device-ID": "owner"})
+    comment = api.post(
+        f"/v1/posts/{post_id}/comments",
+        headers={"X-Device-ID": "owner"},
+        json={"text": "댓글 불가"},
+    )
+
+    assert like.status_code == 404
+    assert like.json()["detail"]["error"]["code"] == "POST_NOT_FOUND"
+    assert comment.status_code == 404
+    assert comment.json()["detail"]["error"]["code"] == "POST_NOT_FOUND"
