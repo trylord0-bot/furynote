@@ -14,7 +14,7 @@ python -m pytest
 Result:
 
 ```text
-7 passed
+11 passed
 ```
 
 Covered:
@@ -23,6 +23,8 @@ Covered:
 - Non-local environment defaults to MariaDB port 3306.
 - `.env` can override database port.
 - URL, spam keyword, and 60-second post rate-limit policy checks.
+- Device registration upsert and notification setting sync.
+- Post create/list/delete, like toggle, comments, and PRO purchase status flow.
 
 ## Flutter
 
@@ -40,7 +42,7 @@ Results:
 ```text
 flutter pub get: success
 flutter analyze: No issues found
-flutter test: All tests passed
+flutter test: 3 tests passed
 ```
 
 Covered:
@@ -48,6 +50,7 @@ Covered:
 - Flutter project resolves localization dependencies.
 - Dart analyzer accepts app code and generated l10n files.
 - Widget smoke test renders the Fury Note record flow.
+- Widget tests cover bottom tab navigation and Korean locale rendering.
 
 ## Identity and Environment Checks
 
