@@ -42,7 +42,7 @@ Results:
 ```text
 flutter pub get: success
 flutter analyze: No issues found
-flutter test: 3 tests passed
+flutter test: 5 tests passed
 ```
 
 Covered:
@@ -51,6 +51,7 @@ Covered:
 - Dart analyzer accepts app code and generated l10n files.
 - Widget smoke test renders the Fury Note record flow.
 - Widget tests cover bottom tab navigation and Korean locale rendering.
+- Widget tests cover the full record flow summary and custom category entry.
 
 ## Identity and Environment Checks
 
