@@ -1,0 +1,1 @@
+"""Fury Note API package."""
