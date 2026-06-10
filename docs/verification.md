@@ -14,7 +14,7 @@ python -m pytest
 Result:
 
 ```text
-13 passed
+15 passed
 ```
 
 Covered:
@@ -26,6 +26,7 @@ Covered:
 - Device registration upsert and notification setting sync.
 - Post create/list/delete, like toggle, comments, and PRO purchase status flow.
 - Ownership and deleted-post error handling for post/comment actions.
+- MariaDB schema asset includes required tables, UTF-8 charset, and soft-delete columns.
 
 ## Flutter
 
@@ -43,7 +44,7 @@ Results:
 ```text
 flutter pub get: success
 flutter analyze: No issues found
-flutter test: 5 tests passed
+flutter test: 8 tests passed
 ```
 
 Covered:
@@ -53,6 +54,7 @@ Covered:
 - Widget smoke test renders the Fury Note record flow.
 - Widget tests cover bottom tab navigation and Korean locale rendering.
 - Widget tests cover the full record flow summary and custom category entry.
+- Backup service tests cover PRO export permission, `.fnbackup` package creation, and checksum rejection.
 
 ## Identity and Environment Checks
 
