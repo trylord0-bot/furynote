@@ -7,12 +7,15 @@ void main() {
 }
 
 class FuryNoteApp extends StatelessWidget {
-  const FuryNoteApp({super.key});
+  const FuryNoteApp({this.initialLocale, super.key});
+
+  final Locale? initialLocale;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fury Note',
+      locale: initialLocale,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
