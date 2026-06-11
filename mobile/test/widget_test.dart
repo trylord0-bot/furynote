@@ -15,9 +15,26 @@ void main() {
     await tester.pumpWidget(const FuryNoteApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Fury Note'), findsOneWidget);
+    expect(find.bySemanticsLabel('Fury Note'), findsOneWidget);
     expect(find.text('Rage Record'), findsOneWidget);
     expect(find.text('How angry are you now?'), findsOneWidget);
+  });
+
+  testWidgets('uses dark Fury Note mockup theme colors', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const FuryNoteApp());
+    await tester.pumpAndSettle();
+
+    final root = tester.widget<DecoratedBox>(
+      find.byKey(const ValueKey('fury-app-shell')),
+    );
+    final decoration = root.decoration as BoxDecoration;
+    expect(decoration.color, const Color(0xFF1A1A1A));
+    expect(
+      Theme.of(tester.element(find.byType(FuryShell))).brightness,
+      Brightness.dark,
+    );
   });
 
   testWidgets('bottom tabs navigate to feed stats and calm screens', (
@@ -64,12 +81,14 @@ void main() {
     expect(find.text('무슨 일이 있었나요?'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), '회의가 퇴근 직전에 잡혔다');
+    await tester.ensureVisible(find.text('다음'));
     await tester.tap(find.text('다음'));
     await tester.pumpAndSettle();
     expect(find.text('나중에 다시 볼까요?'), findsOneWidget);
 
     await tester.tap(find.text('1시간 후'));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('다음'));
     await tester.tap(find.text('다음'));
     await tester.pumpAndSettle();
 
@@ -88,6 +107,7 @@ void main() {
 
     await tester.tap(find.textContaining('Lv.2'));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('직접 입력'));
     await tester.tap(find.text('직접 입력'));
     await tester.pumpAndSettle();
 

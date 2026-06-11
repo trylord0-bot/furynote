@@ -1,6 +1,6 @@
 # Fury Note Verification
 
-Last run: 2026-06-10
+Last run: 2026-06-11
 
 ## Backend
 
@@ -45,7 +45,7 @@ Results:
 ```text
 flutter pub get: success
 flutter analyze: No issues found
-flutter test: 8 tests passed
+flutter test: 9 tests passed
 ```
 
 Covered:
@@ -53,9 +53,31 @@ Covered:
 - Flutter project resolves localization dependencies.
 - Dart analyzer accepts app code and generated l10n files.
 - Widget smoke test renders the Fury Note record flow.
+- Widget tests assert the dark Fury Note mockup shell color and dark theme.
 - Widget tests cover bottom tab navigation and Korean locale rendering.
 - Widget tests cover the full record flow summary and custom category entry.
 - Backup service tests cover PRO export permission, `.fnbackup` package creation, and checksum rejection.
+
+## Flutter UI Render
+
+Commands:
+
+```powershell
+cd mobile
+flutter build web
+```
+
+Result:
+
+```text
+Built build\web
+```
+
+Visual checks:
+
+- Headless Chrome mobile viewport `390x844`: dark header, black app background, red `Note` title accent, red active step bar, 3-column rage grid, and glowing red record FAB rendered without clipping.
+- Headless Chrome desktop viewport `1280x900`: centered rounded phone frame, `#1A1A1A` page backdrop, `#0D0D0D` app surface, dark bottom navigation, red FAB glow, and compact Fury Note mockup spacing rendered as expected.
+- Selection animations and shell transitions are implemented with `AnimatedContainer` using the mockup-style 160-260ms easing.
 
 ## Identity and Environment Checks
 

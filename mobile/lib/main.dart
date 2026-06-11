@@ -6,6 +6,23 @@ void main() {
   runApp(const FuryNoteApp());
 }
 
+class FuryColors {
+  static const page = Color(0xFF1A1A1A);
+  static const phone = Color(0xFF0D0D0D);
+  static const chrome = Color(0xFF111111);
+  static const panel = Color(0xFF161616);
+  static const panelAlt = Color(0xFF1E1E1E);
+  static const border = Color(0xFF2A2A2A);
+  static const divider = Color(0xFF222222);
+  static const text = Color(0xFFF0F0F0);
+  static const muted = Color(0xFF888888);
+  static const faint = Color(0xFF555555);
+  static const red = Color(0xFFE63946);
+  static const deepRed = Color(0xFF9B1D20);
+  static const orange = Color(0xFFFF6B35);
+  static const yellow = Color(0xFFFFD93D);
+}
+
 class FuryNoteApp extends StatelessWidget {
   const FuryNoteApp({this.initialLocale, super.key});
 
@@ -25,16 +42,127 @@ class FuryNoteApp extends StatelessWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
+        brightness: Brightness.dark,
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFFFF7F1),
+        scaffoldBackgroundColor: FuryColors.phone,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF6B35),
-          primary: const Color(0xFFE63946),
-          secondary: const Color(0xFFFF9A3C),
-          surface: const Color(0xFFFFFBF7),
+          brightness: Brightness.dark,
+          seedColor: FuryColors.red,
+          primary: FuryColors.red,
+          secondary: FuryColors.orange,
+          surface: FuryColors.panel,
+          onSurface: FuryColors.text,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: FuryColors.chrome,
+          foregroundColor: FuryColors.text,
+          elevation: 0,
+          centerTitle: false,
+        ),
+        cardTheme: CardThemeData(
+          color: FuryColors.panel,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(color: FuryColors.border),
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        chipTheme: ChipThemeData(
+          backgroundColor: FuryColors.panelAlt,
+          selectedColor: FuryColors.red.withValues(alpha: 0.14),
+          side: const BorderSide(color: FuryColors.border),
+          labelStyle: const TextStyle(color: FuryColors.muted),
+          secondaryLabelStyle: const TextStyle(color: FuryColors.red),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white.withValues(alpha: 0.055),
+          labelStyle: const TextStyle(color: FuryColors.faint),
+          hintStyle: const TextStyle(color: FuryColors.faint),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: FuryColors.border),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: FuryColors.red),
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(foregroundColor: FuryColors.muted),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: FuryColors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: FuryColors.muted,
+            side: const BorderSide(color: FuryColors.border),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
         ),
       ),
-      home: const FuryShell(),
+      home: const FuryAppFrame(child: FuryShell()),
+    );
+  }
+}
+
+class FuryAppFrame extends StatelessWidget {
+  const FuryAppFrame({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      key: const ValueKey('fury-app-shell'),
+      decoration: const BoxDecoration(color: FuryColors.page),
+      child: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final framed = constraints.maxWidth >= 520;
+            final frameHeight = framed
+                ? constraints.maxHeight.clamp(0.0, 760.0).toDouble()
+                : constraints.maxHeight;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 260),
+              curve: Curves.easeOutCubic,
+              width: framed ? 360 : constraints.maxWidth,
+              height: frameHeight,
+              decoration: BoxDecoration(
+                color: FuryColors.phone,
+                border: framed
+                    ? Border.all(color: FuryColors.border, width: 2)
+                    : null,
+                borderRadius: BorderRadius.circular(framed ? 40 : 0),
+                boxShadow: framed
+                    ? const [
+                        BoxShadow(
+                          color: Color(0xB3000000),
+                          blurRadius: 60,
+                          offset: Offset(0, 20),
+                        ),
+                      ]
+                    : null,
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: child,
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -60,41 +188,202 @@ class _FuryShellState extends State<FuryShell> {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 8,
-        title: Row(
+      backgroundColor: Colors.transparent,
+      drawerScrimColor: Colors.black.withValues(alpha: 0.6),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(52),
+        child: Builder(
+          builder: (context) => FuryHeader(
+            title: l10n.appTitle,
+            onMenu: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+      ),
+      drawer: const Drawer(
+        backgroundColor: FuryColors.panel,
+        surfaceTintColor: Colors.transparent,
+        child: FuryDrawer(),
+      ),
+      body: screens[_index],
+      bottomNavigationBar: FuryBottomNav(
+        selectedIndex: _index,
+        onSelected: (value) => setState(() => _index = value),
+        labels: [l10n.record, l10n.feed, l10n.stats, l10n.calm],
+      ),
+    );
+  }
+}
+
+class FuryHeader extends StatelessWidget {
+  const FuryHeader({required this.title, required this.onMenu, super.key});
+
+  final String title;
+  final VoidCallback onMenu;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        height: 52,
+        decoration: const BoxDecoration(
+          color: FuryColors.chrome,
+          border: Border(bottom: BorderSide(color: FuryColors.border)),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
           children: [
-            const Text('🔥', style: TextStyle(fontSize: 24)),
-            const SizedBox(width: 8),
-            Text(
-              l10n.appTitle,
-              style: const TextStyle(fontWeight: FontWeight.w800),
+            const Text('🔥', style: TextStyle(fontSize: 20)),
+            const SizedBox(width: 7),
+            Semantics(
+              label: title,
+              child: ExcludeSemantics(
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                      color: FuryColors.text,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    children: [
+                      const TextSpan(text: 'Fury '),
+                      TextSpan(
+                        text: 'Note',
+                        style: const TextStyle(color: FuryColors.red),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
+            IconButton(
+              tooltip: 'menu',
+              onPressed: onMenu,
+              icon: const Icon(Icons.menu, color: FuryColors.text),
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.white.withValues(alpha: 0.04),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      drawer: const FuryDrawer(),
-      body: screens[_index],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (value) => setState(() => _index = value),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.local_fire_department),
-            label: l10n.record,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.forum_outlined),
-            label: l10n.feed,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.query_stats),
-            label: l10n.stats,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.spa_outlined),
-            label: l10n.calm,
-          ),
+    );
+  }
+}
+
+class FuryBottomNav extends StatelessWidget {
+  const FuryBottomNav({
+    required this.selectedIndex,
+    required this.onSelected,
+    required this.labels,
+    super.key,
+  });
+
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+  final List<String> labels;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      (Icons.local_fire_department, '🔥'),
+      (Icons.forum_outlined, '📮'),
+      (Icons.query_stats, '📊'),
+      (Icons.spa_outlined, '🧘'),
+    ];
+
+    return Container(
+      height: 76,
+      decoration: const BoxDecoration(
+        color: FuryColors.chrome,
+        border: Border(top: BorderSide(color: FuryColors.border)),
+      ),
+      padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          for (var i = 0; i < labels.length; i++)
+            Expanded(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () => onSelected(i),
+                child: SizedBox(
+                  height: 68,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    clipBehavior: Clip.none,
+                    children: [
+                      if (i == 0)
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 180),
+                          width: selectedIndex == i ? 48 : 44,
+                          height: selectedIndex == i ? 48 : 44,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [FuryColors.red, FuryColors.deepRed],
+                            ),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: FuryColors.chrome,
+                              width: 3,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: FuryColors.red.withValues(
+                                  alpha: selectedIndex == i ? 0.65 : 0.45,
+                                ),
+                                blurRadius: selectedIndex == i ? 24 : 16,
+                                offset: const Offset(0, -4),
+                              ),
+                              const BoxShadow(
+                                color: Color(0x66000000),
+                                blurRadius: 12,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Text('🔥', style: TextStyle(fontSize: 22)),
+                          ),
+                        )
+                      else
+                        Positioned(
+                          bottom: 28,
+                          child: Icon(
+                            items[i].$1,
+                            color: selectedIndex == i
+                                ? FuryColors.red
+                                : FuryColors.faint,
+                            size: 22,
+                          ),
+                        ),
+                      Positioned(
+                        bottom: 2,
+                        child: Text(
+                          labels[i],
+                          style: TextStyle(
+                            color: selectedIndex == i
+                                ? FuryColors.red
+                                : FuryColors.faint,
+                            fontSize: 9,
+                            fontWeight: selectedIndex == i
+                                ? FontWeight.w800
+                                : FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -108,61 +397,122 @@ class FuryDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return Drawer(
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 28,
-                    child: Text('🐯', style: TextStyle(fontSize: 26)),
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 28, 20, 18),
+            decoration: const BoxDecoration(
+              color: FuryColors.chrome,
+              border: Border(bottom: BorderSide(color: FuryColors.border)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.profileName,
+                  style: const TextStyle(
+                    color: FuryColors.text,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.profileName,
-                          style: const TextStyle(fontWeight: FontWeight.w800),
-                        ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          '🔥 47 · 📮 12',
-                          style: TextStyle(color: Color(0xFF8B6B61)),
-                        ),
-                      ],
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: FuryColors.red.withValues(alpha: 0.12),
+                    border: Border.all(
+                      color: FuryColors.red.withValues(alpha: 0.25),
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    '🔥 분노 기록 47회',
+                    style: TextStyle(
+                      color: FuryColors.red,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.settings_outlined),
-              title: Text(l10n.settings),
+          ),
+          FuryDrawerTile(
+            icon: Icons.settings_outlined,
+            title: l10n.settings,
+            subtitle: '닉네임 변경 · 알림 설정',
+          ),
+          FuryDrawerTile(
+            icon: Icons.menu_book_outlined,
+            title: l10n.drawerGuide,
+            subtitle: 'Fury Note 사용 방법',
+          ),
+          FuryDrawerTile(
+            icon: Icons.spa_outlined,
+            title: l10n.drawerCalmGuide,
+            subtitle: '감정 조절 카드 · 오늘의 팁',
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              l10n.drawerVersion,
+              style: const TextStyle(color: Color(0xFF8B6B61)),
             ),
-            ListTile(
-              leading: const Icon(Icons.menu_book_outlined),
-              title: Text(l10n.drawerGuide),
-            ),
-            ListTile(
-              leading: const Icon(Icons.spa_outlined),
-              title: Text(l10n.drawerCalmGuide),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                l10n.drawerVersion,
-                style: const TextStyle(color: Color(0xFF8B6B61)),
-              ),
-            ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FuryDrawerTile extends StatelessWidget {
+  const FuryDrawerTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    super.key,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      leading: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: FuryColors.panelAlt,
+          borderRadius: BorderRadius.circular(10),
         ),
+        child: Icon(icon, color: FuryColors.muted, size: 19),
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: FuryColors.text,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: const TextStyle(color: FuryColors.faint, fontSize: 11),
+      ),
+      trailing: const Icon(
+        Icons.chevron_right,
+        color: Color(0xFF444444),
+        size: 16,
       ),
     );
   }
@@ -217,10 +567,10 @@ class _RecordScreenState extends State<RecordScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [rage.color.withValues(alpha: 0.22), const Color(0xFFFFF7F1)],
+        color: Color.lerp(
+          FuryColors.phone,
+          rage.color,
+          _rage == null ? 0 : 0.08,
         ),
       ),
       child: Column(
@@ -232,6 +582,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 Text(
                   l10n.recordTitle,
                   style: const TextStyle(
+                    color: FuryColors.text,
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
                   ),
@@ -249,20 +600,20 @@ class _RecordScreenState extends State<RecordScreen> {
                 RecordStep(
                   title: l10n.stepIntensity,
                   subtitle: l10n.stepIntensitySub,
-                  child: Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
+                  child: ChoiceGrid(
                     children: [
                       for (final choice in RageChoice.choices(l10n))
-                        ChoiceChipCard(
-                          selected: _rage?.level == choice.level,
-                          color: choice.color,
-                          title: choice.emoji,
-                          subtitle: 'Lv.${choice.level}\n${choice.label}',
-                          onTap: () {
-                            setState(() => _rage = choice);
-                            _goTo(1);
-                          },
+                        Center(
+                          child: ChoiceChipCard(
+                            selected: _rage?.level == choice.level,
+                            color: choice.color,
+                            title: choice.emoji,
+                            subtitle: 'Lv.${choice.level}\n${choice.label}',
+                            onTap: () {
+                              setState(() => _rage = choice);
+                              _goTo(1);
+                            },
+                          ),
                         ),
                     ],
                   ),
@@ -273,22 +624,22 @@ class _RecordScreenState extends State<RecordScreen> {
                   onBack: () => _goTo(0),
                   child: Column(
                     children: [
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
+                      ChoiceGrid(
                         children: [
                           for (final choice in CategoryChoice.choices(l10n))
-                            ChoiceChipCard(
-                              selected: _category?.key == choice.key,
-                              color: const Color(0xFFFF9A3C),
-                              title: choice.emoji,
-                              subtitle: choice.label,
-                              onTap: () {
-                                setState(() => _category = choice);
-                                if (choice.key != 'custom') {
-                                  _goTo(2);
-                                }
-                              },
+                            Center(
+                              child: ChoiceChipCard(
+                                selected: _category?.key == choice.key,
+                                color: const Color(0xFFFF9A3C),
+                                title: choice.emoji,
+                                subtitle: choice.label,
+                                onTap: () {
+                                  setState(() => _category = choice);
+                                  if (choice.key != 'custom') {
+                                    _goTo(2);
+                                  }
+                                },
+                              ),
                             ),
                         ],
                       ),
@@ -297,14 +648,8 @@ class _RecordScreenState extends State<RecordScreen> {
                         TextField(
                           key: const ValueKey('custom-category-field'),
                           controller: _customCategoryController,
-                          decoration: InputDecoration(
-                            labelText: '카테고리를 입력하세요',
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
+                          decoration: InputDecoration(labelText: '카테고리를 입력하세요'),
+                          style: const TextStyle(color: FuryColors.text),
                         ),
                         const SizedBox(height: 12),
                         FilledButton(
@@ -332,12 +677,12 @@ class _RecordScreenState extends State<RecordScreen> {
                         controller: _textController,
                         maxLength: 300,
                         maxLines: 5,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                        decoration: const InputDecoration(
+                          hintText: '여기에 적어보세요',
+                        ),
+                        style: const TextStyle(
+                          color: FuryColors.text,
+                          height: 1.7,
                         ),
                       ),
                       Row(
@@ -480,31 +825,50 @@ class RecordStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 44,
-            child: onBack == null
-                ? null
-                : IconButton.filledTonal(
-                    onPressed: onBack,
-                    icon: const Icon(Icons.keyboard_arrow_up),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
+        final contentWidth = (availableWidth - 36).clamp(0.0, 324.0);
+        return SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(18, 10, 18, 20),
+          child: SizedBox(
+            width: contentWidth,
+            child: Column(
+              children: [
+                if (onBack != null) ...[
+                  SizedBox(
+                    height: 38,
+                    child: IconButton.filledTonal(
+                      onPressed: onBack,
+                      icon: const Icon(Icons.keyboard_arrow_up),
+                    ),
                   ),
+                  const SizedBox(height: 8),
+                ],
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: FuryColors.text,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: FuryColors.faint),
+                ),
+                const SizedBox(height: 22),
+                SizedBox(width: double.infinity, child: child),
+              ],
+            ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: 8),
-          Text(subtitle, style: const TextStyle(color: Color(0xFF8B6B61))),
-          const SizedBox(height: 28),
-          child,
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -527,12 +891,36 @@ class StepDots extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               color: i <= active
-                  ? const Color(0xFFE63946)
-                  : const Color(0xFFE8D8D0),
-              borderRadius: BorderRadius.circular(999),
+                  ? FuryColors.red.withValues(alpha: active == i ? 1 : 0.45)
+                  : FuryColors.border,
+              borderRadius: BorderRadius.circular(active == i ? 3 : 999),
             ),
           ),
       ],
+    );
+  }
+}
+
+class ChoiceGrid extends StatelessWidget {
+  const ChoiceGrid({required this.children, super.key});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: 284,
+        child: GridView.count(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 0.82,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: children,
+        ),
+      ),
     );
   }
 }
@@ -560,26 +948,44 @@ class ChoiceChipCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 160),
-        width: 102,
-        height: 132,
-        padding: const EdgeInsets.all(10),
+        curve: Curves.easeOutCubic,
+        transform: Matrix4.translationValues(0, selected ? -3 : 0, 0),
+        width: 80,
+        height: 112,
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: selected ? color.withValues(alpha: 0.22) : Colors.white,
+          color: selected
+              ? color.withValues(alpha: 0.14)
+              : Colors.white.withValues(alpha: 0.05),
           border: Border.all(
-            color: selected ? color : const Color(0xFFEADBD3),
+            color: selected ? color : Colors.transparent,
             width: selected ? 2 : 1,
           ),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title, style: const TextStyle(fontSize: 26)),
-            const SizedBox(height: 8),
+            Text(title, style: const TextStyle(fontSize: 24)),
+            const SizedBox(height: 5),
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.w700),
+              style: TextStyle(
+                color: selected ? color : FuryColors.muted,
+                fontSize: 11,
+                height: 1.18,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ],
         ),
@@ -599,8 +1005,9 @@ class SummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: Colors.white.withValues(alpha: 0.04),
+        border: Border.all(color: FuryColors.border),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
@@ -612,18 +1019,25 @@ class SummaryCard extends StatelessWidget {
                   width: 92,
                   child: Text(
                     entry.key,
-                    style: const TextStyle(color: Color(0xFF8B6B61)),
+                    style: const TextStyle(
+                      color: FuryColors.faint,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
                 Expanded(
                   child: Text(
                     entry.value,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      color: Color(0xFFCCCCCC),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
             ),
-            const Divider(height: 24),
+            const Divider(height: 24, color: FuryColors.divider),
           ],
           action,
         ],
@@ -654,8 +1068,9 @@ class FuryPostCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: Colors.white.withValues(alpha: 0.04),
+        border: Border.all(color: FuryColors.border),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(
             color: Color(0x14000000),
@@ -674,16 +1089,46 @@ class FuryPostCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   nickname,
-                  style: const TextStyle(fontWeight: FontWeight.w800),
+                  style: const TextStyle(
+                    color: FuryColors.muted,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
-              Chip(label: Text('Lv.$level')),
+              Chip(
+                label: Text('Lv.$level'),
+                side: BorderSide(color: FuryColors.red.withValues(alpha: 0.3)),
+                backgroundColor: FuryColors.red.withValues(alpha: 0.12),
+                labelStyle: const TextStyle(
+                  color: FuryColors.red,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
-          Text(text, style: const TextStyle(fontSize: 16)),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFFCCCCCC),
+              fontSize: 13,
+              height: 1.6,
+            ),
+          ),
           const SizedBox(height: 12),
-          Text(category, style: const TextStyle(color: Color(0xFF8B6B61))),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              category,
+              style: const TextStyle(color: FuryColors.muted, fontSize: 10),
+            ),
+          ),
         ],
       ),
     );
@@ -724,23 +1169,45 @@ class FeedScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 18),
-            child: Row(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 4,
               children: [
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite_border),
-                  label: Text('${l10n.like} ${post.$6}'),
+                FuryPostAction(
+                  icon: Icons.favorite_border,
+                  label: '${l10n.like} ${post.$6}',
                 ),
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.chat_bubble_outline),
-                  label: Text('${l10n.comment} ${post.$7}'),
+                FuryPostAction(
+                  icon: Icons.chat_bubble_outline,
+                  label: '${l10n.comment} ${post.$7}',
                 ),
               ],
             ),
           ),
         ],
       ],
+    );
+  }
+}
+
+class FuryPostAction extends StatelessWidget {
+  const FuryPostAction({required this.icon, required this.label, super.key});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () {},
+      icon: Icon(icon, size: 17),
+      label: Text(label),
+      style: TextButton.styleFrom(
+        foregroundColor: FuryColors.muted,
+        minimumSize: const Size(0, 36),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
     );
   }
 }
@@ -846,10 +1313,14 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+          style: const TextStyle(
+            color: FuryColors.text,
+            fontSize: 28,
+            fontWeight: FontWeight.w900,
+          ),
         ),
         const SizedBox(height: 6),
-        Text(subtitle, style: const TextStyle(color: Color(0xFF8B6B61))),
+        Text(subtitle, style: const TextStyle(color: FuryColors.faint)),
       ],
     );
   }
@@ -867,17 +1338,22 @@ class MetricTile extends StatelessWidget {
       width: 150,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: FuryColors.panel,
+        border: Border.all(color: FuryColors.border),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(color: Color(0xFF8B6B61))),
+          Text(label, style: const TextStyle(color: FuryColors.faint)),
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+            style: const TextStyle(
+              color: FuryColors.text,
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+            ),
           ),
         ],
       ),
@@ -896,13 +1372,20 @@ class ChartPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: FuryColors.panel,
+        border: Border.all(color: FuryColors.border),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
+          Text(
+            title,
+            style: const TextStyle(
+              color: FuryColors.text,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
           const SizedBox(height: 20),
           SizedBox(
             height: 120,
@@ -918,7 +1401,7 @@ class ChartPanel extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFF6B35),
+                            color: FuryColors.orange,
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
