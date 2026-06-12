@@ -676,6 +676,8 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
       widget.record.audioPath != null &&
       widget.record.audioPath!.isNotEmpty;
 
+  bool get _hasReminder => widget.record.reminderAt != null;
+
   @override
   void initState() {
     super.initState();
@@ -755,6 +757,20 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
                 ),
               ),
               const Spacer(),
+              if (_hasReminder)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: FuryColors.yellow.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Icon(
+                    Icons.calendar_today,
+                    size: 12,
+                    color: FuryColors.yellow,
+                  ),
+                ),
+              if (_hasReminder && _hasAudio) const SizedBox(width: 6),
               if (_hasAudio)
                 GestureDetector(
                   onTap: _togglePlayback,
