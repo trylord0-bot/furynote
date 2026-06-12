@@ -11,13 +11,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fury_note/main.dart';
 
 void main() {
-  testWidgets('Fury Note renders record flow', (WidgetTester tester) async {
+  testWidgets('Fury Note renders feed by default', (WidgetTester tester) async {
     await tester.pumpWidget(const FuryNoteApp());
     await tester.pumpAndSettle();
 
-    expect(find.bySemanticsLabel('Fury Note'), findsOneWidget);
-    expect(find.text('Rage Record'), findsOneWidget);
-    expect(find.text('How angry are you now?'), findsOneWidget);
+    expect(find.bySemanticsLabel('Fury Note'), findsWidgets);
+    expect(find.text('Feed'), findsWidgets);
+    expect(find.text('Anonymous Feed'), findsNothing);
+    expect(find.text('Rage Record'), findsNothing);
   });
 
   testWidgets('uses dark Fury Note mockup theme colors', (
@@ -43,23 +44,76 @@ void main() {
     await tester.pumpWidget(const FuryNoteApp());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Feed'));
+    expect(find.text('Feed'), findsWidgets);
+
+    await tester.tap(find.text('Record'));
     await tester.pumpAndSettle();
-    expect(find.text('Anonymous Feed'), findsOneWidget);
+    expect(find.text('Rage Record'), findsOneWidget);
 
     await tester.tap(find.text('Stats'));
     await tester.pumpAndSettle();
-    expect(find.text('Rage Stats'), findsOneWidget);
+    expect(find.text('Rage Stats'), findsWidgets);
 
     await tester.tap(find.text('Calm'));
     await tester.pumpAndSettle();
-    expect(find.text('Calming Tools'), findsOneWidget);
+    expect(find.text('Calming Tools'), findsWidgets);
+  });
+
+  testWidgets('top header title follows the selected screen', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const FuryNoteApp());
+    await tester.pumpAndSettle();
+
+    expect(_headerTitle('Feed'), findsOneWidget);
+    expect(_headerTitle('Fury Note'), findsNothing);
+
+    await tester.tap(find.text('Record'));
+    await tester.pumpAndSettle();
+    expect(_headerTitle('Rage Record'), findsOneWidget);
+
+    await tester.tap(find.text('Stats'));
+    await tester.pumpAndSettle();
+    expect(_headerTitle('Rage Stats'), findsOneWidget);
+
+    await tester.tap(find.text('Calm'));
+    await tester.pumpAndSettle();
+    expect(_headerTitle('Calming Tools'), findsOneWidget);
+  });
+
+  testWidgets('menu opens from the right and shows avatar before nickname', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pumpAndSettle();
+
+    final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+    expect(scaffold.drawer, isNull);
+    expect(scaffold.endDrawer, isA<Drawer>());
+
+    await tester.tap(find.byTooltip('menu'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(FuryDrawer), findsOneWidget);
+    expect(find.byKey(const ValueKey('drawer-profile-avatar')), findsOneWidget);
+    expect(
+      tester.getCenter(find.byKey(const ValueKey('drawer-profile-avatar'))).dx,
+      lessThan(
+        tester.getCenter(find.byKey(const ValueKey('drawer-profile-name'))).dx,
+      ),
+    );
   });
 
   testWidgets('Korean locale renders Korean record copy', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('피드'), findsWidgets);
+    expect(find.text('익명 피드'), findsNothing);
+
+    await tester.tap(find.text('기록'));
     await tester.pumpAndSettle();
 
     expect(find.text('분노 기록'), findsOneWidget);
@@ -71,6 +125,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
     await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
 
     await tester.tap(find.text('매우 화남'));
     await tester.pumpAndSettle();
@@ -105,6 +160,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
     await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
 
     await tester.tap(find.text('매우 화남'));
     await tester.pumpAndSettle();
@@ -130,6 +186,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
     await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
 
     await tester.tap(find.text('매우 화남'));
     await tester.pumpAndSettle();
@@ -155,6 +212,7 @@ void main() {
     (WidgetTester tester) async {
       await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
       await tester.pumpAndSettle();
+      await _openRecordTab(tester, label: '기록');
 
       await tester.tap(find.text('매우 화남'));
       await tester.pumpAndSettle();
@@ -264,6 +322,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
     await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
 
     await tester.tap(find.text('화가 남'));
     await tester.pumpAndSettle();
@@ -293,4 +352,63 @@ void main() {
 
     expect(find.text('➕ 육아'), findsOneWidget);
   });
+
+  testWidgets(
+    'record post actions return to feed and posting shows top toast',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+      await tester.pumpAndSettle();
+
+      await _openRecordTab(tester, label: '기록');
+      await _advanceRecordToPostStep(tester);
+      await tester.tap(find.text('그냥 저장만 할게요'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('피드'), findsWidgets);
+
+      await tester.tap(find.text('기록'));
+      await tester.pumpAndSettle();
+      await _advanceRecordToPostStep(tester);
+      await tester.tap(find.text('포스팅하기'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 120));
+
+      expect(find.text('피드'), findsWidgets);
+      expect(find.text('피드에 전송했어요'), findsOneWidget);
+      expect(tester.getTopLeft(find.text('피드에 전송했어요')).dy, lessThan(180));
+    },
+  );
+}
+
+Finder _headerTitle(String text) {
+  return find.descendant(
+    of: find.byType(FuryHeader),
+    matching: find.text(text),
+  );
+}
+
+Future<void> _openRecordTab(
+  WidgetTester tester, {
+  required String label,
+}) async {
+  await tester.tap(find.text(label));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _advanceRecordToPostStep(WidgetTester tester) async {
+  await tester.tap(find.text('매우 화남'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('직장'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('음성 입력'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('다음'));
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.byKey(const ValueKey('reminder-step-skip')));
+  await tester.tap(find.byKey(const ValueKey('reminder-step-skip')));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('기록하기'));
+  await tester.pumpAndSettle();
+
+  expect(find.text('포스팅하기'), findsOneWidget);
 }

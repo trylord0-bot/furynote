@@ -96,6 +96,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveOnly => 'Just save it';
 
   @override
+  String get feedPostedToast => 'Sent to feed';
+
+  @override
   String get reminderNotification => 'Reminder notification';
 
   @override
@@ -153,7 +156,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calmed => 'Calm';
 
   @override
-  String get feedTitle => 'Anonymous Feed';
+  String get feedTitle => 'Feed';
 
   @override
   String get feedSubtitle => 'Browse recent anger stories';

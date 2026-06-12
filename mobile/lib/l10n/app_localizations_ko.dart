@@ -96,6 +96,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get saveOnly => '그냥 저장만 할게요';
 
   @override
+  String get feedPostedToast => '피드에 전송했어요';
+
+  @override
   String get reminderNotification => '리마인드 알림';
 
   @override
@@ -153,7 +156,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get calmed => '진정됨';
 
   @override
-  String get feedTitle => '익명 피드';
+  String get feedTitle => '피드';
 
   @override
   String get feedSubtitle => '최신순으로 비슷한 분노를 둘러봐요';

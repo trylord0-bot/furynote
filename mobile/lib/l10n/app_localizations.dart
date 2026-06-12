@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'그냥 저장만 할게요'**
   String get saveOnly;
 
+  /// No description provided for @feedPostedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드에 전송했어요'**
+  String get feedPostedToast;
+
   /// No description provided for @reminderNotification.
   ///
   /// In ko, this message translates to:
@@ -389,7 +395,7 @@ abstract class AppLocalizations {
   /// No description provided for @feedTitle.
   ///
   /// In ko, this message translates to:
-  /// **'익명 피드'**
+  /// **'피드'**
   String get feedTitle;
 
   /// No description provided for @feedSubtitle.

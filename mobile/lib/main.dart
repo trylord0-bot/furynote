@@ -203,14 +203,65 @@ class FuryShell extends StatefulWidget {
 }
 
 class _FuryShellState extends State<FuryShell> {
-  int _index = 0;
+  static const int _feedIndex = 1;
+
+  int _index = _feedIndex;
+
+  void _openFeed({bool showPostedToast = false}) {
+    setState(() => _index = _feedIndex);
+
+    if (showPostedToast) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+
+        final l10n = AppLocalizations.of(context);
+        final height = MediaQuery.sizeOf(context).height;
+        final bottomMargin = height > 160 ? height - 128 : 24.0;
+
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(
+                l10n.feedPostedToast,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                bottom: bottomMargin,
+              ),
+              backgroundColor: FuryColors.panelAlt,
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: FuryColors.red),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final headerTitle = _index == 0 ? l10n.recordTitle : l10n.appTitle;
+    final headerTitles = [
+      l10n.recordTitle,
+      l10n.feedTitle,
+      l10n.statsTitle,
+      l10n.calmTitle,
+    ];
+    final headerTitle = headerTitles[_index];
     final screens = [
-      const RecordScreen(),
+      RecordScreen(
+        onPost: () => _openFeed(showPostedToast: true),
+        onSaveOnly: _openFeed,
+      ),
       const FeedScreen(),
       const StatsScreen(),
       const CalmScreen(),
@@ -224,11 +275,11 @@ class _FuryShellState extends State<FuryShell> {
         child: Builder(
           builder: (context) => FuryHeader(
             title: headerTitle,
-            onMenu: () => Scaffold.of(context).openDrawer(),
+            onMenu: () => Scaffold.of(context).openEndDrawer(),
           ),
         ),
       ),
-      drawer: const Drawer(
+      endDrawer: const Drawer(
         backgroundColor: FuryColors.panel,
         surfaceTintColor: Colors.transparent,
         child: FuryDrawer(),
@@ -447,15 +498,31 @@ class FuryDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  l10n.profileName,
-                  style: const TextStyle(
-                    color: FuryColors.text,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      key: const ValueKey('drawer-profile-avatar'),
+                      radius: 22,
+                      backgroundColor: FuryColors.red.withValues(alpha: 0.18),
+                      child: const Text('🐯', style: TextStyle(fontSize: 22)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        key: const ValueKey('drawer-profile-name'),
+                        l10n.profileName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: FuryColors.text,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -556,7 +623,10 @@ class FuryDrawerTile extends StatelessWidget {
 }
 
 class RecordScreen extends StatefulWidget {
-  const RecordScreen({super.key});
+  const RecordScreen({this.onPost, this.onSaveOnly, super.key});
+
+  final VoidCallback? onPost;
+  final VoidCallback? onSaveOnly;
 
   @override
   State<RecordScreen> createState() => _RecordScreenState();
@@ -979,7 +1049,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton.icon(
-                          onPressed: () {},
+                          onPressed: widget.onPost,
                           icon: const Icon(Icons.send_outlined),
                           label: Text(l10n.postIt),
                         ),
@@ -988,7 +1058,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: widget.onSaveOnly,
                           child: Text(l10n.saveOnly),
                         ),
                       ),
