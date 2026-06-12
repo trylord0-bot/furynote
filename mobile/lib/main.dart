@@ -6,8 +6,13 @@ import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
 import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
+import 'package:fury_note/src/audio/voice_recorder.dart';
+import 'package:fury_note/src/notes/rage_note_repository.dart';
+import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalReminderScheduler.instance.initialize();
   runApp(const FuryNoteApp());
 }
 
@@ -56,9 +61,18 @@ List<String> _datePartsForLocale(Locale locale, DateTime value) {
 }
 
 class FuryNoteApp extends StatelessWidget {
-  const FuryNoteApp({this.initialLocale, super.key});
+  const FuryNoteApp({
+    this.initialLocale,
+    this.noteRepository,
+    this.reminderScheduler,
+    this.voiceRecorder,
+    super.key,
+  });
 
   final Locale? initialLocale;
+  final RageNoteRepository? noteRepository;
+  final ReminderScheduler? reminderScheduler;
+  final FuryVoiceRecorder? voiceRecorder;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +160,13 @@ class FuryNoteApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const FuryAppFrame(child: FuryShell()),
+      home: FuryAppFrame(
+        child: FuryShell(
+          noteRepository: noteRepository,
+          reminderScheduler: reminderScheduler,
+          voiceRecorder: voiceRecorder,
+        ),
+      ),
     );
   }
 }
@@ -200,7 +220,16 @@ class FuryAppFrame extends StatelessWidget {
 }
 
 class FuryShell extends StatefulWidget {
-  const FuryShell({super.key});
+  const FuryShell({
+    this.noteRepository,
+    this.reminderScheduler,
+    this.voiceRecorder,
+    super.key,
+  });
+
+  final RageNoteRepository? noteRepository;
+  final ReminderScheduler? reminderScheduler;
+  final FuryVoiceRecorder? voiceRecorder;
 
   @override
   State<FuryShell> createState() => _FuryShellState();
@@ -265,9 +294,12 @@ class _FuryShellState extends State<FuryShell> {
       RecordScreen(
         onPost: () => _openFeed(showPostedToast: true),
         onSaveOnly: _openFeed,
+        noteRepository: widget.noteRepository,
+        reminderScheduler: widget.reminderScheduler,
+        voiceRecorder: widget.voiceRecorder,
       ),
       const FeedScreen(),
-      const StatsScreen(),
+      StatsScreen(noteRepository: widget.noteRepository),
       CalmScreen(onNavigateToFeed: _openFeed),
     ];
 
@@ -557,11 +589,9 @@ class FuryDrawer extends StatelessWidget {
             subtitle: '닉네임 변경 · 알림 설정',
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SettingsScreen(),
-                ),
-              );
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const SettingsScreen()));
             },
           ),
           FuryDrawerTile(

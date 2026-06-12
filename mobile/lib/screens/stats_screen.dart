@@ -1,31 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/notes/rage_note.dart';
+import 'package:fury_note/src/notes/rage_note_repository.dart';
 import '../main.dart';
 import '../widgets/shared_widgets.dart';
 
-class StatsRecordEntry {
-  const StatsRecordEntry({
-    required this.dateTime,
-    required this.title,
-    required this.category,
-    required this.body,
-  });
-
-  final DateTime dateTime;
-  final String title;
-  final String category;
-  final String body;
-}
-
 class StatsScreen extends StatefulWidget {
-  const StatsScreen({super.key});
+  const StatsScreen({this.noteRepository, super.key});
+
+  final RageNoteRepository? noteRepository;
 
   @override
   State<StatsScreen> createState() => _StatsScreenState();
 }
 
 class _StatsScreenState extends State<StatsScreen> {
-  late final List<StatsRecordEntry> _records = _buildRecords(DateTime.now());
+  List<RageNote> _records = const [];
+  String _range = 'week';
+  bool _loading = true;
   late DateTime _focusedMonth;
   late DateTime _selectedDate;
 
@@ -35,50 +27,26 @@ class _StatsScreenState extends State<StatsScreen> {
     final now = DateTime.now();
     _focusedMonth = DateTime(now.year, now.month);
     _selectedDate = DateTime(now.year, now.month, now.day);
+    _loadRecords();
   }
 
-  static List<StatsRecordEntry> _buildRecords(DateTime now) {
-    DateTime at(int daysAgo, int hour, int minute) {
-      final base = DateTime(
-        now.year,
-        now.month,
-        now.day,
-      ).subtract(Duration(days: daysAgo));
-      return DateTime(base.year, base.month, base.day, hour, minute);
+  Future<void> _loadRecords() async {
+    try {
+      final records =
+          await (widget.noteRepository ?? RageNoteRepository.instance).getAll();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _records = records;
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _loading = false);
     }
-
-    return [
-      StatsRecordEntry(
-        dateTime: at(0, 8, 20),
-        title: '출근길 끼어들기',
-        category: '🚗 운전',
-        body: '옆 차선 차가 갑자기 끼어들었는데 사과도 없이 가버림.',
-      ),
-      StatsRecordEntry(
-        dateTime: at(0, 22, 10),
-        title: '저녁 회의',
-        category: '💼 일',
-        body: '회의가 또 퇴근 직전에 잡혔다.',
-      ),
-      StatsRecordEntry(
-        dateTime: at(2, 13, 40),
-        title: '택배 분실',
-        category: '🏠 생활',
-        body: '문 앞에 둔 택배가 사라짐.',
-      ),
-      StatsRecordEntry(
-        dateTime: at(5, 18, 5),
-        title: '동료의 말투',
-        category: '💼 일',
-        body: '질문했을 뿐인데 너무 퉁명스럽게 답해서 기분이 상함.',
-      ),
-      StatsRecordEntry(
-        dateTime: at(7, 9, 15),
-        title: '배달 지연',
-        category: '🍔 식사',
-        body: '예상보다 40분이나 늦게 도착했다.',
-      ),
-    ];
   }
 
   void _changeMonth(int delta) {
@@ -102,13 +70,104 @@ class _StatsScreenState extends State<StatsScreen> {
     });
   }
 
-  List<StatsRecordEntry> _recordsForDate(DateTime date) {
+  List<RageNote> _recordsForDate(DateTime date) {
     final matches =
         _records
-            .where((record) => DateUtils.isSameDay(record.dateTime, date))
+            .where((record) => DateUtils.isSameDay(record.createdAt, date))
             .toList()
-          ..sort((left, right) => left.dateTime.compareTo(right.dateTime));
+          ..sort((left, right) => left.createdAt.compareTo(right.createdAt));
     return matches;
+  }
+
+  List<RageNote> _filteredRecords() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    return switch (_range) {
+      'week' =>
+        _records
+            .where(
+              (record) => !record.createdAt.isBefore(
+                today.subtract(const Duration(days: 6)),
+              ),
+            )
+            .toList(),
+      'month' =>
+        _records
+            .where(
+              (record) =>
+                  record.createdAt.year == now.year &&
+                  record.createdAt.month == now.month,
+            )
+            .toList(),
+      _ => List<RageNote>.of(_records),
+    };
+  }
+
+  String _highestLevelLabel(List<RageNote> records) {
+    if (records.isEmpty) {
+      return '-';
+    }
+    final highest = records.reduce(
+      (left, right) => left.rageLevel >= right.rageLevel ? left : right,
+    );
+    return '${highest.rageEmoji} ${highest.rageLabel}';
+  }
+
+  String _dailyAverageLabel(List<RageNote> records) {
+    if (records.isEmpty) {
+      return '0.0';
+    }
+    final dayCount = switch (_range) {
+      'week' => 7,
+      'month' => DateTime.now().day,
+      _ =>
+        records
+            .map(
+              (record) => DateTime(
+                record.createdAt.year,
+                record.createdAt.month,
+                record.createdAt.day,
+              ),
+            )
+            .toSet()
+            .length
+            .clamp(1, 100000),
+    };
+    return (records.length / dayCount).toStringAsFixed(1);
+  }
+
+  List<double> _weeklyIntensityBars() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    return [
+      for (var i = 6; i >= 0; i--)
+        _averageIntensityForDate(today.subtract(Duration(days: i))) / 5,
+    ];
+  }
+
+  double _averageIntensityForDate(DateTime date) {
+    final records = _recordsForDate(date);
+    if (records.isEmpty) {
+      return 0;
+    }
+    final total = records.fold<int>(0, (sum, note) => sum + note.rageLevel);
+    return total / records.length;
+  }
+
+  List<double> _categoryDistributionBars(List<RageNote> records) {
+    if (records.isEmpty) {
+      return const [0, 0, 0, 0, 0];
+    }
+    final counts = <String, int>{};
+    for (final record in records) {
+      counts[record.categoryLabel] = (counts[record.categoryLabel] ?? 0) + 1;
+    }
+    final sorted = counts.values.toList()..sort((a, b) => b.compareTo(a));
+    final maxCount = sorted.first;
+    return [
+      for (final count in sorted.take(5)) count / maxCount,
+      for (var i = sorted.length; i < 5; i++) 0,
+    ];
   }
 
   void _selectDate(DateTime date) {
@@ -122,6 +181,7 @@ class _StatsScreenState extends State<StatsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final selectedRecords = _recordsForDate(_selectedDate);
+    final filteredRecords = _filteredRecords();
 
     return ListView(
       padding: const EdgeInsets.all(20),
@@ -139,35 +199,45 @@ class _StatsScreenState extends State<StatsScreen> {
             ButtonSegment(value: 'month', label: Text(l10n.month)),
             ButtonSegment(value: 'all', label: Text(l10n.all)),
           ],
-          selected: const {'week'},
-          onSelectionChanged: (_) {},
+          selected: {_range},
+          onSelectionChanged: (value) => setState(() => _range = value.single),
         ),
         const SizedBox(height: 16),
+        if (_loading)
+          const LinearProgressIndicator(value: 0.35, minHeight: 2)
+        else
+          const SizedBox.shrink(),
+        const SizedBox(height: 12),
         Row(
           children: [
             Expanded(
-              child: MetricTile(label: l10n.totalRecords, value: '47'),
+              child: MetricTile(
+                label: l10n.totalRecords,
+                value: '${filteredRecords.length}',
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
-              child:
-                  MetricTile(label: l10n.highestLevel, value: '🤬 매우 화남'),
+              child: MetricTile(
+                label: l10n.highestLevel,
+                value: _highestLevelLabel(filteredRecords),
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: MetricTile(label: l10n.dailyAverage, value: '1.8'),
+              child: MetricTile(
+                label: l10n.dailyAverage,
+                value: _dailyAverageLabel(filteredRecords),
+              ),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        const ChartPanel(
-          title: '분노 강도 추이',
-          bars: [0.2, 0.5, 0.35, 0.8, 0.55, 0.3, 0.65],
-        ),
+        ChartPanel(title: '분노 강도 추이', bars: _weeklyIntensityBars()),
         const SizedBox(height: 12),
-        const ChartPanel(
+        ChartPanel(
           title: '원인별 분포',
-          bars: [0.8, 0.55, 0.45, 0.35, 0.25],
+          bars: _categoryDistributionBars(filteredRecords),
         ),
         const SizedBox(height: 16),
         _StatsCalendarCard(
@@ -197,9 +267,9 @@ class MetricTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 88,
+      height: 98,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
           color: FuryColors.panel,
           border: Border.all(color: FuryColors.border),
@@ -212,15 +282,19 @@ class MetricTile extends StatelessWidget {
             Text(
               label,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: FuryColors.faint, fontSize: 11),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               value,
               textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: FuryColors.text,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -299,7 +373,7 @@ class _StatsCalendarCard extends StatelessWidget {
 
   final DateTime month;
   final DateTime selectedDate;
-  final List<StatsRecordEntry> records;
+  final List<RageNote> records;
   final VoidCallback onPreviousMonth;
   final VoidCallback onNextMonth;
   final ValueChanged<DateTime> onDateSelected;
@@ -316,10 +390,10 @@ class _StatsCalendarCard extends StatelessWidget {
     final recordCounts = <int, int>{};
 
     for (final record in records) {
-      if (record.dateTime.year == month.year &&
-          record.dateTime.month == month.month) {
-        recordCounts[record.dateTime.day] =
-            (recordCounts[record.dateTime.day] ?? 0) + 1;
+      if (record.createdAt.year == month.year &&
+          record.createdAt.month == month.month) {
+        recordCounts[record.createdAt.day] =
+            (recordCounts[record.createdAt.day] ?? 0) + 1;
       }
     }
 
@@ -333,8 +407,7 @@ class _StatsCalendarCard extends StatelessWidget {
             selectedDate,
             DateTime(month.year, month.month, day),
           ),
-          onTap: () =>
-              onDateSelected(DateTime(month.year, month.month, day)),
+          onTap: () => onDateSelected(DateTime(month.year, month.month, day)),
         ),
     ];
 
@@ -438,8 +511,8 @@ class _StatsCalendarDayCell extends StatelessWidget {
             color: isSelected
                 ? FuryColors.red
                 : isToday
-                    ? FuryColors.orange.withValues(alpha: 0.55)
-                    : Colors.transparent,
+                ? FuryColors.orange.withValues(alpha: 0.55)
+                : Colors.transparent,
           ),
         ),
         child: Column(
@@ -460,8 +533,7 @@ class _StatsCalendarDayCell extends StatelessWidget {
                 children: [
                   for (var i = 0; i < dotCount; i++)
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 1.2),
+                      padding: const EdgeInsets.symmetric(horizontal: 1.2),
                       child: Container(
                         width: 4,
                         height: 4,
@@ -489,7 +561,7 @@ class _SelectedDayRecordList extends StatelessWidget {
   });
 
   final DateTime selectedDate;
-  final List<StatsRecordEntry> records;
+  final List<RageNote> records;
 
   @override
   Widget build(BuildContext context) {
@@ -534,12 +606,12 @@ class _SelectedDayRecordList extends StatelessWidget {
 class _StatsRecordTile extends StatelessWidget {
   const _StatsRecordTile({required this.record});
 
-  final StatsRecordEntry record;
+  final RageNote record;
 
   @override
   Widget build(BuildContext context) {
     final timeLabel =
-        '${record.dateTime.hour.toString().padLeft(2, '0')}:${record.dateTime.minute.toString().padLeft(2, '0')}';
+        '${record.createdAt.hour.toString().padLeft(2, '0')}:${record.createdAt.minute.toString().padLeft(2, '0')}';
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -555,13 +627,12 @@ class _StatsRecordTile extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               timeLabel,
-              style:
-                  const TextStyle(color: FuryColors.faint, fontSize: 11),
+              style: const TextStyle(color: FuryColors.faint, fontSize: 11),
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            record.body,
+            record.body.isEmpty ? '음성 녹음 기록' : record.body,
             style: const TextStyle(
               color: Color(0xFFCCCCCC),
               fontSize: 13,
@@ -570,14 +641,13 @@ class _StatsRecordTile extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: FuryColors.red.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              record.category,
+              '${record.categoryEmoji} ${record.categoryLabel}',
               style: const TextStyle(
                 color: FuryColors.red,
                 fontSize: 10,

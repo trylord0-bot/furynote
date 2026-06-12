@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/audio/voice_recorder.dart';
+import 'package:fury_note/src/notes/rage_note.dart';
+import 'package:fury_note/src/notes/rage_note_repository.dart';
+import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 import '../main.dart';
 import '../widgets/shared_widgets.dart';
 
@@ -13,12 +17,12 @@ class RageChoice {
   final Color color;
 
   static List<RageChoice> choices(AppLocalizations l10n) => [
-        RageChoice(1, '😒', l10n.annoyed, const Color(0xFFFFD93D)),
-        RageChoice(2, '😤', l10n.angry, const Color(0xFFFF9A3C)),
-        RageChoice(3, '😠', l10n.mad, const Color(0xFFFF6B35)),
-        RageChoice(4, '😡', l10n.furious, const Color(0xFFE63946)),
-        RageChoice(5, '🤬', l10n.rage, const Color(0xFF9B1D20)),
-      ];
+    RageChoice(1, '😒', l10n.annoyed, const Color(0xFFFFD93D)),
+    RageChoice(2, '😤', l10n.angry, const Color(0xFFFF9A3C)),
+    RageChoice(3, '😠', l10n.mad, const Color(0xFFFF6B35)),
+    RageChoice(4, '😡', l10n.furious, const Color(0xFFE63946)),
+    RageChoice(5, '🤬', l10n.rage, const Color(0xFF9B1D20)),
+  ];
 }
 
 class CategoryChoice {
@@ -33,20 +37,30 @@ class CategoryChoice {
   }
 
   static List<CategoryChoice> choices(AppLocalizations l10n) => [
-        CategoryChoice('family', '👨‍👩‍👧', l10n.family),
-        CategoryChoice('romance', '💕', l10n.romance),
-        CategoryChoice('work', '💼', l10n.work),
-        CategoryChoice('people', '🧑', l10n.people),
-        CategoryChoice('driving', '🚗', l10n.driving),
-        CategoryChoice('custom', '➕', l10n.custom),
-      ];
+    CategoryChoice('family', '👨‍👩‍👧', l10n.family),
+    CategoryChoice('romance', '💕', l10n.romance),
+    CategoryChoice('work', '💼', l10n.work),
+    CategoryChoice('people', '🧑', l10n.people),
+    CategoryChoice('driving', '🚗', l10n.driving),
+    CategoryChoice('custom', '➕', l10n.custom),
+  ];
 }
 
 class RecordScreen extends StatefulWidget {
-  const RecordScreen({this.onPost, this.onSaveOnly, super.key});
+  const RecordScreen({
+    this.onPost,
+    this.onSaveOnly,
+    this.noteRepository,
+    this.reminderScheduler,
+    this.voiceRecorder,
+    super.key,
+  });
 
   final VoidCallback? onPost;
   final VoidCallback? onSaveOnly;
+  final RageNoteRepository? noteRepository;
+  final ReminderScheduler? reminderScheduler;
+  final FuryVoiceRecorder? voiceRecorder;
 
   @override
   State<RecordScreen> createState() => _RecordScreenState();
@@ -57,18 +71,24 @@ class _RecordScreenState extends State<RecordScreen> {
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _customCategoryController =
       TextEditingController();
+  late final FuryVoiceRecorder _voiceRecorder =
+      widget.voiceRecorder ?? createVoiceRecorder();
   int _step = 0;
   RageChoice? _rage;
   CategoryChoice? _category;
   String? _reminder;
   DateTime? _customReminderDateTime;
-  bool _voiceInputReceived = false;
+  String? _recordedAudioPath;
+  int? _savedNoteId;
+  bool _isRecording = false;
+  bool _isSaving = false;
 
   @override
   void dispose() {
     _controller.dispose();
     _textController.dispose();
     _customCategoryController.dispose();
+    _voiceRecorder.dispose();
     super.dispose();
   }
 
@@ -196,6 +216,114 @@ class _RecordScreenState extends State<RecordScreen> {
     minuteController.dispose();
   }
 
+  DateTime? _selectedReminderDateTime() {
+    final now = DateTime.now();
+    return switch (_reminder) {
+      '30분 후' => now.add(const Duration(minutes: 30)),
+      '1시간 후' => now.add(const Duration(hours: 1)),
+      '2시간 후' => now.add(const Duration(hours: 2)),
+      '6시간 후' => now.add(const Duration(hours: 6)),
+      '내일' => now.add(const Duration(days: 1)),
+      '직접 설정' => _customReminderDateTime,
+      _ => null,
+    };
+  }
+
+  Future<void> _toggleVoiceRecording(AppLocalizations l10n) async {
+    try {
+      if (_isRecording) {
+        final path = await _voiceRecorder.stop();
+        if (!mounted) {
+          return;
+        }
+        setState(() {
+          _isRecording = false;
+          _recordedAudioPath = path;
+        });
+        return;
+      }
+
+      final hasPermission = await _voiceRecorder.hasPermission();
+      if (!hasPermission) {
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('마이크 권한이 필요합니다.')));
+        return;
+      }
+
+      await _voiceRecorder.startNew();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isRecording = true;
+        _recordedAudioPath = null;
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _isRecording = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${l10n.voiceInput}을 시작할 수 없습니다.')),
+      );
+    }
+  }
+
+  Future<void> _saveNoteAndContinue(
+    RageChoice rage,
+    CategoryChoice category,
+  ) async {
+    if (_savedNoteId != null) {
+      _goTo(5);
+      return;
+    }
+
+    setState(() => _isSaving = true);
+    final body = _textController.text.trim();
+    final reminderAt = _selectedReminderDateTime();
+    try {
+      final id = await (widget.noteRepository ?? RageNoteRepository.instance)
+          .insert(
+            RageNote(
+              createdAt: DateTime.now(),
+              rageLevel: rage.level,
+              rageEmoji: rage.emoji,
+              rageLabel: rage.label,
+              categoryKey: category.key,
+              categoryEmoji: category.emoji,
+              categoryLabel: category.label,
+              body: body,
+              audioPath: _recordedAudioPath,
+              reminderAt: reminderAt,
+            ),
+          );
+      if (reminderAt != null) {
+        await (widget.reminderScheduler ?? LocalReminderScheduler.instance)
+            .scheduleRageReminder(id: id, scheduledAt: reminderAt, body: body);
+      }
+      if (!mounted) {
+        return;
+      }
+      setState(() => _savedNoteId = id);
+      _goTo(5);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('기록을 저장하지 못했습니다. 다시 시도해주세요.')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -203,22 +331,22 @@ class _RecordScreenState extends State<RecordScreen> {
     final selectedCategory = _category ?? CategoryChoice.choices(l10n).first;
     final category =
         selectedCategory.key == 'custom' &&
-                _customCategoryController.text.trim().isNotEmpty
-            ? selectedCategory.copyWith(
-                label: _customCategoryController.text.trim(),
-              )
-            : selectedCategory;
+            _customCategoryController.text.trim().isNotEmpty
+        ? selectedCategory.copyWith(
+            label: _customCategoryController.text.trim(),
+          )
+        : selectedCategory;
     final canContinueText =
-        _textController.text.trim().isNotEmpty || _voiceInputReceived;
+        _textController.text.trim().isNotEmpty || _recordedAudioPath != null;
     final canContinueReminder = _reminder != null;
 
     final reminderSubtitle =
         _reminder == '직접 설정' && _customReminderDateTime != null
-            ? formatDottedLocaleDateTime(
-                Localizations.localeOf(context),
-                _customReminderDateTime!,
-              )
-            : _reminder ?? l10n.noReminder;
+        ? formatDottedLocaleDateTime(
+            Localizations.localeOf(context),
+            _customReminderDateTime!,
+          )
+        : _reminder ?? l10n.noReminder;
 
     return Container(
       decoration: BoxDecoration(
@@ -288,8 +416,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         TextField(
                           key: const ValueKey('custom-category-field'),
                           controller: _customCategoryController,
-                          decoration:
-                              InputDecoration(labelText: '카테고리를 입력하세요'),
+                          decoration: InputDecoration(labelText: '카테고리를 입력하세요'),
                           style: const TextStyle(color: FuryColors.text),
                         ),
                         const SizedBox(height: 12),
@@ -330,16 +457,33 @@ class _RecordScreenState extends State<RecordScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton.icon(
-                          onPressed: () =>
-                              setState(() => _voiceInputReceived = true),
+                          onPressed: () => _toggleVoiceRecording(l10n),
                           icon: Icon(
-                            _voiceInputReceived
-                                ? Icons.check_circle_outline
-                                : Icons.mic_outlined,
+                            _isRecording
+                                ? Icons.stop_circle_outlined
+                                : _recordedAudioPath == null
+                                ? Icons.mic_outlined
+                                : Icons.replay_outlined,
                           ),
-                          label: Text(l10n.voiceInput),
+                          label: Text(
+                            _isRecording
+                                ? '녹음 중지'
+                                : _recordedAudioPath == null
+                                ? l10n.voiceInput
+                                : '다시 녹음',
+                          ),
                         ),
                       ),
+                      if (_recordedAudioPath != null && !_isRecording) ...[
+                        const SizedBox(height: 8),
+                        const Text(
+                          '음성 녹음이 저장됐어요.',
+                          style: TextStyle(
+                            color: FuryColors.faint,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
@@ -440,14 +584,17 @@ class _RecordScreenState extends State<RecordScreen> {
                       l10n.summaryText: _textController.text.isEmpty
                           ? l10n.none
                           : _textController.text,
+                      '음성': _recordedAudioPath == null ? l10n.none : '녹음 포함',
                       l10n.summaryReminder: _reminder ?? l10n.none,
                     },
                     action: SizedBox(
                       width: double.infinity,
                       child: FilledButton.icon(
-                        onPressed: () => _goTo(5),
+                        onPressed: _isSaving
+                            ? null
+                            : () => _saveNoteAndContinue(rage, category),
                         icon: const Icon(Icons.local_fire_department),
-                        label: Text(l10n.saveNote),
+                        label: Text(_isSaving ? '저장 중...' : l10n.saveNote),
                       ),
                     ),
                   ),

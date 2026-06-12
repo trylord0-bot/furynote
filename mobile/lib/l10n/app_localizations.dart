@@ -239,7 +239,7 @@ abstract class AppLocalizations {
   /// No description provided for @voiceInput.
   ///
   /// In ko, this message translates to:
-  /// **'음성 입력'**
+  /// **'음성 녹음'**
   String get voiceInput;
 
   /// No description provided for @next.

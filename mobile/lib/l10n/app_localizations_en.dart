@@ -78,7 +78,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stepPostSub => 'It will be anonymous';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Voice recording';
 
   @override
   String get next => 'Next';

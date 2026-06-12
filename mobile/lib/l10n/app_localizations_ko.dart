@@ -78,7 +78,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stepPostSub => '익명으로 포스팅돼요';
 
   @override
-  String get voiceInput => '음성 입력';
+  String get voiceInput => '음성 녹음';
 
   @override
   String get next => '다음';
