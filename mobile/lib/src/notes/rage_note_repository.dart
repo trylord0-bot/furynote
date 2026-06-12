@@ -31,6 +31,11 @@ class RageNoteRepository {
     return rows.map(RageNote.fromMap).toList();
   }
 
+  Future<void> deleteById(int id) async {
+    final db = await _open();
+    await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<void> close() async {
     final db = _database;
     _database = null;

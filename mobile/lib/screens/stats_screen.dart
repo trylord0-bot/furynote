@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
@@ -177,6 +178,14 @@ class _StatsScreenState extends State<StatsScreen> {
     });
   }
 
+  Future<void> _deleteRecord(RageNote record) async {
+    final repo = widget.noteRepository ?? RageNoteRepository.instance;
+    if (record.id != null) {
+      await repo.deleteById(record.id!);
+    }
+    await _loadRecords();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -252,6 +261,7 @@ class _StatsScreenState extends State<StatsScreen> {
         _SelectedDayRecordList(
           selectedDate: _selectedDate,
           records: selectedRecords,
+          onDelete: _deleteRecord,
         ),
       ],
     );
@@ -558,13 +568,16 @@ class _SelectedDayRecordList extends StatelessWidget {
   const _SelectedDayRecordList({
     required this.selectedDate,
     required this.records,
+    required this.onDelete,
   });
 
   final DateTime selectedDate;
   final List<RageNote> records;
+  final Future<void> Function(RageNote record) onDelete;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final dateLabel =
         '${selectedDate.year}. ${selectedDate.month}. ${selectedDate.day}';
 
@@ -594,7 +607,50 @@ class _SelectedDayRecordList extends StatelessWidget {
             )
           else
             for (final record in records) ...[
-              _StatsRecordTile(record: record),
+              Dismissible(
+                key: ValueKey(record.id),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 24),
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: FuryColors.red,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(Icons.delete, color: Colors.white, size: 24),
+                ),
+                confirmDismiss: (_) async {
+                  return await showDialog<bool>(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      backgroundColor: FuryColors.panel,
+                      title: Text(
+                        l10n.deleteConfirm,
+                        style: const TextStyle(color: FuryColors.text),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, false),
+                          child: Text(
+                            l10n.cancel,
+                            style: const TextStyle(color: FuryColors.muted),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, true),
+                          child: Text(
+                            l10n.delete,
+                            style: const TextStyle(color: FuryColors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ) ?? false;
+                },
+                onDismissed: (_) => onDelete(record),
+                child: _StatsRecordTile(record: record),
+              ),
               const SizedBox(height: 10),
             ],
         ],
@@ -603,15 +659,54 @@ class _SelectedDayRecordList extends StatelessWidget {
   }
 }
 
-class _StatsRecordTile extends StatelessWidget {
+class _StatsRecordTile extends StatefulWidget {
   const _StatsRecordTile({required this.record});
 
   final RageNote record;
 
   @override
+  State<_StatsRecordTile> createState() => _StatsRecordTileState();
+}
+
+class _StatsRecordTileState extends State<_StatsRecordTile> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+
+  bool get _hasAudio =>
+      widget.record.audioPath != null &&
+      widget.record.audioPath!.isNotEmpty;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer.onPlayerStateChanged.listen((state) {
+      if (mounted) {
+        setState(() {
+          _isPlaying = state == PlayerState.playing;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> _togglePlayback() async {
+    if (_isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.play(DeviceFileSource(widget.record.audioPath!));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final timeLabel =
-        '${record.createdAt.hour.toString().padLeft(2, '0')}:${record.createdAt.minute.toString().padLeft(2, '0')}';
+        '${widget.record.createdAt.hour.toString().padLeft(2, '0')}:${widget.record.createdAt.minute.toString().padLeft(2, '0')}';
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -632,7 +727,9 @@ class _StatsRecordTile extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            record.body.isEmpty ? '음성 녹음 기록' : record.body,
+            widget.record.body.isEmpty
+                ? l10n.noContent
+                : widget.record.body,
             style: const TextStyle(
               color: Color(0xFFCCCCCC),
               fontSize: 13,
@@ -640,20 +737,41 @@ class _StatsRecordTile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: FuryColors.red.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              '${record.categoryEmoji} ${record.categoryLabel}',
-              style: const TextStyle(
-                color: FuryColors.red,
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: FuryColors.red.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '${widget.record.categoryEmoji} ${widget.record.categoryLabel}',
+                  style: const TextStyle(
+                    color: FuryColors.red,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
-            ),
+              const Spacer(),
+              if (_hasAudio)
+                GestureDetector(
+                  onTap: _togglePlayback,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: FuryColors.orange.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      _isPlaying ? Icons.pause : Icons.play_arrow,
+                      size: 14,
+                      color: FuryColors.orange,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
       ),

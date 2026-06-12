@@ -195,6 +195,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get decreaseRate => '감소율';
 
   @override
+  String get noContent => '내용없음';
+
+  @override
+  String get voicePlayback => '음성 재생';
+
+  @override
+  String get deleteConfirm => '삭제할까요?';
+
+  @override
+  String get delete => '삭제';
+
+  @override
+  String get cancel => '취소';
+
+  @override
   String get calmTitle => '진정 도구';
 
   @override

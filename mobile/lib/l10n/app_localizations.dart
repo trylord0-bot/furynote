@@ -470,6 +470,36 @@ abstract class AppLocalizations {
   /// **'감소율'**
   String get decreaseRate;
 
+  /// No description provided for @noContent.
+  ///
+  /// In ko, this message translates to:
+  /// **'내용없음'**
+  String get noContent;
+
+  /// No description provided for @voicePlayback.
+  ///
+  /// In ko, this message translates to:
+  /// **'음성 재생'**
+  String get voicePlayback;
+
+  /// No description provided for @deleteConfirm.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제할까요?'**
+  String get deleteConfirm;
+
+  /// No description provided for @delete.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제'**
+  String get delete;
+
+  /// No description provided for @cancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get cancel;
+
   /// No description provided for @calmTitle.
   ///
   /// In ko, this message translates to:

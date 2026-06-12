@@ -195,6 +195,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get decreaseRate => 'Decrease';
 
   @override
+  String get noContent => 'No content';
+
+  @override
+  String get voicePlayback => 'Play voice';
+
+  @override
+  String get deleteConfirm => 'Delete?';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
   String get calmTitle => 'Calming Tools';
 
   @override
