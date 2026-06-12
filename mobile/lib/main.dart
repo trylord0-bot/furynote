@@ -267,7 +267,7 @@ class _FuryShellState extends State<FuryShell> {
       ),
       const FeedScreen(),
       const StatsScreen(),
-      const CalmScreen(),
+      CalmScreen(onNavigateToFeed: _openFeed),
     ];
 
     return Scaffold(
