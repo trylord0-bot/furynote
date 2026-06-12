@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,6 +22,33 @@ class FuryColors {
   static const deepRed = Color(0xFF9B1D20);
   static const orange = Color(0xFFFF6B35);
   static const yellow = Color(0xFFFFD93D);
+}
+
+String formatDottedLocaleDateTime(Locale locale, DateTime value) {
+  final dateParts = _datePartsForLocale(locale, value);
+  final hour = value.hour.toString().padLeft(2, '0');
+  final minute = value.minute.toString().padLeft(2, '0');
+  return '${dateParts.join('.')} $hour:$minute';
+}
+
+List<String> _datePartsForLocale(Locale locale, DateTime value) {
+  final language = locale.languageCode.toLowerCase();
+  final country = locale.countryCode?.toUpperCase();
+  final year = value.year.toString().padLeft(4, '0');
+  final month = value.month.toString();
+  final day = value.day.toString();
+
+  if ({'ko', 'ja', 'zh', 'hu'}.contains(language) ||
+      {'KR', 'JP', 'CN', 'TW', 'HK', 'MO', 'HU'}.contains(country)) {
+    return [year, month, day];
+  }
+
+  if (language == 'en' &&
+      !{'GB', 'AU', 'NZ', 'IE', 'IN', 'ZA', 'SG', 'MY'}.contains(country)) {
+    return [month, day, year];
+  }
+
+  return [day, month, year];
 }
 
 class FuryNoteApp extends StatelessWidget {
@@ -180,6 +208,7 @@ class _FuryShellState extends State<FuryShell> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final headerTitle = _index == 0 ? l10n.recordTitle : l10n.appTitle;
     final screens = [
       const RecordScreen(),
       const FeedScreen(),
@@ -194,7 +223,7 @@ class _FuryShellState extends State<FuryShell> {
         preferredSize: const Size.fromHeight(52),
         child: Builder(
           builder: (context) => FuryHeader(
-            title: l10n.appTitle,
+            title: headerTitle,
             onMenu: () => Scaffold.of(context).openDrawer(),
           ),
         ),
@@ -231,40 +260,48 @@ class FuryHeader extends StatelessWidget {
           border: Border(bottom: BorderSide(color: FuryColors.border)),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            const Text('🔥', style: TextStyle(fontSize: 20)),
-            const SizedBox(width: 7),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Semantics(
+                label: 'Fury Note',
+                child: const ExcludeSemantics(
+                  child: Text('🔥', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+            ),
             Semantics(
+              header: true,
               label: title,
               child: ExcludeSemantics(
-                child: RichText(
-                  text: TextSpan(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 52),
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: FuryColors.text,
                       fontSize: 17,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w900,
                     ),
-                    children: [
-                      const TextSpan(text: 'Fury '),
-                      TextSpan(
-                        text: 'Note',
-                        style: const TextStyle(color: FuryColors.red),
-                      ),
-                    ],
                   ),
                 ),
               ),
             ),
-            const Spacer(),
-            IconButton(
-              tooltip: 'menu',
-              onPressed: onMenu,
-              icon: const Icon(Icons.menu, color: FuryColors.text),
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.white.withValues(alpha: 0.04),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                tooltip: 'menu',
+                onPressed: onMenu,
+                icon: const Icon(Icons.menu, color: FuryColors.text),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.white.withValues(alpha: 0.04),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
@@ -534,6 +571,8 @@ class _RecordScreenState extends State<RecordScreen> {
   RageChoice? _rage;
   CategoryChoice? _category;
   String? _reminder;
+  DateTime? _customReminderDateTime;
+  bool _voiceInputReceived = false;
 
   @override
   void dispose() {
@@ -552,6 +591,121 @@ class _RecordScreenState extends State<RecordScreen> {
     );
   }
 
+  Future<void> _showCustomReminderSheet(BuildContext context) async {
+    final now = DateTime.now();
+    final initial =
+        _customReminderDateTime ?? now.add(const Duration(hours: 1));
+    var selectedDate = DateTime(initial.year, initial.month, initial.day);
+    var selectedHour = initial.hour;
+    var selectedMinute = initial.minute;
+    final hourController = FixedExtentScrollController(
+      initialItem: selectedHour,
+    );
+    final minuteController = FixedExtentScrollController(
+      initialItem: selectedMinute,
+    );
+
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: FuryColors.panel,
+      barrierColor: Colors.black.withValues(alpha: 0.65),
+      enableDrag: false,
+      showDragHandle: false,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            return SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CalendarDatePicker(
+                      key: const ValueKey('custom-reminder-calendar'),
+                      initialDate: selectedDate,
+                      firstDate: DateTime(now.year, now.month, now.day),
+                      lastDate: DateTime(now.year + 100, now.month, now.day),
+                      onDateChanged: (value) =>
+                          setSheetState(() => selectedDate = value),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      height: 132,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _ReminderWheelPicker(
+                              key: const ValueKey(
+                                'custom-reminder-hour-picker',
+                              ),
+                              controller: hourController,
+                              itemCount: 24,
+                              suffix: '시',
+                              onSelectedItemChanged: (value) =>
+                                  selectedHour = value,
+                            ),
+                          ),
+                          Expanded(
+                            child: _ReminderWheelPicker(
+                              key: const ValueKey(
+                                'custom-reminder-minute-picker',
+                              ),
+                              controller: minuteController,
+                              itemCount: 60,
+                              suffix: '분',
+                              onSelectedItemChanged: (value) =>
+                                  selectedMinute = value,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.of(sheetContext).pop(),
+                            child: const Text('취소'),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: () {
+                              final selected = DateTime(
+                                selectedDate.year,
+                                selectedDate.month,
+                                selectedDate.day,
+                                selectedHour,
+                                selectedMinute,
+                              );
+                              setState(() {
+                                _customReminderDateTime = selected;
+                                _reminder = '직접 설정';
+                              });
+                              Navigator.of(sheetContext).pop();
+                            },
+                            child: const Text('저장'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    hourController.dispose();
+    minuteController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -564,6 +718,17 @@ class _RecordScreenState extends State<RecordScreen> {
             label: _customCategoryController.text.trim(),
           )
         : selectedCategory;
+    final canContinueText =
+        _textController.text.trim().isNotEmpty || _voiceInputReceived;
+    final canContinueReminder = _reminder != null;
+
+    final reminderSubtitle =
+        _reminder == '직접 설정' && _customReminderDateTime != null
+        ? formatDottedLocaleDateTime(
+            Localizations.localeOf(context),
+            _customReminderDateTime!,
+          )
+        : _reminder ?? l10n.noReminder;
 
     return Container(
       decoration: BoxDecoration(
@@ -575,26 +740,11 @@ class _RecordScreenState extends State<RecordScreen> {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-            child: Column(
-              children: [
-                Text(
-                  l10n.recordTitle,
-                  style: const TextStyle(
-                    color: FuryColors.text,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 14),
-                StepDots(active: _step),
-              ],
-            ),
-          ),
+          RecordProgressBar(active: _step),
           Expanded(
             child: PageView(
               controller: _controller,
+              scrollDirection: Axis.vertical,
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 RecordStep(
@@ -608,7 +758,7 @@ class _RecordScreenState extends State<RecordScreen> {
                             selected: _rage?.level == choice.level,
                             color: choice.color,
                             title: choice.emoji,
-                            subtitle: 'Lv.${choice.level}\n${choice.label}',
+                            subtitle: choice.label,
                             onTap: () {
                               setState(() => _rage = choice);
                               _goTo(1);
@@ -677,6 +827,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         controller: _textController,
                         maxLength: 300,
                         maxLines: 5,
+                        onChanged: (_) => setState(() {}),
                         decoration: const InputDecoration(
                           hintText: '여기에 적어보세요',
                         ),
@@ -685,24 +836,35 @@ class _RecordScreenState extends State<RecordScreen> {
                           height: 1.7,
                         ),
                       ),
-                      Row(
-                        children: [
-                          OutlinedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.mic_outlined),
-                            label: Text(l10n.voiceInput),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () =>
+                              setState(() => _voiceInputReceived = true),
+                          icon: Icon(
+                            _voiceInputReceived
+                                ? Icons.check_circle_outline
+                                : Icons.mic_outlined,
                           ),
-                          const Spacer(),
-                          FilledButton(
-                            onPressed: () => _goTo(3),
-                            child: Text(l10n.next),
-                          ),
-                        ],
+                          label: Text(l10n.voiceInput),
+                        ),
                       ),
-                      TextButton(
-                        key: const ValueKey('text-step-skip'),
-                        onPressed: () => _goTo(3),
-                        child: Text(l10n.skip),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: canContinueText ? () => _goTo(3) : null,
+                          child: Text(l10n.next),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          key: const ValueKey('text-step-skip'),
+                          onPressed: () => _goTo(3),
+                          child: Text(l10n.skip),
+                        ),
                       ),
                     ],
                   ),
@@ -718,37 +880,59 @@ class _RecordScreenState extends State<RecordScreen> {
                         onChanged: (value) =>
                             setState(() => _reminder = value ? '30분 후' : null),
                         title: Text(l10n.reminderNotification),
-                        subtitle: Text(_reminder ?? l10n.noReminder),
+                        subtitle: Text(reminderSubtitle),
                       ),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          for (final option in [
-                            '30분 후',
-                            '1시간 후',
-                            '2시간 후',
-                            '6시간 후',
-                            '내일',
-                            '직접 설정',
-                          ])
-                            FilterChip(
-                              label: Text(option),
-                              selected: _reminder == option,
-                              onSelected: (_) =>
-                                  setState(() => _reminder = option),
-                            ),
+                          Wrap(
+                            key: const ValueKey('reminder-option-wrap'),
+                            alignment: WrapAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              for (final option in [
+                                '30분 후',
+                                '1시간 후',
+                                '2시간 후',
+                                '6시간 후',
+                                '내일',
+                              ])
+                                FilterChip(
+                                  label: Text(option),
+                                  selected: _reminder == option,
+                                  onSelected: (_) =>
+                                      setState(() => _reminder = option),
+                                ),
+                              FilterChip(
+                                key: const ValueKey('custom-reminder-chip'),
+                                label: const Text('직접 설정'),
+                                selected: _reminder == '직접 설정',
+                                onSelected: (_) =>
+                                    _showCustomReminderSheet(context),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
-                      FilledButton(
-                        onPressed: () => _goTo(4),
-                        child: Text(l10n.next),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: canContinueReminder
+                              ? () => _goTo(4)
+                              : null,
+                          child: Text(l10n.next),
+                        ),
                       ),
-                      TextButton(
-                        key: const ValueKey('reminder-step-skip'),
-                        onPressed: () => _goTo(4),
-                        child: Text(l10n.skip),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          key: const ValueKey('reminder-step-skip'),
+                          onPressed: () => _goTo(4),
+                          child: Text(l10n.skip),
+                        ),
                       ),
                     ],
                   ),
@@ -759,8 +943,7 @@ class _RecordScreenState extends State<RecordScreen> {
                   onBack: () => _goTo(3),
                   child: SummaryCard(
                     rows: {
-                      l10n.summaryIntensity:
-                          '${rage.emoji} Lv.${rage.level} · ${rage.label}',
+                      l10n.summaryIntensity: '${rage.emoji} ${rage.label}',
                       l10n.summaryCategory:
                           '${category.emoji} ${category.label}',
                       l10n.summaryText: _textController.text.isEmpty
@@ -768,10 +951,13 @@ class _RecordScreenState extends State<RecordScreen> {
                           : _textController.text,
                       l10n.summaryReminder: _reminder ?? l10n.none,
                     },
-                    action: FilledButton.icon(
-                      onPressed: () => _goTo(5),
-                      icon: const Icon(Icons.local_fire_department),
-                      label: Text(l10n.saveNote),
+                    action: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: () => _goTo(5),
+                        icon: const Icon(Icons.local_fire_department),
+                        label: Text(l10n.saveNote),
+                      ),
                     ),
                   ),
                 ),
@@ -783,7 +969,6 @@ class _RecordScreenState extends State<RecordScreen> {
                     children: [
                       FuryPostCard(
                         emoji: rage.emoji,
-                        level: rage.level,
                         nickname: l10n.profileName,
                         category: '${category.emoji} ${category.label}',
                         text: _textController.text.isEmpty
@@ -791,12 +976,22 @@ class _RecordScreenState extends State<RecordScreen> {
                             : _textController.text,
                       ),
                       const SizedBox(height: 16),
-                      FilledButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.send_outlined),
-                        label: Text(l10n.postIt),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.send_outlined),
+                          label: Text(l10n.postIt),
+                        ),
                       ),
-                      TextButton(onPressed: () {}, child: Text(l10n.saveOnly)),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(l10n.saveOnly),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -831,40 +1026,53 @@ class RecordStep extends StatelessWidget {
             ? constraints.maxWidth
             : MediaQuery.sizeOf(context).width;
         final contentWidth = (availableWidth - 36).clamp(0.0, 324.0);
+        const verticalPadding = 30.0;
         return SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(18, 10, 18, 20),
-          child: SizedBox(
-            width: contentWidth,
-            child: Column(
-              children: [
-                if (onBack != null) ...[
-                  SizedBox(
-                    height: 38,
-                    child: IconButton.filledTonal(
-                      onPressed: onBack,
-                      icon: const Icon(Icons.keyboard_arrow_up),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (constraints.maxHeight - verticalPadding).clamp(
+                0.0,
+                double.infinity,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: contentWidth,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (onBack != null) ...[
+                      SizedBox(
+                        height: 38,
+                        child: IconButton.filledTonal(
+                          onPressed: onBack,
+                          icon: const Icon(Icons.keyboard_arrow_up),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: FuryColors.text,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                ],
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: FuryColors.text,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w900,
-                  ),
+                    const SizedBox(height: 8),
+                    Text(
+                      subtitle,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: FuryColors.faint),
+                    ),
+                    const SizedBox(height: 22),
+                    SizedBox(width: double.infinity, child: child),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: FuryColors.faint),
-                ),
-                const SizedBox(height: 22),
-                SizedBox(width: double.infinity, child: child),
-              ],
+              ),
             ),
           ),
         );
@@ -873,27 +1081,90 @@ class RecordStep extends StatelessWidget {
   }
 }
 
-class StepDots extends StatelessWidget {
-  const StepDots({required this.active, super.key});
+class RecordProgressBar extends StatelessWidget {
+  const RecordProgressBar({required this.active, super.key});
 
   final int active;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    final progress = (active + 1) / 6;
+
+    return Semantics(
+      label: 'record progress',
+      value: '${active + 1} of 6',
+      child: SizedBox(
+        height: 4,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            const DecoratedBox(
+              decoration: BoxDecoration(color: FuryColors.border),
+            ),
+            TweenAnimationBuilder<double>(
+              tween: Tween<double>(end: progress),
+              duration: const Duration(milliseconds: 320),
+              curve: Curves.easeOutCubic,
+              builder: (context, value, child) {
+                return FractionallySizedBox(
+                  widthFactor: value,
+                  alignment: Alignment.centerLeft,
+                  child: child,
+                );
+              },
+              child: const DecoratedBox(
+                decoration: BoxDecoration(color: FuryColors.red),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ReminderWheelPicker extends StatelessWidget {
+  const _ReminderWheelPicker({
+    required this.controller,
+    required this.itemCount,
+    required this.suffix,
+    required this.onSelectedItemChanged,
+    super.key,
+  });
+
+  final FixedExtentScrollController controller;
+  final int itemCount;
+  final String suffix;
+  final ValueChanged<int> onSelectedItemChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPicker(
+      scrollController: controller,
+      itemExtent: 36,
+      magnification: 1.08,
+      useMagnifier: true,
+      selectionOverlay: Container(
+        decoration: BoxDecoration(
+          color: FuryColors.red.withValues(alpha: 0.08),
+          border: Border.symmetric(
+            horizontal: BorderSide(
+              color: FuryColors.red.withValues(alpha: 0.22),
+            ),
+          ),
+        ),
+      ),
+      onSelectedItemChanged: onSelectedItemChanged,
       children: [
-        for (var i = 0; i < 6; i++)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: active == i ? 28 : 8,
-            height: 8,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            decoration: BoxDecoration(
-              color: i <= active
-                  ? FuryColors.red.withValues(alpha: active == i ? 1 : 0.45)
-                  : FuryColors.border,
-              borderRadius: BorderRadius.circular(active == i ? 3 : 999),
+        for (var i = 0; i < itemCount; i++)
+          Center(
+            child: Text(
+              '${i.toString().padLeft(2, '0')} $suffix',
+              style: const TextStyle(
+                color: FuryColors.text,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
       ],
@@ -1049,7 +1320,6 @@ class SummaryCard extends StatelessWidget {
 class FuryPostCard extends StatelessWidget {
   const FuryPostCard({
     required this.emoji,
-    required this.level,
     required this.nickname,
     required this.category,
     required this.text,
@@ -1057,7 +1327,6 @@ class FuryPostCard extends StatelessWidget {
   });
 
   final String emoji;
-  final int level;
   final String nickname;
   final String category;
   final String text;
@@ -1094,16 +1363,6 @@ class FuryPostCard extends StatelessWidget {
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
-                ),
-              ),
-              Chip(
-                label: Text('Lv.$level'),
-                side: BorderSide(color: FuryColors.red.withValues(alpha: 0.3)),
-                backgroundColor: FuryColors.red.withValues(alpha: 0.12),
-                labelStyle: const TextStyle(
-                  color: FuryColors.red,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
                 ),
               ),
             ],
@@ -1144,14 +1403,13 @@ class FeedScreen extends StatelessWidget {
     final posts = [
       (
         '😡',
-        4,
         l10n.profileName,
         '🚗 ${l10n.driving}',
         '옆 차선 차가 갑자기 끼어들었는데 사과도 없이 가버림.',
         12,
         3,
       ),
-      ('😤', 2, '부글부글 곰 #1234', '💼 ${l10n.work}', '회의가 또 퇴근 직전에 잡혔다.', 8, 1),
+      ('😤', '부글부글 곰 #1234', '💼 ${l10n.work}', '회의가 또 퇴근 직전에 잡혔다.', 8, 1),
     ];
 
     return ListView(
@@ -1162,10 +1420,9 @@ class FeedScreen extends StatelessWidget {
         for (final post in posts) ...[
           FuryPostCard(
             emoji: post.$1,
-            level: post.$2,
-            nickname: post.$3,
-            category: post.$4,
-            text: post.$5,
+            nickname: post.$2,
+            category: post.$3,
+            text: post.$4,
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 18),
@@ -1175,11 +1432,11 @@ class FeedScreen extends StatelessWidget {
               children: [
                 FuryPostAction(
                   icon: Icons.favorite_border,
-                  label: '${l10n.like} ${post.$6}',
+                  label: '${l10n.like} ${post.$5}',
                 ),
                 FuryPostAction(
                   icon: Icons.chat_bubble_outline,
-                  label: '${l10n.comment} ${post.$7}',
+                  label: '${l10n.comment} ${post.$6}',
                 ),
               ],
             ),
@@ -1238,7 +1495,7 @@ class StatsScreen extends StatelessWidget {
           runSpacing: 10,
           children: [
             MetricTile(label: l10n.totalRecords, value: '47'),
-            MetricTile(label: l10n.highestLevel, value: '🤬 Lv.5'),
+            MetricTile(label: l10n.highestLevel, value: '🤬 매우 화남'),
             MetricTile(label: l10n.dailyAverage, value: '1.8'),
             MetricTile(label: l10n.decreaseRate, value: '42%'),
           ],
@@ -1282,7 +1539,7 @@ class CalmScreen extends StatelessWidget {
           child: ListTile(
             leading: Text('😡', style: TextStyle(fontSize: 24)),
             title: Text('아까 그 분노, 지금은 어때요?'),
-            subtitle: Text('최초 Lv.4 · 1시간 후'),
+            subtitle: Text('최초 강한 분노 · 1시간 후'),
           ),
         ),
         const SizedBox(height: 16),

@@ -72,7 +72,7 @@ void main() {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.textContaining('Lv.4'));
+    await tester.tap(find.text('매우 화남'));
     await tester.pumpAndSettle();
     expect(find.text('무엇 때문인가요?'), findsOneWidget);
 
@@ -81,6 +81,7 @@ void main() {
     expect(find.text('무슨 일이 있었나요?'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), '회의가 퇴근 직전에 잡혔다');
+    await tester.pump();
     await tester.ensureVisible(find.text('다음'));
     await tester.tap(find.text('다음'));
     await tester.pumpAndSettle();
@@ -93,10 +94,169 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('기록을 저장할까요?'), findsOneWidget);
-    expect(find.textContaining('😡 Lv.4'), findsOneWidget);
+    expect(find.textContaining('😡 매우 화남'), findsOneWidget);
     expect(find.text('💼 직장'), findsOneWidget);
     expect(find.text('회의가 퇴근 직전에 잡혔다'), findsOneWidget);
     expect(find.text('1시간 후'), findsOneWidget);
+  });
+
+  testWidgets('text step next button waits for text or voice input', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('무슨 일이 있었나요?'), findsOneWidget);
+
+    final nextButtonFinder = find.widgetWithText(FilledButton, '다음');
+    expect(tester.widget<FilledButton>(nextButtonFinder).onPressed, isNull);
+
+    await tester.tap(find.text('음성 입력'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<FilledButton>(nextButtonFinder).onPressed, isNotNull);
+
+    await tester.tap(find.text('다음'));
+    await tester.pumpAndSettle();
+    expect(find.text('나중에 다시 볼까요?'), findsOneWidget);
+  });
+
+  testWidgets('reminder step next button waits for reminder selection', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('음성 입력'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('다음'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('나중에 다시 볼까요?'), findsOneWidget);
+
+    final nextButtonFinder = find.widgetWithText(FilledButton, '다음');
+    expect(tester.widget<FilledButton>(nextButtonFinder).onPressed, isNull);
+
+    await tester.tap(find.text('1시간 후'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<FilledButton>(nextButtonFinder).onPressed, isNotNull);
+  });
+
+  testWidgets(
+    'custom reminder stays inline and opens non-draggable time picker',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('매우 화남'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('직장'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('음성 입력'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('다음'));
+      await tester.pumpAndSettle();
+
+      final tomorrowBox = tester.getRect(find.text('내일'));
+      final customBox = tester.getRect(find.text('직접 설정'));
+      final customChipFinder = find.byKey(
+        const ValueKey('custom-reminder-chip'),
+      );
+      final reminderWrap = tester.widget<Wrap>(
+        find.byKey(const ValueKey('reminder-option-wrap')),
+      );
+      expect(reminderWrap.alignment, WrapAlignment.center);
+      expect(customBox.top, greaterThanOrEqualTo(tomorrowBox.top));
+      expect(tester.getSize(customChipFinder).width, lessThan(180));
+
+      await tester.tap(find.text('직접 설정'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const ValueKey('custom-reminder-calendar')),
+        findsOneWidget,
+      );
+      final calendar = tester.widget<CalendarDatePicker>(
+        find.byKey(const ValueKey('custom-reminder-calendar')),
+      );
+      expect(
+        calendar.lastDate.difference(DateTime.now()).inDays,
+        greaterThan(3650),
+      );
+      expect(
+        find.byKey(const ValueKey('custom-reminder-hour-picker')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('custom-reminder-minute-picker')),
+        findsOneWidget,
+      );
+      expect(find.text('취소'), findsOneWidget);
+      expect(find.text('저장'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget.runtimeType.toString().contains('DragHandle'),
+        ),
+        findsNothing,
+      );
+
+      await tester.drag(
+        find.byKey(const ValueKey('custom-reminder-hour-picker')),
+        const Offset(0, -80),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('저장'));
+      await tester.pumpAndSettle();
+
+      final customChip = tester.widget<FilterChip>(customChipFinder);
+      final customChipLabel = customChip.label as Text;
+
+      expect(customChip.selected, isTrue);
+      expect(customChipLabel.data, '직접 설정');
+      expect(find.textContaining('직접 설정 ->'), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Text &&
+              RegExp(
+                r'\d{4}\.\d{1,2}\.\d{1,2} \d{2}:\d{2}',
+              ).hasMatch(widget.data ?? ''),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        tester
+            .widget<FilledButton>(find.widgetWithText(FilledButton, '다음'))
+            .onPressed,
+        isNotNull,
+      );
+    },
+  );
+
+  test('dotted reminder date follows locale order', () {
+    final value = DateTime(2027, 3, 14, 9, 5);
+
+    expect(
+      formatDottedLocaleDateTime(const Locale('ko'), value),
+      '2027.3.14 09:05',
+    );
+    expect(
+      formatDottedLocaleDateTime(const Locale('en', 'US'), value),
+      '3.14.2027 09:05',
+    );
+    expect(
+      formatDottedLocaleDateTime(const Locale('en', 'GB'), value),
+      '14.3.2027 09:05',
+    );
   });
 
   testWidgets('custom category can be typed and appears in summary', (
@@ -105,7 +265,7 @@ void main() {
     await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.textContaining('Lv.2'));
+    await tester.tap(find.text('화가 남'));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('직접 입력'));
     await tester.tap(find.text('직접 입력'));
