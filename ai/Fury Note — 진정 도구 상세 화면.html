@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fury Note — 진정 도구 상세</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a1a;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      padding: 40px 20px; gap: 16px;
+    }
+    .preview-label { color: #888; font-size: 12px; letter-spacing: 0.5px; }
+
+    .phone {
+      width: 320px; height: 680px;
+      background: #0D0D0D;
+      border-radius: 40px; border: 2px solid #2A2A2A;
+      overflow: hidden; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      display: flex; flex-direction: column;
+    }
+
+    /* ── 화면 스택 ── */
+    .screen {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      background: #0D0D0D;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+      will-change: transform;
+    }
+    .screen.hidden-right { transform: translateX(100%); }
+    .screen.hidden-left  { transform: translateX(-28%); }
+    .screen.visible      { transform: translateX(0); }
+
+    /* ── 공통 헤더 ── */
+    .status-bar {
+      height: 32px; background: #111;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; flex-shrink: 0; z-index: 10;
+    }
+    .status-bar .time { color: #F0F0F0; font-size: 11px; font-weight: 600; }
+    .status-bar .icons { color: #F0F0F0; font-size: 10px; display: flex; gap: 5px; }
+
+    .app-header {
+      height: 52px; background: #111;
+      border-bottom: 1px solid #2A2A2A;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 18px; flex-shrink: 0;
+    }
+    .app-title { display: flex; align-items: center; gap: 6px; }
+    .app-title-text { color: #F0F0F0; font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .app-title-text span { color: #E63946; }
+    .hamburger-btn {
+      width: 36px; height: 36px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px; cursor: pointer;
+    }
+    .hamburger-btn .bar { width: 20px; height: 2px; background: #F0F0F0; border-radius: 2px; }
+
+    /* 상세 화면 헤더 */
+    .detail-header {
+      height: 52px; background: #111;
+      border-bottom: 1px solid #2A2A2A;
+      display: flex; align-items: center;
+      padding: 0 14px 0 8px; flex-shrink: 0; gap: 4px;
+    }
+    .back-btn {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; cursor: pointer;
+      transition: background 0.15s; flex-shrink: 0;
+      border: none; background: transparent;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.07); }
+    .back-btn svg { width: 20px; height: 20px; fill: none; stroke: #F0F0F0; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .detail-header-title {
+      color: #F0F0F0; font-size: 15px; font-weight: 700;
+      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* ── 진정 탭 메인 콘텐츠 ── */
+    .calm-content {
+      flex: 1; overflow-y: auto; padding: 16px 16px 90px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .calm-content::-webkit-scrollbar { display: none; }
+
+    .section-title {
+      color: #888; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 6px; margin-bottom: -4px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: #222; }
+
+    .remind-list { display: flex; flex-direction: column; gap: 8px; }
+    .remind-card {
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 16px; padding: 12px 14px;
+      display: flex; align-items: flex-start; gap: 12px;
+      cursor: pointer; position: relative; overflow: hidden;
+    }
+    .remind-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; border-radius: 3px 0 0 3px; background: #E63946;
+    }
+    .remind-emoji { font-size: 22px; }
+    .remind-text { color: #CCCCCC; font-size: 12px; }
+
+    .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tool-card {
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 20px; padding: 18px 14px 16px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+      cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .tool-card:hover { border-color: #444; transform: translateY(-1px); }
+    .tool-card:active { transform: scale(0.97); }
+    .tool-card.breath   { --c: #7EC8E3; }
+    .tool-card.timeout  { --c: #A8D8A8; }
+    .tool-card.meditate { --c: #C9B8FF; }
+    .tool-card.feed     { --c: #FFB347; }
+    .tool-card::after {
+      content: ''; position: absolute; top: -30px; right: -30px;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--c); opacity: 0.06;
+    }
+    .tool-icon-wrap {
+      width: 44px; height: 44px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+      background: color-mix(in srgb, var(--c) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c) 20%, transparent);
+    }
+    .tool-name { color: #F0F0F0; font-size: 13px; font-weight: 800; line-height: 1.2; }
+    .tool-desc { color: #666; font-size: 10px; line-height: 1.5; }
+    .tool-tag {
+      font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 8px;
+      color: var(--c);
+      background: color-mix(in srgb, var(--c) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c) 20%, transparent);
+    }
+
+    /* ── 바텀 네비 ── */
+    .bottom-nav {
+      height: 72px; background: #111; border-top: 1px solid #2A2A2A;
+      display: flex; align-items: flex-end; padding-bottom: 10px;
+      flex-shrink: 0; z-index: 10;
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      gap: 3px; padding-bottom: 2px; cursor: pointer;
+    }
+    .tab-icon { font-size: 18px; line-height: 1; }
+    .tab-label { font-size: 8px; color: #555; white-space: nowrap; }
+    .tab-item.active .tab-label { color: #E63946; }
+    .tab-item.fab-tab { position: relative; flex: 1; }
+    .fab-button {
+      width: 48px; height: 48px;
+      background: linear-gradient(145deg, #E63946, #9B1D20);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+      box-shadow: 0 -4px 16px rgba(230,57,70,0.5), 0 4px 12px rgba(0,0,0,0.4);
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      border: 3px solid #111; cursor: pointer;
+    }
+    .fab-label {
+      font-size: 8px; color: #E63946; font-weight: 700;
+      position: absolute; bottom: 3px; left: 50%;
+      transform: translateX(-50%); white-space: nowrap;
+    }
+
+    /* ══════════════════════════════
+       상세 화면 공통
+    ══════════════════════════════ */
+    .detail-content {
+      flex: 1; overflow-y: auto; padding: 24px 20px 40px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .detail-content::-webkit-scrollbar { display: none; }
+
+    /* 히어로 영역 */
+    .detail-hero {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 12px; padding: 8px 0 4px;
+    }
+    .detail-hero-icon {
+      width: 72px; height: 72px; border-radius: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      background: color-mix(in srgb, var(--tool-c) 12%, transparent);
+      border: 1.5px solid color-mix(in srgb, var(--tool-c) 25%, transparent);
+      box-shadow: 0 0 32px color-mix(in srgb, var(--tool-c) 15%, transparent);
+    }
+    .detail-hero-title {
+      color: #F0F0F0; font-size: 20px; font-weight: 800;
+      letter-spacing: -0.5px; text-align: center;
+    }
+    .detail-hero-sub {
+      color: #666; font-size: 12px; text-align: center; line-height: 1.6;
+    }
+    .detail-tag {
+      font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px;
+      color: var(--tool-c);
+      background: color-mix(in srgb, var(--tool-c) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--tool-c) 25%, transparent);
+    }
+
+    /* 스텝 카드 */
+    .step-list { display: flex; flex-direction: column; gap: 10px; }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 16px; padding: 14px 16px;
+    }
+    .step-num {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800;
+      color: var(--tool-c);
+      background: color-mix(in srgb, var(--tool-c) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--tool-c) 22%, transparent);
+      margin-top: 1px;
+    }
+    .step-text { color: #CCCCCC; font-size: 12px; line-height: 1.65; }
+    .step-text strong { color: #F0F0F0; font-weight: 700; }
+
+    /* 팁 박스 */
+    .tip-box {
+      background: color-mix(in srgb, var(--tool-c) 7%, transparent);
+      border: 1px solid color-mix(in srgb, var(--tool-c) 18%, transparent);
+      border-radius: 14px; padding: 14px 16px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .tip-text { color: #AAAAAA; font-size: 11px; line-height: 1.7; }
+    .tip-text strong { color: var(--tool-c); }
+
+    /* 시작 버튼 */
+    .start-btn {
+      width: 100%; padding: 15px;
+      border-radius: 16px; border: none;
+      font-size: 14px; font-weight: 800;
+      cursor: pointer; font-family: inherit;
+      color: #fff; letter-spacing: -0.3px;
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--tool-c) 80%, #E63946),
+        color-mix(in srgb, var(--tool-c) 40%, #1a1a1a)
+      );
+      box-shadow: 0 4px 20px color-mix(in srgb, var(--tool-c) 25%, transparent);
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .start-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .start-btn:active { transform: scale(0.98); }
+
+    /* ══════════════════════════════
+       호흡운동 애니메이션
+    ══════════════════════════════ */
+    .breath-visual {
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      padding: 8px 0;
+    }
+    .breath-circle-wrap { position: relative; width: 120px; height: 120px; }
+    .breath-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 2px solid color-mix(in srgb, #7EC8E3 30%, transparent);
+      animation: breathPulse 8s ease-in-out infinite;
+    }
+    .breath-ring:nth-child(2) { animation-delay: -2s; opacity: 0.6; }
+    .breath-ring:nth-child(3) { animation-delay: -4s; opacity: 0.35; }
+    @keyframes breathPulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50%       { transform: scale(1.35); opacity: 0.2; }
+    }
+    .breath-core {
+      position: absolute; inset: 16px; border-radius: 50%;
+      background: color-mix(in srgb, #7EC8E3 18%, transparent);
+      border: 1.5px solid color-mix(in srgb, #7EC8E3 40%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      animation: breathScale 8s ease-in-out infinite;
+    }
+    @keyframes breathScale {
+      0%, 100% { transform: scale(1); }
+      40%       { transform: scale(1.12); }
+      70%       { transform: scale(0.94); }
+    }
+    .breath-label {
+      color: #7EC8E3; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+      animation: breathLabel 8s ease-in-out infinite;
+    }
+    @keyframes breathLabel {
+      0%,  10% { opacity: 1; }
+      25%, 35% { opacity: 0.4; }
+      50%, 60% { opacity: 1; }
+      75%, 85% { opacity: 0.4; }
+      100%     { opacity: 1; }
+    }
+    .breath-timer-row {
+      display: flex; gap: 8px; width: 100%;
+    }
+    .breath-phase {
+      flex: 1; background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 12px; padding: 10px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .breath-phase.active { border-color: #7EC8E3; background: color-mix(in srgb, #7EC8E3 8%, transparent); }
+    .breath-phase-num { color: #7EC8E3; font-size: 18px; font-weight: 800; }
+    .breath-phase-label { color: #666; font-size: 9px; font-weight: 600; }
+    .breath-phase.active .breath-phase-label { color: #7EC8E3; }
+
+    /* ══════════════════════════════
+       타임아웃 화면
+    ══════════════════════════════ */
+    .timeout-timer {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 20px; padding: 24px 20px;
+    }
+    .timeout-clock {
+      font-size: 48px; font-weight: 800; color: #A8D8A8;
+      letter-spacing: -2px; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .timeout-clock-label { color: #555; font-size: 11px; }
+    .timeout-progress {
+      width: 100%; height: 4px; background: #2A2A2A;
+      border-radius: 2px; overflow: hidden; margin-top: 4px;
+    }
+    .timeout-progress-bar {
+      height: 100%; background: #A8D8A8; border-radius: 2px;
+      width: 100%;
+      transition: width 1s linear;
+    }
+    .timeout-btn-row { display: flex; gap: 8px; width: 100%; }
+    .timeout-ctrl-btn {
+      flex: 1; padding: 12px; border-radius: 12px;
+      border: 1px solid #2A2A2A; background: #161616;
+      color: #CCCCCC; font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .timeout-ctrl-btn.primary {
+      background: color-mix(in srgb, #A8D8A8 15%, transparent);
+      border-color: color-mix(in srgb, #A8D8A8 30%, transparent);
+      color: #A8D8A8;
+    }
+    .timeout-ctrl-btn:hover { border-color: #444; }
+
+    /* ══════════════════════════════
+       이미지 명상 화면
+    ══════════════════════════════ */
+    .scene-selector {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+    }
+    .scene-selector::-webkit-scrollbar { display: none; }
+    .scene-chip {
+      flex-shrink: 0; padding: 7px 14px; border-radius: 20px;
+      background: #161616; border: 1px solid #2A2A2A;
+      color: #888; font-size: 11px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .scene-chip.active {
+      background: color-mix(in srgb, #C9B8FF 12%, transparent);
+      border-color: color-mix(in srgb, #C9B8FF 35%, transparent);
+      color: #C9B8FF;
+    }
+    .scene-visual {
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 20px; padding: 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      min-height: 140px; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .scene-bg {
+      position: absolute; inset: 0; opacity: 0.06;
+      font-size: 80px; display: flex; align-items: center; justify-content: center;
+      pointer-events: none; filter: blur(4px);
+    }
+    .scene-emoji { font-size: 44px; position: relative; z-index: 1;
+      animation: floatScene 4s ease-in-out infinite; }
+    @keyframes floatScene {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+    .scene-desc {
+      color: #AAAAAA; font-size: 12px; text-align: center;
+      line-height: 1.7; position: relative; z-index: 1;
+      font-style: italic;
+    }
+
+    /* ══════════════════════════════
+       피드 위로받기 화면
+    ══════════════════════════════ */
+    .feed-preview-list { display: flex; flex-direction: column; gap: 10px; }
+    .feed-mini-card {
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 16px; padding: 12px 14px;
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative; overflow: hidden;
+    }
+    .feed-mini-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; border-radius: 3px 0 0 3px;
+      background: var(--lv-c, #E63946);
+    }
+    .feed-mini-top {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .feed-mini-lv {
+      font-size: 16px; line-height: 1;
+    }
+    .feed-mini-nick { color: #888; font-size: 11px; }
+    .feed-mini-cat {
+      margin-left: auto; font-size: 10px; color: #555;
+      background: #1E1E1E; border-radius: 8px; padding: 2px 7px;
+    }
+    .feed-mini-text { color: #CCCCCC; font-size: 12px; line-height: 1.6; }
+    .feed-mini-reactions {
+      display: flex; gap: 6px;
+    }
+    .feed-mini-react {
+      font-size: 10px; color: #666;
+      background: #1E1E1E; border-radius: 8px; padding: 3px 8px;
+    }
+    .feed-goto-btn {
+      width: 100%; padding: 14px; border-radius: 14px;
+      background: color-mix(in srgb, #FFB347 15%, transparent);
+      border: 1px solid color-mix(in srgb, #FFB347 30%, transparent);
+      color: #FFB347; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+  </style>
+</head>
+<body>
+  <p class="preview-label">FURY NOTE — 진정 도구 상세 화면</p>
+
+  <div class="phone">
+
+    <!-- ══════════════════════════
+         SCREEN 0: 진정 탭 메인
+    ══════════════════════════ -->
+    <div class="screen visible" id="screen-main">
+      <div class="status-bar">
+        <span class="time">6:34</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+      <div class="app-header">
+        <div class="app-title">
+          <span style="font-size:18px">🔥</span>
+          <span class="app-title-text">Fury <span>Note</span></span>
+        </div>
+        <div class="hamburger-btn">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+      </div>
+
+      <div class="calm-content">
+        <div class="section-title">🔔 리마인드 노트</div>
+        <div class="remind-list">
+          <div class="remind-card">
+            <div class="remind-emoji">🤬</div>
+            <div class="remind-text">팀장이 또 내 의견을 무시하고 회의에서 망신을 줬다</div>
+          </div>
+        </div>
+
+        <div class="section-title">🧘 진정 도구</div>
+        <div class="tool-grid">
+          <div class="tool-card breath"   onclick="pushScreen('screen-breath')">
+            <div class="tool-icon-wrap">🫁</div>
+            <div class="tool-name">호흡운동</div>
+            <div class="tool-desc">4-7-8 호흡으로<br>심박수를 낮춰요</div>
+            <div class="tool-tag">3~5분</div>
+          </div>
+          <div class="tool-card timeout"  onclick="pushScreen('screen-timeout')">
+            <div class="tool-icon-wrap">⏱️</div>
+            <div class="tool-name">타임아웃</div>
+            <div class="tool-desc">잠깐 멈추고<br>공간을 바꿔봐요</div>
+            <div class="tool-tag">10분</div>
+          </div>
+          <div class="tool-card meditate" onclick="pushScreen('screen-meditate')">
+            <div class="tool-icon-wrap">🌄</div>
+            <div class="tool-name">이미지 명상</div>
+            <div class="tool-desc">평온한 장면을<br>떠올려 보세요</div>
+            <div class="tool-tag">5~10분</div>
+          </div>
+          <div class="tool-card feed"     onclick="pushScreen('screen-feed')">
+            <div class="tool-icon-wrap">💬</div>
+            <div class="tool-name">포스팅으로<br>위로받기</div>
+            <div class="tool-desc">비슷한 분노를<br>공유한 사람들</div>
+            <div class="tool-tag">피드 이동</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="tab-item fab-tab">
+          <div class="fab-button">🔥</div>
+          <span class="fab-label">기록</span>
+        </div>
+        <div class="tab-item">
+          <span class="tab-icon">📮</span>
+          <span class="tab-label">피드</span>
+        </div>
+        <div class="tab-item">
+          <span class="tab-icon">📊</span>
+          <span class="tab-label">통계</span>
+        </div>
+        <div class="tab-item active">
+          <span class="tab-icon">🧘</span>
+          <span class="tab-label">진정</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 1: 호흡운동
+    ══════════════════════════ -->
+    <div class="screen hidden-right" id="screen-breath" style="--tool-c: #7EC8E3">
+      <div class="status-bar">
+        <span class="time">6:34</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+      <div class="detail-header">
+        <button class="back-btn" onclick="popScreen()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="detail-header-title">🫁 호흡운동</span>
+      </div>
+      <div class="detail-content">
+        <div class="detail-hero">
+          <div class="detail-hero-icon">🫁</div>
+          <div class="detail-hero-title">4-7-8 호흡법</div>
+          <div class="detail-hero-sub">심박수를 낮추고 분노를<br>빠르게 가라앉히는 호흡법이에요</div>
+          <div class="detail-tag">⏱ 3~5분 소요</div>
+        </div>
+
+        <!-- 애니메이션 -->
+        <div class="breath-visual">
+          <div class="breath-circle-wrap">
+            <div class="breath-ring"></div>
+            <div class="breath-ring"></div>
+            <div class="breath-ring"></div>
+            <div class="breath-core">🫁</div>
+          </div>
+          <div class="breath-label" id="breathLabel">들이마시기...</div>
+          <div class="breath-timer-row">
+            <div class="breath-phase active" id="bph0">
+              <div class="breath-phase-num">4</div>
+              <div class="breath-phase-label">들이마시기</div>
+            </div>
+            <div class="breath-phase" id="bph1">
+              <div class="breath-phase-num">7</div>
+              <div class="breath-phase-label">참기</div>
+            </div>
+            <div class="breath-phase" id="bph2">
+              <div class="breath-phase-num">8</div>
+              <div class="breath-phase-label">내쉬기</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text">코로 <strong>4초</strong> 동안 천천히 들이마세요</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>7초</strong> 동안 숨을 참으세요</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text">입으로 <strong>8초</strong> 동안 천천히 내쉬세요</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-text">이 과정을 <strong>3~4회</strong> 반복하세요</div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text"><strong>연구에 따르면</strong> 4-7-8 호흡은 부교감신경을 활성화해 분노 반응을 평균 <strong>60% 감소</strong>시켜요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 2: 타임아웃
+    ══════════════════════════ -->
+    <div class="screen hidden-right" id="screen-timeout" style="--tool-c: #A8D8A8">
+      <div class="status-bar">
+        <span class="time">6:34</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+      <div class="detail-header">
+        <button class="back-btn" onclick="popScreen()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="detail-header-title">⏱️ 타임아웃</span>
+      </div>
+      <div class="detail-content">
+        <div class="detail-hero">
+          <div class="detail-hero-icon">⏱️</div>
+          <div class="detail-hero-title">10분 타임아웃</div>
+          <div class="detail-hero-sub">지금 있는 공간에서 잠깐 벗어나<br>감정을 식혀요</div>
+          <div class="detail-tag">⏱ 10분</div>
+        </div>
+
+        <div class="timeout-timer">
+          <div class="timeout-clock" id="timerDisplay">10:00</div>
+          <div class="timeout-clock-label">남은 시간</div>
+          <div class="timeout-progress">
+            <div class="timeout-progress-bar" id="timerBar"></div>
+          </div>
+        </div>
+
+        <div class="timeout-btn-row">
+          <div class="timeout-ctrl-btn primary" id="timerStartBtn" onclick="toggleTimer()">▶ 시작</div>
+          <div class="timeout-ctrl-btn" onclick="resetTimer()">↺ 초기화</div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text">지금 상황에서 <strong>물리적으로 자리를 피하세요</strong></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text">조용한 곳으로 이동해 <strong>10분간 혼자</strong> 있어요</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>스마트폰도 잠깐</strong> 내려놓아요</div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text">타임아웃은 도망이 아니라 <strong>감정 조절 전략</strong>이에요. 10분 후 더 차분하게 상황을 바라볼 수 있어요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 3: 이미지 명상
+    ══════════════════════════ -->
+    <div class="screen hidden-right" id="screen-meditate" style="--tool-c: #C9B8FF">
+      <div class="status-bar">
+        <span class="time">6:34</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+      <div class="detail-header">
+        <button class="back-btn" onclick="popScreen()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="detail-header-title">🌄 이미지 명상</span>
+      </div>
+      <div class="detail-content">
+        <div class="detail-hero">
+          <div class="detail-hero-icon">🌄</div>
+          <div class="detail-hero-title">이미지 명상</div>
+          <div class="detail-hero-sub">평온한 장소를 떠올리며<br>감정을 전환해요</div>
+          <div class="detail-tag">⏱ 5~10분</div>
+        </div>
+
+        <!-- 장면 선택 -->
+        <div class="scene-selector" id="sceneSelector">
+          <div class="scene-chip active" onclick="selectScene(this,'🌊','바다','파도 소리가 들려요. 발끝에 닿는 모래의 감촉, 짭조름한 바람을 느껴보세요.')">🌊 바다</div>
+          <div class="scene-chip" onclick="selectScene(this,'🌲','숲','나뭇잎 사이로 햇살이 내려와요. 흙냄새와 새소리에 집중해보세요.')">🌲 숲</div>
+          <div class="scene-chip" onclick="selectScene(this,'⛰️','산','산 정상에서 바라보는 풍경이에요. 시원한 바람과 탁 트인 하늘을 느껴보세요.')">⛰️ 산</div>
+          <div class="scene-chip" onclick="selectScene(this,'🌌','밤하늘','별이 가득한 밤하늘이에요. 고요한 어둠 속에서 몸이 가벼워지는 걸 느껴보세요.')">🌌 밤하늘</div>
+          <div class="scene-chip" onclick="selectScene(this,'☕','카페','따뜻한 커피 향이 퍼져요. 편안한 의자에 앉아 모든 걸 내려놓아요.')">☕ 카페</div>
+        </div>
+
+        <div class="scene-visual" id="sceneVisual">
+          <div class="scene-bg" id="sceneBg">🌊</div>
+          <div class="scene-emoji" id="sceneEmoji">🌊</div>
+          <div class="scene-desc" id="sceneDesc">파도 소리가 들려요. 발끝에 닿는 모래의 감촉, 짭조름한 바람을 느껴보세요.</div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text">눈을 감고 <strong>편하게 앉아요</strong></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text">위 장면을 <strong>생생하게 상상</strong>해요</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text">그 공간의 <strong>소리, 냄새, 온도</strong>를 느껴봐요</div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text">5분만 해도 <strong>코르티솔 수치</strong>가 낮아진다는 연구가 있어요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 4: 포스팅으로 위로받기
+    ══════════════════════════ -->
+    <div class="screen hidden-right" id="screen-feed" style="--tool-c: #FFB347">
+      <div class="status-bar">
+        <span class="time">6:34</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+      <div class="detail-header">
+        <button class="back-btn" onclick="popScreen()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="detail-header-title">💬 포스팅으로 위로받기</span>
+      </div>
+      <div class="detail-content">
+        <div class="detail-hero">
+          <div class="detail-hero-icon">💬</div>
+          <div class="detail-hero-title">나만 그런 게 아니에요</div>
+          <div class="detail-hero-sub">비슷한 분노를 겪은 사람들의<br>이야기로 공감받아요</div>
+          <div class="detail-tag">📮 피드 연결</div>
+        </div>
+
+        <div class="feed-preview-list">
+          <div class="feed-mini-card" style="--lv-c:#E63946">
+            <div class="feed-mini-top">
+              <div class="feed-mini-lv">🤬</div>
+              <div class="feed-mini-nick">폭발한 독수리#2341</div>
+              <div class="feed-mini-cat">💼 직장</div>
+            </div>
+            <div class="feed-mini-text">회의에서 내 아이디어 발표했더니 팀장이 자기 아이디어인 것처럼 발표함. 진짜 열받아</div>
+            <div class="feed-mini-reactions">
+              <div class="feed-mini-react">🔥 24</div>
+              <div class="feed-mini-react">😤 18</div>
+              <div class="feed-mini-react">💬 7</div>
+            </div>
+          </div>
+          <div class="feed-mini-card" style="--lv-c:#FF6B35">
+            <div class="feed-mini-top">
+              <div class="feed-mini-lv">😠</div>
+              <div class="feed-mini-nick">으르렁대는 치타#8823</div>
+              <div class="feed-mini-cat">🚗 운전</div>
+            </div>
+            <div class="feed-mini-text">신호 바뀌자마자 경적 울리는 사람 진짜 이해 안 됨. 나도 보이거든요?</div>
+            <div class="feed-mini-reactions">
+              <div class="feed-mini-react">🔥 41</div>
+              <div class="feed-mini-react">😤 33</div>
+              <div class="feed-mini-react">💬 12</div>
+            </div>
+          </div>
+          <div class="feed-mini-card" style="--lv-c:#FF9A3C">
+            <div class="feed-mini-top">
+              <div class="feed-mini-lv">😤</div>
+              <div class="feed-mini-nick">뿔난 황소#5512</div>
+              <div class="feed-mini-cat">🧑 사람</div>
+            </div>
+            <div class="feed-mini-text">친구가 약속 당일에 또 취소함. 이번이 세 번째인데 이제 진짜 모르겠다</div>
+            <div class="feed-mini-reactions">
+              <div class="feed-mini-react">🔥 19</div>
+              <div class="feed-mini-react">😤 15</div>
+              <div class="feed-mini-react">💬 5</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="feed-goto-btn" onclick="popScreen()">
+          📮 피드 전체 보러 가기
+        </button>
+
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text"><strong>"나만 이런 게 아니구나"</strong>라는 공감이 분노를 녹여줘요. 내 이야기를 공유해서 위로를 받아보세요.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /phone -->
+
+  <script>
+    /* ── 네비게이션 스택 ── */
+    let stack = ['screen-main'];
+
+    function pushScreen(id) {
+      const current = document.getElementById(stack[stack.length - 1]);
+      const next    = document.getElementById(id);
+
+      // 현재 화면을 왼쪽으로 밀기
+      current.classList.remove('visible');
+      current.classList.add('hidden-left');
+
+      // 새 화면을 오른쪽에서 슬라이드인
+      next.classList.remove('hidden-right');
+      next.classList.add('visible');
+
+      stack.push(id);
+    }
+
+    function popScreen() {
+      if (stack.length <= 1) return;
+
+      const current = document.getElementById(stack[stack.length - 1]);
+      const prev    = document.getElementById(stack[stack.length - 2]);
+
+      // 현재 화면을 오른쪽으로 밀어내기
+      current.classList.remove('visible');
+      current.classList.add('hidden-right');
+
+      // 이전 화면을 다시 보이게
+      prev.classList.remove('hidden-left');
+      prev.classList.add('visible');
+
+      stack.pop();
+    }
+
+    /* ── 타임아웃 타이머 ── */
+    const TOTAL = 10 * 60;
+    let remaining = TOTAL;
+    let timerRunning = false;
+    let timerInterval = null;
+
+    function toggleTimer() {
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerStartBtn').textContent = '▶ 재개';
+      } else {
+        if (remaining <= 0) return;
+        timerRunning = true;
+        document.getElementById('timerStartBtn').textContent = '⏸ 일시정지';
+        timerInterval = setInterval(() => {
+          remaining--;
+          updateTimerUI();
+          if (remaining <= 0) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            document.getElementById('timerStartBtn').textContent = '✅ 완료!';
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      remaining = TOTAL;
+      updateTimerUI();
+      document.getElementById('timerStartBtn').textContent = '▶ 시작';
+    }
+
+    function updateTimerUI() {
+      const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+      const s = String(remaining % 60).padStart(2, '0');
+      document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+      document.getElementById('timerBar').style.width = `${(remaining / TOTAL) * 100}%`;
+    }
+
+    /* ── 호흡 단계 표시 ── */
+    const phases = [
+      { id: 'bph0', label: '들이마시기...', dur: 4000 },
+      { id: 'bph1', label: '참는 중...', dur: 7000 },
+      { id: 'bph2', label: '내쉬는 중...', dur: 8000 },
+    ];
+    let phaseIdx = 0;
+
+    function runBreathPhase() {
+      phases.forEach((p, i) => {
+        document.getElementById(p.id).classList.toggle('active', i === phaseIdx);
+      });
+      document.getElementById('breathLabel').textContent = phases[phaseIdx].label;
+      setTimeout(() => {
+        phaseIdx = (phaseIdx + 1) % phases.length;
+        runBreathPhase();
+      }, phases[phaseIdx].dur);
+    }
+    runBreathPhase();
+
+    /* ── 장면 선택 ── */
+    function selectScene(el, emoji, name, desc) {
+      document.querySelectorAll('.scene-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('sceneEmoji').textContent = emoji;
+      document.getElementById('sceneBg').textContent   = emoji;
+      document.getElementById('sceneDesc').textContent = desc;
+    }
+  </script>
+</body>
+</html>

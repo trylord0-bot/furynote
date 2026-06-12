@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fury Note — 통계 v4</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a1a;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      padding: 40px 20px; gap: 16px;
+    }
+    .preview-label { color: #888; font-size: 12px; }
+    .phone {
+      width: 320px; height: 680px;
+      background: #0D0D0D;
+      border-radius: 40px; border: 2px solid #2A2A2A;
+      overflow: hidden; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      display: flex; flex-direction: column;
+    }
+    .status-bar {
+      height: 32px; background: #111;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; flex-shrink: 0;
+    }
+    .status-bar .time { color: #F0F0F0; font-size: 11px; font-weight: 600; }
+    .status-bar .icons { color: #F0F0F0; font-size: 10px; display: flex; gap: 5px; }
+    .app-header {
+      height: 52px; background: #111;
+      border-bottom: 1px solid #2A2A2A;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 18px; flex-shrink: 0;
+    }
+    .app-title { display: flex; align-items: center; gap: 6px; }
+    .app-title-text { color: #F0F0F0; font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .app-title-text span { color: #E63946; }
+    .hamburger-btn {
+      width: 36px; height: 36px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px; cursor: pointer;
+    }
+    .hamburger-btn .bar { width: 20px; height: 2px; background: #F0F0F0; border-radius: 2px; }
+
+    .period-tabs {
+      display: flex;
+      margin: 14px 16px 0;
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 12px; padding: 3px; flex-shrink: 0;
+    }
+    .period-tab {
+      flex: 1; text-align: center; padding: 7px 0;
+      font-size: 12px; font-weight: 600; color: #555;
+      border-radius: 9px; cursor: pointer; transition: all 0.2s;
+      border: none; background: none; font-family: inherit;
+    }
+    .period-tab.active {
+      background: #E63946; color: #fff;
+      box-shadow: 0 2px 8px rgba(230,57,70,0.35);
+    }
+
+    .stats-content {
+      flex: 1; overflow-y: auto; padding: 14px 16px 90px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .stats-content::-webkit-scrollbar { display: none; }
+
+    .stat-card {
+      background: #161616; border: 1px solid #2A2A2A;
+      border-radius: 20px; padding: 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .stat-card-title {
+      color: #F0F0F0; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .stat-card-sub {
+      color: #555; font-size: 10px; margin-left: auto; font-weight: 400;
+    }
+
+    .summary-nums { display: flex; gap: 8px; }
+    .summary-num-item {
+      flex: 1; background: #111; border: 1px solid #222;
+      border-radius: 14px; padding: 12px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .summary-num-emoji { font-size: 22px; line-height: 1; }
+    .summary-num-val { color: #F0F0F0; font-size: 20px; font-weight: 800; line-height: 1; }
+    .summary-num-val span { color: #E63946; }
+    .summary-num-label { color: #555; font-size: 10px; text-align: center; line-height: 1.3; }
+
+    .chart-wrap { width: 100%; position: relative; }
+    .chart-svg { width: 100%; overflow: visible; display: block; }
+
+    /* X축 레이블 — 선그래프용 (간격 자동) */
+    .x-labels-flex {
+      display: flex; justify-content: space-between;
+      padding: 4px 0 0;
+    }
+    .x-lbl { color: #555; font-size: 9px; }
+    .x-lbl.hl { color: #E63946; font-weight: 700; }
+
+    .pie-wrap { display: flex; align-items: center; gap: 16px; }
+    .pie-svg-wrap { flex-shrink: 0; }
+    .pie-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-label { color: #CCCCCC; font-size: 11px; flex: 1; }
+    .legend-pct { color: #888; font-size: 11px; font-weight: 700; }
+
+    .summary-card {
+      background: linear-gradient(135deg, #1A0A0B, #1E1010);
+      border: 1px solid #2A1A1A; border-radius: 20px; padding: 18px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .summary-title { color: #F0F0F0; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .summary-text { color: #AAAAAA; font-size: 12px; line-height: 1.8; }
+    .summary-text strong { color: #E63946; font-weight: 700; }
+    .summary-highlight {
+      background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.2);
+      border-radius: 12px; padding: 10px 14px;
+      color: #CCCCCC; font-size: 12px; line-height: 1.7;
+    }
+
+    .calm-btn {
+      width: 100%; padding: 14px; border-radius: 14px;
+      background: linear-gradient(135deg, #1B3A4B, #0D2233);
+      border: 1px solid #1E4A66;
+      color: #7EC8E3; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .calm-btn:hover { border-color: #7EC8E3; }
+
+    .bottom-nav {
+      height: 72px; background: #111;
+      border-top: 1px solid #2A2A2A;
+      display: flex; align-items: flex-end; padding-bottom: 10px;
+      flex-shrink: 0; z-index: 10;
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      gap: 3px; padding-bottom: 2px; cursor: pointer;
+    }
+    .tab-icon { font-size: 18px; line-height: 1; }
+    .tab-label { font-size: 8px; color: #555; white-space: nowrap; }
+    .tab-item.active .tab-label { color: #E63946; }
+    .tab-item.fab-tab { position: relative; flex: 1; }
+    .fab-button {
+      width: 48px; height: 48px;
+      background: linear-gradient(145deg, #E63946, #9B1D20);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+      box-shadow: 0 -4px 16px rgba(230,57,70,0.5), 0 4px 12px rgba(0,0,0,0.4);
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      border: 3px solid #111; cursor: pointer;
+    }
+    .fab-label {
+      font-size: 8px; color: #E63946; font-weight: 700;
+      position: absolute; bottom: 3px; left: 50%;
+      transform: translateX(-50%); white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <p class="preview-label">FURY NOTE — 통계 화면 v4</p>
+
+  <div class="phone">
+    <div class="status-bar">
+      <span class="time">5:54</span>
+      <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+    </div>
+    <div class="app-header">
+      <div class="app-title">
+        <span style="font-size:18px">🔥</span>
+        <span class="app-title-text">Fury <span>Note</span></span>
+      </div>
+      <div class="hamburger-btn">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+    </div>
+
+    <div class="period-tabs">
+      <button class="period-tab active" id="tab-week" onclick="switchPeriod('week')">1주일</button>
+      <button class="period-tab" id="tab-month" onclick="switchPeriod('month')">1달</button>
+      <button class="period-tab" id="tab-all" onclick="switchPeriod('all')">전체</button>
+    </div>
+
+    <div class="stats-content" id="statsContent"></div>
+
+    <div class="bottom-nav">
+      <div class="tab-item fab-tab">
+        <div class="fab-button">🔥</div>
+        <span class="fab-label">기록</span>
+      </div>
+      <div class="tab-item">
+        <span class="tab-icon">📮</span>
+        <span class="tab-label">피드</span>
+      </div>
+      <div class="tab-item active">
+        <span class="tab-icon">📊</span>
+        <span class="tab-label">통계</span>
+      </div>
+      <div class="tab-item">
+        <span class="tab-icon">🧘</span>
+        <span class="tab-label">진정</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const RAGE_EMOJI = {1:'😒',2:'😤',3:'😠',4:'😡',5:'🤬'};
+    function rageEmoji(lv){ return RAGE_EMOJI[Math.round(lv)]||'😠'; }
+
+    /* ── 1달치 일별 데이터 (30일) ── */
+    const MONTH_DAILY = [
+      2,1,3,0,2,4,1, 2,3,1,2,0,3,2,
+      1,4,2,3,1,2,3, 0,1,2,3,1,2,1,3,2
+    ];
+
+    /* ── 전체 데이터 (180일치 시뮬레이션) ── */
+    const ALL_DAILY = (() => {
+      const seed = [2,1,3,0,2,4,1,2,3,1,2,0,3,2,1,4,2,3,1,2,3,0,1,2,3,1,2,1,3,2];
+      const arr = [];
+      for(let i=0;i<180;i++) arr.push(seed[i%30] + (i%7===3?1:0) + (i%13===0?1:0));
+      return arr;
+    })();
+
+    const DATA = {
+      week: {
+        total:14, maxLv:5, dailyAvg:'2.0',
+        intensityLabels:['월','화','수','목','금','토','일'],
+        intensityValues:[2,4,1,5,3,1,4],
+        intensityTodayIdx:6,
+        countRaw:[1,3,1,4,2,1,2],
+        countTodayIdx:6,
+        categories:[
+          {name:'직장',emoji:'💼',pct:36,color:'#E63946'},
+          {name:'사람', emoji:'🧑',pct:28,color:'#FF6B35'},
+          {name:'운전',emoji:'🚗',pct:21,color:'#FF9A3C'},
+          {name:'가족',emoji:'👨‍👩‍👧',pct:15,color:'#FFD93D'},
+        ],
+        summaryText:'이번 주 가장 많이 화났던 원인은 <strong>직장(36%)</strong>이에요. 목요일에 강도와 횟수 모두 최고였고, 하루 평균 <strong>2.0번</strong> 기록했어요.',
+        tip:'💡 직장 스트레스가 반복되고 있어요. 퇴근 후 5분 호흡 루틴이 도움이 될 수 있어요.'
+      },
+      month: {
+        total:47, maxLv:5, dailyAvg:'1.6',
+        intensityLabels:['1주','2주','3주','4주'],
+        intensityValues:[3.2,2.8,3.8,2.1],
+        intensityTodayIdx:3,
+        countRaw: MONTH_DAILY,
+        countTodayIdx:29,
+        categories:[
+          {name:'직장',emoji:'💼',pct:40,color:'#E63946'},
+          {name:'사람', emoji:'🧑',pct:25,color:'#FF6B35'},
+          {name:'가족',emoji:'👨‍👩‍👧',pct:20,color:'#FF9A3C'},
+          {name:'운전',emoji:'🚗',pct:15,color:'#FFD93D'},
+        ],
+        summaryText:'이번 달 총 <strong>47번</strong> 분노를 기록했어요. 3주차에 강도와 횟수 모두 가장 높았고, 하루 평균 <strong>1.6번</strong> 기록했어요.',
+        tip:'💡 이번 달 분노 횟수가 지난달보다 12% 줄었어요. 잘 하고 있어요! 🎉'
+      },
+      all: {
+        total:183, maxLv:5, dailyAvg:'1.2',
+        intensityLabels:['1월','2월','3월','4월','5월','6월'],
+        intensityValues:[2.1,3.4,2.8,3.9,2.3,2.8],
+        intensityTodayIdx:5,
+        countRaw: ALL_DAILY,
+        countTodayIdx:179,
+        categories:[
+          {name:'직장',emoji:'💼',pct:38,color:'#E63946'},
+          {name:'사람', emoji:'🧑',pct:27,color:'#FF6B35'},
+          {name:'가족',emoji:'👨‍👩‍👧',pct:18,color:'#FF9A3C'},
+          {name:'운전',emoji:'🚗',pct:17,color:'#FFD93D'},
+        ],
+        summaryText:'지금까지 총 <strong>183번</strong> 분노를 기록했어요. 4월에 가장 많이 화났고, 직장 스트레스가 전체의 <strong>38%</strong>를 차지해요.',
+        tip:'💡 꾸준히 기록하고 있어요! 감정을 기록하는 것만으로도 분노 강도가 낮아진다는 연구 결과가 있어요.'
+      }
+    };
+
+    /* ── 데이터 압축: MAX_POINTS 초과 시 이동평균 병합 ── */
+    function compressData(raw, maxPoints) {
+      if (raw.length <= maxPoints) return { vals: raw, step: 1 };
+      const step = Math.ceil(raw.length / maxPoints);
+      const vals = [];
+      for (let i = 0; i < raw.length; i += step) {
+        const chunk = raw.slice(i, i + step);
+        vals.push(parseFloat((chunk.reduce((a,b)=>a+b,0)/chunk.length).toFixed(1)));
+      }
+      return { vals, step };
+    }
+
+    /* ── X축 레이블 생성 ── */
+    function makeCountLabels(period, raw, compressed, step) {
+      const n = compressed.length;
+      if (period === 'week') return ['월','화','수','목','금','토','일'];
+      if (period === 'month') {
+        // 30일 → 레이블은 5개만 표시 (1,7,14,21,28일)
+        const ticks = [1,7,14,21,28];
+        return ticks.map(d => `${d}일`);
+      }
+      // all: 압축된 포인트 기준 월 레이블
+      const months = ['1월','2월','3월','4월','5월','6월'];
+      const totalDays = raw.length;
+      const labels = [];
+      for (let i = 0; i < n; i++) {
+        const dayIdx = i * step;
+        const monthIdx = Math.floor(dayIdx / (totalDays / months.length));
+        labels.push(months[Math.min(monthIdx, months.length-1)]);
+      }
+      // 중복 제거해서 대표 레이블만
+      const shown = new Set();
+      return labels.map(l => {
+        if (!shown.has(l)) { shown.add(l); return l; }
+        return '';
+      });
+    }
+
+    function switchPeriod(period) {
+      ['week','month','all'].forEach(p =>
+        document.getElementById('tab-' + p).classList.toggle('active', p === period)
+      );
+      render(period);
+    }
+
+    function render(period) {
+      const d = DATA[period];
+
+      // 횟수 그래프 압축
+      const MAX_PTS = period === 'month' ? 30 : period === 'all' ? 60 : 7;
+      const { vals: countVals, step } = compressData(d.countRaw, MAX_PTS);
+      const countLabels = makeCountLabels(period, d.countRaw, countVals, step);
+      const subLabel = period === 'week' ? '7일' : period === 'month' ? '30일 (일별)' : `180일 (${step}일 평균)`;
+
+      document.getElementById('statsContent').innerHTML = `
+        <!-- 요약 수치 -->
+        <div class="stat-card">
+          <div class="stat-card-title">🔥 분노 요약</div>
+          <div class="summary-nums">
+            <div class="summary-num-item">
+              <div class="summary-num-emoji">📝</div>
+              <div class="summary-num-val"><span>${d.total}</span></div>
+              <div class="summary-num-label">총 기록</div>
+            </div>
+            <div class="summary-num-item">
+              <div class="summary-num-emoji">${rageEmoji(d.maxLv)}</div>
+              <div class="summary-num-val"><span>${d.maxLv}</span></div>
+              <div class="summary-num-label">최고 강도</div>
+            </div>
+            <div class="summary-num-item">
+              <div class="summary-num-emoji">📅</div>
+              <div class="summary-num-val"><span>${d.dailyAvg}</span></div>
+              <div class="summary-num-label">일평균 횟수</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 분노 강도 추이 -->
+        <div class="stat-card">
+          <div class="stat-card-title">📈 분노 강도 추이</div>
+          <div class="chart-wrap">${renderLineChart(d.intensityValues, d.intensityTodayIdx, true)}</div>
+          <div class="x-labels-flex">
+            ${d.intensityLabels.map((l,i)=>
+              `<span class="x-lbl ${i===d.intensityTodayIdx?'hl':''}">${l}</span>`
+            ).join('')}
+          </div>
+        </div>
+
+        <!-- 일일 발생 횟수 -->
+        <div class="stat-card">
+          <div class="stat-card-title">
+            🔢 일일 발생 횟수
+            <span class="stat-card-sub">${subLabel}</span>
+          </div>
+          <div class="chart-wrap">${renderCountLine(countVals, d.countTodayIdx, step, period)}</div>
+          <div class="x-labels-flex" id="countXLabels_${period}">
+            ${renderCountXLabels(countLabels, countVals.length, period)}
+          </div>
+        </div>
+
+        <!-- 카테고리 파이 차트 -->
+        <div class="stat-card">
+          <div class="stat-card-title">🗂️ 분노 원인</div>
+          <div class="pie-wrap">
+            <div class="pie-svg-wrap">${renderPieChart(d.categories)}</div>
+            <div class="pie-legend">
+              ${d.categories.map(c=>`
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:${c.color}"></div>
+                  <span class="legend-label">${c.emoji} ${c.name}</span>
+                  <span class="legend-pct">${c.pct}%</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- 요약 설명 -->
+        <div class="summary-card">
+          <div class="summary-title">📋 AI 분석 요약</div>
+          <div class="summary-text">${d.summaryText}</div>
+          <div class="summary-highlight">${d.tip}</div>
+        </div>
+
+        <!-- 진정 이동 버튼 -->
+        <button class="calm-btn" onclick="alert('🧘 진정 탭으로 이동!')">
+          🧘 지금 바로 진정하러 가기
+        </button>
+      `;
+    }
+
+    /* ── X축 레이블 렌더 (간격 조절) ── */
+    function renderCountXLabels(labels, n, period) {
+      // 표시할 레이블 인덱스 선택
+      let showIdxs = new Set();
+      if (period === 'week') {
+        for(let i=0;i<n;i++) showIdxs.add(i);
+      } else if (period === 'month') {
+        // 30개 중 5개만 (1,7,14,21,28일 → 인덱스 0,6,13,20,27)
+        [0,6,13,20,27].forEach(i=>{ if(i<n) showIdxs.add(i); });
+      } else {
+        // 전체: 월 경계만
+        labels.forEach((l,i)=>{ if(l) showIdxs.add(i); });
+      }
+
+      // flex 대신 절대 위치로 정확하게
+      const items = labels.map((l,i) => {
+        if (!showIdxs.has(i)) return '';
+        const pct = n <= 1 ? 0 : (i / (n-1)) * 100;
+        return `<span style="position:absolute;left:${pct}%;transform:translateX(-50%);color:#555;font-size:9px;white-space:nowrap">${l}</span>`;
+      }).join('');
+      return `<div style="position:relative;width:100%;height:14px;">${items}</div>`;
+    }
+
+    /* ── 라인 차트 (강도 추이) ── */
+    function renderLineChart(vals, todayIdx, isIntensity) {
+      const W=252, H=90;
+      const PAD={top:10,right:8,bottom:4,left:26};
+      const iW=W-PAD.left-PAD.right, iH=H-PAD.top-PAD.bottom;
+      const maxV=5, n=vals.length;
+      const xP=i=>PAD.left+(i/(n-1))*iW;
+      const yP=v=>PAD.top+iH-(v/maxV)*iH;
+
+      const fill=`M${xP(0)},${yP(vals[0])}`+vals.slice(1).map((v,i)=>`L${xP(i+1)},${yP(v)}`).join('')+` L${xP(n-1)},${H} L${xP(0)},${H} Z`;
+      const line=`M${xP(0)},${yP(vals[0])}`+vals.slice(1).map((v,i)=>`L${xP(i+1)},${yP(v)}`).join('');
+      const yTicks=[{v:1,e:'😒'},{v:2,e:'😤'},{v:3,e:'😠'},{v:4,e:'😡'},{v:5,e:'🤬'}];
+
+      return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#E63946" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#E63946" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+        ${yTicks.map(t=>`
+          <line x1="${PAD.left}" y1="${yP(t.v)}" x2="${W-PAD.right}" y2="${yP(t.v)}" stroke="#222" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="${PAD.left-4}" y="${yP(t.v)+4}" fill="#555" font-size="9" text-anchor="end">${t.e}</text>
+        `).join('')}
+        <path d="${fill}" fill="url(#lg1)"/>
+        <path d="${line}" fill="none" stroke="#E63946" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        ${vals.map((v,i)=>`
+          <circle cx="${xP(i)}" cy="${yP(v)}" r="${i===todayIdx?5:3.5}"
+            fill="${i===todayIdx?'#E63946':'#0D0D0D'}" stroke="#E63946" stroke-width="2"/>
+        `).join('')}
+      </svg>`;
+    }
+
+    /* ── 횟수 선 그래프 ── */
+    function renderCountLine(vals, rawTodayIdx, step, period) {
+      const W=252, H=80;
+      const PAD={top:8,right:8,bottom:4,left:26};
+      const iW=W-PAD.left-PAD.right, iH=H-PAD.top-PAD.bottom;
+      const maxV=Math.max(...vals,1);
+      const n=vals.length;
+
+      // todayIdx를 압축된 인덱스로 변환
+      const todayIdx = step > 1 ? Math.floor(rawTodayIdx / step) : rawTodayIdx;
+
+      const xP=i=>PAD.left+(n===1?iW/2:(i/(n-1))*iW);
+      const yP=v=>PAD.top+iH-(v/maxV)*iH;
+
+      const fill=`M${xP(0)},${yP(vals[0])}`+vals.slice(1).map((v,i)=>`L${xP(i+1)},${yP(v)}`).join('')+` L${xP(n-1)},${H} L${xP(0)},${H} Z`;
+      const line=`M${xP(0)},${yP(vals[0])}`+vals.slice(1).map((v,i)=>`L${xP(i+1)},${yP(v)}`).join('');
+
+      // Y축 눈금 (0, 중간, 최대)
+      const mid = parseFloat((maxV/2).toFixed(1));
+      const yTicks = [0, mid, maxV];
+
+      // 포인트: 데이터가 많으면 생략, 적으면 표시
+      const showDots = n <= 30;
+
+      return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+        ${yTicks.map(t=>{
+          const y=yP(t);
+          return `
+            <line x1="${PAD.left}" y1="${y}" x2="${W-PAD.right}" y2="${y}" stroke="#222" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="${PAD.left-4}" y="${y+4}" fill="#555" font-size="9" text-anchor="end">${t}</text>`;
+        }).join('')}
+        <path d="${fill}" fill="url(#lg2)"/>
+        <path d="${line}" fill="none" stroke="#FF6B35" stroke-width="${n>30?1.2:1.8}" stroke-linejoin="round" stroke-linecap="round"/>
+        ${showDots ? vals.map((v,i)=>`
+          <circle cx="${xP(i)}" cy="${yP(v)}" r="${i===todayIdx?5:2.5}"
+            fill="${i===todayIdx?'#FF6B35':'#0D0D0D'}" stroke="#FF6B35" stroke-width="${i===todayIdx?2:1.5}"/>
+        `).join('') : `
+          <circle cx="${xP(todayIdx)}" cy="${yP(vals[todayIdx])}" r="5"
+            fill="#FF6B35" stroke="#FF9A3C" stroke-width="2"/>
+        `}
+      </svg>`;
+    }
+
+    /* ── 파이 차트 ── */
+    function renderPieChart(categories) {
+      const R=52,cx=60,cy=60,size=120,innerR=28;
+      let a=-Math.PI/2;
+      const slices=categories.map(c=>{
+        const ang=(c.pct/100)*2*Math.PI, ea=a+ang;
+        const x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a);
+        const x2=cx+R*Math.cos(ea),y2=cy+R*Math.sin(ea);
+        const la=ang>Math.PI?1:0;
+        const ix1=cx+innerR*Math.cos(a),iy1=cy+innerR*Math.sin(a);
+        const ix2=cx+innerR*Math.cos(ea),iy2=cy+innerR*Math.sin(ea);
+        const path=`M${ix1},${iy1} L${x1},${y1} A${R},${R} 0 ${la},1 ${x2},${y2} L${ix2},${iy2} A${innerR},${innerR} 0 ${la},0 ${ix1},${iy1} Z`;
+        a=ea; return {...c,path};
+      });
+      return `<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        ${slices.map(s=>`<path d="${s.path}" fill="${s.color}" opacity="0.9"/>`).join('')}
+        <circle cx="${cx}" cy="${cy}" r="${innerR-2}" fill="#161616"/>
+        <text x="${cx}" y="${cy-5}" text-anchor="middle" fill="#F0F0F0" font-size="11" font-weight="800">${categories[0].pct}%</text>
+        <text x="${cx}" y="${cy+9}" text-anchor="middle" fill="#888" font-size="8">${categories[0].name}</text>
+      </svg>`;
+    }
+
+    render('week');
+  </script>
+</body>
+</html>

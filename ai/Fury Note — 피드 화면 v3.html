@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fury Note — 피드 v3</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a1a;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      padding: 40px 20px; gap: 16px;
+    }
+    .preview-label { color: #888; font-size: 12px; letter-spacing: 0.5px; }
+
+    .phone {
+      width: 320px; height: 680px;
+      background: #0D0D0D;
+      border-radius: 40px; border: 2px solid #2A2A2A;
+      overflow: hidden; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      display: flex; flex-direction: column;
+    }
+
+    .status-bar {
+      height: 32px; background: #111111;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; flex-shrink: 0;
+    }
+    .status-bar .time { color: #F0F0F0; font-size: 11px; font-weight: 600; }
+    .status-bar .icons { color: #F0F0F0; font-size: 10px; display: flex; gap: 5px; }
+
+    .app-header {
+      height: 52px; background: #111111;
+      border-bottom: 1px solid #2A2A2A;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 18px; flex-shrink: 0;
+    }
+    .app-title { display: flex; align-items: center; gap: 6px; }
+    .app-title-text { color: #F0F0F0; font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .app-title-text span { color: #E63946; }
+    .hamburger-btn {
+      width: 36px; height: 36px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 5px; cursor: pointer;
+    }
+    .hamburger-btn .bar { width: 20px; height: 2px; background: #F0F0F0; border-radius: 2px; }
+
+    /* 피드 콘텐츠 */
+    .feed-content {
+      flex: 1; overflow-y: auto; background: #0D0D0D;
+      padding: 12px 14px 90px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .feed-content::-webkit-scrollbar { display: none; }
+
+    /* 피드 카드 */
+    .feed-card {
+      background: #161616;
+      border: 1px solid #2A2A2A;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .feed-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--rage-color, #E63946);
+      border-radius: 3px 0 0 3px;
+    }
+
+    /* 카드 본문 */
+    .card-body {
+      padding: 14px 16px 12px 18px;
+      display: flex; flex-direction: column; gap: 8px;
+      cursor: pointer;
+    }
+
+    /* 카드 상단: 닉네임 + 카테고리 */
+    .card-top {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: color-mix(in srgb, var(--rage-color) 20%, #1E1E1E);
+      border: 1px solid color-mix(in srgb, var(--rage-color) 35%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .card-nick-name {
+      color: #F0F0F0; font-size: 12px; font-weight: 700;
+      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-cat {
+      background: rgba(255,255,255,0.06);
+      border-radius: 20px; padding: 2px 8px;
+      color: #888; font-size: 10px; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* 카드 텍스트 */
+    .card-text {
+      color: #CCCCCC; font-size: 13px; line-height: 1.7;
+      padding-left: 36px;
+    }
+
+    /* 카드 하단 */
+    .card-footer {
+      display: flex; align-items: center;
+      padding: 10px 16px 12px 18px;
+      border-top: 1px solid #1E1E1E;
+      gap: 12px; justify-content: flex-end;
+    }
+    .card-actions { display: flex; align-items: center; gap: 12px; }
+    .action-btn {
+      display: flex; align-items: center; gap: 4px;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; padding: 0; transition: all 0.15s;
+    }
+    .action-icon { font-size: 16px; line-height: 1; transition: transform 0.15s; }
+    .action-count { color: #666; font-size: 12px; font-weight: 600; }
+    .heart-btn.liked .action-count { color: #E63946; }
+    .heart-btn:hover .action-icon { transform: scale(1.2); }
+
+    /* ── 댓글 패널 ── */
+    .comment-panel-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0);
+      z-index: 20; pointer-events: none;
+      transition: background 0.3s;
+    }
+    .comment-panel-overlay.open { background: rgba(0,0,0,0.55); pointer-events: all; }
+
+    .comment-panel {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 78%;
+      background: #161616;
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid #2A2A2A;
+      z-index: 21;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .comment-panel.open { transform: translateY(0); }
+
+    .panel-handle {
+      display: flex; align-items: center; justify-content: center;
+      padding: 10px 0 6px; flex-shrink: 0;
+    }
+    .panel-handle-bar { width: 36px; height: 4px; background: #2A2A2A; border-radius: 2px; }
+
+    .panel-header {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 16px 12px; flex-shrink: 0;
+      position: relative; border-bottom: 1px solid #1E1E1E;
+    }
+    .panel-title { color: #F0F0F0; font-size: 14px; font-weight: 700; }
+    .panel-close {
+      position: absolute; right: 16px;
+      background: none; border: none; cursor: pointer;
+      color: #666; font-size: 20px; line-height: 1;
+      font-family: inherit; padding: 0; transition: color 0.15s;
+    }
+    .panel-close:hover { color: #CCC; }
+
+    .panel-scroll {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .panel-scroll::-webkit-scrollbar { display: none; }
+
+    /* 원글 */
+    .panel-original {
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid #2A2A2A;
+      display: flex; gap: 12px; align-items: flex-start;
+      flex-shrink: 0;
+    }
+    .panel-original-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #2A2A2A;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .panel-original-body { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .panel-original-nick { color: #F0F0F0; font-size: 13px; font-weight: 700; }
+    .panel-original-text { color: #CCCCCC; font-size: 13px; line-height: 1.7; }
+    .panel-original-footer { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+    .orig-heart-btn {
+      display: flex; align-items: center; gap: 4px;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; padding: 0; transition: all 0.15s;
+    }
+    .orig-heart-icon { font-size: 18px; line-height: 1; transition: transform 0.15s; }
+    .orig-heart-btn:hover .orig-heart-icon { transform: scale(1.2); }
+    .orig-heart-count { color: #666; font-size: 12px; font-weight: 600; }
+    .orig-heart-btn.liked .orig-heart-count { color: #E63946; }
+
+    .comments-section-label {
+      padding: 12px 16px 4px;
+      color: #555; font-size: 11px; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .comment-list {
+      flex: 1; padding: 4px 16px 12px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .comment-item { display: flex; gap: 10px; align-items: flex-start; }
+    .comment-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #2A2A2A;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .comment-body { flex: 1; }
+    .comment-nick { color: #F0F0F0; font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+    .comment-text { color: #CCCCCC; font-size: 12px; line-height: 1.6; }
+    .comment-actions { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
+    .comment-like-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; padding: 0;
+      display: flex; align-items: center; gap: 3px; transition: all 0.15s;
+    }
+    .comment-like-icon { font-size: 12px; color: #555; }
+    .comment-like-btn.liked .comment-like-icon { color: #E63946; }
+    .comment-like-count { color: #555; font-size: 10px; }
+    .comment-like-btn.liked .comment-like-count { color: #E63946; }
+
+    .comment-input-area {
+      flex-shrink: 0;
+      border-top: 1px solid #1E1E1E;
+      padding: 10px 14px 14px;
+      display: flex; align-items: center; gap: 10px;
+      background: #161616;
+    }
+    .input-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #2A2A2A;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .comment-input-wrap {
+      flex: 1; display: flex; align-items: center;
+      background: #1E1E1E; border: 1px solid #2A2A2A;
+      border-radius: 22px; padding: 8px 14px; gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .comment-input-wrap:focus-within { border-color: #E63946; }
+    .comment-input {
+      flex: 1; background: none; border: none; outline: none;
+      color: #F0F0F0; font-size: 13px; font-family: inherit;
+    }
+    .comment-input::placeholder { color: #444; }
+    .comment-send-btn {
+      background: none; border: none; cursor: pointer;
+      color: #555; font-size: 13px; font-weight: 700;
+      font-family: inherit; padding: 0; transition: color 0.15s; white-space: nowrap;
+    }
+    .comment-send-btn.active { color: #E63946; }
+
+    /* 바텀 네비 */
+    .bottom-nav {
+      height: 72px; background: #111111;
+      border-top: 1px solid #2A2A2A;
+      display: flex; align-items: flex-end; padding-bottom: 10px;
+      flex-shrink: 0; z-index: 10;
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      gap: 3px; padding-bottom: 2px; cursor: pointer;
+    }
+    .tab-icon { font-size: 18px; line-height: 1; }
+    .tab-label { font-size: 8px; color: #555; white-space: nowrap; }
+    .tab-item.active .tab-label { color: #E63946; }
+    .tab-item.fab-tab { position: relative; flex: 1; }
+    .fab-button {
+      width: 48px; height: 48px;
+      background: linear-gradient(145deg, #E63946, #9B1D20);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+      box-shadow: 0 -4px 16px rgba(230,57,70,0.5), 0 4px 12px rgba(0,0,0,0.4);
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      border: 3px solid #111111; cursor: pointer;
+    }
+    .fab-label {
+      font-size: 8px; color: #E63946; font-weight: 700;
+      position: absolute; bottom: 3px; left: 50%;
+      transform: translateX(-50%); white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <p class="preview-label">FURY NOTE — 피드 화면 v3</p>
+
+  <div class="phone" id="phone">
+
+    <div class="status-bar">
+      <span class="time">5:09</span>
+      <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+    </div>
+
+    <div class="app-header">
+      <div class="app-title">
+        <span style="font-size:18px">🔥</span>
+        <span class="app-title-text">Fury <span>Note</span></span>
+      </div>
+      <div class="hamburger-btn">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+    </div>
+
+    <div class="feed-content">
+
+      <div class="feed-card" style="--rage-color:#E63946">
+        <div class="card-body" onclick="openComments(0)">
+          <div class="card-top">
+            <div class="card-avatar">😡</div>
+            <span class="card-nick-name">씩씩대는 고양이 #2941</span>
+            <span class="card-cat">💼 직장</span>
+          </div>
+          <div class="card-text">팀장이 내 의견을 또 무시했다. 회의에서 내가 먼저 말했는데 다른 사람이 같은 말 하니까 그제야 좋다고 함. 진짜 매번 이런 식이야.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-actions">
+            <button class="action-btn heart-btn" id="feedHeart0" onclick="toggleFeedLike(0, event)">
+              <span class="action-icon">🤍</span>
+              <span class="action-count" id="feedLikeCount0">24</span>
+            </button>
+            <button class="action-btn comment-btn" onclick="openComments(0)">
+              <span class="action-icon">💬</span>
+              <span class="action-count" id="feedCommentCount0">8</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-card" style="--rage-color:#9B1D20">
+        <div class="card-body" onclick="openComments(1)">
+          <div class="card-top">
+            <div class="card-avatar">🤬</div>
+            <span class="card-nick-name">폭발한 황소 #0183</span>
+            <span class="card-cat">🧑 사람</span>
+          </div>
+          <div class="card-text">지하철에서 큰 소리로 통화하는 사람 옆에 30분 내내 앉아있었음. 이어폰도 없고 진짜 미칠 것 같았다.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-actions">
+            <button class="action-btn heart-btn liked" id="feedHeart1" onclick="toggleFeedLike(1, event)">
+              <span class="action-icon">❤️</span>
+              <span class="action-count" id="feedLikeCount1">61</span>
+            </button>
+            <button class="action-btn comment-btn" onclick="openComments(1)">
+              <span class="action-icon">💬</span>
+              <span class="action-count" id="feedCommentCount1">3</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-card" style="--rage-color:#FF6B35">
+        <div class="card-body" onclick="openComments(2)">
+          <div class="card-top">
+            <div class="card-avatar">😠</div>
+            <span class="card-nick-name">날카로운 독수리 #7752</span>
+            <span class="card-cat">🚗 운전</span>
+          </div>
+          <div class="card-text">주차장에서 내 자리에 다른 차가 떡하니 주차해놨음. 관리실에 연락했더니 "잠깐 있다 빼준대요"라고만 함. 잠깐이 40분이었다.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-actions">
+            <button class="action-btn heart-btn" id="feedHeart2" onclick="toggleFeedLike(2, event)">
+              <span class="action-icon">🤍</span>
+              <span class="action-count" id="feedLikeCount2">37</span>
+            </button>
+            <button class="action-btn comment-btn" onclick="openComments(2)">
+              <span class="action-icon">💬</span>
+              <span class="action-count" id="feedCommentCount2">12</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-card" style="--rage-color:#FF9A3C">
+        <div class="card-body" onclick="openComments(3)">
+          <div class="card-top">
+            <div class="card-avatar">😤</div>
+            <span class="card-nick-name">화난 여우 #3310</span>
+            <span class="card-cat">👨‍👩‍👧 가족</span>
+          </div>
+          <div class="card-text">엄마가 또 친척들한테 내 얘기 했다. 몇 번을 말해도 안 바뀜. 그냥 체념했다.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-actions">
+            <button class="action-btn heart-btn" id="feedHeart3" onclick="toggleFeedLike(3, event)">
+              <span class="action-icon">🤍</span>
+              <span class="action-count" id="feedLikeCount3">19</span>
+            </button>
+            <button class="action-btn comment-btn" onclick="openComments(3)">
+              <span class="action-icon">💬</span>
+              <span class="action-count" id="feedCommentCount3">5</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-card" style="--rage-color:#FFD93D">
+        <div class="card-body" onclick="openComments(4)">
+          <div class="card-top">
+            <div class="card-avatar">😒</div>
+            <span class="card-nick-name">으르렁대는 늑대 #5509</span>
+            <span class="card-cat">🧑 사람</span>
+          </div>
+          <div class="card-text">카페에서 줄 서고 있는데 앞에 사람이 갑자기 친구 불러서 같이 주문함. 뭐라 하기도 애매해서 그냥 있었는데 기분이 찝찝함.</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-actions">
+            <button class="action-btn heart-btn" id="feedHeart4" onclick="toggleFeedLike(4, event)">
+              <span class="action-icon">🤍</span>
+              <span class="action-count" id="feedLikeCount4">9</span>
+            </button>
+            <button class="action-btn comment-btn" onclick="openComments(4)">
+              <span class="action-icon">💬</span>
+              <span class="action-count" id="feedCommentCount4">2</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 바텀 네비 -->
+    <div class="bottom-nav">
+      <div class="tab-item fab-tab">
+        <div class="fab-button">🔥</div>
+        <span class="fab-label">기록</span>
+      </div>
+      <div class="tab-item active">
+        <span class="tab-icon">📮</span>
+        <span class="tab-label">피드</span>
+      </div>
+      <div class="tab-item">
+        <span class="tab-icon">📊</span>
+        <span class="tab-label">통계</span>
+      </div>
+      <div class="tab-item">
+        <span class="tab-icon">🧘</span>
+        <span class="tab-label">진정</span>
+      </div>
+    </div>
+
+    <!-- 댓글 패널 -->
+    <div class="comment-panel-overlay" id="commentOverlay" onclick="closeComments()"></div>
+    <div class="comment-panel" id="commentPanel">
+
+      <div class="panel-handle"><div class="panel-handle-bar"></div></div>
+      <div class="panel-header">
+        <span class="panel-title">댓글</span>
+        <button class="panel-close" onclick="closeComments()">✕</button>
+      </div>
+
+      <div class="panel-scroll" id="panelScroll">
+        <div class="panel-original" id="panelOriginal"></div>
+        <div class="comments-section-label">댓글</div>
+        <div class="comment-list" id="commentList"></div>
+      </div>
+
+      <div class="comment-input-area">
+        <div class="input-avatar">🔥</div>
+        <div class="comment-input-wrap">
+          <input class="comment-input" id="commentInput"
+            type="text" placeholder="댓글 달기..."
+            oninput="onCommentInput()" onkeydown="onCommentKeydown(event)" />
+          <button class="comment-send-btn" id="commentSendBtn" onclick="sendComment()">게시</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const CARDS = [
+      {
+        emoji: '😡', color: '#E63946', cat: '💼 직장',
+        nick: '씩씩대는 고양이 #2941',
+        text: '팀장이 내 의견을 또 무시했다. 회의에서 내가 먼저 말했는데 다른 사람이 같은 말 하니까 그제야 좋다고 함. 진짜 매번 이런 식이야.',
+        likes: 24, liked: false,
+        comments: [
+          { nick: '뿔난 곰 #1122', text: '진짜 너무 공감돼요... 저도 그런 팀장 있었는데 ㅠ', liked: false, likes: 0 },
+          { nick: '화난 호랑이 #4827', text: '그게 제일 열받는 패턴이죠. 같은 말인데 누가 하느냐에 따라 달라지는 거', liked: false, likes: 0 },
+          { nick: '날카로운 독수리 #7752', text: '기록해두세요. 나중에 증거 됩니다.', liked: false, likes: 0 },
+          { nick: '으르렁대는 사자 #0091', text: '저도 비슷한 상황 겪었어요. 진짜 답없음', liked: false, likes: 0 },
+        ]
+      },
+      {
+        emoji: '🤬', color: '#9B1D20', cat: '🧑 사람',
+        nick: '폭발한 황소 #0183',
+        text: '지하철에서 큰 소리로 통화하는 사람 옆에 30분 내내 앉아있었음. 이어폰도 없고 진짜 미칠 것 같았다.',
+        likes: 61, liked: true,
+        comments: [
+          { nick: '씩씩대는 고양이 #2941', text: '저도 오늘 당했어요 ㅋㅋㅋ 왜 그러는 걸까요', liked: false, likes: 0 },
+          { nick: '부글부글 멧돼지 #3388', text: '이어폰 끼고 있어도 들릴 정도면 진짜 심각한 거', liked: false, likes: 0 },
+        ]
+      },
+      {
+        emoji: '😠', color: '#FF6B35', cat: '🚗 운전',
+        nick: '날카로운 독수리 #7752',
+        text: '주차장에서 내 자리에 다른 차가 떡하니 주차해놨음. 관리실에 연락했더니 "잠깐 있다 빼준대요"라고만 함. 잠깐이 40분이었다.',
+        likes: 37, liked: false,
+        comments: [
+          { nick: '화난 여우 #3310', text: '40분이요?? 그건 진짜 너무하다', liked: false, likes: 0 },
+          { nick: '폭발한 황소 #0183', text: '관리실도 같이 욕먹어야 함', liked: false, likes: 0 },
+          { nick: '뿔난 곰 #1122', text: '저도 비슷한 거 당해봤는데 진짜 열받죠', liked: false, likes: 0 },
+        ]
+      },
+      {
+        emoji: '😤', color: '#FF9A3C', cat: '👨‍👩‍👧 가족',
+        nick: '화난 여우 #3310',
+        text: '엄마가 또 친척들한테 내 얘기 했다. 몇 번을 말해도 안 바뀜. 그냥 체념했다.',
+        likes: 19, liked: false,
+        comments: [
+          { nick: '으르렁대는 늑대 #5509', text: '체념이 답이긴 한데... 그래도 속상하죠', liked: false, likes: 0 },
+          { nick: '씩씩대는 고양이 #2941', text: '공감 100%... 우리 엄마도 그래요', liked: false, likes: 0 },
+        ]
+      },
+      {
+        emoji: '😒', color: '#FFD93D', cat: '🧑 사람',
+        nick: '으르렁대는 늑대 #5509',
+        text: '카페에서 줄 서고 있는데 앞에 사람이 갑자기 친구 불러서 같이 주문함. 뭐라 하기도 애매해서 그냥 있었는데 기분이 찝찝함.',
+        likes: 9, liked: false,
+        comments: [
+          { nick: '화난 호랑이 #4827', text: '그 애매한 느낌 진짜 공감... 말하기도 뭐하고', liked: false, likes: 0 },
+        ]
+      },
+    ];
+
+    const AVATARS = ['🐯','🦊','🐻','🦅','🐺','🦁','🐊','🦏'];
+    let currentCard = null;
+
+    function toggleFeedLike(idx, e) {
+      e.stopPropagation();
+      const card = CARDS[idx];
+      card.liked = !card.liked;
+      card.likes += card.liked ? 1 : -1;
+      const btn = document.getElementById('feedHeart' + idx);
+      btn.classList.toggle('liked', card.liked);
+      btn.querySelector('.action-icon').textContent = card.liked ? '❤️' : '🤍';
+      document.getElementById('feedLikeCount' + idx).textContent = card.likes;
+      if (card.liked) {
+        const icon = btn.querySelector('.action-icon');
+        icon.style.transform = 'scale(1.4)';
+        setTimeout(() => icon.style.transform = 'scale(1)', 200);
+      }
+      if (currentCard === idx) renderOriginal(idx);
+    }
+
+    function openComments(idx) {
+      currentCard = idx;
+      renderOriginal(idx);
+      renderComments(idx);
+      document.getElementById('commentOverlay').classList.add('open');
+      document.getElementById('commentPanel').classList.add('open');
+      document.getElementById('panelScroll').scrollTop = 0;
+    }
+
+    function renderOriginal(idx) {
+      const card = CARDS[idx];
+      document.getElementById('panelOriginal').innerHTML = `
+        <div class="panel-original-avatar">${card.emoji}</div>
+        <div class="panel-original-body">
+          <div class="panel-original-nick">${card.nick}</div>
+          <div class="panel-original-text">${card.text}</div>
+          <div class="panel-original-footer">
+            <button class="orig-heart-btn ${card.liked ? 'liked' : ''}" onclick="toggleOrigLike(${idx})">
+              <span class="orig-heart-icon">${card.liked ? '❤️' : '🤍'}</span>
+              <span class="orig-heart-count">${card.likes}</span>
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function toggleOrigLike(idx) {
+      const card = CARDS[idx];
+      card.liked = !card.liked;
+      card.likes += card.liked ? 1 : -1;
+      const feedBtn = document.getElementById('feedHeart' + idx);
+      feedBtn.classList.toggle('liked', card.liked);
+      feedBtn.querySelector('.action-icon').textContent = card.liked ? '❤️' : '🤍';
+      document.getElementById('feedLikeCount' + idx).textContent = card.likes;
+      renderOriginal(idx);
+    }
+
+    function renderComments(idx) {
+      const card = CARDS[idx];
+      const list = document.getElementById('commentList');
+      if (card.comments.length === 0) {
+        list.innerHTML = `<div style="color:#444;font-size:12px;text-align:center;padding:20px 0">첫 번째 댓글을 남겨보세요</div>`;
+        return;
+      }
+      list.innerHTML = card.comments.map((c, ci) => `
+        <div class="comment-item">
+          <div class="comment-avatar">${AVATARS[ci % AVATARS.length]}</div>
+          <div class="comment-body">
+            <div class="comment-nick">${c.nick}</div>
+            <div class="comment-text">${c.text}</div>
+            <div class="comment-actions">
+              <button class="comment-like-btn ${c.liked ? 'liked' : ''}" onclick="toggleCommentLike(${idx}, ${ci})">
+                <span class="comment-like-icon">${c.liked ? '❤️' : '🤍'}</span>
+                <span class="comment-like-count">${c.likes}</span>
+              </button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function toggleCommentLike(cardIdx, commentIdx) {
+      const c = CARDS[cardIdx].comments[commentIdx];
+      c.liked = !c.liked;
+      c.likes += c.liked ? 1 : -1;
+      renderComments(cardIdx);
+    }
+
+    function closeComments() {
+      document.getElementById('commentOverlay').classList.remove('open');
+      document.getElementById('commentPanel').classList.remove('open');
+      document.getElementById('commentInput').value = '';
+      document.getElementById('commentSendBtn').classList.remove('active');
+    }
+
+    function onCommentInput() {
+      const val = document.getElementById('commentInput').value.trim();
+      document.getElementById('commentSendBtn').classList.toggle('active', val.length > 0);
+    }
+    function onCommentKeydown(e) { if (e.key === 'Enter') sendComment(); }
+    function sendComment() {
+      const input = document.getElementById('commentInput');
+      const val = input.value.trim();
+      if (!val || currentCard === null) return;
+      CARDS[currentCard].comments.push({ nick: '화난 호랑이 #4827', text: val, liked: false, likes: 0 });
+      const countEl = document.getElementById('feedCommentCount' + currentCard);
+      countEl.textContent = parseInt(countEl.textContent) + 1;
+      input.value = '';
+      document.getElementById('commentSendBtn').classList.remove('active');
+      renderComments(currentCard);
+      setTimeout(() => {
+        document.getElementById('panelScroll').scrollTop = document.getElementById('panelScroll').scrollHeight;
+      }, 50);
+    }
+  </script>
+
+</body>
+</html>
