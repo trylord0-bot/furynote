@@ -17,8 +17,10 @@ class FeedScreen extends StatelessWidget {
         '옆 차선 차가 갑자기 끼어들었는데 사과도 없이 가버림.',
         12,
         3,
+        47,
+        12,
       ),
-      ('😤', '부글부글 곰 #1234', '💼 ${l10n.work}', '회의가 또 퇴근 직전에 잡혔다.', 8, 1),
+      ('😤', '부글부글 곰 #1234', '💼 ${l10n.work}', '회의가 또 퇴근 직전에 잡혔다.', 8, 1, 23, 5),
     ];
 
     return ListView(
@@ -37,6 +39,8 @@ class FeedScreen extends StatelessWidget {
             nickname: post.$2,
             category: post.$3,
             text: post.$4,
+            angerRecordCount: post.$7,
+            postCount: post.$8,
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 18),

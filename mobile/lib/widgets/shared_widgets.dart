@@ -7,6 +7,8 @@ class FuryPostCard extends StatelessWidget {
     required this.nickname,
     required this.category,
     required this.text,
+    this.angerRecordCount,
+    this.postCount,
     super.key,
   });
 
@@ -14,6 +16,8 @@ class FuryPostCard extends StatelessWidget {
   final String nickname;
   final String category;
   final String text;
+  final int? angerRecordCount;
+  final int? postCount;
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +65,41 @@ class FuryPostCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              category,
-              style: const TextStyle(color: FuryColors.muted, fontSize: 10),
-            ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  category,
+                  style: const TextStyle(color: FuryColors.muted, fontSize: 10),
+                ),
+              ),
+              const Spacer(),
+              if (angerRecordCount != null)
+                Text(
+                  '🔥 $angerRecordCount',
+                  style: const TextStyle(
+                    color: FuryColors.faint,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              if (angerRecordCount != null && postCount != null)
+                const SizedBox(width: 8),
+              if (postCount != null)
+                Text(
+                  '📮 $postCount',
+                  style: const TextStyle(
+                    color: FuryColors.faint,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+            ],
           ),
         ],
       ),
