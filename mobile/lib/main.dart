@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fury_note/screens/calm_screen.dart';
 import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
+import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
 
 void main() {
@@ -554,6 +555,14 @@ class FuryDrawer extends StatelessWidget {
             icon: Icons.settings_outlined,
             title: l10n.settings,
             subtitle: '닉네임 변경 · 알림 설정',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const SettingsScreen(),
+                ),
+              );
+            },
           ),
           FuryDrawerTile(
             icon: Icons.menu_book_outlined,
@@ -584,16 +593,19 @@ class FuryDrawerTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.subtitle,
+    this.onTap,
     super.key,
   });
 
   final IconData icon;
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       leading: Container(
         width: 36,
