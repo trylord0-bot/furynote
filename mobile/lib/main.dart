@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fury_note/screens/calm_screen.dart';
@@ -239,45 +241,47 @@ class _FuryShellState extends State<FuryShell> {
   static const int _feedIndex = 1;
 
   int _index = _feedIndex;
+  String? _toastMessage;
+  bool _toastVisible = false;
+  Timer? _toastTimer;
+  int _toastVersion = 0;
 
-  void _openFeed({bool showPostedToast = false}) {
-    setState(() => _index = _feedIndex);
+  @override
+  void dispose() {
+    _toastTimer?.cancel();
+    super.dispose();
+  }
 
-    if (showPostedToast) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) {
+  void _openFeed({String? toastMessage}) {
+    _toastTimer?.cancel();
+    final nextToastVersion = _toastVersion + 1;
+
+    setState(() {
+      _index = _feedIndex;
+      _toastVersion = nextToastVersion;
+      _toastMessage = toastMessage;
+      _toastVisible = toastMessage != null;
+    });
+
+    if (toastMessage == null) {
+      return;
+    }
+
+    _toastTimer = Timer(const Duration(seconds: 2), () {
+      if (!mounted || _toastVersion != nextToastVersion) {
+        return;
+      }
+
+      setState(() => _toastVisible = false);
+
+      Future<void>.delayed(const Duration(milliseconds: 220), () {
+        if (!mounted || _toastVersion != nextToastVersion || _toastVisible) {
           return;
         }
 
-        final l10n = AppLocalizations.of(context);
-        final height = MediaQuery.sizeOf(context).height;
-        final bottomMargin = height > 160 ? height - 128 : 24.0;
-
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(
-            SnackBar(
-              content: Text(
-                l10n.feedPostedToast,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.w800),
-              ),
-              behavior: SnackBarBehavior.floating,
-              margin: EdgeInsets.only(
-                left: 16,
-                right: 16,
-                bottom: bottomMargin,
-              ),
-              backgroundColor: FuryColors.panelAlt,
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: FuryColors.red),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              duration: const Duration(seconds: 2),
-            ),
-          );
+        setState(() => _toastMessage = null);
       });
-    }
+    });
   }
 
   @override
@@ -292,8 +296,8 @@ class _FuryShellState extends State<FuryShell> {
     final headerTitle = headerTitles[_index];
     final screens = [
       RecordScreen(
-        onPost: () => _openFeed(showPostedToast: true),
-        onSaveOnly: _openFeed,
+        onPost: () => _openFeed(toastMessage: l10n.recordPostedToast),
+        onSaveOnly: () => _openFeed(toastMessage: l10n.recordSavedToast),
         noteRepository: widget.noteRepository,
         reminderScheduler: widget.reminderScheduler,
         voiceRecorder: widget.voiceRecorder,
@@ -320,11 +324,99 @@ class _FuryShellState extends State<FuryShell> {
         surfaceTintColor: Colors.transparent,
         child: FuryDrawer(),
       ),
-      body: screens[_index],
+      body: Stack(
+        children: [
+          Positioned.fill(child: screens[_index]),
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 12,
+            child: FuryBottomToast(
+              message: _toastMessage,
+              visible: _toastVisible,
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: FuryBottomNav(
         selectedIndex: _index,
-        onSelected: (value) => setState(() => _index = value),
+        onSelected: (value) {
+          _toastTimer?.cancel();
+          setState(() {
+            _index = value;
+            _toastVersion += 1;
+            _toastMessage = null;
+            _toastVisible = false;
+          });
+        },
         labels: [l10n.record, l10n.feed, l10n.stats, l10n.calm],
+      ),
+    );
+  }
+}
+
+class FuryBottomToast extends StatelessWidget {
+  const FuryBottomToast({
+    required this.message,
+    required this.visible,
+    super.key,
+  });
+
+  final String? message;
+  final bool visible;
+
+  @override
+  Widget build(BuildContext context) {
+    final shown = visible && message != null;
+
+    return IgnorePointer(
+      child: AnimatedSlide(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
+        offset: shown ? Offset.zero : const Offset(0, 0.16),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 140),
+          curve: Curves.easeOutCubic,
+          opacity: shown ? 1 : 0,
+          child: message == null
+              ? const SizedBox.shrink()
+              : Container(
+                  key: const ValueKey('bottom-action-toast'),
+                  constraints: const BoxConstraints(minHeight: 44),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 11,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF242020),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: FuryColors.red.withValues(alpha: 0.7),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.38),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
+                      ),
+                      BoxShadow(
+                        color: FuryColors.red.withValues(alpha: 0.18),
+                        blurRadius: 22,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    message!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: FuryColors.text,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+        ),
       ),
     );
   }

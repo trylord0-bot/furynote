@@ -437,38 +437,40 @@ void main() {
     expect(find.text('➕ 육아'), findsOneWidget);
   });
 
-  testWidgets(
-    'record post actions return to feed and posting shows top toast',
-    (WidgetTester tester) async {
-      final repository = _FakeRageNoteRepository();
+  testWidgets('record post actions return to feed and show toast above tabs', (
+    WidgetTester tester,
+  ) async {
+    final repository = _FakeRageNoteRepository();
 
-      await tester.pumpWidget(
-        FuryNoteApp(
-          initialLocale: const Locale('ko'),
-          noteRepository: repository,
-        ),
-      );
-      await tester.pumpAndSettle();
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+      ),
+    );
+    await tester.pumpAndSettle();
 
-      await _openRecordTab(tester, label: '기록');
-      await _advanceRecordToPostStep(tester);
-      await tester.tap(find.text('그냥 저장만 할게요'));
-      await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
+    await _advanceRecordToPostStep(tester);
+    await tester.tap(find.text('그냥 저장만 할게요'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 120));
 
-      expect(find.text('피드'), findsWidgets);
+    expect(find.text('피드'), findsWidgets);
+    expect(find.text('기록됐어요'), findsOneWidget);
+    _expectToastAboveTabs(tester, '기록됐어요');
 
-      await tester.tap(find.text('기록'));
-      await tester.pumpAndSettle();
-      await _advanceRecordToPostStep(tester);
-      await tester.tap(find.text('포스팅하기'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 120));
+    await tester.tap(find.text('기록'));
+    await tester.pumpAndSettle();
+    await _advanceRecordToPostStep(tester);
+    await tester.tap(find.text('포스팅하기'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 120));
 
-      expect(find.text('피드'), findsWidgets);
-      expect(find.text('피드에 전송했어요'), findsOneWidget);
-      expect(tester.getTopLeft(find.text('피드에 전송했어요')).dy, lessThan(180));
-    },
-  );
+    expect(find.text('피드'), findsWidgets);
+    expect(find.text('포스팅했어요'), findsOneWidget);
+    _expectToastAboveTabs(tester, '포스팅했어요');
+  });
 
   testWidgets('stats calendar and selected list render saved notes', (
     WidgetTester tester,
@@ -555,6 +557,25 @@ Future<void> _advanceRecordToPostStep(WidgetTester tester) async {
   await tester.pumpAndSettle();
 
   expect(find.text('포스팅하기'), findsOneWidget);
+}
+
+void _expectToastAboveTabs(WidgetTester tester, String message) {
+  expect(find.text(message), findsOneWidget);
+
+  final toastFinder = find.byKey(const ValueKey('bottom-action-toast'));
+  final textFinder = find.descendant(
+    of: toastFinder,
+    matching: find.text(message),
+  );
+  final tabFinder = find.byType(FuryBottomNav);
+  final toastBottom = tester.getBottomLeft(toastFinder).dy;
+  final tabTop = tester.getTopLeft(tabFinder).dy;
+  final toastText = tester.widget<Text>(textFinder);
+
+  expect(toastFinder, findsOneWidget);
+  expect(toastText.style?.color, FuryColors.text);
+  expect(toastBottom, lessThanOrEqualTo(tabTop));
+  expect(toastBottom, greaterThan(tabTop - 24));
 }
 
 class _FakeRageNoteRepository extends RageNoteRepository {

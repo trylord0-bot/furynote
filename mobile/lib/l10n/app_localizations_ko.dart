@@ -99,6 +99,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get feedPostedToast => '피드에 전송했어요';
 
   @override
+  String get recordPostedToast => '포스팅했어요';
+
+  @override
+  String get recordSavedToast => '기록됐어요';
+
+  @override
   String get reminderNotification => '리마인드 알림';
 
   @override

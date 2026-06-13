@@ -99,6 +99,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedPostedToast => 'Sent to feed';
 
   @override
+  String get recordPostedToast => 'Posted';
+
+  @override
+  String get recordSavedToast => 'Saved';
+
+  @override
   String get reminderNotification => 'Reminder notification';
 
   @override

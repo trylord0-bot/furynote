@@ -30,6 +30,8 @@
   "postIt": "Post",
   "saveOnly": "Just save it",
   "feedPostedToast": "Sent to feed",
+  "recordPostedToast": "Posted",
+  "recordSavedToast": "Saved",
   "reminderNotification": "Reminder notification",
   "noReminder": "Not set",
   "summaryIntensity": "Rage level",

@@ -278,6 +278,18 @@ abstract class AppLocalizations {
   /// **'피드에 전송했어요'**
   String get feedPostedToast;
 
+  /// No description provided for @recordPostedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'포스팅했어요'**
+  String get recordPostedToast;
+
+  /// No description provided for @recordSavedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록됐어요'**
+  String get recordSavedToast;
+
   /// No description provided for @reminderNotification.
   ///
   /// In ko, this message translates to:

@@ -30,6 +30,8 @@
   "postIt": "포스팅하기",
   "saveOnly": "그냥 저장만 할게요",
   "feedPostedToast": "피드에 전송했어요",
+  "recordPostedToast": "포스팅했어요",
+  "recordSavedToast": "기록됐어요",
   "reminderNotification": "리마인드 알림",
   "noReminder": "설정 안 함",
   "summaryIntensity": "분노 강도",
