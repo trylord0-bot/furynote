@@ -642,7 +642,7 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 }
 
-class RecordStep extends StatelessWidget {
+class RecordStep extends StatefulWidget {
   const RecordStep({
     required this.title,
     required this.subtitle,
@@ -657,6 +657,41 @@ class RecordStep extends StatelessWidget {
   final VoidCallback? onBack;
 
   @override
+  State<RecordStep> createState() => _RecordStepState();
+}
+
+class _RecordStepState extends State<RecordStep> {
+  Offset? _dragStart;
+  bool _backSwipeTriggered = false;
+
+  void _handlePointerDown(PointerDownEvent event) {
+    _dragStart = event.position;
+    _backSwipeTriggered = false;
+  }
+
+  void _handlePointerMove(PointerMoveEvent event) {
+    final onBack = widget.onBack;
+    final dragStart = _dragStart;
+    if (onBack == null || dragStart == null || _backSwipeTriggered) {
+      return;
+    }
+
+    final delta = event.position - dragStart;
+    final isDownSwipe = delta.dy > 72 && delta.dy > delta.dx.abs() * 1.4;
+    if (!isDownSwipe) {
+      return;
+    }
+
+    _backSwipeTriggered = true;
+    onBack();
+  }
+
+  void _handlePointerEnd(PointerEvent event) {
+    _dragStart = null;
+    _backSwipeTriggered = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -665,50 +700,57 @@ class RecordStep extends StatelessWidget {
             : MediaQuery.sizeOf(context).width;
         final contentWidth = (availableWidth - 36).clamp(0.0, 324.0);
         const verticalPadding = 30.0;
-        return SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(18, 10, 18, 20),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: (constraints.maxHeight - verticalPadding).clamp(
-                0.0,
-                double.infinity,
+        return Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: widget.onBack == null ? null : _handlePointerDown,
+          onPointerMove: widget.onBack == null ? null : _handlePointerMove,
+          onPointerUp: widget.onBack == null ? null : _handlePointerEnd,
+          onPointerCancel: widget.onBack == null ? null : _handlePointerEnd,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(18, 10, 18, 20),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: (constraints.maxHeight - verticalPadding).clamp(
+                  0.0,
+                  double.infinity,
+                ),
               ),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: contentWidth,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (onBack != null) ...[
-                      SizedBox(
-                        height: 38,
-                        child: IconButton.filledTonal(
-                          onPressed: onBack,
-                          icon: const Icon(Icons.keyboard_arrow_up),
+              child: Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: contentWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.onBack != null) ...[
+                        SizedBox(
+                          height: 38,
+                          child: IconButton.filledTonal(
+                            onPressed: widget.onBack,
+                            icon: const Icon(Icons.keyboard_arrow_up),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                      Text(
+                        widget.title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: FuryColors.text,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
-                      const SizedBox(height: 16),
-                    ],
-                    Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: FuryColors.text,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.subtitle,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: FuryColors.faint),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      subtitle,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: FuryColors.faint),
-                    ),
-                    const SizedBox(height: 22),
-                    SizedBox(width: double.infinity, child: child),
-                  ],
+                      const SizedBox(height: 22),
+                      SizedBox(width: double.infinity, child: widget.child),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -820,14 +862,14 @@ class ChoiceGrid extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: 284,
-        child: GridView.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 0.82,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: children,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            for (final child in children)
+              SizedBox(width: 88, height: 112, child: child),
+          ],
         ),
       ),
     );
