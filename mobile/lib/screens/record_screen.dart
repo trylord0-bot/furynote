@@ -5,6 +5,7 @@ import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
+import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
 import '../widgets/shared_widgets.dart';
 
@@ -605,13 +606,22 @@ class _RecordScreenState extends State<RecordScreen> {
                   onBack: () => _goTo(4),
                   child: Column(
                     children: [
-                      FuryPostCard(
-                        emoji: rage.emoji,
-                        nickname: l10n.profileName,
-                        category: '${category.emoji} ${category.label}',
-                        text: _textController.text.isEmpty
-                            ? l10n.none
-                            : _textController.text,
+                      AnimatedBuilder(
+                        animation: AppProfileController.instance,
+                        builder: (context, _) {
+                          return FuryPostCard(
+                            emoji: rage.emoji,
+                            nickname: AppProfileController.instance
+                                .displayNameWithNumber(
+                                  fallback: l10n.profileName,
+                                ),
+                            category: '${category.emoji} ${category.label}',
+                            text: _textController.text.isEmpty
+                                ? l10n.none
+                                : _textController.text,
+                            showProfileAvatar: true,
+                          );
+                        },
                       ),
                       const SizedBox(height: 16),
                       SizedBox(

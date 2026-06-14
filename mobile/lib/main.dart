@@ -11,10 +11,12 @@ import 'package:fury_note/screens/stats_screen.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
+import 'package:fury_note/src/profile/app_profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalReminderScheduler.instance.initialize();
+  await AppProfileController.instance.load();
   runApp(const FuryNoteApp());
 }
 
@@ -628,24 +630,28 @@ class FuryDrawer extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      key: const ValueKey('drawer-profile-avatar'),
-                      radius: 22,
-                      backgroundColor: FuryColors.red.withValues(alpha: 0.18),
-                      child: const Text('🐯', style: TextStyle(fontSize: 22)),
+                    const _DrawerProfileAvatar(
+                      key: ValueKey('drawer-profile-avatar'),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        key: const ValueKey('drawer-profile-name'),
-                        l10n.profileName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: FuryColors.text,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      child: AnimatedBuilder(
+                        animation: AppProfileController.instance,
+                        builder: (context, _) {
+                          return Text(
+                            key: const ValueKey('drawer-profile-name'),
+                            AppProfileController.instance.displayNameWithNumber(
+                              fallback: l10n.profileName,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: FuryColors.text,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -706,6 +712,37 @@ class FuryDrawer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DrawerProfileAvatar extends StatelessWidget {
+  const _DrawerProfileAvatar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: AppProfileController.instance,
+      builder: (context, _) {
+        final avatarBytes = AppProfileController.instance.avatarBytes;
+        if (avatarBytes != null && avatarBytes.isNotEmpty) {
+          return ClipOval(
+            child: Image.memory(
+              avatarBytes,
+              width: 44,
+              height: 44,
+              fit: BoxFit.cover,
+              gaplessPlayback: true,
+            ),
+          );
+        }
+
+        return CircleAvatar(
+          radius: 22,
+          backgroundColor: FuryColors.red.withValues(alpha: 0.18),
+          child: const Text('🐯', style: TextStyle(fontSize: 22)),
+        );
+      },
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
 
 class FuryPostCard extends StatelessWidget {
@@ -7,6 +10,8 @@ class FuryPostCard extends StatelessWidget {
     required this.nickname,
     required this.category,
     required this.text,
+    this.avatarBytes,
+    this.showProfileAvatar = false,
     this.angerRecordCount,
     this.postCount,
     super.key,
@@ -16,6 +21,8 @@ class FuryPostCard extends StatelessWidget {
   final String nickname;
   final String category;
   final String text;
+  final List<int>? avatarBytes;
+  final bool showProfileAvatar;
   final int? angerRecordCount;
   final int? postCount;
 
@@ -41,7 +48,21 @@ class FuryPostCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 22)),
+              if (showProfileAvatar)
+                const FuryProfileAvatar(
+                  size: 28,
+                  borderRadius: 10,
+                  fallbackFontSize: 15,
+                )
+              else if (avatarBytes != null)
+                FuryProfileAvatar(
+                  size: 28,
+                  borderRadius: 10,
+                  fallbackFontSize: 15,
+                  bytes: avatarBytes,
+                )
+              else
+                Text(emoji, style: const TextStyle(fontSize: 22)),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -68,7 +89,10 @@ class FuryPostCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.06),
                   borderRadius: BorderRadius.circular(20),
@@ -102,6 +126,96 @@ class FuryPostCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FuryProfileAvatar extends StatelessWidget {
+  const FuryProfileAvatar({
+    this.size = 44,
+    this.borderRadius = 16,
+    this.fallbackFontSize = 22,
+    this.bytes,
+    super.key,
+  });
+
+  final double size;
+  final double borderRadius;
+  final double fallbackFontSize;
+  final List<int>? bytes;
+
+  @override
+  Widget build(BuildContext context) {
+    final explicitBytes = bytes;
+    if (explicitBytes != null && explicitBytes.isNotEmpty) {
+      return _AvatarImage(
+        size: size,
+        borderRadius: borderRadius,
+        bytes: explicitBytes,
+      );
+    }
+
+    return AnimatedBuilder(
+      animation: AppProfileController.instance,
+      builder: (context, _) {
+        final profileBytes = AppProfileController.instance.avatarBytes;
+        if (profileBytes != null && profileBytes.isNotEmpty) {
+          return _AvatarImage(
+            size: size,
+            borderRadius: borderRadius,
+            bytes: profileBytes,
+          );
+        }
+
+        return Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: FuryColors.red.withValues(alpha: 0.18),
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(color: FuryColors.red.withValues(alpha: 0.18)),
+          ),
+          child: Center(
+            child: Text('🐯', style: TextStyle(fontSize: fallbackFontSize)),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _AvatarImage extends StatelessWidget {
+  const _AvatarImage({
+    required this.size,
+    required this.borderRadius,
+    required this.bytes,
+  });
+
+  final double size;
+  final double borderRadius;
+  final List<int> bytes;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: Image.memory(
+        Uint8List.fromList(bytes),
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: size,
+            height: size,
+            color: FuryColors.red.withValues(alpha: 0.18),
+            child: Center(
+              child: Text('🐯', style: TextStyle(fontSize: size * 0.5)),
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../main.dart';
+import '../../src/profile/app_profile.dart';
+import '../../widgets/shared_widgets.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -9,9 +12,28 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
-  final _nickController = TextEditingController(text: '화난 호랑이');
+  final _nickController = TextEditingController();
+  final _imagePicker = ImagePicker();
   bool _hasError = false;
   String _errorMsg = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    await AppProfileController.instance.load();
+    if (!mounted) {
+      return;
+    }
+    final savedName = AppProfileController.instance.savedDisplayName;
+    _nickController.text = savedName == null || savedName.isEmpty
+        ? '화난 호랑이'
+        : savedName;
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -40,14 +62,19 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     });
   }
 
-  void _saveNick() {
+  Future<void> _saveNick() async {
     if (!_canSave) return;
+    final displayName = _nickController.text.trim();
+    await AppProfileController.instance.updateDisplayName(displayName);
+    if (!mounted) {
+      return;
+    }
     ScaffoldMessenger.of(context)
       ..clearSnackBars()
       ..showSnackBar(
         SnackBar(
           content: Text(
-            '✅ "${_nickController.text.trim()}"으로 변경됐어요!',
+            '✅ "$displayName"으로 변경됐어요!',
             style: const TextStyle(fontWeight: FontWeight.w800),
           ),
           behavior: SnackBarBehavior.floating,
@@ -61,6 +88,117 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     Future.delayed(const Duration(milliseconds: 700), () {
       if (mounted) Navigator.of(context).pop();
     });
+  }
+
+  Future<void> _showAvatarActions() async {
+    final action = await showModalBottomSheet<_AvatarAction>(
+      context: context,
+      backgroundColor: FuryColors.panel,
+      barrierColor: Colors.black.withValues(alpha: 0.65),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: FuryColors.border,
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                _AvatarActionTile(
+                  icon: Icons.photo_library_outlined,
+                  title: '앨범에서 선택',
+                  onTap: () => Navigator.pop(context, _AvatarAction.gallery),
+                ),
+                _AvatarActionTile(
+                  icon: Icons.photo_camera_outlined,
+                  title: '카메라로 촬영',
+                  onTap: () => Navigator.pop(context, _AvatarAction.camera),
+                ),
+                _AvatarActionTile(
+                  icon: Icons.restart_alt,
+                  title: '기본 아바타로 변경',
+                  isDestructive: true,
+                  onTap: () => Navigator.pop(context, _AvatarAction.clear),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (!mounted || action == null) {
+      return;
+    }
+
+    switch (action) {
+      case _AvatarAction.gallery:
+        await _pickAvatar(ImageSource.gallery);
+        break;
+      case _AvatarAction.camera:
+        await _pickAvatar(ImageSource.camera);
+        break;
+      case _AvatarAction.clear:
+        await AppProfileController.instance.clearAvatar();
+        _showProfileToast('기본 아바타로 변경됐어요.');
+        break;
+    }
+  }
+
+  Future<void> _pickAvatar(ImageSource source) async {
+    try {
+      final image = await _imagePicker.pickImage(
+        source: source,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 88,
+      );
+      if (image == null) {
+        return;
+      }
+
+      final bytes = await image.readAsBytes();
+      await AppProfileController.instance.updateAvatar(bytes);
+      _showProfileToast('프로필 사진이 적용됐어요.');
+    } on ProfileAvatarTooLargeException {
+      _showProfileToast('5MB 이하의 사진만 사용할 수 있어요.', isError: true);
+    } catch (_) {
+      _showProfileToast('사진을 불러오지 못했어요.', isError: true);
+    }
+  }
+
+  void _showProfileToast(String message, {bool isError = false}) {
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            message,
+            style: const TextStyle(fontWeight: FontWeight.w800),
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: isError
+              ? FuryColors.deepRed
+              : const Color(0xFF2E6B3E),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
   }
 
   @override
@@ -77,7 +215,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         padding: const EdgeInsets.fromLTRB(20, 28, 20, 40),
         child: Column(
           children: [
-            const _AvatarSection(),
+            _AvatarSection(onTap: _showAvatarActions),
             const SizedBox(height: 28),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,8 +247,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         fillColor: FuryColors.panel,
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color:
-                                _hasError ? FuryColors.red : FuryColors.border,
+                            color: _hasError
+                                ? FuryColors.red
+                                : FuryColors.border,
                             width: 1.5,
                           ),
                           borderRadius: BorderRadius.circular(14),
@@ -227,10 +366,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 ),
                 child: const Text(
                   '변경 저장',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                 ),
               ),
             ),
@@ -241,51 +377,69 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   }
 }
 
+enum _AvatarAction { gallery, camera, clear }
+
 class _AvatarSection extends StatelessWidget {
-  const _AvatarSection();
+  const _AvatarSection({required this.onTap});
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: 88,
-              height: 88,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(28),
-                border: Border.all(color: const Color(0xFF3A2020), width: 2),
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF2A1A1A), Color(0xFF1E1E1E)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+        Semantics(
+          button: true,
+          label: '프로필 사진 변경',
+          child: InkWell(
+            borderRadius: BorderRadius.circular(30),
+            onTap: onTap,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 92,
+                  height: 92,
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: const Color(0xFF3A2020),
+                      width: 2,
+                    ),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF2A1A1A), Color(0xFF1E1E1E)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: const FuryProfileAvatar(
+                    size: 88,
+                    borderRadius: 27,
+                    fallbackFontSize: 42,
+                  ),
                 ),
-              ),
-              child: const Center(
-                child: Text('🐯', style: TextStyle(fontSize: 42)),
-              ),
+                Positioned(
+                  right: -4,
+                  bottom: -4,
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: FuryColors.red,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: FuryColors.phone, width: 2),
+                    ),
+                    child: const Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 13,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              right: -4,
-              bottom: -4,
-              child: Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(
-                  color: FuryColors.red,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: FuryColors.phone, width: 2),
-                ),
-                child: const Icon(
-                  Icons.camera_alt,
-                  color: Colors.white,
-                  size: 13,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
         const SizedBox(height: 14),
         RichText(
@@ -301,16 +455,54 @@ class _AvatarSection extends StatelessWidget {
               ),
               TextSpan(
                 text: '\nJPG, PNG, GIF · 최대 5MB',
-                style: TextStyle(
-                  color: FuryColors.faint,
-                  fontSize: 11,
-                ),
+                style: TextStyle(color: FuryColors.faint, fontSize: 11),
               ),
             ],
           ),
           textAlign: TextAlign.center,
         ),
       ],
+    );
+  }
+}
+
+class _AvatarActionTile extends StatelessWidget {
+  const _AvatarActionTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    this.isDestructive = false,
+  });
+
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  final bool isDestructive;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isDestructive ? FuryColors.red : FuryColors.text;
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 6),
+      leading: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.11),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: color, size: 18),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: color,
+          fontSize: 14,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      onTap: onTap,
     );
   }
 }

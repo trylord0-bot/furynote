@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import '../../main.dart';
+import '../src/profile/app_profile.dart';
+import '../widgets/shared_widgets.dart';
 import 'settings/profile_edit_screen.dart';
 import 'settings/data_export_screen.dart';
 import 'settings/data_import_screen.dart';
@@ -39,9 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _SettingsProfileCard(
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const ProfileEditScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const ProfileEditScreen()),
               );
             },
           ),
@@ -102,9 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const DataExportScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const DataExportScreen()),
                   );
                 },
               ),
@@ -119,9 +117,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const DataImportScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const DataImportScreen()),
                   );
                 },
               ),
@@ -141,9 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const PrivacyScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const PrivacyScreen()),
                   );
                 },
               ),
@@ -175,6 +169,8 @@ class _SettingsProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: InkWell(
@@ -194,46 +190,51 @@ class _SettingsProfileCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFF3A2020)),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF2A1A1A), Color(0xFF1E1E1E)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: const Center(
-                  child: Text('🐯', style: TextStyle(fontSize: 26)),
-                ),
+              const FuryProfileAvatar(
+                size: 52,
+                borderRadius: 18,
+                fallbackFontSize: 26,
               ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
-                      children: [
-                        Text(
-                          '화난 호랑이',
-                          style: TextStyle(
-                            color: FuryColors.text,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          '#4827',
-                          style: TextStyle(
-                            color: FuryColors.faint,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
+                    AnimatedBuilder(
+                      animation: AppProfileController.instance,
+                      builder: (context, _) {
+                        return Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                AppProfileController.instance.displayName(
+                                  fallback: l10n.profileName
+                                      .replaceAll(
+                                        AppProfileController.profileNumber,
+                                        '',
+                                      )
+                                      .trim(),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: FuryColors.text,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text(
+                              AppProfileController.profileNumber,
+                              style: TextStyle(
+                                color: FuryColors.faint,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 4),
                     Row(

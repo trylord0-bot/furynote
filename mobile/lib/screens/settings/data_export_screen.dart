@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/profile/app_profile.dart';
 import '../../main.dart';
+import '../../widgets/shared_widgets.dart';
 
 class DataExportScreen extends StatelessWidget {
   const DataExportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: FuryColors.phone,
       appBar: AppBar(
@@ -23,9 +28,7 @@ class DataExportScreen extends StatelessWidget {
                 gradient: const LinearGradient(
                   colors: [Color(0xFF2A2000), Color(0xFF1A1500)],
                 ),
-                border: Border.all(
-                  color: const Color(0x40FFD700),
-                ),
+                border: Border.all(color: const Color(0x40FFD700)),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Stack(
@@ -134,6 +137,18 @@ class DataExportScreen extends StatelessWidget {
               style: TextStyle(color: FuryColors.faint, fontSize: 11),
             ),
             const SizedBox(height: 12),
+            AnimatedBuilder(
+              animation: AppProfileController.instance,
+              builder: (context, _) {
+                final profile = AppProfileController.instance.toExportJson(
+                  fallbackDisplayName: l10n.profileName
+                      .replaceAll(AppProfileController.profileNumber, '')
+                      .trim(),
+                );
+                return _ExportProfileCard(profile: profile);
+              },
+            ),
+            const SizedBox(height: 12),
             const _ExportFormatTile(
               icon: '📊',
               title: 'CSV 파일',
@@ -153,6 +168,61 @@ class DataExportScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ExportProfileCard extends StatelessWidget {
+  const _ExportProfileCard({required this.profile});
+
+  final Map<String, Object?> profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasAvatar = (profile['avatar_base64'] as String?)?.isNotEmpty == true;
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: FuryColors.panel,
+        border: Border.all(color: FuryColors.border),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          const FuryProfileAvatar(
+            size: 36,
+            borderRadius: 12,
+            fallbackFontSize: 18,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${profile['display_name']} ${profile['profile_number']}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: FuryColors.text,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  hasAvatar
+                      ? '프로필 사진과 닉네임이 백업에 포함돼요'
+                      : '닉네임과 기본 아바타 정보가 백업에 포함돼요',
+                  style: const TextStyle(color: FuryColors.faint, fontSize: 11),
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.check_circle, color: Color(0xFF2E6B3E), size: 18),
+        ],
       ),
     );
   }
@@ -207,10 +277,7 @@ class _ExportFormatTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   desc,
-                  style: const TextStyle(
-                    color: FuryColors.faint,
-                    fontSize: 11,
-                  ),
+                  style: const TextStyle(color: FuryColors.faint, fontSize: 11),
                 ),
               ],
             ),

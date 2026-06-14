@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fury_note/src/backup/backup_service.dart';
+import 'package:fury_note/src/profile/app_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   test('export requires PRO entitlement', () {
@@ -78,5 +81,41 @@ void main() {
       () => service.importBackup(corrupted),
       throwsA(isA<BackupIntegrityException>()),
     );
+  });
+
+  test('profile export includes saved nickname and avatar', () async {
+    SharedPreferences.setMockInitialValues({});
+    AppProfileController.instance.resetForTesting();
+    await AppProfileController.instance.load();
+    await AppProfileController.instance.updateDisplayName('불꽃 고양이');
+    await AppProfileController.instance.updateAvatar(
+      Uint8List.fromList([1, 2, 3]),
+    );
+
+    final profile = AppProfileController.instance.toExportJson(
+      fallbackDisplayName: '화난 호랑이',
+    );
+    final service = FuryBackupService(cipher: PlainTextBackupCipher());
+    final package = service.exportBackup(
+      data: BackupData(
+        profile: profile,
+        settings: const {},
+        notes: const [],
+        reminders: const [],
+        challenges: const [],
+      ),
+      deviceId: 'device-1',
+      appVersion: '1.0.0',
+      isPro: true,
+    );
+    final decoded =
+        jsonDecode(utf8.decode(package.encryptedBytes)) as Map<String, dynamic>;
+    final exportedProfile = decoded['data']['profile'] as Map<String, dynamic>;
+
+    expect(exportedProfile['display_name'], '불꽃 고양이');
+    expect(exportedProfile['profile_number'], '#4827');
+    expect(exportedProfile['avatar_base64'], isNotEmpty);
+
+    AppProfileController.instance.resetForTesting();
   });
 }
