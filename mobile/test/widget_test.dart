@@ -543,11 +543,23 @@ void main() {
 
     expect(find.text('💼 직장 67%'), findsOneWidget);
     expect(find.text('${oldDay.month}/${oldDay.day}'), findsOneWidget);
+    expect(find.text('오늘 저장된 기록'), findsNothing);
+
+    await tester.scrollUntilVisible(
+      find.text('달력으로 기록 보기'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('달력으로 기록 보기'));
+    await tester.pumpAndSettle();
+
+    expect(_headerTitle('Rage Stats'), findsNothing);
+    expect(find.text('달력으로 기록 보기'), findsOneWidget);
 
     await tester.scrollUntilVisible(
       find.text('오늘 저장된 기록'),
       500,
-      scrollable: find.byType(Scrollable).first,
+      scrollable: find.byType(Scrollable).last,
     );
     expect(find.text('오늘 저장된 기록'), findsOneWidget);
     expect(find.text('💼 직장'), findsOneWidget);
