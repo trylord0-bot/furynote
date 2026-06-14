@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
@@ -137,17 +139,67 @@ class _StatsScreenState extends State<StatsScreen> {
     return (records.length / dayCount).toStringAsFixed(1);
   }
 
-  List<double> _weeklyIntensityBars() {
+  List<_IntensityPoint> _intensityPoints() {
+    return switch (_range) {
+      'week' => _weeklyIntensityPoints(),
+      'month' => _monthlyIntensityPoints(),
+      _ => _allIntensityPoints(),
+    };
+  }
+
+  List<_IntensityPoint> _weeklyIntensityPoints() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     return [
       for (var i = 6; i >= 0; i--)
-        _averageIntensityForDate(today.subtract(Duration(days: i))) / 5,
+        _IntensityPoint(
+          label: _monthDayLabel(today.subtract(Duration(days: i))),
+          value: _averageIntensityForDate(today.subtract(Duration(days: i))),
+        ),
+    ];
+  }
+
+  List<_IntensityPoint> _monthlyIntensityPoints() {
+    final now = DateTime.now();
+    return [
+      for (var day = 1; day <= now.day; day++)
+        _IntensityPoint(
+          label: _sparseDayLabel(day, now.day),
+          value: _averageIntensityForDate(DateTime(now.year, now.month, day)),
+        ),
+    ];
+  }
+
+  List<_IntensityPoint> _allIntensityPoints() {
+    if (_records.isEmpty) {
+      return const [];
+    }
+
+    final recordsByDay = <DateTime, List<RageNote>>{};
+    for (final record in _records) {
+      final day = DateTime(
+        record.createdAt.year,
+        record.createdAt.month,
+        record.createdAt.day,
+      );
+      recordsByDay.putIfAbsent(day, () => []).add(record);
+    }
+
+    final days = recordsByDay.keys.toList()..sort();
+    return [
+      for (var i = 0; i < days.length; i++)
+        _IntensityPoint(
+          label: _sparseDateLabel(days[i], i, days.length),
+          value: _averageIntensityForRecords(recordsByDay[days[i]]!),
+        ),
     ];
   }
 
   double _averageIntensityForDate(DateTime date) {
-    final records = _recordsForDate(date);
+    return _averageIntensityForRecords(_recordsForDate(date));
+  }
+
+  double _averageIntensityForRecords(List<RageNote> records) {
     if (records.isEmpty) {
       return 0;
     }
@@ -155,19 +207,55 @@ class _StatsScreenState extends State<StatsScreen> {
     return total / records.length;
   }
 
-  List<double> _categoryDistributionBars(List<RageNote> records) {
+  String _monthDayLabel(DateTime date) => '${date.month}/${date.day}';
+
+  String _sparseDayLabel(int day, int totalDays) {
+    if (totalDays <= 12 || day == 1 || day == totalDays || day % 7 == 0) {
+      return '$day';
+    }
+    return '';
+  }
+
+  String _sparseDateLabel(DateTime date, int index, int totalCount) {
+    if (totalCount <= 7 || index == 0 || index == totalCount - 1) {
+      return _monthDayLabel(date);
+    }
+
+    final interval = (totalCount / 6).ceil().clamp(1, totalCount);
+    if (index % interval == 0) {
+      return _monthDayLabel(date);
+    }
+
+    return '';
+  }
+
+  List<_CategorySlice> _categoryDistributionSlices(List<RageNote> records) {
     if (records.isEmpty) {
-      return const [0, 0, 0, 0, 0];
+      return const [];
     }
-    final counts = <String, int>{};
+    final counts = <String, ({String label, int count})>{};
     for (final record in records) {
-      counts[record.categoryLabel] = (counts[record.categoryLabel] ?? 0) + 1;
+      final key = '${record.categoryEmoji} ${record.categoryLabel}';
+      counts[key] = (label: key, count: (counts[key]?.count ?? 0) + 1);
     }
-    final sorted = counts.values.toList()..sort((a, b) => b.compareTo(a));
-    final maxCount = sorted.first;
+    final sorted = counts.values.toList()
+      ..sort((a, b) => b.count.compareTo(a.count));
+    final visible = sorted.take(4).toList();
+    final remainingCount = sorted
+        .skip(4)
+        .fold<int>(0, (sum, category) => sum + category.count);
+    final chartItems = [
+      ...visible,
+      if (remainingCount > 0) (label: '기타', count: remainingCount),
+    ];
+
     return [
-      for (final count in sorted.take(5)) count / maxCount,
-      for (var i = sorted.length; i < 5; i++) 0,
+      for (var i = 0; i < chartItems.length; i++)
+        _CategorySlice(
+          label: chartItems[i].label,
+          count: chartItems[i].count,
+          color: _categoryChartColors[i % _categoryChartColors.length],
+        ),
     ];
   }
 
@@ -242,11 +330,11 @@ class _StatsScreenState extends State<StatsScreen> {
           ],
         ),
         const SizedBox(height: 16),
-        ChartPanel(title: '분노 강도 추이', bars: _weeklyIntensityBars()),
+        _LineChartPanel(title: '분노 강도 추이', points: _intensityPoints()),
         const SizedBox(height: 12),
-        ChartPanel(
+        _PieChartPanel(
           title: '원인별 분포',
-          bars: _categoryDistributionBars(filteredRecords),
+          slices: _categoryDistributionSlices(filteredRecords),
         ),
         const SizedBox(height: 16),
         _StatsCalendarCard(
@@ -315,11 +403,157 @@ class MetricTile extends StatelessWidget {
   }
 }
 
-class ChartPanel extends StatelessWidget {
-  const ChartPanel({required this.title, required this.bars, super.key});
+const _categoryChartColors = <Color>[
+  FuryColors.red,
+  FuryColors.orange,
+  FuryColors.yellow,
+  Color(0xFF64B4FF),
+  Color(0xFFA8D8A8),
+];
+
+class _IntensityPoint {
+  const _IntensityPoint({required this.label, required this.value});
+
+  final String label;
+  final double value;
+}
+
+class _CategorySlice {
+  const _CategorySlice({
+    required this.label,
+    required this.count,
+    required this.color,
+  });
+
+  final String label;
+  final int count;
+  final Color color;
+}
+
+class _LineChartPanel extends StatelessWidget {
+  const _LineChartPanel({required this.title, required this.points});
 
   final String title;
-  final List<double> bars;
+  final List<_IntensityPoint> points;
+
+  @override
+  Widget build(BuildContext context) {
+    final animationKey = ValueKey(
+      'line-${points.map((point) => point.value.toStringAsFixed(2)).join(',')}',
+    );
+
+    return _ChartShell(
+      title: title,
+      child: TweenAnimationBuilder<double>(
+        key: animationKey,
+        tween: Tween(begin: 0, end: 1),
+        duration: const Duration(milliseconds: 760),
+        curve: Curves.easeOutCubic,
+        builder: (context, progress, _) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 126,
+                width: double.infinity,
+                child: CustomPaint(
+                  key: const ValueKey('stats-intensity-line-chart'),
+                  painter: _IntensityLinePainter(
+                    points: points,
+                    progress: progress,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  for (final point in points)
+                    Expanded(
+                      child: Text(
+                        point.label,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: const TextStyle(
+                          color: FuryColors.faint,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _PieChartPanel extends StatelessWidget {
+  const _PieChartPanel({required this.title, required this.slices});
+
+  final String title;
+  final List<_CategorySlice> slices;
+
+  @override
+  Widget build(BuildContext context) {
+    final total = slices.fold<int>(0, (sum, slice) => sum + slice.count);
+    final animationKey = ValueKey(
+      'pie-${slices.map((slice) => '${slice.label}:${slice.count}').join(',')}',
+    );
+
+    return _ChartShell(
+      title: title,
+      child: Column(
+        children: [
+          TweenAnimationBuilder<double>(
+            key: animationKey,
+            tween: Tween(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 820),
+            curve: Curves.easeOutCubic,
+            builder: (context, progress, _) {
+              return SizedBox(
+                height: 148,
+                width: double.infinity,
+                child: CustomPaint(
+                  key: const ValueKey('stats-category-pie-chart'),
+                  painter: _CategoryPiePainter(
+                    slices: slices,
+                    total: total,
+                    progress: progress,
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 12),
+          if (slices.isEmpty)
+            const Text(
+              '표시할 기록이 없습니다.',
+              style: TextStyle(color: FuryColors.faint, fontSize: 12),
+            )
+          else
+            Wrap(
+              spacing: 10,
+              runSpacing: 8,
+              children: [
+                for (final slice in slices)
+                  _PieLegendChip(slice: slice, total: total),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ChartShell extends StatelessWidget {
+  const _ChartShell({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -340,34 +574,234 @@ class ChartPanel extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 20),
-          SizedBox(
-            height: 120,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                for (final bar in bars)
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: FractionallySizedBox(
-                        heightFactor: bar,
-                        alignment: Alignment.bottomCenter,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: FuryColors.orange,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+          const SizedBox(height: 18),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+class _PieLegendChip extends StatelessWidget {
+  const _PieLegendChip({required this.slice, required this.total});
+
+  final _CategorySlice slice;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final percent = total == 0 ? 0 : (slice.count / total * 100).round();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.045),
+        border: Border.all(color: FuryColors.border),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 9,
+            height: 9,
+            decoration: BoxDecoration(
+              color: slice.color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 7),
+          Text(
+            '${slice.label} $percent%',
+            style: const TextStyle(
+              color: FuryColors.muted,
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+class _IntensityLinePainter extends CustomPainter {
+  const _IntensityLinePainter({required this.points, required this.progress});
+
+  final List<_IntensityPoint> points;
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final plot = Rect.fromLTWH(8, 8, size.width - 16, size.height - 20);
+    final gridPaint = Paint()
+      ..color = FuryColors.border.withValues(alpha: 0.8)
+      ..strokeWidth = 1;
+
+    for (var i = 0; i <= 4; i++) {
+      final y = plot.top + plot.height * i / 4;
+      canvas.drawLine(Offset(plot.left, y), Offset(plot.right, y), gridPaint);
+    }
+
+    final baselinePaint = Paint()
+      ..color = FuryColors.faint.withValues(alpha: 0.35)
+      ..strokeWidth = 1.2;
+    canvas.drawLine(
+      Offset(plot.left, plot.bottom),
+      Offset(plot.right, plot.bottom),
+      baselinePaint,
+    );
+
+    if (points.isEmpty) {
+      return;
+    }
+
+    final offsets = <Offset>[
+      for (var i = 0; i < points.length; i++)
+        Offset(
+          points.length == 1
+              ? plot.center.dx
+              : plot.left + (plot.width * i / (points.length - 1)),
+          plot.bottom -
+              plot.height * (points[i].value / 5).clamp(0, 1) * progress,
+        ),
+    ];
+
+    final linePath = Path()..moveTo(offsets.first.dx, offsets.first.dy);
+    for (var i = 1; i < offsets.length; i++) {
+      final previous = offsets[i - 1];
+      final current = offsets[i];
+      final controlX = (previous.dx + current.dx) / 2;
+      linePath.cubicTo(
+        controlX,
+        previous.dy,
+        controlX,
+        current.dy,
+        current.dx,
+        current.dy,
+      );
+    }
+
+    final fillPath = Path.from(linePath)
+      ..lineTo(offsets.last.dx, plot.bottom)
+      ..lineTo(offsets.first.dx, plot.bottom)
+      ..close();
+    final fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          FuryColors.red.withValues(alpha: 0.28 * progress),
+          FuryColors.orange.withValues(alpha: 0.04 * progress),
+        ],
+      ).createShader(plot);
+    canvas.drawPath(fillPath, fillPaint);
+
+    final glowPaint = Paint()
+      ..color = FuryColors.red.withValues(alpha: 0.18)
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = 7;
+    canvas.drawPath(linePath, glowPaint);
+
+    final linePaint = Paint()
+      ..shader = const LinearGradient(
+        colors: [FuryColors.yellow, FuryColors.orange, FuryColors.red],
+      ).createShader(plot)
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = 3;
+    canvas.drawPath(linePath, linePaint);
+
+    for (final offset in offsets) {
+      canvas.drawCircle(offset, 4.8, Paint()..color = FuryColors.phone);
+      canvas.drawCircle(offset, 3.2, Paint()..color = FuryColors.yellow);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_IntensityLinePainter oldDelegate) {
+    return oldDelegate.points != points || oldDelegate.progress != progress;
+  }
+}
+
+class _CategoryPiePainter extends CustomPainter {
+  const _CategoryPiePainter({
+    required this.slices,
+    required this.total,
+    required this.progress,
+  });
+
+  final List<_CategorySlice> slices;
+  final int total;
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final side = math.min(size.width, size.height);
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = side / 2 - 6;
+    final strokeWidth = math.max(18.0, radius * 0.34);
+    final rect = Rect.fromCircle(
+      center: center,
+      radius: radius - strokeWidth / 2,
+    );
+    final trackPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.055)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawCircle(center, radius - strokeWidth / 2, trackPaint);
+
+    if (slices.isEmpty || total == 0) {
+      _drawPieCenterLabel(canvas, center, '0');
+      return;
+    }
+
+    var start = -math.pi / 2;
+    final gap = slices.length == 1 ? 0.0 : 0.035;
+    for (final slice in slices) {
+      final fullSweep = (slice.count / total) * math.pi * 2;
+      final sweep = math.max(0.0, fullSweep * progress - gap);
+      final paint = Paint()
+        ..color = slice.color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth
+        ..strokeCap = StrokeCap.round;
+      canvas.drawArc(rect, start, sweep, false, paint);
+      start += fullSweep * progress;
+    }
+
+    _drawPieCenterLabel(canvas, center, '$total');
+  }
+
+  void _drawPieCenterLabel(Canvas canvas, Offset center, String text) {
+    final painter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: const TextStyle(
+          color: FuryColors.text,
+          fontSize: 22,
+          fontWeight: FontWeight.w900,
+        ),
+      ),
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    painter.paint(
+      canvas,
+      center - Offset(painter.width / 2, painter.height / 2),
+    );
+  }
+
+  @override
+  bool shouldRepaint(_CategoryPiePainter oldDelegate) {
+    return oldDelegate.slices != slices ||
+        oldDelegate.total != total ||
+        oldDelegate.progress != progress;
   }
 }
 
@@ -618,35 +1052,40 @@ class _SelectedDayRecordList extends StatelessWidget {
                     color: FuryColors.red,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Icon(Icons.delete, color: Colors.white, size: 24),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
                 confirmDismiss: (_) async {
                   return await showDialog<bool>(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      backgroundColor: FuryColors.panel,
-                      title: Text(
-                        l10n.deleteConfirm,
-                        style: const TextStyle(color: FuryColors.text),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx, false),
-                          child: Text(
-                            l10n.cancel,
-                            style: const TextStyle(color: FuryColors.muted),
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          backgroundColor: FuryColors.panel,
+                          title: Text(
+                            l10n.deleteConfirm,
+                            style: const TextStyle(color: FuryColors.text),
                           ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx, false),
+                              child: Text(
+                                l10n.cancel,
+                                style: const TextStyle(color: FuryColors.muted),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx, true),
+                              child: Text(
+                                l10n.delete,
+                                style: const TextStyle(color: FuryColors.red),
+                              ),
+                            ),
+                          ],
                         ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx, true),
-                          child: Text(
-                            l10n.delete,
-                            style: const TextStyle(color: FuryColors.red),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ) ?? false;
+                      ) ??
+                      false;
                 },
                 onDismissed: (_) => onDelete(record),
                 child: _StatsRecordTile(record: record),
@@ -673,8 +1112,7 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
   bool _isPlaying = false;
 
   bool get _hasAudio =>
-      widget.record.audioPath != null &&
-      widget.record.audioPath!.isNotEmpty;
+      widget.record.audioPath != null && widget.record.audioPath!.isNotEmpty;
 
   bool get _hasReminder => widget.record.reminderAt != null;
 
@@ -729,9 +1167,7 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
           ),
           const SizedBox(height: 8),
           Text(
-            widget.record.body.isEmpty
-                ? l10n.noContent
-                : widget.record.body,
+            widget.record.body.isEmpty ? l10n.noContent : widget.record.body,
             style: const TextStyle(
               color: Color(0xFFCCCCCC),
               fontSize: 13,
@@ -742,7 +1178,10 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: FuryColors.red.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20),
@@ -759,7 +1198,10 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
               const Spacer(),
               if (_hasReminder)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: FuryColors.yellow.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
@@ -775,7 +1217,10 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
                 GestureDetector(
                   onTap: _togglePlayback,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: FuryColors.orange.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),

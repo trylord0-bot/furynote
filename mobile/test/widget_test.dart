@@ -477,6 +477,7 @@ void main() {
   ) async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day, 9, 30);
+    final oldDay = today.subtract(const Duration(days: 40));
     final repository = _FakeRageNoteRepository(
       seedNotes: [
         RageNote(
@@ -501,6 +502,17 @@ void main() {
           categoryLabel: '가족',
           body: '어제 기록',
         ),
+        RageNote(
+          id: 3,
+          createdAt: oldDay,
+          rageLevel: 5,
+          rageEmoji: '🤬',
+          rageLabel: '극대노',
+          categoryKey: 'work',
+          categoryEmoji: '💼',
+          categoryLabel: '직장',
+          body: '오래된 기록',
+        ),
       ],
     );
 
@@ -515,7 +527,23 @@ void main() {
     await tester.tap(find.text('통계'));
     await tester.pumpAndSettle();
 
+    expect(
+      find.byKey(const ValueKey('stats-intensity-line-chart')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('stats-category-pie-chart')),
+      findsOneWidget,
+    );
+    expect(find.text('💼 직장 50%'), findsOneWidget);
     expect(find.text('2'), findsWidgets);
+
+    await tester.tap(find.text('전체'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('💼 직장 67%'), findsOneWidget);
+    expect(find.text('${oldDay.month}/${oldDay.day}'), findsOneWidget);
+
     await tester.scrollUntilVisible(
       find.text('오늘 저장된 기록'),
       500,
