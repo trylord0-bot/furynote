@@ -7,6 +7,8 @@ from sqlalchemy import create_engine, text
 
 from app.api.v1.router import api_router
 from app.core.config import get_settings
+from app.db.base import Base
+import app.models.entities  # noqa: F401 — registers ORM models with Base.metadata
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,28 +17,29 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def _check_db_connection() -> None:
+def _init_db() -> None:
     settings = get_settings()
     try:
         engine = create_engine(settings.database_url, pool_pre_ping=True)
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
+        Base.metadata.create_all(bind=engine)
         engine.dispose()
         logger.info(
-            "MariaDB 연결 성공: %s:%s/%s",
+            "MariaDB 연결 성공 및 테이블 초기화: %s:%s/%s",
             settings.db_host,
             settings.db_port,
             settings.db_name,
         )
     except Exception as exc:
-        logger.error("MariaDB 연결 실패: %s", exc)
+        logger.error("MariaDB 초기화 실패: %s", exc)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
     logger.info("서버 시작 — 환경: %s, 앱: %s", settings.app_env, settings.app_name)
-    _check_db_connection()
+    _init_db()
     yield
     logger.info("서버 종료")
 

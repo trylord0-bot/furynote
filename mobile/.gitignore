@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# 환경 설정 파일 (민감한 키가 포함된 파일만 제외)
+env/*.secret.json

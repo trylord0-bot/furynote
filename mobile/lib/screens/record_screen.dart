@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/api/api_client.dart';
+import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
@@ -83,6 +85,7 @@ class _RecordScreenState extends State<RecordScreen> {
   int? _savedNoteId;
   bool _isRecording = false;
   bool _isSaving = false;
+  bool _isPosting = false;
 
   @override
   void dispose() {
@@ -271,6 +274,40 @@ class _RecordScreenState extends State<RecordScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${l10n.voiceInput}을 시작할 수 없습니다.')),
       );
+    }
+  }
+
+  Future<void> _postToFeed(
+    AppLocalizations l10n,
+    RageChoice rage,
+    CategoryChoice category,
+  ) async {
+    final categoryValue =
+        category.key == 'custom' && _customCategoryController.text.trim().isNotEmpty
+            ? _customCategoryController.text.trim()
+            : category.key;
+    final text = _textController.text.trim();
+
+    setState(() => _isPosting = true);
+    try {
+      await FeedService.instance.createPost(
+        rageLevel: rage.level,
+        category: categoryValue,
+        text: text.isEmpty ? null : text,
+      );
+      widget.onPost?.call();
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('피드 전송에 실패했어요. 다시 시도해주세요.')),
+      );
+    } finally {
+      if (mounted) setState(() => _isPosting = false);
     }
   }
 
@@ -627,9 +664,11 @@ class _RecordScreenState extends State<RecordScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton.icon(
-                          onPressed: widget.onPost,
+                          onPressed: _isPosting
+                              ? null
+                              : () => _postToFeed(l10n, rage, category),
                           icon: const Icon(Icons.send_outlined),
-                          label: Text(l10n.postIt),
+                          label: Text(_isPosting ? '전송 중...' : l10n.postIt),
                         ),
                       ),
                       const SizedBox(height: 4),

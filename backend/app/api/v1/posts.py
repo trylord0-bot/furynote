@@ -3,7 +3,8 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 
 from app.core.responses import error, ok
-from app.repositories.memory import DeleteResult, MemoryStore, get_store
+from app.repositories.db_repository import DbStore, get_db_store
+from app.repositories.memory import DeleteResult
 from app.schemas.posts import CommentCreateRequest, PostCreateRequest
 from app.services.content_policy import check_rate_limit, check_text_policy
 
@@ -15,7 +16,7 @@ router = APIRouter()
 def create_post(
     payload: PostCreateRequest,
     x_device_id: str = Header(alias="X-Device-ID"),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
     text_result = check_text_policy(payload.text)
     if not text_result.allowed:
@@ -34,7 +35,7 @@ def list_posts(
     x_device_id: str = Header(alias="X-Device-ID"),
     cursor: str | None = Query(default=None),
     size: int = Query(default=20, ge=1, le=50),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
     return ok(store.list_posts_page(x_device_id, size, cursor))
 
@@ -43,7 +44,7 @@ def list_posts(
 def delete_post(
     post_id: str,
     x_device_id: str = Header(alias="X-Device-ID"),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
     result = store.delete_post(post_id, x_device_id)
     if result == DeleteResult.FORBIDDEN:
@@ -57,7 +58,7 @@ def delete_post(
 def toggle_like(
     post_id: str,
     x_device_id: str = Header(alias="X-Device-ID"),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
     result = store.toggle_like(post_id, x_device_id)
     if result is None:
@@ -70,7 +71,7 @@ def create_comment(
     post_id: str,
     payload: CommentCreateRequest,
     x_device_id: str = Header(alias="X-Device-ID"),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
     comment = store.create_comment(post_id, x_device_id, payload.text)
     if comment is None:
@@ -84,9 +85,10 @@ def list_comments(
     x_device_id: str = Header(alias="X-Device-ID"),
     cursor: str | None = Query(default=None),
     size: int = Query(default=30, ge=1, le=50),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
-    return ok({"comments": store.list_comments(post_id, x_device_id, size), "next_cursor": cursor, "has_more": False})
+    comments = store.list_comments(post_id, x_device_id, size)
+    return ok({"comments": comments, "next_cursor": None, "has_more": False})
 
 
 @router.delete("/{post_id}/comments/{comment_id}")
@@ -94,7 +96,7 @@ def delete_comment(
     post_id: str,
     comment_id: str,
     x_device_id: str = Header(alias="X-Device-ID"),
-    store: MemoryStore = Depends(get_store),
+    store: DbStore = Depends(get_db_store),
 ) -> dict:
     result = store.delete_comment(post_id, comment_id, x_device_id)
     if result == DeleteResult.FORBIDDEN:

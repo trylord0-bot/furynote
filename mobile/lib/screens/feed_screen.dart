@@ -1,105 +1,206 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
-import 'package:fury_note/src/profile/app_profile.dart';
+import 'package:fury_note/src/api/feed_service.dart';
 import '../main.dart';
 import '../widgets/shared_widgets.dart';
 
-class FeedScreen extends StatelessWidget {
+class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
+
+  @override
+  State<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
+  List<FeedPost> _posts = [];
+  bool _loading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPosts();
+  }
+
+  Future<void> _loadPosts() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final posts = await FeedService.instance.listPosts();
+      if (mounted) {
+        setState(() {
+          _posts = posts;
+          _loading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _error = e.toString();
+        });
+      }
+    }
+  }
+
+  Future<void> _toggleLike(String postId) async {
+    try {
+      final result = await FeedService.instance.toggleLike(postId);
+      if (!mounted) return;
+      setState(() {
+        final idx = _posts.indexWhere((p) => p.postId == postId);
+        if (idx >= 0) {
+          _posts[idx] = _posts[idx].copyWith(
+            isLiked: result.isLiked,
+            likeCount: result.likeCount,
+          );
+        }
+      });
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return AnimatedBuilder(
-      animation: AppProfileController.instance,
-      builder: (context, _) {
-        final myProfileName = AppProfileController.instance
-            .displayNameWithNumber(fallback: l10n.profileName);
-        final posts = [
-          (
-            '😡',
-            myProfileName,
-            '🚗 ${l10n.driving}',
-            '옆 차선 차가 갑자기 끼어들었는데 사과도 없이 가버림.',
-            12,
-            3,
-            47,
-            12,
-            true,
-          ),
-          (
-            '😤',
-            '부글부글 곰 #1234',
-            '💼 ${l10n.work}',
-            '회의가 또 퇴근 직전에 잡혔다.',
-            8,
-            1,
-            23,
-            5,
-            false,
-          ),
-        ];
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-        return ListView(
-          padding: const EdgeInsets.all(20),
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            SectionHeader(
-              title: l10n.feedTitle,
-              subtitle: l10n.feedSubtitle,
-              showTitle: false,
-              showSubtitle: false,
+            const Icon(Icons.wifi_off, color: FuryColors.muted, size: 40),
+            const SizedBox(height: 12),
+            Text(
+              '피드를 불러오지 못했어요.',
+              style: const TextStyle(color: FuryColors.muted),
             ),
-            const SizedBox(height: 16),
-            for (final post in posts) ...[
-              FuryPostCard(
-                emoji: post.$1,
-                nickname: post.$2,
-                category: post.$3,
-                text: post.$4,
-                showProfileAvatar: post.$9,
-                angerRecordCount: post.$7,
-                postCount: post.$8,
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: _loadPosts,
+              child: const Text('다시 시도'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_posts.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('📮', style: TextStyle(fontSize: 40)),
+            const SizedBox(height: 12),
+            Text(
+              '아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: FuryColors.muted, height: 1.6),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadPosts,
+      color: FuryColors.red,
+      backgroundColor: FuryColors.panel,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(20),
+        itemCount: _posts.length,
+        itemBuilder: (context, index) {
+          final post = _posts[index];
+          return _FeedPostItem(
+            key: ValueKey(post.postId),
+            post: post,
+            likeLabel: l10n.like,
+            commentLabel: l10n.comment,
+            onToggleLike: () => _toggleLike(post.postId),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FeedPostItem extends StatelessWidget {
+  const _FeedPostItem({
+    required this.post,
+    required this.likeLabel,
+    required this.commentLabel,
+    required this.onToggleLike,
+    super.key,
+  });
+
+  final FeedPost post;
+  final String likeLabel;
+  final String commentLabel;
+  final VoidCallback onToggleLike;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FuryPostCard(
+          emoji: rageEmoji(post.rageLevel),
+          nickname: post.nickname,
+          category: categoryDisplay(post.category),
+          text: post.text ?? '',
+          showProfileAvatar: false,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 18),
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              FuryPostAction(
+                icon: post.isLiked ? Icons.favorite : Icons.favorite_border,
+                label: '$likeLabel ${post.likeCount}',
+                isActive: post.isLiked,
+                onPressed: onToggleLike,
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 18),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: [
-                    FuryPostAction(
-                      icon: Icons.favorite_border,
-                      label: '${l10n.like} ${post.$5}',
-                    ),
-                    FuryPostAction(
-                      icon: Icons.chat_bubble_outline,
-                      label: '${l10n.comment} ${post.$6}',
-                    ),
-                  ],
-                ),
+              FuryPostAction(
+                icon: Icons.chat_bubble_outline,
+                label: '$commentLabel ${post.commentCount}',
               ),
             ],
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }
 
 class FuryPostAction extends StatelessWidget {
-  const FuryPostAction({required this.icon, required this.label, super.key});
+  const FuryPostAction({
+    required this.icon,
+    required this.label,
+    this.onPressed,
+    this.isActive = false,
+    super.key,
+  });
 
   final IconData icon;
   final String label;
+  final VoidCallback? onPressed;
+  final bool isActive;
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(icon, size: 17),
       label: Text(label),
       style: TextButton.styleFrom(
-        foregroundColor: FuryColors.muted,
+        foregroundColor: isActive ? FuryColors.red : FuryColors.muted,
         minimumSize: const Size(0, 36),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,

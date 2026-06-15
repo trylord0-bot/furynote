@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/screens/calm_screen.dart';
 import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
 import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
+import 'package:fury_note/src/api/device_service.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
@@ -17,6 +18,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalReminderScheduler.instance.initialize();
   await AppProfileController.instance.load();
+  // 백엔드에 디바이스 등록 (fire-and-forget — 앱 시작을 블록하지 않음)
+  unawaited(DeviceService.instance.registerDevice());
   runApp(const FuryNoteApp());
 }
 
