@@ -19,6 +19,7 @@ class DeviceToken(TimestampMixin, Base):
     device_id: Mapped[str] = mapped_column(String(128), unique=True, nullable=False, index=True)
     fcm_token: Mapped[str] = mapped_column(String(256), nullable=False)
     notify_comment: Mapped[bool] = mapped_column(nullable=False, default=True)
+    avatar_data: Mapped[str | None] = mapped_column(Text, nullable=True)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now(), onupdate=func.now()
     )

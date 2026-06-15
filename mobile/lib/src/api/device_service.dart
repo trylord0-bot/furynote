@@ -38,4 +38,16 @@ class DeviceService {
       });
     } catch (_) {}
   }
+
+  Future<void> updateAvatar(String avatarBase64) async {
+    await ApiClient.instance.patch('/v1/device/avatar', {
+      'avatar_base64': avatarBase64,
+    });
+  }
+
+  Future<void> clearAvatar() async {
+    await ApiClient.instance.patch('/v1/device/avatar', {
+      'avatar_base64': null,
+    });
+  }
 }

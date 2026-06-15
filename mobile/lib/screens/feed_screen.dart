@@ -153,7 +153,7 @@ class _FeedPostItem extends StatelessWidget {
           nickname: post.nickname,
           category: categoryDisplay(post.category),
           text: post.text ?? '',
-          showProfileAvatar: false,
+          avatarBytes: post.avatarBytes,
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 18),

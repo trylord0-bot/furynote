@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../main.dart';
+import '../../src/api/device_service.dart';
 import '../../src/profile/app_profile.dart';
 import '../../widgets/shared_widgets.dart';
 
@@ -16,6 +17,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final _imagePicker = ImagePicker();
   bool _hasError = false;
   String _errorMsg = '';
+  bool _avatarChanged = false;
+  bool _saving = false;
 
   @override
   void initState() {
@@ -63,31 +66,48 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   }
 
   Future<void> _saveNick() async {
-    if (!_canSave) return;
-    final displayName = _nickController.text.trim();
-    await AppProfileController.instance.updateDisplayName(displayName);
-    if (!mounted) {
-      return;
+    if (!_canSave || _saving) return;
+    setState(() => _saving = true);
+    try {
+      final displayName = _nickController.text.trim();
+      await AppProfileController.instance.updateDisplayName(displayName);
+
+      if (_avatarChanged) {
+        final avatarBase64 = AppProfileController.instance.avatarBase64;
+        if (avatarBase64 != null) {
+          await DeviceService.instance.updateAvatar(avatarBase64);
+        } else {
+          await DeviceService.instance.clearAvatar();
+        }
+        _avatarChanged = false;
+      }
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              '✅ "$displayName"으로 변경됐어요!',
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color(0xFF2E6B3E),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      Future.delayed(const Duration(milliseconds: 700), () {
+        if (mounted) Navigator.of(context).pop();
+      });
+    } catch (_) {
+      if (!mounted) return;
+      _showProfileToast('저장 중 오류가 발생했어요.', isError: true);
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            '✅ "$displayName"으로 변경됐어요!',
-            style: const TextStyle(fontWeight: FontWeight.w800),
-          ),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xFF2E6B3E),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    Future.delayed(const Duration(milliseconds: 700), () {
-      if (mounted) Navigator.of(context).pop();
-    });
   }
 
   Future<void> _showAvatarActions() async {
@@ -150,6 +170,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         break;
       case _AvatarAction.clear:
         await AppProfileController.instance.clearAvatar();
+        setState(() => _avatarChanged = true);
         _showProfileToast('기본 아바타로 변경됐어요.');
         break;
     }
@@ -169,6 +190,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
       final bytes = await image.readAsBytes();
       await AppProfileController.instance.updateAvatar(bytes);
+      setState(() => _avatarChanged = true);
       _showProfileToast('프로필 사진이 적용됐어요.');
     } on ProfileAvatarTooLargeException {
       _showProfileToast('5MB 이하의 사진만 사용할 수 있어요.', isError: true);
@@ -356,7 +378,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: _canSave ? _saveNick : null,
+                onPressed: (_canSave && !_saving) ? _saveNick : null,
                 style: FilledButton.styleFrom(
                   backgroundColor: FuryColors.red,
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -364,10 +386,19 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                child: const Text(
-                  '변경 저장',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-                ),
+                child: _saving
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text(
+                        '변경 저장',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                      ),
               ),
             ),
           ],

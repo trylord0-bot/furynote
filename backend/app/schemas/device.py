@@ -12,3 +12,7 @@ class TokenUpdateRequest(BaseModel):
 
 class NotificationUpdateRequest(BaseModel):
     notify_comment: bool
+
+
+class AvatarUpdateRequest(BaseModel):
+    avatar_base64: str | None = None

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'api_client.dart';
 
 class FeedPost {
@@ -12,6 +14,7 @@ class FeedPost {
     required this.isLiked,
     required this.isMine,
     required this.createdAt,
+    this.avatarBytes,
   });
 
   final String postId;
@@ -24,8 +27,16 @@ class FeedPost {
   final bool isLiked;
   final bool isMine;
   final DateTime createdAt;
+  final List<int>? avatarBytes;
 
   factory FeedPost.fromJson(Map<String, dynamic> json) {
+    List<int>? avatarBytes;
+    final avatarBase64 = json['avatar_base64'] as String?;
+    if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+      try {
+        avatarBytes = base64Decode(avatarBase64);
+      } catch (_) {}
+    }
     return FeedPost(
       postId: json['post_id'] as String,
       nickname: json['nickname'] as String,
@@ -37,6 +48,7 @@ class FeedPost {
       isLiked: json['is_liked'] as bool,
       isMine: json['is_mine'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String),
+      avatarBytes: avatarBytes,
     );
   }
 
@@ -52,6 +64,7 @@ class FeedPost {
       isLiked: isLiked ?? this.isLiked,
       isMine: isMine,
       createdAt: createdAt,
+      avatarBytes: avatarBytes,
     );
   }
 }

@@ -6,6 +6,7 @@ CREATE TABLE device_tokens (
   device_id        VARCHAR(128)  NOT NULL COMMENT 'Device identifier',
   fcm_token        VARCHAR(256)  NOT NULL COMMENT 'Firebase FCM token',
   notify_comment   TINYINT(1)    NOT NULL DEFAULT 1 COMMENT 'Comment notification enabled',
+  avatar_data      MEDIUMTEXT    NULL     COMMENT 'Avatar image as base64 JPEG (256x256)',
   created_at       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

@@ -58,6 +58,19 @@ class DbStore:
         self.session.commit()
         return {"device_id": device.device_id, "notify_comment": device.notify_comment}
 
+    def update_avatar(self, device_id: str, avatar_data: str | None) -> None:
+        device = self.session.execute(
+            select(DeviceToken).where(DeviceToken.device_id == device_id)
+        ).scalar_one_or_none()
+
+        if device is None:
+            device = DeviceToken(device_id=device_id, fcm_token="pending", notify_comment=True, avatar_data=avatar_data)
+            self.session.add(device)
+        else:
+            device.avatar_data = avatar_data
+
+        self.session.commit()
+
     # ── Posts ─────────────────────────────────────────────────────────────────
 
     def recent_post_attempts(self, device_id: str) -> list[datetime]:
@@ -91,15 +104,16 @@ class DbStore:
             select(func.count(Post.id)).where(Post.deleted_at.is_(None))
         ).scalar_one()
 
-        posts = self.session.execute(
-            select(Post)
+        rows = self.session.execute(
+            select(Post, DeviceToken.avatar_data)
+            .outerjoin(DeviceToken, Post.device_id == DeviceToken.device_id)
             .where(Post.deleted_at.is_(None))
             .order_by(Post.created_at.desc())
             .offset(offset)
             .limit(size)
-        ).scalars().all()
+        ).all()
 
-        post_ids = [p.post_id for p in posts]
+        post_ids = [row[0].post_id for row in rows]
         liked_ids: set[str] = set()
         if post_ids:
             liked_ids = {
@@ -114,7 +128,7 @@ class DbStore:
         next_offset = offset + size
         has_more = total > next_offset
         return {
-            "posts": [self._serialize_post(p, device_id, liked_ids) for p in posts],
+            "posts": [self._serialize_post(row[0], device_id, liked_ids, row[1]) for row in rows],
             "next_cursor": str(next_offset) if has_more else None,
             "has_more": has_more,
         }
@@ -242,7 +256,7 @@ class DbStore:
 
     # ── Serialization ─────────────────────────────────────────────────────────
 
-    def _serialize_post(self, post: Post, device_id: str, liked_ids: set[str]) -> dict:
+    def _serialize_post(self, post: Post, device_id: str, liked_ids: set[str], avatar_data: str | None = None) -> dict:
         return {
             "post_id": post.post_id,
             "nickname": post.nickname,
@@ -254,6 +268,7 @@ class DbStore:
             "is_liked": post.post_id in liked_ids,
             "is_mine": post.device_id == device_id,
             "created_at": post.created_at.isoformat(),
+            "avatar_base64": avatar_data,
         }
 
     def serialize_comment(self, comment: dict, viewer_device_id: str) -> dict:
