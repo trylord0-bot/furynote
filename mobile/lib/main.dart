@@ -9,6 +9,7 @@ import 'package:fury_note/screens/record_screen.dart';
 import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
 import 'package:fury_note/src/api/device_service.dart';
+import 'package:fury_note/src/api/env_config.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
@@ -16,6 +17,7 @@ import 'package:fury_note/src/profile/app_profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EnvConfig.instance.load();
   await LocalReminderScheduler.instance.initialize();
   await AppProfileController.instance.load();
   // 백엔드에 디바이스 등록 (fire-and-forget — 앱 시작을 블록하지 않음)

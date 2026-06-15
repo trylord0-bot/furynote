@@ -5,13 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import 'device_id_service.dart';
-
-// env/local.json · env/prod.json → --dart-define-from-file 로 빌드 시 주입됩니다.
-// 환경 파일 없이 실행할 경우 플랫폼별 개발 기본값을 사용합니다.
-const String _kApiBaseUrl = String.fromEnvironment('API_BASE_URL');
+import 'env_config.dart';
 
 String get apiBaseUrl {
-  if (_kApiBaseUrl.isNotEmpty) return _kApiBaseUrl;
+  final envUrl = EnvConfig.instance.apiBaseUrl;
+  if (envUrl.isNotEmpty) return envUrl;
   if (kIsWeb) return 'http://localhost:8000';
   if (Platform.isAndroid) return 'http://10.0.2.2:8000';
   return 'http://127.0.0.1:8000';
