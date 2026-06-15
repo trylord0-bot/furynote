@@ -54,15 +54,13 @@ class FuryPostCard extends StatelessWidget {
                   borderRadius: 10,
                   fallbackFontSize: 15,
                 )
-              else if (avatarBytes != null)
+              else
                 FuryProfileAvatar(
                   size: 28,
                   borderRadius: 10,
                   fallbackFontSize: 15,
                   bytes: avatarBytes,
-                )
-              else
-                Text(emoji, style: const TextStyle(fontSize: 22)),
+                ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -74,6 +72,8 @@ class FuryPostCard extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(width: 6),
+              Text(emoji, style: const TextStyle(fontSize: 18)),
             ],
           ),
           const SizedBox(height: 12),
@@ -177,7 +177,7 @@ class FuryProfileAvatar extends StatelessWidget {
             border: Border.all(color: FuryColors.red.withValues(alpha: 0.18)),
           ),
           child: Center(
-            child: Text('🐯', style: TextStyle(fontSize: fallbackFontSize)),
+            child: Text('🔥', style: TextStyle(fontSize: fallbackFontSize)),
           ),
         );
       },
@@ -212,7 +212,7 @@ class _AvatarImage extends StatelessWidget {
             height: size,
             color: FuryColors.red.withValues(alpha: 0.18),
             child: Center(
-              child: Text('🐯', style: TextStyle(fontSize: size * 0.5)),
+              child: Text('🔥', style: TextStyle(fontSize: size * 0.5)),
             ),
           );
         },

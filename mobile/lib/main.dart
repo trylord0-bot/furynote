@@ -14,6 +14,7 @@ import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
+import 'package:fury_note/widgets/shared_widgets.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -726,28 +727,10 @@ class _DrawerProfileAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: AppProfileController.instance,
-      builder: (context, _) {
-        final avatarBytes = AppProfileController.instance.avatarBytes;
-        if (avatarBytes != null && avatarBytes.isNotEmpty) {
-          return ClipOval(
-            child: Image.memory(
-              avatarBytes,
-              width: 44,
-              height: 44,
-              fit: BoxFit.cover,
-              gaplessPlayback: true,
-            ),
-          );
-        }
-
-        return CircleAvatar(
-          radius: 22,
-          backgroundColor: FuryColors.red.withValues(alpha: 0.18),
-          child: const Text('🐯', style: TextStyle(fontSize: 22)),
-        );
-      },
+    return const FuryProfileAvatar(
+      size: 44,
+      borderRadius: 22,
+      fallbackFontSize: 22,
     );
   }
 }
