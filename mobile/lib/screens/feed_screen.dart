@@ -308,15 +308,16 @@ class _FeedPostItem extends StatelessWidget {
             runSpacing: 4,
             children: [
               FuryPostAction(
-                icon: post.isLiked ? Icons.favorite : Icons.favorite_border,
-                label: '$likeLabel ${post.likeCount}',
-                isActive: post.isLiked,
-                onPressed: onToggleLike,
-              ),
-              FuryPostAction(
                 icon: Icons.chat_bubble_outline,
                 label: '$commentLabel ${post.commentCount}',
               ),
+              if (!post.isMine)
+                FuryPostAction(
+                  icon: post.isLiked ? Icons.favorite : Icons.favorite_border,
+                  label: '$likeLabel ${post.likeCount}',
+                  isActive: post.isLiked,
+                  onPressed: onToggleLike,
+                ),
             ],
           ),
         ),
