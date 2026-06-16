@@ -6,7 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
 
 from app.api.v1.router import api_router
-from app.core.config import get_settings
+from app.core.config import DEFAULT_HMAC_SECRET, get_settings
+from app.core.middleware import SignatureMiddleware
 from app.db.base import Base
 import app.models.entities  # noqa: F401 — registers ORM models with Base.metadata
 
@@ -54,6 +55,13 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    app.add_middleware(
+        SignatureMiddleware,
+        secret=settings.hmac_secret,
+        protected_prefix=settings.api_v1_prefix,
+    )
+    if settings.hmac_secret == DEFAULT_HMAC_SECRET and settings.app_env != "local":
+        logger.warning("APP_HMAC_SECRET이 기본값입니다. 운영 환경에서는 반드시 강력한 값으로 설정하세요.")
 
     app.include_router(api_router, prefix=settings.api_v1_prefix)
     return app

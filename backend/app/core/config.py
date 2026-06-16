@@ -19,6 +19,9 @@ def _load_dotenv(path: Path) -> dict[str, str]:
     return values
 
 
+DEFAULT_HMAC_SECRET = "dev-only-change-me"
+
+
 @dataclass(frozen=True)
 class Settings:
     app_env: str
@@ -33,6 +36,7 @@ class Settings:
     firebase_credentials_path: str | None
     apple_verify_url: str
     google_package_name: str
+    hmac_secret: str
 
     @property
     def database_url(self) -> str:
@@ -67,6 +71,7 @@ def build_settings(env: dict[str, str] | None = None, dotenv_path: Path | None =
             "APPLE_VERIFY_URL", "https://buy.itunes.apple.com/verifyReceipt"
         ),
         google_package_name=merged.get("GOOGLE_PACKAGE_NAME", "kr.co.lunlu.furynote"),
+        hmac_secret=merged.get("APP_HMAC_SECRET", DEFAULT_HMAC_SECRET),
     )
 
 

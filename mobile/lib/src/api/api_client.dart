@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 import 'device_id_service.dart';
 import 'env_config.dart';
@@ -30,20 +32,35 @@ class ApiClient {
   static final ApiClient instance = ApiClient._();
   ApiClient._();
 
-  Future<Map<String, String>> _authHeaders() async {
+  static const _uuid = Uuid();
+
+  /// 백엔드와 동일한 방식(HMAC-SHA256 over method/path/timestamp/nonce/body)으로
+  /// 요청 서명을 만든다. 비밀키가 없는 임의의 클라이언트(Postman 등)가 API를
+  /// 직접 호출하는 것을 막기 위한 용도.
+  Map<String, String> _signatureHeaders(String method, String path, String body) {
+    final secret = EnvConfig.instance.hmacSecret;
+    final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+    final nonce = _uuid.v4();
+    final message = '${method.toUpperCase()}\n$path\n$timestamp\n$nonce\n$body';
+    final signature = Hmac(sha256, utf8.encode(secret)).convert(utf8.encode(message)).toString();
+    return {
+      'X-Timestamp': timestamp,
+      'X-Nonce': nonce,
+      'X-Signature': signature,
+    };
+  }
+
+  Future<Map<String, String>> _authHeaders(String method, String path, String body) async {
     final deviceId = await DeviceIdService.instance.getOrCreate();
     return {
       'Content-Type': 'application/json; charset=utf-8',
       'X-Device-ID': deviceId,
+      ..._signatureHeaders(method, path, body),
     };
   }
 
-  Map<String, String> get _jsonHeaders => {
-        'Content-Type': 'application/json; charset=utf-8',
-      };
-
   Future<dynamic> get(String path, {Map<String, String>? query}) async {
-    final headers = await _authHeaders();
+    final headers = await _authHeaders('GET', path, '');
     var uri = Uri.parse('$apiBaseUrl$path');
     if (query != null) uri = uri.replace(queryParameters: query);
     final response = await http.get(uri, headers: headers);
@@ -51,36 +68,43 @@ class ApiClient {
   }
 
   Future<dynamic> post(String path, [Map<String, dynamic>? body]) async {
-    final headers = await _authHeaders();
+    final encodedBody = body != null ? jsonEncode(body) : '';
+    final headers = await _authHeaders('POST', path, encodedBody);
     final response = await http.post(
       Uri.parse('$apiBaseUrl$path'),
       headers: headers,
-      body: body != null ? utf8.encode(jsonEncode(body)) : null,
+      body: body != null ? utf8.encode(encodedBody) : null,
     );
     return _parse(response);
   }
 
   Future<dynamic> postAnonymous(String path, Map<String, dynamic> body) async {
+    final encodedBody = jsonEncode(body);
+    final headers = {
+      'Content-Type': 'application/json; charset=utf-8',
+      ..._signatureHeaders('POST', path, encodedBody),
+    };
     final response = await http.post(
       Uri.parse('$apiBaseUrl$path'),
-      headers: _jsonHeaders,
-      body: utf8.encode(jsonEncode(body)),
+      headers: headers,
+      body: utf8.encode(encodedBody),
     );
     return _parse(response);
   }
 
   Future<dynamic> patch(String path, Map<String, dynamic> body) async {
-    final headers = await _authHeaders();
+    final encodedBody = jsonEncode(body);
+    final headers = await _authHeaders('PATCH', path, encodedBody);
     final response = await http.patch(
       Uri.parse('$apiBaseUrl$path'),
       headers: headers,
-      body: utf8.encode(jsonEncode(body)),
+      body: utf8.encode(encodedBody),
     );
     return _parse(response);
   }
 
   Future<dynamic> delete(String path) async {
-    final headers = await _authHeaders();
+    final headers = await _authHeaders('DELETE', path, '');
     final response = await http.delete(
       Uri.parse('$apiBaseUrl$path'),
       headers: headers,

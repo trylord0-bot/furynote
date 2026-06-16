@@ -1,5 +1,12 @@
+import json
+import time
+from urllib.parse import urlsplit
+from uuid import uuid4
+
 from fastapi.testclient import TestClient
 
+from app.core.config import DEFAULT_HMAC_SECRET
+from app.core.signature import compute_signature
 from app.main import create_app
 from app.repositories.memory import reset_store
 
@@ -9,21 +16,58 @@ def client() -> TestClient:
     return TestClient(create_app())
 
 
+def _signed_headers(
+    method: str,
+    url: str,
+    body: str,
+    extra: dict | None = None,
+    timestamp: str | None = None,
+    nonce: str | None = None,
+) -> dict:
+    path = urlsplit(url).path
+    ts = timestamp if timestamp is not None else str(time.time())
+    n = nonce if nonce is not None else str(uuid4())
+    signature = compute_signature(DEFAULT_HMAC_SECRET, method, path, ts, n, body)
+    headers = {"X-Timestamp": ts, "X-Nonce": n, "X-Signature": signature}
+    if extra:
+        headers.update(extra)
+    return headers
+
+
+def signed_get(api: TestClient, url: str, headers: dict | None = None):
+    return api.get(url, headers=_signed_headers("GET", url, "", headers))
+
+
+def signed_post(api: TestClient, url: str, json_body: dict | None = None, headers: dict | None = None):
+    if json_body is None:
+        return api.post(url, headers=_signed_headers("POST", url, "", headers))
+    body = json.dumps(json_body, separators=(",", ":"))
+    all_headers = _signed_headers("POST", url, body, headers)
+    all_headers["Content-Type"] = "application/json"
+    return api.post(url, headers=all_headers, content=body.encode("utf-8"))
+
+
+def signed_patch(api: TestClient, url: str, json_body: dict, headers: dict | None = None):
+    body = json.dumps(json_body, separators=(",", ":"))
+    all_headers = _signed_headers("PATCH", url, body, headers)
+    all_headers["Content-Type"] = "application/json"
+    return api.patch(url, headers=all_headers, content=body.encode("utf-8"))
+
+
+def signed_delete(api: TestClient, url: str, headers: dict | None = None):
+    return api.delete(url, headers=_signed_headers("DELETE", url, "", headers))
+
+
 def test_device_register_upserts_token_and_notification_setting() -> None:
     api = client()
 
-    created = api.post(
-        "/v1/device/register",
-        json={"device_id": "device-1", "fcm_token": "token-a"},
-    )
-    updated = api.post(
-        "/v1/device/register",
-        json={"device_id": "device-1", "fcm_token": "token-b"},
-    )
-    notification = api.patch(
+    created = signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token-a"})
+    updated = signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token-b"})
+    notification = signed_patch(
+        api,
         "/v1/device/notification",
-        headers={"X-Device-ID": "device-1"},
-        json={"notify_comment": False},
+        {"notify_comment": False},
+        {"X-Device-ID": "device-1"},
     )
 
     assert created.status_code == 200
@@ -34,12 +78,13 @@ def test_device_register_upserts_token_and_notification_setting() -> None:
 
 def test_post_create_blocks_urls_with_envelope_error() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+    signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token"})
 
-    response = api.post(
+    response = signed_post(
+        api,
         "/v1/posts",
-        headers={"X-Device-ID": "device-1"},
-        json={"rage_level": 3, "category": "driving", "text": "look https://example.com"},
+        {"rage_level": 3, "category": "driving", "text": "look https://example.com"},
+        {"X-Device-ID": "device-1"},
     )
 
     assert response.status_code == 400
@@ -48,26 +93,28 @@ def test_post_create_blocks_urls_with_envelope_error() -> None:
 
 def test_post_create_list_like_comment_and_delete_flow() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+    signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token"})
 
-    created = api.post(
+    created = signed_post(
+        api,
         "/v1/posts",
-        headers={"X-Device-ID": "device-1"},
-        json={"rage_level": 4, "category": "work", "text": "회의가 너무 늦게 잡혔다"},
+        {"rage_level": 4, "category": "work", "text": "회의가 너무 늦게 잡혔다"},
+        {"X-Device-ID": "device-1"},
     )
     post_id = created.json()["data"]["post_id"]
 
-    listed = api.get("/v1/posts", headers={"X-Device-ID": "device-1"})
-    liked = api.post(f"/v1/posts/{post_id}/like", headers={"X-Device-ID": "device-1"})
-    unliked = api.post(f"/v1/posts/{post_id}/like", headers={"X-Device-ID": "device-1"})
-    commented = api.post(
+    listed = signed_get(api, "/v1/posts", {"X-Device-ID": "device-1"})
+    liked = signed_post(api, f"/v1/posts/{post_id}/like", None, {"X-Device-ID": "device-1"})
+    unliked = signed_post(api, f"/v1/posts/{post_id}/like", None, {"X-Device-ID": "device-1"})
+    commented = signed_post(
+        api,
         f"/v1/posts/{post_id}/comments",
-        headers={"X-Device-ID": "device-1"},
-        json={"text": "나도 그랬어요"},
+        {"text": "나도 그랬어요"},
+        {"X-Device-ID": "device-1"},
     )
-    comments = api.get(f"/v1/posts/{post_id}/comments", headers={"X-Device-ID": "device-1"})
-    deleted = api.delete(f"/v1/posts/{post_id}", headers={"X-Device-ID": "device-1"})
-    after_delete = api.get("/v1/posts", headers={"X-Device-ID": "device-1"})
+    comments = signed_get(api, f"/v1/posts/{post_id}/comments", {"X-Device-ID": "device-1"})
+    deleted = signed_delete(api, f"/v1/posts/{post_id}", {"X-Device-ID": "device-1"})
+    after_delete = signed_get(api, "/v1/posts", {"X-Device-ID": "device-1"})
 
     assert created.status_code == 201
     assert listed.json()["data"]["posts"][0]["post_id"] == post_id
@@ -84,15 +131,16 @@ def test_post_create_list_like_comment_and_delete_flow() -> None:
 
 def test_purchase_verify_updates_status() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+    signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token"})
 
-    before = api.get("/v1/purchase/status", headers={"X-Device-ID": "device-1"})
-    verified = api.post(
+    before = signed_get(api, "/v1/purchase/status", {"X-Device-ID": "device-1"})
+    verified = signed_post(
+        api,
         "/v1/purchase/verify",
-        headers={"X-Device-ID": "device-1"},
-        json={"platform": "ios", "receipt_data": "receipt"},
+        {"platform": "ios", "receipt_data": "receipt"},
+        {"X-Device-ID": "device-1"},
     )
-    after = api.get("/v1/purchase/status", headers={"X-Device-ID": "device-1"})
+    after = signed_get(api, "/v1/purchase/status", {"X-Device-ID": "device-1"})
 
     assert before.json()["data"]["is_pro"] is False
     assert verified.json()["data"]["pro_activated"] is True
@@ -102,25 +150,28 @@ def test_purchase_verify_updates_status() -> None:
 
 def test_other_device_cannot_delete_post_or_comment() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "owner", "fcm_token": "token"})
-    api.post("/v1/device/register", json={"device_id": "other", "fcm_token": "token"})
-    created = api.post(
+    signed_post(api, "/v1/device/register", {"device_id": "owner", "fcm_token": "token"})
+    signed_post(api, "/v1/device/register", {"device_id": "other", "fcm_token": "token"})
+    created = signed_post(
+        api,
         "/v1/posts",
-        headers={"X-Device-ID": "owner"},
-        json={"rage_level": 3, "category": "people", "text": "말이 너무 날카로웠다"},
+        {"rage_level": 3, "category": "people", "text": "말이 너무 날카로웠다"},
+        {"X-Device-ID": "owner"},
     )
     post_id = created.json()["data"]["post_id"]
-    comment = api.post(
+    comment = signed_post(
+        api,
         f"/v1/posts/{post_id}/comments",
-        headers={"X-Device-ID": "owner"},
-        json={"text": "내 댓글"},
+        {"text": "내 댓글"},
+        {"X-Device-ID": "owner"},
     )
     comment_id = comment.json()["data"]["comment_id"]
 
-    post_delete = api.delete(f"/v1/posts/{post_id}", headers={"X-Device-ID": "other"})
-    comment_delete = api.delete(
+    post_delete = signed_delete(api, f"/v1/posts/{post_id}", {"X-Device-ID": "other"})
+    comment_delete = signed_delete(
+        api,
         f"/v1/posts/{post_id}/comments/{comment_id}",
-        headers={"X-Device-ID": "other"},
+        {"X-Device-ID": "other"},
     )
 
     assert post_delete.status_code == 403
@@ -131,20 +182,22 @@ def test_other_device_cannot_delete_post_or_comment() -> None:
 
 def test_deleted_post_rejects_likes_and_comments() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "owner", "fcm_token": "token"})
-    created = api.post(
+    signed_post(api, "/v1/device/register", {"device_id": "owner", "fcm_token": "token"})
+    created = signed_post(
+        api,
         "/v1/posts",
-        headers={"X-Device-ID": "owner"},
-        json={"rage_level": 5, "category": "work", "text": "삭제될 글"},
+        {"rage_level": 5, "category": "work", "text": "삭제될 글"},
+        {"X-Device-ID": "owner"},
     )
     post_id = created.json()["data"]["post_id"]
-    api.delete(f"/v1/posts/{post_id}", headers={"X-Device-ID": "owner"})
+    signed_delete(api, f"/v1/posts/{post_id}", {"X-Device-ID": "owner"})
 
-    like = api.post(f"/v1/posts/{post_id}/like", headers={"X-Device-ID": "owner"})
-    comment = api.post(
+    like = signed_post(api, f"/v1/posts/{post_id}/like", None, {"X-Device-ID": "owner"})
+    comment = signed_post(
+        api,
         f"/v1/posts/{post_id}/comments",
-        headers={"X-Device-ID": "owner"},
-        json={"text": "댓글 불가"},
+        {"text": "댓글 불가"},
+        {"X-Device-ID": "owner"},
     )
 
     assert like.status_code == 404
@@ -155,13 +208,14 @@ def test_deleted_post_rejects_likes_and_comments() -> None:
 
 def test_post_creation_rate_limits_sixth_attempt_in_sixty_seconds() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+    signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token"})
 
     responses = [
-        api.post(
+        signed_post(
+            api,
             "/v1/posts",
-            headers={"X-Device-ID": "device-1"},
-            json={"rage_level": 2, "category": "work", "text": f"attempt {index}"},
+            {"rage_level": 2, "category": "work", "text": f"attempt {index}"},
+            {"X-Device-ID": "device-1"},
         )
         for index in range(6)
     ]
@@ -174,19 +228,21 @@ def test_post_creation_rate_limits_sixth_attempt_in_sixty_seconds() -> None:
 
 def test_posts_cursor_pagination_returns_next_page() -> None:
     api = client()
-    api.post("/v1/device/register", json={"device_id": "device-1", "fcm_token": "token"})
+    signed_post(api, "/v1/device/register", {"device_id": "device-1", "fcm_token": "token"})
     for index in range(3):
-        api.post(
+        signed_post(
+            api,
             "/v1/posts",
-            headers={"X-Device-ID": "device-1"},
-            json={"rage_level": 2, "category": "work", "text": f"post {index}"},
+            {"rage_level": 2, "category": "work", "text": f"post {index}"},
+            {"X-Device-ID": "device-1"},
         )
 
-    first_page = api.get("/v1/posts?size=2", headers={"X-Device-ID": "device-1"})
+    first_page = signed_get(api, "/v1/posts?size=2", {"X-Device-ID": "device-1"})
     next_cursor = first_page.json()["data"]["next_cursor"]
-    second_page = api.get(
+    second_page = signed_get(
+        api,
         f"/v1/posts?size=2&cursor={next_cursor}",
-        headers={"X-Device-ID": "device-1"},
+        {"X-Device-ID": "device-1"},
     )
 
     assert first_page.json()["data"]["has_more"] is True
@@ -194,3 +250,55 @@ def test_posts_cursor_pagination_returns_next_page() -> None:
     assert next_cursor is not None
     assert len(second_page.json()["data"]["posts"]) == 1
     assert second_page.json()["data"]["has_more"] is False
+
+
+def test_request_without_signature_headers_is_rejected() -> None:
+    api = client()
+
+    response = api.post(
+        "/v1/device/register",
+        json={"device_id": "device-1", "fcm_token": "token"},
+    )
+
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "SIGNATURE_REQUIRED"
+
+
+def test_request_with_tampered_signature_is_rejected() -> None:
+    api = client()
+    body = json.dumps({"device_id": "device-1", "fcm_token": "token"}, separators=(",", ":"))
+    headers = _signed_headers("POST", "/v1/device/register", body)
+    headers["X-Signature"] = "0" * 64
+    headers["Content-Type"] = "application/json"
+
+    response = api.post("/v1/device/register", headers=headers, content=body.encode("utf-8"))
+
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "SIGNATURE_INVALID"
+
+
+def test_request_with_expired_timestamp_is_rejected() -> None:
+    api = client()
+    body = json.dumps({"device_id": "device-1", "fcm_token": "token"}, separators=(",", ":"))
+    old_timestamp = str(time.time() - 600)
+    headers = _signed_headers("POST", "/v1/device/register", body, timestamp=old_timestamp)
+    headers["Content-Type"] = "application/json"
+
+    response = api.post("/v1/device/register", headers=headers, content=body.encode("utf-8"))
+
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "SIGNATURE_EXPIRED"
+
+
+def test_replayed_signature_is_rejected_on_second_use() -> None:
+    api = client()
+    body = json.dumps({"device_id": "device-1", "fcm_token": "token"}, separators=(",", ":"))
+    headers = _signed_headers("POST", "/v1/device/register", body)
+    headers["Content-Type"] = "application/json"
+
+    first = api.post("/v1/device/register", headers=headers, content=body.encode("utf-8"))
+    second = api.post("/v1/device/register", headers=headers, content=body.encode("utf-8"))
+
+    assert first.status_code == 200
+    assert second.status_code == 401
+    assert second.json()["error"]["code"] == "SIGNATURE_REPLAY"

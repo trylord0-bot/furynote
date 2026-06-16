@@ -24,4 +24,5 @@ class EnvConfig {
   }
 
   String get apiBaseUrl => _values['API_BASE_URL'] ?? '';
+  String get hmacSecret => _values['HMAC_SECRET'] ?? '';
 }
