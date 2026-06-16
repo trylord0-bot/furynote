@@ -925,6 +925,90 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이 문서는 의료적 진단이나 치료를 대체하지 않습니다.'**
   String get calmGuideFooterDisclaimer;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보처리방침'**
+  String get privacyTitle;
+
+  /// No description provided for @privacyLastUpdated.
+  ///
+  /// In ko, this message translates to:
+  /// **'시행일: 2026년 6월 16일'**
+  String get privacyLastUpdated;
+
+  /// No description provided for @privacySection1Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'1. 수집하는 개인정보의 항목'**
+  String get privacySection1Title;
+
+  /// No description provided for @privacySection1Body.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note는 별도의 회원가입 절차 없이 이용할 수 있으며, 다음과 같은 정보를 수집합니다.\n\n· 기기 식별자 — 회원가입 없이 이용자를 식별하기 위하여 발급되는 임의의 값(부정 이용 방지 목적)\n· 분노 기록 데이터 — 강도, 카테고리, 텍스트(기기 내부에만 저장)\n· 익명 피드 게시물 — 닉네임, 아바타 이미지, 강도, 카테고리, 텍스트\n· 댓글 — 닉네임, 댓글 내용\n· 좋아요(공감) 처리 내역 — 게시물별 공감 여부\n· 푸시 알림 토큰 — 알림 발송 목적(선택 사항)'**
+  String get privacySection1Body;
+
+  /// No description provided for @privacySection2Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'2. 개인정보의 처리 목적'**
+  String get privacySection2Title;
+
+  /// No description provided for @privacySection2Body.
+  ///
+  /// In ko, this message translates to:
+  /// **'· 익명 피드, 댓글, 좋아요 등 커뮤니티 기능의 제공\n· 동일 게시물에 대한 중복 공감 방지 등 부정 이용 탐지\n· 댓글 알림 등 푸시 알림의 발송\n· 서비스 운영 및 오류 분석'**
+  String get privacySection2Body;
+
+  /// No description provided for @privacySection3Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'3. 회원가입 및 개인정보 미보관에 관한 사항'**
+  String get privacySection3Title;
+
+  /// No description provided for @privacySection3Body.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note는 회원가입 절차를 두지 아니하며, 성명, 이메일, 전화번호 등 실명 확인이 가능한 개인정보를 수집하지 아니합니다.\n\n닉네임은 자동으로 생성되거나 이용자가 직접 입력한 것으로 실명과 연계되지 아니하며, 기기 식별자 또한 특정 개인을 식별할 수 없는 임의의 값입니다.'**
+  String get privacySection3Body;
+
+  /// No description provided for @privacySection4Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'4. 개인정보의 제3자 제공'**
+  String get privacySection4Title;
+
+  /// No description provided for @privacySection4Body.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집한 정보는 제3자에게 제공하거나 판매하지 아니합니다.'**
+  String get privacySection4Body;
+
+  /// No description provided for @privacySection5Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'5. 개인정보의 보유 및 이용 기간'**
+  String get privacySection5Title;
+
+  /// No description provided for @privacySection5Body.
+  ///
+  /// In ko, this message translates to:
+  /// **'· 저장만 한 분노 기록은 기기 내부에만 보관되며, 앱 삭제 시 함께 삭제됩니다.\n· 익명 피드에 게시한 게시물, 아바타, 댓글은 이용자가 삭제할 때까지 서버에 보관되며, 삭제를 요청하는 경우 즉시 삭제합니다.\n· 좋아요 처리 내역은 해당 게시물이 삭제되는 경우 함께 삭제됩니다.'**
+  String get privacySection5Body;
+
+  /// No description provided for @privacySection6Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'6. 문의처'**
+  String get privacySection6Title;
+
+  /// No description provided for @privacySection6Body.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보와 관련한 문의는 아래 이메일로 연락하여 주시기 바랍니다.\nlunlu.co.kr@gmail.com'**
+  String get privacySection6Body;
 }
 
 class _AppLocalizationsDelegate

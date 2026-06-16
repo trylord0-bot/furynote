@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../main.dart';
 import '../src/profile/app_profile.dart';
 import '../widgets/shared_widgets.dart';
@@ -7,6 +8,8 @@ import 'settings/profile_edit_screen.dart';
 import 'settings/data_export_screen.dart';
 import 'settings/data_import_screen.dart';
 import 'settings/privacy_screen.dart';
+
+const _feedbackEmail = 'lunlu.co.kr@gmail.com';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -151,6 +154,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: Color(0xFF444444),
                   size: 14,
                 ),
+                onTap: () {
+                  launchUrl(Uri(scheme: 'mailto', path: _feedbackEmail));
+                },
               ),
             ],
           ),

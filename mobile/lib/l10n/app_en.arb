@@ -137,5 +137,19 @@
   "calmGuideDanger4": "When alcohol, drugs, or severe sleep deprivation make it hard to stay in control",
   "calmGuideDangerBody": "In these cases, don't try to get through it with the calm routine alone — ask people around you, professional services, or emergency services for help.",
   "calmGuideFooterTitle": "Fury Note Calm Guide",
-  "calmGuideFooterDisclaimer": "This document does not replace medical diagnosis or treatment."
+  "calmGuideFooterDisclaimer": "This document does not replace medical diagnosis or treatment.",
+  "privacyTitle": "Privacy Policy",
+  "privacyLastUpdated": "Effective Date: June 16, 2026",
+  "privacySection1Title": "1. Categories of Information Collected",
+  "privacySection1Body": "Fury Note may be used without any membership registration. The Company collects only the following information.\n\n· Device identifier — a randomly issued value used to identify the user without registration, for the purpose of preventing fraudulent use\n· Rage record data — intensity, category, and text (stored on the device only)\n· Anonymous feed posts — nickname, avatar image, intensity, category, and text\n· Comments — nickname and comment text\n· Like records — whether the user has liked a given post\n· Push notification token — for the purpose of sending notifications (optional)",
+  "privacySection2Title": "2. Purpose of Processing",
+  "privacySection2Body": "· Provision of community features, including the anonymous feed, comments, and likes\n· Detection of fraudulent use, including prevention of duplicate likes on the same post\n· Sending of push notifications, including comment alerts\n· Operation of the service and analysis of errors",
+  "privacySection3Title": "3. No Membership Registration and No Retention of Personal Information",
+  "privacySection3Body": "Fury Note does not require membership registration and does not collect identity-verifiable personal information such as name, email address, or phone number.\n\nThe nickname is either automatically generated or entered directly by the user and is not linked to the user's real identity. The device identifier is likewise a randomly generated value that cannot be used to identify a specific individual.",
+  "privacySection4Title": "4. Provision of Information to Third Parties",
+  "privacySection4Body": "The Company does not provide or sell collected information to third parties.",
+  "privacySection5Title": "5. Retention and Use Period of Information",
+  "privacySection5Body": "· Rage records that have only been saved are retained on the device only and are deleted together upon deletion of the app.\n· Posts, avatars, and comments shared to the anonymous feed are retained on the server until deleted by the user, and are deleted immediately upon such request.\n· Like records are deleted together upon deletion of the related post.",
+  "privacySection6Title": "6. Contact",
+  "privacySection6Body": "For inquiries regarding personal information, please contact the email address below.\nlunlu.co.kr@gmail.com"
 }

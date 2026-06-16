@@ -450,4 +450,55 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get calmGuideFooterDisclaimer =>
       'This document does not replace medical diagnosis or treatment.';
+
+  @override
+  String get privacyTitle => 'Privacy Policy';
+
+  @override
+  String get privacyLastUpdated => 'Effective Date: June 16, 2026';
+
+  @override
+  String get privacySection1Title => '1. Categories of Information Collected';
+
+  @override
+  String get privacySection1Body =>
+      'Fury Note may be used without any membership registration. The Company collects only the following information.\n\n· Device identifier — a randomly issued value used to identify the user without registration, for the purpose of preventing fraudulent use\n· Rage record data — intensity, category, and text (stored on the device only)\n· Anonymous feed posts — nickname, avatar image, intensity, category, and text\n· Comments — nickname and comment text\n· Like records — whether the user has liked a given post\n· Push notification token — for the purpose of sending notifications (optional)';
+
+  @override
+  String get privacySection2Title => '2. Purpose of Processing';
+
+  @override
+  String get privacySection2Body =>
+      '· Provision of community features, including the anonymous feed, comments, and likes\n· Detection of fraudulent use, including prevention of duplicate likes on the same post\n· Sending of push notifications, including comment alerts\n· Operation of the service and analysis of errors';
+
+  @override
+  String get privacySection3Title =>
+      '3. No Membership Registration and No Retention of Personal Information';
+
+  @override
+  String get privacySection3Body =>
+      'Fury Note does not require membership registration and does not collect identity-verifiable personal information such as name, email address, or phone number.\n\nThe nickname is either automatically generated or entered directly by the user and is not linked to the user\'s real identity. The device identifier is likewise a randomly generated value that cannot be used to identify a specific individual.';
+
+  @override
+  String get privacySection4Title =>
+      '4. Provision of Information to Third Parties';
+
+  @override
+  String get privacySection4Body =>
+      'The Company does not provide or sell collected information to third parties.';
+
+  @override
+  String get privacySection5Title =>
+      '5. Retention and Use Period of Information';
+
+  @override
+  String get privacySection5Body =>
+      '· Rage records that have only been saved are retained on the device only and are deleted together upon deletion of the app.\n· Posts, avatars, and comments shared to the anonymous feed are retained on the server until deleted by the user, and are deleted immediately upon such request.\n· Like records are deleted together upon deletion of the related post.';
+
+  @override
+  String get privacySection6Title => '6. Contact';
+
+  @override
+  String get privacySection6Body =>
+      'For inquiries regarding personal information, please contact the email address below.\nlunlu.co.kr@gmail.com';
 }
