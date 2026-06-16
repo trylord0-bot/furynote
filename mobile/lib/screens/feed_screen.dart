@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import '../main.dart';
+import '../widgets/comment_sheet.dart';
 import '../widgets/shared_widgets.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -186,6 +187,23 @@ class _FeedTabViewState extends State<_FeedTabView>
     } catch (_) {}
   }
 
+  Future<void> _openComments(FeedPost post) async {
+    await showCommentSheet(
+      context,
+      postId: post.postId,
+      commentCount: post.commentCount,
+      onCountChanged: (count) {
+        if (!mounted) return;
+        setState(() {
+          final idx = _posts.indexWhere((p) => p.postId == post.postId);
+          if (idx >= 0) {
+            _posts[idx] = _posts[idx].copyWith(commentCount: count);
+          }
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -263,6 +281,7 @@ class _FeedTabViewState extends State<_FeedTabView>
             likeLabel: l10n.like,
             commentLabel: l10n.comment,
             onToggleLike: () => _toggleLike(post.postId),
+            onComment: () => _openComments(post),
             onDelete: post.isMine ? () => _deletePost(post.postId) : null,
           );
         },
@@ -277,6 +296,7 @@ class _FeedPostItem extends StatelessWidget {
     required this.likeLabel,
     required this.commentLabel,
     required this.onToggleLike,
+    required this.onComment,
     this.onDelete,
     super.key,
   });
@@ -285,6 +305,7 @@ class _FeedPostItem extends StatelessWidget {
   final String likeLabel;
   final String commentLabel;
   final VoidCallback onToggleLike;
+  final VoidCallback onComment;
   final VoidCallback? onDelete;
 
   @override
@@ -310,6 +331,7 @@ class _FeedPostItem extends StatelessWidget {
               FuryPostAction(
                 icon: Icons.chat_bubble_outline,
                 label: '$commentLabel ${post.commentCount}',
+                onPressed: onComment,
               ),
               if (!post.isMine)
                 FuryPostAction(

@@ -52,7 +52,7 @@ class FeedPost {
     );
   }
 
-  FeedPost copyWith({bool? isLiked, int? likeCount}) {
+  FeedPost copyWith({bool? isLiked, int? likeCount, int? commentCount}) {
     return FeedPost(
       postId: postId,
       nickname: nickname,
@@ -60,11 +60,37 @@ class FeedPost {
       category: category,
       text: text,
       likeCount: likeCount ?? this.likeCount,
-      commentCount: commentCount,
+      commentCount: commentCount ?? this.commentCount,
       isLiked: isLiked ?? this.isLiked,
       isMine: isMine,
       createdAt: createdAt,
       avatarBytes: avatarBytes,
+    );
+  }
+}
+
+class FeedComment {
+  const FeedComment({
+    required this.commentId,
+    required this.nickname,
+    required this.text,
+    required this.isMine,
+    required this.createdAt,
+  });
+
+  final String commentId;
+  final String nickname;
+  final String text;
+  final bool isMine;
+  final DateTime createdAt;
+
+  factory FeedComment.fromJson(Map<String, dynamic> json) {
+    return FeedComment(
+      commentId: json['comment_id'] as String,
+      nickname: json['nickname'] as String,
+      text: json['text'] as String,
+      isMine: json['is_mine'] as bool,
+      createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
     );
   }
 }
@@ -80,7 +106,7 @@ class FeedService {
   }) async {
     final query = <String, String>{
       'size': size.toString(),
-      if (cursor != null) 'cursor': cursor,
+      'cursor': ?cursor,
       if (mineOnly) 'mine': 'true',
     };
     final data = await ApiClient.instance.get('/v1/posts', query: query)
@@ -123,6 +149,32 @@ class FeedService {
 
   Future<void> deletePost(String postId) async {
     await ApiClient.instance.delete('/v1/posts/$postId');
+  }
+
+  Future<List<FeedComment>> listComments(String postId) async {
+    final data = await ApiClient.instance.get('/v1/posts/$postId/comments')
+        as Map<String, dynamic>;
+    return (data['comments'] as List<dynamic>)
+        .map((c) => FeedComment.fromJson(c as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<FeedComment> createComment({
+    required String postId,
+    required String nickname,
+    required String text,
+  }) async {
+    final body = <String, dynamic>{'nickname': nickname, 'text': text};
+    final data = await ApiClient.instance
+        .post('/v1/posts/$postId/comments', body) as Map<String, dynamic>;
+    return FeedComment.fromJson(data);
+  }
+
+  Future<void> deleteComment({
+    required String postId,
+    required String commentId,
+  }) async {
+    await ApiClient.instance.delete('/v1/posts/$postId/comments/$commentId');
   }
 }
 
