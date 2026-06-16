@@ -6,7 +6,6 @@ import 'package:fury_note/screens/stats_calendar_screen.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import '../main.dart';
-import '../widgets/shared_widgets.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({this.noteRepository, super.key});
@@ -17,15 +16,29 @@ class StatsScreen extends StatefulWidget {
   State<StatsScreen> createState() => _StatsScreenState();
 }
 
-class _StatsScreenState extends State<StatsScreen> {
+class _StatsScreenState extends State<StatsScreen>
+    with SingleTickerProviderStateMixin {
   List<RageNote> _records = const [];
-  String _range = 'week';
+  late TabController _tabController;
   bool _loading = true;
+
+  static const _ranges = ['week', 'month', 'all'];
+  String get _range => _ranges[_tabController.index];
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) setState(() {});
+    });
     _loadRecords();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadRecords() async {
@@ -238,75 +251,85 @@ class _StatsScreenState extends State<StatsScreen> {
     final l10n = AppLocalizations.of(context);
     final filteredRecords = _filteredRecords();
 
-    return ListView(
-      padding: const EdgeInsets.all(20),
+    return Column(
       children: [
-        SectionHeader(
-          title: l10n.statsTitle,
-          subtitle: l10n.statsSubtitle,
-          showTitle: false,
-          showSubtitle: false,
-        ),
-        const SizedBox(height: 12),
-        SegmentedButton<String>(
-          segments: [
-            ButtonSegment(value: 'week', label: Text(l10n.week)),
-            ButtonSegment(value: 'month', label: Text(l10n.month)),
-            ButtonSegment(value: 'all', label: Text(l10n.all)),
-          ],
-          selected: {_range},
-          onSelectionChanged: (value) => setState(() => _range = value.single),
-        ),
-        const SizedBox(height: 16),
-        if (_loading)
-          const LinearProgressIndicator(value: 0.35, minHeight: 2)
-        else
-          const SizedBox.shrink(),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: MetricTile(
-                label: l10n.totalRecords,
-                value: '${filteredRecords.length}',
-              ),
+        Container(
+          color: FuryColors.chrome,
+          child: TabBar(
+            controller: _tabController,
+            indicatorColor: FuryColors.red,
+            indicatorWeight: 2,
+            labelColor: FuryColors.text,
+            unselectedLabelColor: FuryColors.muted,
+            dividerColor: FuryColors.border,
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: MetricTile(
-                label: l10n.highestLevel,
-                value: _highestLevelLabel(filteredRecords),
-              ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: MetricTile(
-                label: l10n.dailyAverage,
-                value: _dailyAverageLabel(filteredRecords),
-              ),
-            ),
-          ],
+            tabs: [
+              Tab(text: l10n.week),
+              Tab(text: l10n.month),
+              Tab(text: l10n.all),
+            ],
+          ),
         ),
-        const SizedBox(height: 16),
-        _LineChartPanel(title: '분노 강도 추이', points: _intensityPoints()),
-        const SizedBox(height: 12),
-        _PieChartPanel(
-          title: '원인별 분포',
-          slices: _categoryDistributionSlices(filteredRecords),
-        ),
-        const SizedBox(height: 16),
-        _CalendarRecordsButton(
-          onTap: () async {
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) =>
-                    StatsCalendarScreen(noteRepository: widget.noteRepository),
+        if (_loading) const LinearProgressIndicator(value: 0.35, minHeight: 2),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: MetricTile(
+                      label: l10n.totalRecords,
+                      value: '${filteredRecords.length}',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: MetricTile(
+                      label: l10n.highestLevel,
+                      value: _highestLevelLabel(filteredRecords),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: MetricTile(
+                      label: l10n.dailyAverage,
+                      value: _dailyAverageLabel(filteredRecords),
+                    ),
+                  ),
+                ],
               ),
-            );
-            if (mounted) {
-              await _loadRecords();
-            }
-          },
+              const SizedBox(height: 16),
+              _LineChartPanel(title: '분노 강도 추이', points: _intensityPoints()),
+              const SizedBox(height: 12),
+              _PieChartPanel(
+                title: '원인별 분포',
+                slices: _categoryDistributionSlices(filteredRecords),
+              ),
+              const SizedBox(height: 16),
+              _CalendarRecordsButton(
+                onTap: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => StatsCalendarScreen(
+                        noteRepository: widget.noteRepository,
+                      ),
+                    ),
+                  );
+                  if (mounted) {
+                    await _loadRecords();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );

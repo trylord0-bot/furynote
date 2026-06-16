@@ -97,20 +97,23 @@ class DbStore:
         self.session.refresh(post)
         return {"post_id": post.post_id, "created_at": post.created_at}
 
-    def list_posts_page(self, device_id: str, size: int, cursor: str | None = None) -> dict:
+    def list_posts_page(self, device_id: str, size: int, cursor: str | None = None, mine_only: bool = False) -> dict:
         offset = int(cursor) if cursor else 0
 
-        total = self.session.execute(
-            select(func.count(Post.id)).where(Post.deleted_at.is_(None))
-        ).scalar_one()
+        count_q = select(func.count(Post.id)).where(Post.deleted_at.is_(None))
+        if mine_only:
+            count_q = count_q.where(Post.device_id == device_id)
+        total = self.session.execute(count_q).scalar_one()
 
-        rows = self.session.execute(
+        rows_q = (
             select(Post, DeviceToken.avatar_data)
             .outerjoin(DeviceToken, Post.device_id == DeviceToken.device_id)
             .where(Post.deleted_at.is_(None))
-            .order_by(Post.created_at.desc())
-            .offset(offset)
-            .limit(size)
+        )
+        if mine_only:
+            rows_q = rows_q.where(Post.device_id == device_id)
+        rows = self.session.execute(
+            rows_q.order_by(Post.created_at.desc()).offset(offset).limit(size)
         ).all()
 
         post_ids = [row[0].post_id for row in rows]

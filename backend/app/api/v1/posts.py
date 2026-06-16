@@ -35,9 +35,10 @@ def list_posts(
     x_device_id: str = Header(alias="X-Device-ID"),
     cursor: str | None = Query(default=None),
     size: int = Query(default=20, ge=1, le=50),
+    mine: bool = Query(default=False),
     store: DbStore = Depends(get_db_store),
 ) -> dict:
-    return ok(store.list_posts_page(x_device_id, size, cursor))
+    return ok(store.list_posts_page(x_device_id, size, cursor, mine_only=mine))
 
 
 @router.delete("/{post_id}")

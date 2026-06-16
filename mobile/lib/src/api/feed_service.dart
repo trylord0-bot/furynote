@@ -73,14 +73,26 @@ class FeedService {
   static final FeedService instance = FeedService._();
   FeedService._();
 
-  Future<List<FeedPost>> listPosts({String? cursor}) async {
-    final query = cursor != null ? {'cursor': cursor} : null;
+  Future<({List<FeedPost> posts, String? nextCursor, bool hasMore})> listPosts({
+    String? cursor,
+    int size = 10,
+    bool mineOnly = false,
+  }) async {
+    final query = <String, String>{
+      'size': size.toString(),
+      if (cursor != null) 'cursor': cursor,
+      if (mineOnly) 'mine': 'true',
+    };
     final data = await ApiClient.instance.get('/v1/posts', query: query)
         as Map<String, dynamic>;
-    final posts = data['posts'] as List<dynamic>;
-    return posts
+    final posts = (data['posts'] as List<dynamic>)
         .map((p) => FeedPost.fromJson(p as Map<String, dynamic>))
         .toList();
+    return (
+      posts: posts,
+      nextCursor: data['next_cursor'] as String?,
+      hasMore: data['has_more'] as bool,
+    );
   }
 
   Future<String> createPost({

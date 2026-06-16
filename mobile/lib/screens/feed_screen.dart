@@ -11,27 +11,122 @@ class FeedScreen extends StatefulWidget {
   State<FeedScreen> createState() => _FeedScreenState();
 }
 
-class _FeedScreenState extends State<FeedScreen> {
-  List<FeedPost> _posts = [];
-  bool _loading = true;
-  String? _error;
+class _FeedScreenState extends State<FeedScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _loadPosts();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
-  Future<void> _loadPosts() async {
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          color: FuryColors.chrome,
+          child: TabBar(
+            controller: _tabController,
+            indicatorColor: FuryColors.red,
+            indicatorWeight: 2,
+            labelColor: FuryColors.text,
+            unselectedLabelColor: FuryColors.muted,
+            dividerColor: FuryColors.border,
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+            tabs: const [
+              Tab(text: '전체 피드'),
+              Tab(text: '내가 쓴 피드'),
+            ],
+          ),
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: const [
+              _FeedTabView(mineOnly: false),
+              _FeedTabView(mineOnly: true),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FeedTabView extends StatefulWidget {
+  const _FeedTabView({required this.mineOnly});
+  final bool mineOnly;
+
+  @override
+  State<_FeedTabView> createState() => _FeedTabViewState();
+}
+
+class _FeedTabViewState extends State<_FeedTabView>
+    with AutomaticKeepAliveClientMixin {
+  final _scrollController = ScrollController();
+  List<FeedPost> _posts = [];
+  String? _nextCursor;
+  bool _hasMore = true;
+  bool _loading = true;
+  bool _loadingMore = false;
+  String? _error;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitial();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      _loadMore();
+    }
+  }
+
+  Future<void> _loadInitial() async {
     setState(() {
       _loading = true;
       _error = null;
+      _posts = [];
+      _nextCursor = null;
+      _hasMore = true;
     });
     try {
-      final posts = await FeedService.instance.listPosts();
+      final page = await FeedService.instance.listPosts(
+        size: 10,
+        mineOnly: widget.mineOnly,
+      );
       if (mounted) {
         setState(() {
-          _posts = posts;
+          _posts = page.posts;
+          _nextCursor = page.nextCursor;
+          _hasMore = page.hasMore;
           _loading = false;
         });
       }
@@ -45,13 +140,33 @@ class _FeedScreenState extends State<FeedScreen> {
     }
   }
 
+  Future<void> _loadMore() async {
+    if (_loadingMore || !_hasMore || _nextCursor == null) return;
+    setState(() => _loadingMore = true);
+    try {
+      final page = await FeedService.instance.listPosts(
+        cursor: _nextCursor,
+        size: 10,
+        mineOnly: widget.mineOnly,
+      );
+      if (mounted) {
+        setState(() {
+          _posts.addAll(page.posts);
+          _nextCursor = page.nextCursor;
+          _hasMore = page.hasMore;
+          _loadingMore = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _loadingMore = false);
+    }
+  }
+
   Future<void> _deletePost(String postId) async {
     try {
       await FeedService.instance.deletePost(postId);
       if (!mounted) return;
-      setState(() {
-        _posts.removeWhere((p) => p.postId == postId);
-      });
+      setState(() => _posts.removeWhere((p) => p.postId == postId));
     } catch (_) {}
   }
 
@@ -73,6 +188,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final l10n = AppLocalizations.of(context);
 
     if (_loading) {
@@ -86,13 +202,13 @@ class _FeedScreenState extends State<FeedScreen> {
           children: [
             const Icon(Icons.wifi_off, color: FuryColors.muted, size: 40),
             const SizedBox(height: 12),
-            Text(
+            const Text(
               '피드를 불러오지 못했어요.',
-              style: const TextStyle(color: FuryColors.muted),
+              style: TextStyle(color: FuryColors.muted),
             ),
             const SizedBox(height: 12),
             OutlinedButton(
-              onPressed: _loadPosts,
+              onPressed: _loadInitial,
               child: const Text('다시 시도'),
             ),
           ],
@@ -108,7 +224,9 @@ class _FeedScreenState extends State<FeedScreen> {
             const Text('📮', style: TextStyle(fontSize: 40)),
             const SizedBox(height: 12),
             Text(
-              '아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!',
+              widget.mineOnly
+                  ? '아직 작성한 피드가 없어요.\n첫 번째 분노를 공유해보세요!'
+                  : '아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!',
               textAlign: TextAlign.center,
               style: const TextStyle(color: FuryColors.muted, height: 1.6),
             ),
@@ -118,13 +236,26 @@ class _FeedScreenState extends State<FeedScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: _loadPosts,
+      onRefresh: _loadInitial,
       color: FuryColors.red,
       backgroundColor: FuryColors.panel,
       child: ListView.builder(
+        controller: _scrollController,
         padding: const EdgeInsets.all(20),
-        itemCount: _posts.length,
+        itemCount: _posts.length + (_hasMore ? 1 : 0),
         itemBuilder: (context, index) {
+          if (index == _posts.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            );
+          }
           final post = _posts[index];
           return _FeedPostItem(
             key: ValueKey(post.postId),
