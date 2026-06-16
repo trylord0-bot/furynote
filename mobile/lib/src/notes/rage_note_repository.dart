@@ -36,6 +36,31 @@ class RageNoteRepository {
     await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<void> updateRageLevel(
+    int id,
+    int rageLevel,
+    String rageEmoji,
+    String rageLabel,
+  ) async {
+    final db = await _open();
+    await db.update(
+      tableName,
+      {'rage_level': rageLevel, 'rage_emoji': rageEmoji, 'rage_label': rageLabel},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> clearReminderAt(int id) async {
+    final db = await _open();
+    await db.update(
+      tableName,
+      {'reminder_at': null},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future<void> close() async {
     final db = _database;
     _database = null;
