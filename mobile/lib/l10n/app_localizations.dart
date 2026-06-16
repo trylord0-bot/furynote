@@ -589,6 +589,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'데이터 가져오기'**
   String get backupImport;
+
+  /// No description provided for @feedDeleteTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드 삭제'**
+  String get feedDeleteTitle;
+
+  /// No description provided for @feedDeleteContent.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 피드를 삭제할까요?'**
+  String get feedDeleteContent;
 }
 
 class _AppLocalizationsDelegate

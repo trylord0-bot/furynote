@@ -253,4 +253,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get backupImport => '데이터 가져오기';
+
+  @override
+  String get feedDeleteTitle => '피드 삭제';
+
+  @override
+  String get feedDeleteContent => '이 피드를 삭제할까요?';
 }

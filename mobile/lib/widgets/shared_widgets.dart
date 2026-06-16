@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
 
@@ -14,6 +15,8 @@ class FuryPostCard extends StatelessWidget {
     this.showProfileAvatar = false,
     this.angerRecordCount,
     this.postCount,
+    this.isMine = false,
+    this.onDelete,
     super.key,
   });
 
@@ -25,10 +28,12 @@ class FuryPostCard extends StatelessWidget {
   final bool showProfileAvatar;
   final int? angerRecordCount;
   final int? postCount;
+  final bool isMine;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final card = Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -62,7 +67,7 @@ class FuryPostCard extends StatelessWidget {
                   bytes: avatarBytes,
                 ),
               const SizedBox(width: 8),
-              Expanded(
+              Flexible(
                 child: Text(
                   nickname,
                   style: const TextStyle(
@@ -70,24 +75,35 @@ class FuryPostCard extends StatelessWidget {
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 6),
-              Text(emoji, style: const TextStyle(fontSize: 18)),
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            text,
-            style: const TextStyle(
-              color: Color(0xFFCCCCCC),
-              fontSize: 13,
-              height: 1.6,
-            ),
-          ),
+          text.isNotEmpty
+              ? Text(
+                  text,
+                  style: const TextStyle(
+                    color: Color(0xFFCCCCCC),
+                    fontSize: 13,
+                    height: 1.6,
+                  ),
+                )
+              : Text(
+                  '<${AppLocalizations.of(context).noContent}>',
+                  style: const TextStyle(
+                    color: FuryColors.faint,
+                    fontSize: 13,
+                    height: 1.6,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
           const SizedBox(height: 12),
           Row(
             children: [
+              Text(emoji, style: const TextStyle(fontSize: 18)),
+              const SizedBox(width: 6),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -127,6 +143,66 @@ class FuryPostCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+
+    if (!isMine || onDelete == null) return card;
+
+    return Stack(
+      children: [
+        card,
+        Positioned(
+          top: 14,
+          right: 14,
+          child: GestureDetector(
+            onTap: () {
+              final l10n = AppLocalizations.of(context);
+              showDialog<void>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  backgroundColor: FuryColors.panel,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: const BorderSide(color: FuryColors.border),
+                  ),
+                  title: Text(
+                    l10n.feedDeleteTitle,
+                    style: const TextStyle(
+                      color: FuryColors.text,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  content: Text(
+                    l10n.feedDeleteContent,
+                    style: const TextStyle(color: FuryColors.muted),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      child: Text(l10n.cancel),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        onDelete!();
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: FuryColors.red,
+                      ),
+                      child: Text(l10n.delete),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.delete_outline,
+              size: 20,
+              color: FuryColors.faint,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -253,4 +253,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupImport => 'Import data';
+
+  @override
+  String get feedDeleteTitle => 'Delete Feed';
+
+  @override
+  String get feedDeleteContent => 'Delete this feed?';
 }

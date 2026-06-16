@@ -79,6 +79,15 @@ class ApiClient {
     return _parse(response);
   }
 
+  Future<dynamic> delete(String path) async {
+    final headers = await _authHeaders();
+    final response = await http.delete(
+      Uri.parse('$apiBaseUrl$path'),
+      headers: headers,
+    );
+    return _parse(response);
+  }
+
   dynamic _parse(http.Response response) {
     final json = jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     if (response.statusCode >= 200 && response.statusCode < 300) {

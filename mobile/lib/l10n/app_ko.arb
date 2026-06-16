@@ -81,5 +81,7 @@
   "commentNotification": "댓글 알림",
   "weeklyReport": "주간 리포트",
   "proPlan": "PRO 데이터 내보내기",
-  "backupImport": "데이터 가져오기"
+  "backupImport": "데이터 가져오기",
+  "feedDeleteTitle": "피드 삭제",
+  "feedDeleteContent": "이 피드를 삭제할까요?"
 }

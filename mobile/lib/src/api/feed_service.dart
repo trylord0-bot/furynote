@@ -106,6 +106,10 @@ class FeedService {
       likeCount: data['like_count'] as int,
     );
   }
+
+  Future<void> deletePost(String postId) async {
+    await ApiClient.instance.delete('/v1/posts/$postId');
+  }
 }
 
 String rageEmoji(int level) {

@@ -81,5 +81,7 @@
   "commentNotification": "Comment alerts",
   "weeklyReport": "Weekly report",
   "proPlan": "PRO data export",
-  "backupImport": "Import data"
+  "backupImport": "Import data",
+  "feedDeleteTitle": "Delete Feed",
+  "feedDeleteContent": "Delete this feed?"
 }

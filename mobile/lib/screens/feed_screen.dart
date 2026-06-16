@@ -45,6 +45,16 @@ class _FeedScreenState extends State<FeedScreen> {
     }
   }
 
+  Future<void> _deletePost(String postId) async {
+    try {
+      await FeedService.instance.deletePost(postId);
+      if (!mounted) return;
+      setState(() {
+        _posts.removeWhere((p) => p.postId == postId);
+      });
+    } catch (_) {}
+  }
+
   Future<void> _toggleLike(String postId) async {
     try {
       final result = await FeedService.instance.toggleLike(postId);
@@ -122,6 +132,7 @@ class _FeedScreenState extends State<FeedScreen> {
             likeLabel: l10n.like,
             commentLabel: l10n.comment,
             onToggleLike: () => _toggleLike(post.postId),
+            onDelete: post.isMine ? () => _deletePost(post.postId) : null,
           );
         },
       ),
@@ -135,6 +146,7 @@ class _FeedPostItem extends StatelessWidget {
     required this.likeLabel,
     required this.commentLabel,
     required this.onToggleLike,
+    this.onDelete,
     super.key,
   });
 
@@ -142,6 +154,7 @@ class _FeedPostItem extends StatelessWidget {
   final String likeLabel;
   final String commentLabel;
   final VoidCallback onToggleLike;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +167,8 @@ class _FeedPostItem extends StatelessWidget {
           category: categoryDisplay(post.category),
           text: post.text ?? '',
           avatarBytes: post.avatarBytes,
+          isMine: post.isMine,
+          onDelete: onDelete,
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 18),
