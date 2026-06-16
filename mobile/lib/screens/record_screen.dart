@@ -291,6 +291,7 @@ class _RecordScreenState extends State<RecordScreen> {
     setState(() => _isPosting = true);
     try {
       await FeedService.instance.createPost(
+        nickname: AppProfileController.instance.displayName(fallback: l10n.profileName),
         rageLevel: rage.level,
         category: categoryValue,
         text: text.isEmpty ? null : text,
@@ -649,7 +650,7 @@ class _RecordScreenState extends State<RecordScreen> {
                           return FuryPostCard(
                             emoji: rage.emoji,
                             nickname: AppProfileController.instance
-                                .displayNameWithNumber(
+                                .displayName(
                                   fallback: l10n.profileName,
                                 ),
                             category: '${category.emoji} ${category.label}',

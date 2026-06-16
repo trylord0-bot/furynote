@@ -12,11 +12,6 @@ from app.models.entities import Comment, DeviceToken, Post, PostLike
 from app.repositories.memory import DeleteResult
 
 
-def _nickname_for(device_id: str) -> str:
-    number = abs(hash(device_id)) % 10000
-    return f"화난 호랑이#{number:04d}"
-
-
 class DbStore:
     def __init__(self, session: Session) -> None:
         self.session = session
@@ -83,11 +78,11 @@ class DbStore:
         ).all()
         return [row[0] for row in rows]
 
-    def create_post(self, device_id: str, rage_level: int, category: str, text: str | None) -> dict:
+    def create_post(self, device_id: str, nickname: str, rage_level: int, category: str, text: str | None) -> dict:
         post = Post(
             post_id=str(uuid4()),
             device_id=device_id,
-            nickname=_nickname_for(device_id),
+            nickname=nickname,
             rage_level=rage_level,
             category=category,
             text=text,
@@ -185,7 +180,7 @@ class DbStore:
 
     # ── Comments ──────────────────────────────────────────────────────────────
 
-    def create_comment(self, post_id: str, device_id: str, text: str) -> dict | None:
+    def create_comment(self, post_id: str, device_id: str, nickname: str, text: str) -> dict | None:
         post = self.session.execute(
             select(Post).where(Post.post_id == post_id).where(Post.deleted_at.is_(None))
         ).scalar_one_or_none()
@@ -197,7 +192,7 @@ class DbStore:
             comment_id=str(uuid4()),
             post_id=post_id,
             device_id=device_id,
-            nickname=_nickname_for(device_id),
+            nickname=nickname,
             text=text,
         )
         self.session.add(comment)

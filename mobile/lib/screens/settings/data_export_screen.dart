@@ -141,9 +141,7 @@ class DataExportScreen extends StatelessWidget {
               animation: AppProfileController.instance,
               builder: (context, _) {
                 final profile = AppProfileController.instance.toExportJson(
-                  fallbackDisplayName: l10n.profileName
-                      .replaceAll(AppProfileController.profileNumber, '')
-                      .trim(),
+                  fallbackDisplayName: l10n.profileName,
                 );
                 return _ExportProfileCard(profile: profile);
               },

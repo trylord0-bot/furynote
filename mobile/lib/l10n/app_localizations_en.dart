@@ -237,7 +237,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedSupport => 'Feed support';
 
   @override
-  String get profileName => 'Angry Tiger #4827';
+  String get profileName => 'Angry Tiger';
+
+  @override
+  String get nicknameAdjectives =>
+      'angry,furious,raging,explosive,ferocious,growling,sharp,horned,heated,rough,fierce,rampaging,fiery,thunderous,huffing,boiling,resentful,blazing,stormy,venomous';
+
+  @override
+  String get nicknameAnimals =>
+      'tiger,lion,wolf,bear,eagle,shark,leopard,cheetah,crocodile,cobra,bull,boar,rhino,hyena,grizzly,raven,hawk,hedgehog,jaguar,puma';
 
   @override
   String get notificationSettings => 'Notifications';

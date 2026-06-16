@@ -1,14 +1,27 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../l10n/app_localizations_ko.dart';
+
+String _generateNickname() {
+  final l10n = AppLocalizationsKo();
+  final adjectives = l10n.nicknameAdjectives.split(',');
+  final animals = l10n.nicknameAnimals.split(',');
+  final rng = math.Random();
+  final adj = adjectives[rng.nextInt(adjectives.length)];
+  final animal = animals[rng.nextInt(animals.length)];
+  final number = rng.nextInt(10000);
+  return '$adj $animal#${number.toString().padLeft(4, '0')}';
+}
 
 class AppProfileController extends ChangeNotifier {
   AppProfileController._();
 
   static final AppProfileController instance = AppProfileController._();
   static const int maxAvatarBytes = 5 * 1024 * 1024;
-  static const String profileNumber = '#4827';
   static const String _avatarKey = 'profile.avatar.base64';
   static const String _displayNameKey = 'profile.display_name';
 
@@ -23,11 +36,6 @@ class AppProfileController extends ChangeNotifier {
   String displayName({required String fallback}) {
     final saved = _displayName?.trim();
     return saved == null || saved.isEmpty ? fallback : saved;
-  }
-
-  String displayNameWithNumber({required String fallback}) {
-    final saved = _displayName?.trim();
-    return saved == null || saved.isEmpty ? fallback : '$saved $profileNumber';
   }
 
   Uint8List? get avatarBytes {
@@ -49,6 +57,10 @@ class AppProfileController extends ChangeNotifier {
     final preferences = await SharedPreferences.getInstance();
     _avatarBase64 = preferences.getString(_avatarKey);
     _displayName = preferences.getString(_displayNameKey);
+    if (_displayName == null || _displayName!.trim().isEmpty) {
+      _displayName = _generateNickname();
+      await preferences.setString(_displayNameKey, _displayName!);
+    }
     _loaded = true;
     notifyListeners();
   }
@@ -85,7 +97,6 @@ class AppProfileController extends ChangeNotifier {
   Map<String, Object?> toExportJson({required String fallbackDisplayName}) {
     return {
       'display_name': displayName(fallback: fallbackDisplayName),
-      'profile_number': profileNumber,
       'avatar_base64': _avatarBase64,
     };
   }

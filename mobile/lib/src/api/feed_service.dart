@@ -96,11 +96,13 @@ class FeedService {
   }
 
   Future<String> createPost({
+    required String nickname,
     required int rageLevel,
     required String category,
     String? text,
   }) async {
     final body = <String, dynamic>{
+      'nickname': nickname,
       'rage_level': rageLevel,
       'category': category,
       if (text != null && text.isNotEmpty) 'text': text,

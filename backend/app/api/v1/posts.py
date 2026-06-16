@@ -26,7 +26,7 @@ def create_post(
     if not rate_result.allowed:
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
 
-    post = store.create_post(x_device_id, payload.rage_level, payload.category, payload.text)
+    post = store.create_post(x_device_id, payload.nickname, payload.rage_level, payload.category, payload.text)
     return ok({"post_id": post["post_id"], "created_at": post["created_at"].isoformat()})
 
 
@@ -74,7 +74,7 @@ def create_comment(
     x_device_id: str = Header(alias="X-Device-ID"),
     store: DbStore = Depends(get_db_store),
 ) -> dict:
-    comment = store.create_comment(post_id, x_device_id, payload.text)
+    comment = store.create_comment(post_id, x_device_id, payload.nickname, payload.text)
     if comment is None:
         raise HTTPException(status_code=404, detail=error("POST_NOT_FOUND", "포스팅을 찾을 수 없어요."))
     return ok(store.serialize_comment(comment, x_device_id))

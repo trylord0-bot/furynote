@@ -203,36 +203,17 @@ class _SettingsProfileCard extends StatelessWidget {
                     AnimatedBuilder(
                       animation: AppProfileController.instance,
                       builder: (context, _) {
-                        return Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                AppProfileController.instance.displayName(
-                                  fallback: l10n.profileName
-                                      .replaceAll(
-                                        AppProfileController.profileNumber,
-                                        '',
-                                      )
-                                      .trim(),
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: FuryColors.text,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            const Text(
-                              AppProfileController.profileNumber,
-                              style: TextStyle(
-                                color: FuryColors.faint,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
+                        return Text(
+                          AppProfileController.instance.displayName(
+                            fallback: l10n.profileName,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: FuryColors.text,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          ),
                         );
                       },
                     ),

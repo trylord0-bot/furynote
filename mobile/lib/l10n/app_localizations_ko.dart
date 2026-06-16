@@ -237,7 +237,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get feedSupport => '포스팅으로 위로받기';
 
   @override
-  String get profileName => '화난 호랑이 #4827';
+  String get profileName => '화난 호랑이';
+
+  @override
+  String get nicknameAdjectives =>
+      '화난,격분한,분노한,폭발하는,사나운,으르렁대는,날카로운,뿔난,열받은,거친,맹렬한,폭주하는,불같은,천둥같은,씩씩대는,부글부글한,울분한,불꽃같은,폭풍같은,독기품은';
+
+  @override
+  String get nicknameAnimals =>
+      '호랑이,사자,늑대,곰,독수리,상어,표범,치타,악어,코브라,황소,멧돼지,코뿔소,하이에나,불곰,까마귀,매,고슴도치,재규어,퓨마';
 
   @override
   String get notificationSettings => '알림';
