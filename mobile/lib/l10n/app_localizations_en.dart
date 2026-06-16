@@ -216,7 +216,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
-  String get calmTitle => 'Calming Tools';
+  String get calmTitle => 'Calm';
 
   @override
   String get calmSubtitle => 'Lower what is still lingering';

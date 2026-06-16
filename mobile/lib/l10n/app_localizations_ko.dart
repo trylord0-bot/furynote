@@ -216,7 +216,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cancel => '취소';
 
   @override
-  String get calmTitle => '진정 도구';
+  String get calmTitle => '진정';
 
   @override
   String get calmSubtitle => '아직 남은 감정을 천천히 낮춰봐요';

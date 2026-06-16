@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @calmTitle.
   ///
   /// In ko, this message translates to:
-  /// **'진정 도구'**
+  /// **'진정'**
   String get calmTitle;
 
   /// No description provided for @calmSubtitle.

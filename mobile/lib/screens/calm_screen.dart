@@ -112,6 +112,52 @@ class _CalmScreenState extends State<CalmScreen> {
           showSubtitle: false,
         ),
         const SizedBox(height: 16),
+        Center(
+          child: SizedBox(
+            width: 320,
+            child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 1.05,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                for (var i = 0; i < tools.length; i++)
+                  _CalmToolCard(
+                    icon: tools[i].$1,
+                    title: tools[i].$2,
+                    subtitle: tools[i].$3,
+                    onTap: () {
+                      switch (i) {
+                        case 0:
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const CalmBreathingScreen(),
+                            ),
+                          );
+                        case 1:
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const CalmTimeoutScreen(),
+                            ),
+                          );
+                        case 2:
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const CalmMeditationScreen(),
+                            ),
+                          );
+                        case 3:
+                          widget.onNavigateToFeed?.call();
+                      }
+                    },
+                  ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
         Text(
           l10n.reminderNotes,
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
@@ -191,52 +237,6 @@ class _CalmScreenState extends State<CalmScreen> {
                 ),
               ),
             ),
-        const SizedBox(height: 20),
-        Center(
-          child: SizedBox(
-            width: 320,
-            child: GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.05,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                for (var i = 0; i < tools.length; i++)
-                  _CalmToolCard(
-                    icon: tools[i].$1,
-                    title: tools[i].$2,
-                    subtitle: tools[i].$3,
-                    onTap: () {
-                      switch (i) {
-                        case 0:
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const CalmBreathingScreen(),
-                            ),
-                          );
-                        case 1:
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const CalmTimeoutScreen(),
-                            ),
-                          );
-                        case 2:
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const CalmMeditationScreen(),
-                            ),
-                          );
-                        case 3:
-                          widget.onNavigateToFeed?.call();
-                      }
-                    },
-                  ),
-              ],
-            ),
-          ),
-        ),
       ],
     );
   }
