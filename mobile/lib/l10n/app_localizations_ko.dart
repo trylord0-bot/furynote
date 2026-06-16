@@ -267,4 +267,168 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get feedDeleteContent => '이 피드를 삭제할까요?';
+
+  @override
+  String get calmGuideTitle => '화가 올라올 때,\n먼저 몸을 안전하게 낮춰요';
+
+  @override
+  String get calmGuideSubtitle =>
+      'Fury Note의 진정 가이드는 분노를 없애라고 말하지 않습니다. 지금의 감정을 다치지 않게 지나가도록 돕는 짧은 안내입니다.';
+
+  @override
+  String get calmGuideNotice =>
+      '**지금 당장 위험하다면** 앱을 계속 보기보다 주변 사람에게 도움을 요청하거나 긴급 신고를 먼저 해주세요.';
+
+  @override
+  String get calmGuideMomentTitle => '분노가 올라오는 순간';
+
+  @override
+  String get calmGuideMomentBody1 =>
+      '분노는 “내가 중요하게 여기는 것이 침해됐다”는 신호일 수 있습니다. 하지만 강한 분노 상태에서는 판단 속도가 빨라지고, 말과 행동이 평소보다 거칠어질 수 있습니다.';
+
+  @override
+  String get calmGuideMomentBody2 =>
+      '지금 필요한 목표는 **이성적으로 완벽해지는 것**이 아니라 **30초라도 반응을 늦추는 것**입니다.';
+
+  @override
+  String get calmGuideRoutineTitle => '60초 진정 루틴';
+
+  @override
+  String get calmGuideStep1Title => '멈추기';
+
+  @override
+  String get calmGuideStep1Desc =>
+      '답장, 전화, 댓글, 이동을 잠깐 멈춥니다. 손에 힘을 빼고 화면에서 눈을 한 번 떼세요.';
+
+  @override
+  String get calmGuideStep2Title => '숨 고르기';
+
+  @override
+  String get calmGuideStep2Desc => '4초 들이마시고, 7초 멈추고, 8초 내쉽니다. 완벽하지 않아도 괜찮습니다.';
+
+  @override
+  String get calmGuideStep3Title => '몸 확인하기';
+
+  @override
+  String get calmGuideStep3Desc => '턱, 어깨, 주먹, 배에 힘이 들어갔는지 확인하고 한 곳만 풀어주세요.';
+
+  @override
+  String get calmGuideStep4Title => '기록하기';
+
+  @override
+  String get calmGuideStep4Desc => '“지금 나는 ___ 때문에 화가 났다” 한 문장만 적어도 충분합니다.';
+
+  @override
+  String get calmGuideBreathTitle => '4-7-8 호흡법';
+
+  @override
+  String get calmGuideBreathStep1 => '코로 4초 동안 숨을 들이마십니다.';
+
+  @override
+  String get calmGuideBreathStep2 => '7초 동안 숨을 잠깐 멈춥니다.';
+
+  @override
+  String get calmGuideBreathStep3 => '입으로 8초 동안 천천히 내쉽니다.';
+
+  @override
+  String get calmGuideBreathStep4 => '가능하면 3번 반복합니다.';
+
+  @override
+  String get calmGuideBreathNote =>
+      '숨을 오래 참기 어렵다면 **3-3-5**처럼 편한 길이로 줄여도 됩니다. 중요한 것은 “천천히 내쉬는 시간”입니다.';
+
+  @override
+  String get calmGuideTimeoutTitle => '10분 타임아웃';
+
+  @override
+  String get calmGuideTimeoutBody =>
+      '분노가 강할수록 바로 해결하려는 마음이 커집니다. 하지만 지금 대화하면 상처 주는 말이 먼저 나올 수 있습니다.';
+
+  @override
+  String get calmGuideTimeoutExamplesTitle => '타임아웃 문장 예시';
+
+  @override
+  String get calmGuideTimeoutExample1 => '“지금은 화가 커서 10분 뒤에 다시 말할게.”';
+
+  @override
+  String get calmGuideTimeoutExample2 => '“상처 주는 말이 나올 것 같아서 잠깐 멈출게.”';
+
+  @override
+  String get calmGuideTimeoutExample3 => '“도망가는 게 아니라 진정하고 다시 이야기하려는 거야.”';
+
+  @override
+  String get calmGuideSensoryTitle => '빠른 감각 안정법';
+
+  @override
+  String get calmGuideSensory1Title => '차가운 물';
+
+  @override
+  String get calmGuideSensory1Desc => '손목이나 얼굴에 차가운 물을 10초 정도 대기';
+
+  @override
+  String get calmGuideSensory2Title => '발바닥 느끼기';
+
+  @override
+  String get calmGuideSensory2Desc => '발이 바닥에 닿는 감각을 천천히 확인하기';
+
+  @override
+  String get calmGuideSensory3Title => '주변 보기';
+
+  @override
+  String get calmGuideSensory3Desc => '보이는 물건 5개를 조용히 이름 붙이기';
+
+  @override
+  String get calmGuideSensory4Title => '어깨 내리기';
+
+  @override
+  String get calmGuideSensory4Desc => '숨을 내쉬며 어깨를 1cm만 낮추기';
+
+  @override
+  String get calmGuideQuestionsTitle => '기록할 때 도움이 되는 질문';
+
+  @override
+  String get calmGuideQuestion1 => '내가 정말 화난 지점은 무엇이었나?';
+
+  @override
+  String get calmGuideQuestion2 => '내가 기대했지만 받지 못한 것은 무엇인가?';
+
+  @override
+  String get calmGuideQuestion3 => '지금 당장 하면 후회할 행동은 무엇인가?';
+
+  @override
+  String get calmGuideQuestion4 => '내일의 내가 고마워할 선택은 무엇인가?';
+
+  @override
+  String get calmGuideTag1 => '감정 기록';
+
+  @override
+  String get calmGuideTag2 => '분노 거리두기';
+
+  @override
+  String get calmGuideTag3 => '리마인드 확인';
+
+  @override
+  String get calmGuideDangerTitle => '이런 경우에는 도움을 먼저 요청하세요';
+
+  @override
+  String get calmGuideDanger1 => '나 자신이나 타인을 해치고 싶은 충동이 강할 때';
+
+  @override
+  String get calmGuideDanger2 => '물건을 던지거나 부수고 싶은 충동이 멈추지 않을 때';
+
+  @override
+  String get calmGuideDanger3 => '상대방을 찾아가거나 위협하고 싶은 생각이 들 때';
+
+  @override
+  String get calmGuideDanger4 => '술, 약물, 극심한 수면 부족으로 통제가 어렵다고 느껴질 때';
+
+  @override
+  String get calmGuideDangerBody =>
+      '이 경우 진정 루틴만으로 버티려 하지 말고, 주변 사람·전문기관·긴급 서비스의 도움을 요청하세요.';
+
+  @override
+  String get calmGuideFooterTitle => 'Fury Note Calm Guide';
+
+  @override
+  String get calmGuideFooterDisclaimer => '이 문서는 의료적 진단이나 치료를 대체하지 않습니다.';
 }

@@ -267,4 +267,187 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedDeleteContent => 'Delete this feed?';
+
+  @override
+  String get calmGuideTitle =>
+      'When anger rises,\nlower your body safely first';
+
+  @override
+  String get calmGuideSubtitle =>
+      'Fury Note\'s calm guide doesn\'t tell you to get rid of anger. It\'s a short guide to help the feeling pass without anyone getting hurt.';
+
+  @override
+  String get calmGuideNotice =>
+      '**If you\'re in immediate danger**, please ask people around you for help or contact emergency services first, instead of staying on this app.';
+
+  @override
+  String get calmGuideMomentTitle => 'The moment anger rises';
+
+  @override
+  String get calmGuideMomentBody1 =>
+      'Anger can be a signal that something you care about has been violated. But in a strong anger state, judgment speeds up, and words and actions can become rougher than usual.';
+
+  @override
+  String get calmGuideMomentBody2 =>
+      'What\'s needed right now isn\'t to be **perfectly rational**, but to **delay your reaction by even 30 seconds**.';
+
+  @override
+  String get calmGuideRoutineTitle => '60-second calm routine';
+
+  @override
+  String get calmGuideStep1Title => 'Stop';
+
+  @override
+  String get calmGuideStep1Desc =>
+      'Pause replying, calling, commenting, or moving. Relax your hands and look away from the screen for a moment.';
+
+  @override
+  String get calmGuideStep2Title => 'Breathe';
+
+  @override
+  String get calmGuideStep2Desc =>
+      'Inhale for 4 seconds, hold for 7, exhale for 8. It\'s okay if it isn\'t perfect.';
+
+  @override
+  String get calmGuideStep3Title => 'Check your body';
+
+  @override
+  String get calmGuideStep3Desc =>
+      'Check whether your jaw, shoulders, fists, or stomach are tense, and release just one spot.';
+
+  @override
+  String get calmGuideStep4Title => 'Write it down';
+
+  @override
+  String get calmGuideStep4Desc =>
+      'Even one sentence like \"Right now I\'m angry because ___\" is enough.';
+
+  @override
+  String get calmGuideBreathTitle => '4-7-8 breathing';
+
+  @override
+  String get calmGuideBreathStep1 =>
+      'Breathe in through your nose for 4 seconds.';
+
+  @override
+  String get calmGuideBreathStep2 => 'Hold your breath for 7 seconds.';
+
+  @override
+  String get calmGuideBreathStep3 =>
+      'Slowly exhale through your mouth for 8 seconds.';
+
+  @override
+  String get calmGuideBreathStep4 => 'Repeat 3 times if you can.';
+
+  @override
+  String get calmGuideBreathNote =>
+      'If holding your breath that long is hard, shorten it to a comfortable count like **3-3-5**. What matters most is a slow, long exhale.';
+
+  @override
+  String get calmGuideTimeoutTitle => '10-minute timeout';
+
+  @override
+  String get calmGuideTimeoutBody =>
+      'The stronger the anger, the stronger the urge to resolve it right away. But talking now may bring out hurtful words first.';
+
+  @override
+  String get calmGuideTimeoutExamplesTitle => 'Example timeout phrases';
+
+  @override
+  String get calmGuideTimeoutExample1 =>
+      '\"I\'m too angry right now, let\'s talk again in 10 minutes.\"';
+
+  @override
+  String get calmGuideTimeoutExample2 =>
+      '\"I\'m pausing for a moment because I might say something hurtful.\"';
+
+  @override
+  String get calmGuideTimeoutExample3 =>
+      '\"I\'m not running away, I just need to calm down before we talk again.\"';
+
+  @override
+  String get calmGuideSensoryTitle => 'Quick sensory grounding';
+
+  @override
+  String get calmGuideSensory1Title => 'Cold water';
+
+  @override
+  String get calmGuideSensory1Desc =>
+      'Hold cold water on your wrists or face for about 10 seconds';
+
+  @override
+  String get calmGuideSensory2Title => 'Feel your feet';
+
+  @override
+  String get calmGuideSensory2Desc =>
+      'Slowly notice the feeling of your feet touching the floor';
+
+  @override
+  String get calmGuideSensory3Title => 'Look around';
+
+  @override
+  String get calmGuideSensory3Desc => 'Quietly name 5 objects you can see';
+
+  @override
+  String get calmGuideSensory4Title => 'Drop your shoulders';
+
+  @override
+  String get calmGuideSensory4Desc =>
+      'Exhale and lower your shoulders by just 1cm';
+
+  @override
+  String get calmGuideQuestionsTitle => 'Questions that help while writing';
+
+  @override
+  String get calmGuideQuestion1 => 'What exactly made me angry?';
+
+  @override
+  String get calmGuideQuestion2 => 'What did I expect but not receive?';
+
+  @override
+  String get calmGuideQuestion3 =>
+      'What action would I regret if I did it right now?';
+
+  @override
+  String get calmGuideQuestion4 =>
+      'What choice will tomorrow\'s me be grateful for?';
+
+  @override
+  String get calmGuideTag1 => 'Emotion log';
+
+  @override
+  String get calmGuideTag2 => 'Anger distancing';
+
+  @override
+  String get calmGuideTag3 => 'Reminder check';
+
+  @override
+  String get calmGuideDangerTitle => 'Ask for help first in these cases';
+
+  @override
+  String get calmGuideDanger1 =>
+      'When the urge to hurt yourself or others feels strong';
+
+  @override
+  String get calmGuideDanger2 =>
+      'When the urge to throw or break things won\'t stop';
+
+  @override
+  String get calmGuideDanger3 =>
+      'When you feel like confronting or threatening the other person';
+
+  @override
+  String get calmGuideDanger4 =>
+      'When alcohol, drugs, or severe sleep deprivation make it hard to stay in control';
+
+  @override
+  String get calmGuideDangerBody =>
+      'In these cases, don\'t try to get through it with the calm routine alone — ask people around you, professional services, or emergency services for help.';
+
+  @override
+  String get calmGuideFooterTitle => 'Fury Note Calm Guide';
+
+  @override
+  String get calmGuideFooterDisclaimer =>
+      'This document does not replace medical diagnosis or treatment.';
 }

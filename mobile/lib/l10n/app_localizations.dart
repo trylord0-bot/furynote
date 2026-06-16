@@ -613,6 +613,318 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이 피드를 삭제할까요?'**
   String get feedDeleteContent;
+
+  /// No description provided for @calmGuideTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'화가 올라올 때,\n먼저 몸을 안전하게 낮춰요'**
+  String get calmGuideTitle;
+
+  /// No description provided for @calmGuideSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note의 진정 가이드는 분노를 없애라고 말하지 않습니다. 지금의 감정을 다치지 않게 지나가도록 돕는 짧은 안내입니다.'**
+  String get calmGuideSubtitle;
+
+  /// No description provided for @calmGuideNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'**지금 당장 위험하다면** 앱을 계속 보기보다 주변 사람에게 도움을 요청하거나 긴급 신고를 먼저 해주세요.'**
+  String get calmGuideNotice;
+
+  /// No description provided for @calmGuideMomentTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노가 올라오는 순간'**
+  String get calmGuideMomentTitle;
+
+  /// No description provided for @calmGuideMomentBody1.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노는 “내가 중요하게 여기는 것이 침해됐다”는 신호일 수 있습니다. 하지만 강한 분노 상태에서는 판단 속도가 빨라지고, 말과 행동이 평소보다 거칠어질 수 있습니다.'**
+  String get calmGuideMomentBody1;
+
+  /// No description provided for @calmGuideMomentBody2.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금 필요한 목표는 **이성적으로 완벽해지는 것**이 아니라 **30초라도 반응을 늦추는 것**입니다.'**
+  String get calmGuideMomentBody2;
+
+  /// No description provided for @calmGuideRoutineTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'60초 진정 루틴'**
+  String get calmGuideRoutineTitle;
+
+  /// No description provided for @calmGuideStep1Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'멈추기'**
+  String get calmGuideStep1Title;
+
+  /// No description provided for @calmGuideStep1Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'답장, 전화, 댓글, 이동을 잠깐 멈춥니다. 손에 힘을 빼고 화면에서 눈을 한 번 떼세요.'**
+  String get calmGuideStep1Desc;
+
+  /// No description provided for @calmGuideStep2Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'숨 고르기'**
+  String get calmGuideStep2Title;
+
+  /// No description provided for @calmGuideStep2Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'4초 들이마시고, 7초 멈추고, 8초 내쉽니다. 완벽하지 않아도 괜찮습니다.'**
+  String get calmGuideStep2Desc;
+
+  /// No description provided for @calmGuideStep3Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'몸 확인하기'**
+  String get calmGuideStep3Title;
+
+  /// No description provided for @calmGuideStep3Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'턱, 어깨, 주먹, 배에 힘이 들어갔는지 확인하고 한 곳만 풀어주세요.'**
+  String get calmGuideStep3Desc;
+
+  /// No description provided for @calmGuideStep4Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록하기'**
+  String get calmGuideStep4Title;
+
+  /// No description provided for @calmGuideStep4Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'“지금 나는 ___ 때문에 화가 났다” 한 문장만 적어도 충분합니다.'**
+  String get calmGuideStep4Desc;
+
+  /// No description provided for @calmGuideBreathTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'4-7-8 호흡법'**
+  String get calmGuideBreathTitle;
+
+  /// No description provided for @calmGuideBreathStep1.
+  ///
+  /// In ko, this message translates to:
+  /// **'코로 4초 동안 숨을 들이마십니다.'**
+  String get calmGuideBreathStep1;
+
+  /// No description provided for @calmGuideBreathStep2.
+  ///
+  /// In ko, this message translates to:
+  /// **'7초 동안 숨을 잠깐 멈춥니다.'**
+  String get calmGuideBreathStep2;
+
+  /// No description provided for @calmGuideBreathStep3.
+  ///
+  /// In ko, this message translates to:
+  /// **'입으로 8초 동안 천천히 내쉽니다.'**
+  String get calmGuideBreathStep3;
+
+  /// No description provided for @calmGuideBreathStep4.
+  ///
+  /// In ko, this message translates to:
+  /// **'가능하면 3번 반복합니다.'**
+  String get calmGuideBreathStep4;
+
+  /// No description provided for @calmGuideBreathNote.
+  ///
+  /// In ko, this message translates to:
+  /// **'숨을 오래 참기 어렵다면 **3-3-5**처럼 편한 길이로 줄여도 됩니다. 중요한 것은 “천천히 내쉬는 시간”입니다.'**
+  String get calmGuideBreathNote;
+
+  /// No description provided for @calmGuideTimeoutTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'10분 타임아웃'**
+  String get calmGuideTimeoutTitle;
+
+  /// No description provided for @calmGuideTimeoutBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노가 강할수록 바로 해결하려는 마음이 커집니다. 하지만 지금 대화하면 상처 주는 말이 먼저 나올 수 있습니다.'**
+  String get calmGuideTimeoutBody;
+
+  /// No description provided for @calmGuideTimeoutExamplesTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'타임아웃 문장 예시'**
+  String get calmGuideTimeoutExamplesTitle;
+
+  /// No description provided for @calmGuideTimeoutExample1.
+  ///
+  /// In ko, this message translates to:
+  /// **'“지금은 화가 커서 10분 뒤에 다시 말할게.”'**
+  String get calmGuideTimeoutExample1;
+
+  /// No description provided for @calmGuideTimeoutExample2.
+  ///
+  /// In ko, this message translates to:
+  /// **'“상처 주는 말이 나올 것 같아서 잠깐 멈출게.”'**
+  String get calmGuideTimeoutExample2;
+
+  /// No description provided for @calmGuideTimeoutExample3.
+  ///
+  /// In ko, this message translates to:
+  /// **'“도망가는 게 아니라 진정하고 다시 이야기하려는 거야.”'**
+  String get calmGuideTimeoutExample3;
+
+  /// No description provided for @calmGuideSensoryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'빠른 감각 안정법'**
+  String get calmGuideSensoryTitle;
+
+  /// No description provided for @calmGuideSensory1Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'차가운 물'**
+  String get calmGuideSensory1Title;
+
+  /// No description provided for @calmGuideSensory1Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'손목이나 얼굴에 차가운 물을 10초 정도 대기'**
+  String get calmGuideSensory1Desc;
+
+  /// No description provided for @calmGuideSensory2Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'발바닥 느끼기'**
+  String get calmGuideSensory2Title;
+
+  /// No description provided for @calmGuideSensory2Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'발이 바닥에 닿는 감각을 천천히 확인하기'**
+  String get calmGuideSensory2Desc;
+
+  /// No description provided for @calmGuideSensory3Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'주변 보기'**
+  String get calmGuideSensory3Title;
+
+  /// No description provided for @calmGuideSensory3Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'보이는 물건 5개를 조용히 이름 붙이기'**
+  String get calmGuideSensory3Desc;
+
+  /// No description provided for @calmGuideSensory4Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'어깨 내리기'**
+  String get calmGuideSensory4Title;
+
+  /// No description provided for @calmGuideSensory4Desc.
+  ///
+  /// In ko, this message translates to:
+  /// **'숨을 내쉬며 어깨를 1cm만 낮추기'**
+  String get calmGuideSensory4Desc;
+
+  /// No description provided for @calmGuideQuestionsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록할 때 도움이 되는 질문'**
+  String get calmGuideQuestionsTitle;
+
+  /// No description provided for @calmGuideQuestion1.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 정말 화난 지점은 무엇이었나?'**
+  String get calmGuideQuestion1;
+
+  /// No description provided for @calmGuideQuestion2.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 기대했지만 받지 못한 것은 무엇인가?'**
+  String get calmGuideQuestion2;
+
+  /// No description provided for @calmGuideQuestion3.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금 당장 하면 후회할 행동은 무엇인가?'**
+  String get calmGuideQuestion3;
+
+  /// No description provided for @calmGuideQuestion4.
+  ///
+  /// In ko, this message translates to:
+  /// **'내일의 내가 고마워할 선택은 무엇인가?'**
+  String get calmGuideQuestion4;
+
+  /// No description provided for @calmGuideTag1.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 기록'**
+  String get calmGuideTag1;
+
+  /// No description provided for @calmGuideTag2.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 거리두기'**
+  String get calmGuideTag2;
+
+  /// No description provided for @calmGuideTag3.
+  ///
+  /// In ko, this message translates to:
+  /// **'리마인드 확인'**
+  String get calmGuideTag3;
+
+  /// No description provided for @calmGuideDangerTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이런 경우에는 도움을 먼저 요청하세요'**
+  String get calmGuideDangerTitle;
+
+  /// No description provided for @calmGuideDanger1.
+  ///
+  /// In ko, this message translates to:
+  /// **'나 자신이나 타인을 해치고 싶은 충동이 강할 때'**
+  String get calmGuideDanger1;
+
+  /// No description provided for @calmGuideDanger2.
+  ///
+  /// In ko, this message translates to:
+  /// **'물건을 던지거나 부수고 싶은 충동이 멈추지 않을 때'**
+  String get calmGuideDanger2;
+
+  /// No description provided for @calmGuideDanger3.
+  ///
+  /// In ko, this message translates to:
+  /// **'상대방을 찾아가거나 위협하고 싶은 생각이 들 때'**
+  String get calmGuideDanger3;
+
+  /// No description provided for @calmGuideDanger4.
+  ///
+  /// In ko, this message translates to:
+  /// **'술, 약물, 극심한 수면 부족으로 통제가 어렵다고 느껴질 때'**
+  String get calmGuideDanger4;
+
+  /// No description provided for @calmGuideDangerBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 경우 진정 루틴만으로 버티려 하지 말고, 주변 사람·전문기관·긴급 서비스의 도움을 요청하세요.'**
+  String get calmGuideDangerBody;
+
+  /// No description provided for @calmGuideFooterTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note Calm Guide'**
+  String get calmGuideFooterTitle;
+
+  /// No description provided for @calmGuideFooterDisclaimer.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 문서는 의료적 진단이나 치료를 대체하지 않습니다.'**
+  String get calmGuideFooterDisclaimer;
 }
 
 class _AppLocalizationsDelegate

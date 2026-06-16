@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/screens/calm_guide_screen.dart';
 import 'package:fury_note/screens/calm_screen.dart';
 import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
@@ -707,6 +708,12 @@ class FuryDrawer extends StatelessWidget {
             icon: Icons.spa_outlined,
             title: l10n.drawerCalmGuide,
             subtitle: '감정 조절 카드 · 오늘의 팁',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CalmGuideScreen()),
+              );
+            },
           ),
           const Spacer(),
           Padding(
