@@ -254,9 +254,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get commentNotification => '댓글 알림';
 
   @override
-  String get weeklyReport => '주간 리포트';
-
-  @override
   String get proPlan => 'PRO 데이터 내보내기';
 
   @override

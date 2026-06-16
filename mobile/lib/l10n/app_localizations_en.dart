@@ -254,9 +254,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commentNotification => 'Comment alerts';
 
   @override
-  String get weeklyReport => 'Weekly report';
-
-  @override
   String get proPlan => 'PRO data export';
 
   @override

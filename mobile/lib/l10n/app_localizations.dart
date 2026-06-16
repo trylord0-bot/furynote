@@ -584,12 +584,6 @@ abstract class AppLocalizations {
   /// **'댓글 알림'**
   String get commentNotification;
 
-  /// No description provided for @weeklyReport.
-  ///
-  /// In ko, this message translates to:
-  /// **'주간 리포트'**
-  String get weeklyReport;
-
   /// No description provided for @proPlan.
   ///
   /// In ko, this message translates to:

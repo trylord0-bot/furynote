@@ -21,7 +21,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _remindNotification = true;
   bool _commentNotification = true;
-  bool _weeklyReport = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,17 +70,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 trailing: Switch(
                   value: _commentNotification,
                   onChanged: (v) => setState(() => _commentNotification = v),
-                  activeThumbColor: FuryColors.red,
-                ),
-              ),
-              _SettingsTile(
-                icon: Icons.bar_chart_outlined,
-                iconColor: FuryColors.yellow,
-                title: '주간 리포트 알림',
-                subtitle: '매주 월요일 지난 주 통계 알림',
-                trailing: Switch(
-                  value: _weeklyReport,
-                  onChanged: (v) => setState(() => _weeklyReport = v),
                   activeThumbColor: FuryColors.red,
                 ),
               ),
