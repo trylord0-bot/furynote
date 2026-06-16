@@ -620,7 +620,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       l10n.summaryCategory:
                           '${category.emoji} ${category.label}',
                       l10n.summaryText: _textController.text.isEmpty
-                          ? l10n.none
+                          ? l10n.noContent
                           : _textController.text,
                       '음성': _recordedAudioPath == null ? l10n.none : '녹음 포함',
                       l10n.summaryReminder: _reminder ?? l10n.none,
@@ -653,9 +653,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                   fallback: l10n.profileName,
                                 ),
                             category: '${category.emoji} ${category.label}',
-                            text: _textController.text.isEmpty
-                                ? l10n.none
-                                : _textController.text,
+                            text: _textController.text.trim(),
                             showProfileAvatar: true,
                           );
                         },
