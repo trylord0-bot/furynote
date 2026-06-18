@@ -1,3 +1,5 @@
+import 'dart:async';
+
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -12,9 +14,12 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:fury_note/main.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
+import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
+import 'package:fury_note/src/notifications/push_notification_service.dart';
+import 'package:fury_note/widgets/comment_sheet.dart';
 
 void main() {
   setUpAll(() {
@@ -69,6 +74,155 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Calming Tools'), findsWidgets);
   });
+
+  testWidgets('tapping a reminder notification opens the calm screen', (
+    WidgetTester tester,
+  ) async {
+    final tapSource = _FakeReminderNotificationTapSource();
+
+    try {
+      await tester.pumpWidget(
+        FuryNoteApp(
+          initialLocale: const Locale('ko'),
+          reminderNotificationTapSource: tapSource,
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text('피드'), findsWidgets);
+      expect(find.text('리마인드 노트'), findsNothing);
+
+      tapSource.emit(const ReminderNotificationTap(noteId: 1));
+      await tester.pump();
+
+      expect(_headerTitle('진정'), findsOneWidget);
+      expect(find.text('리마인드 노트'), findsOneWidget);
+    } finally {
+      await tapSource.dispose();
+    }
+  });
+
+  testWidgets('tapping a comment push opens the matching post comments', (
+    WidgetTester tester,
+  ) async {
+    final pushTapSource = _FakeCommentPushTapSource();
+    final feedService = _FakeFeedService(
+      posts: [
+        FeedPost(
+          postId: 'post-1',
+          nickname: '테스터',
+          rageLevel: 3,
+          category: 'work',
+          text: '댓글을 확인할 글',
+          likeCount: 0,
+          commentCount: 1,
+          isLiked: false,
+          isMine: true,
+          createdAt: DateTime.now(),
+        ),
+      ],
+      comments: {
+        'post-1': [
+          FeedComment(
+            commentId: 'comment-1',
+            nickname: '친구',
+            text: '푸시로 들어온 댓글',
+            isMine: false,
+            createdAt: DateTime.now(),
+          ),
+        ],
+      },
+    );
+
+    try {
+      await tester.pumpWidget(
+        FuryNoteApp(
+          initialLocale: const Locale('ko'),
+          feedService: feedService,
+          commentPushTapSource: pushTapSource,
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text('댓글을 확인할 글'), findsOneWidget);
+      expect(find.text('푸시로 들어온 댓글'), findsNothing);
+
+      pushTapSource.emit(const CommentPushTap(postId: 'post-1'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      expect(_headerTitle('피드'), findsOneWidget);
+      expect(find.byType(CommentSheet), findsOneWidget);
+      expect(find.text('댓글 1개'), findsOneWidget);
+      expect(find.text('푸시로 들어온 댓글'), findsOneWidget);
+    } finally {
+      await pushTapSource.dispose();
+    }
+  });
+
+  testWidgets(
+    'comment push opens comments even when post is not in feed page',
+    (WidgetTester tester) async {
+      final pushTapSource = _FakeCommentPushTapSource();
+      final feedService = _FakeFeedService(
+        posts: [
+          FeedPost(
+            postId: 'post-1',
+            nickname: '테스터',
+            rageLevel: 3,
+            category: 'work',
+            text: '첫 페이지의 다른 글',
+            likeCount: 0,
+            commentCount: 0,
+            isLiked: false,
+            isMine: true,
+            createdAt: DateTime.now(),
+          ),
+        ],
+        comments: {
+          'post-99': [
+            FeedComment(
+              commentId: 'comment-99',
+              nickname: '친구',
+              text: '목록 밖 글의 댓글',
+              isMine: false,
+              createdAt: DateTime.now(),
+            ),
+          ],
+        },
+      );
+
+      try {
+        await tester.pumpWidget(
+          FuryNoteApp(
+            initialLocale: const Locale('ko'),
+            feedService: feedService,
+            commentPushTapSource: pushTapSource,
+          ),
+        );
+        await tester.pump();
+        await tester.pump();
+
+        expect(find.text('첫 페이지의 다른 글'), findsOneWidget);
+        expect(find.text('목록 밖 글의 댓글'), findsNothing);
+
+        pushTapSource.emit(const CommentPushTap(postId: 'post-99'));
+        await tester.pump();
+        await tester.pump();
+        await tester.pump();
+        await tester.pump();
+
+        expect(_headerTitle('피드'), findsOneWidget);
+        expect(find.byType(CommentSheet), findsOneWidget);
+        expect(find.text('목록 밖 글의 댓글'), findsOneWidget);
+      } finally {
+        await pushTapSource.dispose();
+      }
+    },
+  );
 
   testWidgets('top header title follows the selected screen', (
     WidgetTester tester,
@@ -681,5 +835,127 @@ class _FakeReminderScheduler implements ReminderScheduler {
     required String body,
   }) async {
     calls.add((id: id, scheduledAt: scheduledAt, body: body));
+  }
+}
+
+class _FakeReminderNotificationTapSource
+    implements ReminderNotificationTapSource {
+  final StreamController<ReminderNotificationTap> _controller =
+      StreamController<ReminderNotificationTap>.broadcast();
+  ReminderNotificationTap? initialTap;
+
+  @override
+  Stream<ReminderNotificationTap> get reminderNotificationTaps =>
+      _controller.stream;
+
+  @override
+  ReminderNotificationTap? takeInitialReminderNotificationTap() {
+    final tap = initialTap;
+    initialTap = null;
+    return tap;
+  }
+
+  void emit(ReminderNotificationTap tap) {
+    _controller.add(tap);
+  }
+
+  Future<void> dispose() => _controller.close();
+}
+
+class _FakeCommentPushTapSource implements CommentPushTapSource {
+  final StreamController<CommentPushTap> _controller =
+      StreamController<CommentPushTap>.broadcast();
+  CommentPushTap? initialTap;
+
+  @override
+  Stream<CommentPushTap> get commentPushTaps => _controller.stream;
+
+  @override
+  CommentPushTap? takeInitialCommentPushTap() {
+    final tap = initialTap;
+    initialTap = null;
+    return tap;
+  }
+
+  void emit(CommentPushTap tap) {
+    _controller.add(tap);
+  }
+
+  Future<void> dispose() => _controller.close();
+}
+
+class _FakeFeedService implements FeedService {
+  _FakeFeedService({
+    required List<FeedPost> posts,
+    Map<String, List<FeedComment>> comments = const {},
+  }) : _posts = List<FeedPost>.of(posts),
+       _comments = comments.map(
+         (postId, comments) => MapEntry(postId, List<FeedComment>.of(comments)),
+       );
+
+  final List<FeedPost> _posts;
+  final Map<String, List<FeedComment>> _comments;
+
+  @override
+  Future<({bool hasMore, String? nextCursor, List<FeedPost> posts})> listPosts({
+    String? cursor,
+    int size = 10,
+    bool mineOnly = false,
+  }) async {
+    return (
+      posts: _posts.where((post) => !mineOnly || post.isMine).toList(),
+      nextCursor: null,
+      hasMore: false,
+    );
+  }
+
+  @override
+  Future<List<FeedComment>> listComments(String postId) async {
+    return List<FeedComment>.of(_comments[postId] ?? const []);
+  }
+
+  @override
+  Future<String> createPost({
+    required String nickname,
+    required int rageLevel,
+    required String category,
+    String? text,
+  }) async {
+    return 'new-post';
+  }
+
+  @override
+  Future<FeedComment> createComment({
+    required String postId,
+    required String nickname,
+    required String text,
+  }) async {
+    final comment = FeedComment(
+      commentId: 'new-comment',
+      nickname: nickname,
+      text: text,
+      isMine: true,
+      createdAt: DateTime.now(),
+    );
+    _comments.putIfAbsent(postId, () => []).add(comment);
+    return comment;
+  }
+
+  @override
+  Future<void> deleteComment({
+    required String postId,
+    required String commentId,
+  }) async {
+    _comments[postId]?.removeWhere((comment) => comment.commentId == commentId);
+  }
+
+  @override
+  Future<void> deletePost(String postId) async {
+    _posts.removeWhere((post) => post.postId == postId);
+  }
+
+  @override
+  Future<({bool isLiked, int likeCount})> toggleLike(String postId) async {
+    return (isLiked: true, likeCount: 1);
   }
 }

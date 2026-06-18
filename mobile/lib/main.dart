@@ -12,6 +12,7 @@ import 'package:fury_note/screens/record_screen.dart';
 import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
 import 'package:fury_note/src/api/env_config.dart';
+import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/push_notification_service.dart';
@@ -79,15 +80,21 @@ List<String> _datePartsForLocale(Locale locale, DateTime value) {
 class FuryNoteApp extends StatelessWidget {
   const FuryNoteApp({
     this.initialLocale,
+    this.feedService,
     this.noteRepository,
     this.reminderScheduler,
+    this.reminderNotificationTapSource,
+    this.commentPushTapSource,
     this.voiceRecorder,
     super.key,
   });
 
   final Locale? initialLocale;
+  final FeedService? feedService;
   final RageNoteRepository? noteRepository;
   final ReminderScheduler? reminderScheduler;
+  final ReminderNotificationTapSource? reminderNotificationTapSource;
+  final CommentPushTapSource? commentPushTapSource;
   final FuryVoiceRecorder? voiceRecorder;
 
   @override
@@ -178,8 +185,11 @@ class FuryNoteApp extends StatelessWidget {
       ),
       home: FuryAppFrame(
         child: FuryShell(
+          feedService: feedService,
           noteRepository: noteRepository,
           reminderScheduler: reminderScheduler,
+          reminderNotificationTapSource: reminderNotificationTapSource,
+          commentPushTapSource: commentPushTapSource,
           voiceRecorder: voiceRecorder,
         ),
       ),
@@ -237,14 +247,20 @@ class FuryAppFrame extends StatelessWidget {
 
 class FuryShell extends StatefulWidget {
   const FuryShell({
+    this.feedService,
     this.noteRepository,
     this.reminderScheduler,
+    this.reminderNotificationTapSource,
+    this.commentPushTapSource,
     this.voiceRecorder,
     super.key,
   });
 
+  final FeedService? feedService;
   final RageNoteRepository? noteRepository;
   final ReminderScheduler? reminderScheduler;
+  final ReminderNotificationTapSource? reminderNotificationTapSource;
+  final CommentPushTapSource? commentPushTapSource;
   final FuryVoiceRecorder? voiceRecorder;
 
   @override
@@ -253,17 +269,109 @@ class FuryShell extends StatefulWidget {
 
 class _FuryShellState extends State<FuryShell> {
   static const int _feedIndex = 1;
+  static const int _calmIndex = 3;
 
   int _index = _feedIndex;
   String? _toastMessage;
   bool _toastVisible = false;
   Timer? _toastTimer;
   int _toastVersion = 0;
+  StreamSubscription<ReminderNotificationTap>? _reminderTapSubscription;
+  StreamSubscription<CommentPushTap>? _commentPushTapSubscription;
+  String? _pendingCommentPostId;
+  int _pendingCommentOpenToken = 0;
+
+  ReminderNotificationTapSource get _reminderTapSource =>
+      widget.reminderNotificationTapSource ?? LocalReminderScheduler.instance;
+  CommentPushTapSource? get _commentPushTapSource {
+    if (widget.commentPushTapSource != null) {
+      return widget.commentPushTapSource;
+    }
+
+    try {
+      return PushNotificationService.instance;
+    } on FirebaseException {
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _listenForReminderNotificationTaps();
+    _listenForCommentPushTaps();
+  }
 
   @override
   void dispose() {
     _toastTimer?.cancel();
+    unawaited(_reminderTapSubscription?.cancel());
+    unawaited(_commentPushTapSubscription?.cancel());
     super.dispose();
+  }
+
+  void _listenForReminderNotificationTaps() {
+    final tapSource = _reminderTapSource;
+    _reminderTapSubscription = tapSource.reminderNotificationTaps.listen((_) {
+      _openCalmFromReminderNotification();
+    });
+
+    final initialTap = tapSource.takeInitialReminderNotificationTap();
+    if (initialTap != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _openCalmFromReminderNotification();
+      });
+    }
+  }
+
+  void _openCalmFromReminderNotification() {
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    _toastTimer?.cancel();
+    setState(() {
+      _index = _calmIndex;
+      _toastVersion += 1;
+      _toastMessage = null;
+      _toastVisible = false;
+    });
+  }
+
+  void _listenForCommentPushTaps() {
+    final tapSource = _commentPushTapSource;
+    if (tapSource == null) {
+      return;
+    }
+
+    _commentPushTapSubscription = tapSource.commentPushTaps.listen((tap) {
+      _openFeedCommentsFromPush(tap);
+    });
+
+    final initialTap = tapSource.takeInitialCommentPushTap();
+    if (initialTap != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _openFeedCommentsFromPush(initialTap);
+      });
+    }
+  }
+
+  void _openFeedCommentsFromPush(CommentPushTap tap) {
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    _toastTimer?.cancel();
+    setState(() {
+      _index = _feedIndex;
+      _pendingCommentPostId = tap.postId;
+      _pendingCommentOpenToken += 1;
+      _toastVersion += 1;
+      _toastMessage = null;
+      _toastVisible = false;
+    });
   }
 
   void _openFeed({String? toastMessage}) {
@@ -316,7 +424,11 @@ class _FuryShellState extends State<FuryShell> {
         reminderScheduler: widget.reminderScheduler,
         voiceRecorder: widget.voiceRecorder,
       ),
-      const FeedScreen(),
+      FeedScreen(
+        feedService: widget.feedService,
+        pendingCommentPostId: _pendingCommentPostId,
+        pendingCommentOpenToken: _pendingCommentOpenToken,
+      ),
       StatsScreen(noteRepository: widget.noteRepository),
       CalmScreen(onNavigateToFeed: _openFeed),
     ];

@@ -8,6 +8,7 @@ Future<void> showCommentSheet(
   BuildContext context, {
   required String postId,
   required int commentCount,
+  FeedService? feedService,
   required void Function(int) onCountChanged,
 }) {
   return showModalBottomSheet<void>(
@@ -21,6 +22,7 @@ Future<void> showCommentSheet(
     builder: (ctx) => CommentSheet(
       postId: postId,
       initialCommentCount: commentCount,
+      feedService: feedService,
       onCountChanged: onCountChanged,
     ),
   );
@@ -31,12 +33,14 @@ class CommentSheet extends StatefulWidget {
     required this.postId,
     required this.initialCommentCount,
     required this.onCountChanged,
+    this.feedService,
     super.key,
   });
 
   final String postId;
   final int initialCommentCount;
   final void Function(int) onCountChanged;
+  final FeedService? feedService;
 
   @override
   State<CommentSheet> createState() => _CommentSheetState();
@@ -49,6 +53,7 @@ class _CommentSheetState extends State<CommentSheet> {
   bool _loading = true;
   bool _sending = false;
   late int _commentCount;
+  FeedService get _feedService => widget.feedService ?? FeedService.instance;
 
   @override
   void initState() {
@@ -67,7 +72,7 @@ class _CommentSheetState extends State<CommentSheet> {
   Future<void> _loadComments() async {
     setState(() => _loading = true);
     try {
-      final comments = await FeedService.instance.listComments(widget.postId);
+      final comments = await _feedService.listComments(widget.postId);
       if (mounted) {
         setState(() {
           _comments = comments;
@@ -83,11 +88,12 @@ class _CommentSheetState extends State<CommentSheet> {
     final text = _textController.text.trim();
     if (text.isEmpty || _sending) return;
     final l10n = AppLocalizations.of(context);
-    final nickname = AppProfileController.instance
-        .displayName(fallback: l10n.profileName);
+    final nickname = AppProfileController.instance.displayName(
+      fallback: l10n.profileName,
+    );
     setState(() => _sending = true);
     try {
-      final comment = await FeedService.instance.createComment(
+      final comment = await _feedService.createComment(
         postId: widget.postId,
         nickname: nickname,
         text: text,
@@ -150,7 +156,7 @@ class _CommentSheetState extends State<CommentSheet> {
     );
     if (confirmed != true || !mounted) return;
     try {
-      await FeedService.instance.deleteComment(
+      await _feedService.deleteComment(
         postId: widget.postId,
         commentId: comment.commentId,
       );
@@ -198,7 +204,11 @@ class _CommentSheetState extends State<CommentSheet> {
                 const Spacer(),
                 IconButton(
                   onPressed: () => Navigator.pop(context, _commentCount),
-                  icon: const Icon(Icons.close, color: FuryColors.muted, size: 22),
+                  icon: const Icon(
+                    Icons.close,
+                    color: FuryColors.muted,
+                    size: 22,
+                  ),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
@@ -213,30 +223,27 @@ class _CommentSheetState extends State<CommentSheet> {
                     child: CircularProgressIndicator(color: FuryColors.red),
                   )
                 : _comments.isEmpty
-                    ? const Center(
-                        child: Text(
-                          '아직 댓글이 없어요\n첫 번째 댓글을 남겨보세요 💬',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: FuryColors.muted,
-                            height: 1.6,
-                          ),
-                        ),
-                      )
-                    : ListView.builder(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        itemCount: _comments.length,
-                        itemBuilder: (context, index) {
-                          final comment = _comments[index];
-                          return _CommentItem(
-                            comment: comment,
-                            onDelete: comment.isMine
-                                ? () => _confirmDelete(comment)
-                                : null,
-                          );
-                        },
-                      ),
+                ? const Center(
+                    child: Text(
+                      '아직 댓글이 없어요\n첫 번째 댓글을 남겨보세요 💬',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: FuryColors.muted, height: 1.6),
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    itemCount: _comments.length,
+                    itemBuilder: (context, index) {
+                      final comment = _comments[index];
+                      return _CommentItem(
+                        comment: comment,
+                        onDelete: comment.isMine
+                            ? () => _confirmDelete(comment)
+                            : null,
+                      );
+                    },
+                  ),
           ),
           const Divider(color: FuryColors.border, height: 1),
           // Input row

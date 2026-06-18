@@ -42,16 +42,32 @@ class PushMessage {
   int get hashCode => Object.hash(title, body, Object.hashAll(data.entries));
 }
 
+class CommentPushTap {
+  const CommentPushTap({required this.postId});
+
+  final String postId;
+}
+
+abstract class CommentPushTapSource {
+  Stream<CommentPushTap> get commentPushTaps;
+
+  CommentPushTap? takeInitialCommentPushTap();
+}
+
 abstract class PushGateway {
   Stream<String> get tokenRefreshes;
 
   Stream<PushMessage> get foregroundMessages;
+
+  Stream<PushMessage> get openedMessages;
 
   Future<void> requestPermission();
 
   Future<void> configureForegroundPresentation();
 
   Future<String?> getToken();
+
+  Future<PushMessage?> getInitialMessage();
 }
 
 abstract class PushDeviceRegistrar {
@@ -61,10 +77,12 @@ abstract class PushDeviceRegistrar {
 }
 
 abstract class ForegroundNotificationPresenter {
+  Future<void> initialize();
+
   Future<void> show(PushMessage message);
 }
 
-class PushNotificationService {
+class PushNotificationService implements CommentPushTapSource {
   PushNotificationService({
     required PushGateway gateway,
     required PushDeviceRegistrar registrar,
@@ -88,7 +106,22 @@ class PushNotificationService {
   final bool _registerBackgroundHandler;
   StreamSubscription<String>? _tokenSubscription;
   StreamSubscription<PushMessage>? _foregroundMessageSubscription;
+  StreamSubscription<PushMessage>? _openedMessageSubscription;
+  StreamSubscription<CommentPushTap>? _foregroundTapSubscription;
+  final StreamController<CommentPushTap> _tapController =
+      StreamController<CommentPushTap>.broadcast();
+  CommentPushTap? _initialTap;
   bool _initialized = false;
+
+  @override
+  Stream<CommentPushTap> get commentPushTaps => _tapController.stream;
+
+  @override
+  CommentPushTap? takeInitialCommentPushTap() {
+    final tap = _initialTap;
+    _initialTap = null;
+    return tap;
+  }
 
   Future<void> initialize() async {
     if (_initialized) {
@@ -103,9 +136,20 @@ class PushNotificationService {
       }
       await _gateway.requestPermission();
       await _gateway.configureForegroundPresentation();
+      await _foregroundPresenter.initialize();
 
       final token = await _gateway.getToken();
       await _registrar.registerDevice(fcmToken: token);
+
+      _rememberInitialTap(_tapFromMessage(await _gateway.getInitialMessage()));
+      if (_foregroundPresenter case final CommentPushTapSource tapSource) {
+        if (_initialTap == null) {
+          _rememberInitialTap(tapSource.takeInitialCommentPushTap());
+        }
+        _foregroundTapSubscription = tapSource.commentPushTaps.listen((tap) {
+          _tapController.add(tap);
+        });
+      }
 
       _tokenSubscription = _gateway.tokenRefreshes.listen((token) {
         unawaited(_registrar.updateFcmToken(token));
@@ -114,6 +158,12 @@ class PushNotificationService {
         message,
       ) {
         unawaited(_foregroundPresenter.show(message));
+      });
+      _openedMessageSubscription = _gateway.openedMessages.listen((message) {
+        final tap = _tapFromMessage(message);
+        if (tap != null) {
+          _tapController.add(tap);
+        }
       });
       _initialized = true;
     } on MissingPluginException {
@@ -124,7 +174,30 @@ class PushNotificationService {
   void dispose() {
     unawaited(_tokenSubscription?.cancel());
     unawaited(_foregroundMessageSubscription?.cancel());
+    unawaited(_openedMessageSubscription?.cancel());
+    unawaited(_foregroundTapSubscription?.cancel());
     _initialized = false;
+  }
+
+  CommentPushTap? _tapFromMessage(PushMessage? message) {
+    final postId = message?.data['post_id'];
+    if (postId == null || postId.isEmpty) {
+      return null;
+    }
+    return CommentPushTap(postId: postId);
+  }
+
+  void _rememberInitialTap(CommentPushTap? tap) {
+    if (tap == null) {
+      return;
+    }
+
+    _initialTap = tap;
+    scheduleMicrotask(() {
+      if (!_tapController.isClosed) {
+        _tapController.add(tap);
+      }
+    });
   }
 }
 
@@ -154,6 +227,10 @@ class FirebasePushGateway implements PushGateway {
       FirebaseMessaging.onMessage.map(_fromRemoteMessage);
 
   @override
+  Stream<PushMessage> get openedMessages =>
+      FirebaseMessaging.onMessageOpenedApp.map(_fromRemoteMessage);
+
+  @override
   Stream<String> get tokenRefreshes => _messaging.onTokenRefresh;
 
   @override
@@ -173,6 +250,12 @@ class FirebasePushGateway implements PushGateway {
   @override
   Future<String?> getToken() => _messaging.getToken();
 
+  @override
+  Future<PushMessage?> getInitialMessage() async {
+    final message = await _messaging.getInitialMessage();
+    return message == null ? null : _fromRemoteMessage(message);
+  }
+
   PushMessage _fromRemoteMessage(RemoteMessage message) {
     return PushMessage(
       title: message.notification?.title,
@@ -183,13 +266,26 @@ class FirebasePushGateway implements PushGateway {
 }
 
 class LocalForegroundNotificationPresenter
-    implements ForegroundNotificationPresenter {
+    implements ForegroundNotificationPresenter, CommentPushTapSource {
   LocalForegroundNotificationPresenter({
     FlutterLocalNotificationsPlugin? plugin,
   }) : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   final FlutterLocalNotificationsPlugin _plugin;
+  final StreamController<CommentPushTap> _tapController =
+      StreamController<CommentPushTap>.broadcast();
+  CommentPushTap? _initialTap;
   bool _initialized = false;
+
+  @override
+  Stream<CommentPushTap> get commentPushTaps => _tapController.stream;
+
+  @override
+  CommentPushTap? takeInitialCommentPushTap() {
+    final tap = _initialTap;
+    _initialTap = null;
+    return tap;
+  }
 
   @override
   Future<void> show(PushMessage message) async {
@@ -215,12 +311,15 @@ class LocalForegroundNotificationPresenter
           ),
           iOS: DarwinNotificationDetails(),
         ),
-        payload: message.data['post_id'],
+        payload: _payloadFor(message),
       );
     } on MissingPluginException {
       return;
     }
   }
+
+  @override
+  Future<void> initialize() => _initialize();
 
   Future<void> _initialize() async {
     if (_initialized) {
@@ -231,8 +330,49 @@ class LocalForegroundNotificationPresenter
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       iOS: DarwinInitializationSettings(),
     );
-    await _plugin.initialize(settings: settings);
+    await _plugin.initialize(
+      settings: settings,
+      onDidReceiveNotificationResponse: _handleNotificationResponse,
+    );
+    await _captureLaunchNotification();
     _initialized = true;
+  }
+
+  Future<void> _captureLaunchNotification() async {
+    final details = await _plugin.getNotificationAppLaunchDetails();
+    if (details?.didNotificationLaunchApp ?? false) {
+      _initialTap = _tapFromPayload(details?.notificationResponse?.payload);
+    }
+  }
+
+  void _handleNotificationResponse(NotificationResponse response) {
+    final tap = _tapFromPayload(response.payload);
+    if (tap != null) {
+      _tapController.add(tap);
+    }
+  }
+
+  String? _payloadFor(PushMessage message) {
+    final postId = message.data['post_id'];
+    if (postId == null || postId.isEmpty) {
+      return null;
+    }
+    return 'comment_post:$postId';
+  }
+
+  CommentPushTap? _tapFromPayload(String? payload) {
+    if (payload == null || payload.isEmpty) {
+      return null;
+    }
+
+    const prefix = 'comment_post:';
+    final postId = payload.startsWith(prefix)
+        ? payload.substring(prefix.length)
+        : payload;
+    if (postId.isEmpty) {
+      return null;
+    }
+    return CommentPushTap(postId: postId);
   }
 }
 

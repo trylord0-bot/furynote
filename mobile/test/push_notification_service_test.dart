@@ -67,6 +67,59 @@ void main() {
       ),
     ]);
   });
+
+  test('emits a comment tap when a push notification opens the app', () async {
+    await service.initialize();
+    final taps = <CommentPushTap>[];
+    final subscription = service.commentPushTaps.listen(taps.add);
+
+    gateway.emitOpenedMessage(
+      const PushMessage(
+        title: '새 댓글',
+        body: '누군가 댓글을 남겼어요',
+        data: {'type': 'comment', 'post_id': 'post-1'},
+      ),
+    );
+    await pumpEventQueue();
+
+    expect(taps.map((tap) => tap.postId), ['post-1']);
+    await subscription.cancel();
+  });
+
+  test(
+    'stores the initial comment tap when the app starts from push',
+    () async {
+      gateway.initialMessage = const PushMessage(
+        title: '새 댓글',
+        body: '누군가 댓글을 남겼어요',
+        data: {'type': 'comment', 'post_id': 'post-2'},
+      );
+
+      await service.initialize();
+
+      expect(service.takeInitialCommentPushTap()?.postId, 'post-2');
+      expect(service.takeInitialCommentPushTap(), isNull);
+    },
+  );
+
+  test(
+    'emits the initial comment tap to listeners already waiting during startup',
+    () async {
+      gateway.initialMessage = const PushMessage(
+        title: '새 댓글',
+        body: '누군가 댓글을 남겼어요',
+        data: {'type': 'comment', 'post_id': 'post-3'},
+      );
+      final taps = <CommentPushTap>[];
+      final subscription = service.commentPushTaps.listen(taps.add);
+
+      await service.initialize();
+      await pumpEventQueue();
+
+      expect(taps.map((tap) => tap.postId), ['post-3']);
+      await subscription.cancel();
+    },
+  );
 }
 
 class FakePushGateway implements PushGateway {
@@ -74,19 +127,28 @@ class FakePushGateway implements PushGateway {
       StreamController<String>.broadcast();
   final StreamController<PushMessage> _messageController =
       StreamController<PushMessage>.broadcast();
+  final StreamController<PushMessage> _openedMessageController =
+      StreamController<PushMessage>.broadcast();
 
   bool permissionRequested = false;
   bool foregroundPresentationConfigured = false;
   String? token;
+  PushMessage? initialMessage;
 
   @override
   Stream<PushMessage> get foregroundMessages => _messageController.stream;
+
+  @override
+  Stream<PushMessage> get openedMessages => _openedMessageController.stream;
 
   @override
   Stream<String> get tokenRefreshes => _tokenController.stream;
 
   @override
   Future<String?> getToken() async => token;
+
+  @override
+  Future<PushMessage?> getInitialMessage() async => initialMessage;
 
   @override
   Future<void> requestPermission() async {
@@ -106,9 +168,14 @@ class FakePushGateway implements PushGateway {
     _messageController.add(message);
   }
 
+  void emitOpenedMessage(PushMessage message) {
+    _openedMessageController.add(message);
+  }
+
   Future<void> dispose() async {
     await _tokenController.close();
     await _messageController.close();
+    await _openedMessageController.close();
   }
 }
 
@@ -130,6 +197,12 @@ class FakePushDeviceRegistrar implements PushDeviceRegistrar {
 class FakeForegroundNotificationPresenter
     implements ForegroundNotificationPresenter {
   final List<PushMessage> presentedMessages = [];
+  bool initialized = false;
+
+  @override
+  Future<void> initialize() async {
+    initialized = true;
+  }
 
   @override
   Future<void> show(PushMessage message) async {

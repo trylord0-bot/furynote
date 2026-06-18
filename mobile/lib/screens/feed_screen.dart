@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/api/feed_service.dart';
@@ -6,7 +8,16 @@ import '../widgets/comment_sheet.dart';
 import '../widgets/shared_widgets.dart';
 
 class FeedScreen extends StatefulWidget {
-  const FeedScreen({super.key});
+  const FeedScreen({
+    this.feedService,
+    this.pendingCommentPostId,
+    this.pendingCommentOpenToken = 0,
+    super.key,
+  });
+
+  final FeedService? feedService;
+  final String? pendingCommentPostId;
+  final int pendingCommentOpenToken;
 
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -20,6 +31,15 @@ class _FeedScreenState extends State<FeedScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void didUpdateWidget(covariant FeedScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pendingCommentOpenToken != oldWidget.pendingCommentOpenToken &&
+        widget.pendingCommentPostId != null) {
+      _tabController.index = 0;
+    }
   }
 
   @override
@@ -58,9 +78,14 @@ class _FeedScreenState extends State<FeedScreen>
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: const [
-              _FeedTabView(mineOnly: false),
-              _FeedTabView(mineOnly: true),
+            children: [
+              _FeedTabView(
+                mineOnly: false,
+                feedService: widget.feedService,
+                pendingCommentPostId: widget.pendingCommentPostId,
+                pendingCommentOpenToken: widget.pendingCommentOpenToken,
+              ),
+              _FeedTabView(mineOnly: true, feedService: widget.feedService),
             ],
           ),
         ),
@@ -70,8 +95,17 @@ class _FeedScreenState extends State<FeedScreen>
 }
 
 class _FeedTabView extends StatefulWidget {
-  const _FeedTabView({required this.mineOnly});
+  const _FeedTabView({
+    required this.mineOnly,
+    this.feedService,
+    this.pendingCommentPostId,
+    this.pendingCommentOpenToken = 0,
+  });
+
   final bool mineOnly;
+  final FeedService? feedService;
+  final String? pendingCommentPostId;
+  final int pendingCommentOpenToken;
 
   @override
   State<_FeedTabView> createState() => _FeedTabViewState();
@@ -86,6 +120,10 @@ class _FeedTabViewState extends State<_FeedTabView>
   bool _loading = true;
   bool _loadingMore = false;
   String? _error;
+  int _handledCommentOpenToken = 0;
+  bool _openingPendingComments = false;
+
+  FeedService get _feedService => widget.feedService ?? FeedService.instance;
 
   @override
   bool get wantKeepAlive => true;
@@ -95,6 +133,15 @@ class _FeedTabViewState extends State<_FeedTabView>
     super.initState();
     _loadInitial();
     _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void didUpdateWidget(covariant _FeedTabView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pendingCommentOpenToken != oldWidget.pendingCommentOpenToken ||
+        widget.pendingCommentPostId != oldWidget.pendingCommentPostId) {
+      _schedulePendingCommentOpen();
+    }
   }
 
   @override
@@ -119,7 +166,7 @@ class _FeedTabViewState extends State<_FeedTabView>
       _hasMore = true;
     });
     try {
-      final page = await FeedService.instance.listPosts(
+      final page = await _feedService.listPosts(
         size: 10,
         mineOnly: widget.mineOnly,
       );
@@ -130,6 +177,7 @@ class _FeedTabViewState extends State<_FeedTabView>
           _hasMore = page.hasMore;
           _loading = false;
         });
+        _schedulePendingCommentOpen();
       }
     } catch (e) {
       if (mounted) {
@@ -145,7 +193,7 @@ class _FeedTabViewState extends State<_FeedTabView>
     if (_loadingMore || !_hasMore || _nextCursor == null) return;
     setState(() => _loadingMore = true);
     try {
-      final page = await FeedService.instance.listPosts(
+      final page = await _feedService.listPosts(
         cursor: _nextCursor,
         size: 10,
         mineOnly: widget.mineOnly,
@@ -165,7 +213,7 @@ class _FeedTabViewState extends State<_FeedTabView>
 
   Future<void> _deletePost(String postId) async {
     try {
-      await FeedService.instance.deletePost(postId);
+      await _feedService.deletePost(postId);
       if (!mounted) return;
       setState(() => _posts.removeWhere((p) => p.postId == postId));
     } catch (_) {}
@@ -173,7 +221,7 @@ class _FeedTabViewState extends State<_FeedTabView>
 
   Future<void> _toggleLike(String postId) async {
     try {
-      final result = await FeedService.instance.toggleLike(postId);
+      final result = await _feedService.toggleLike(postId);
       if (!mounted) return;
       setState(() {
         final idx = _posts.indexWhere((p) => p.postId == postId);
@@ -188,20 +236,81 @@ class _FeedTabViewState extends State<_FeedTabView>
   }
 
   Future<void> _openComments(FeedPost post) async {
-    await showCommentSheet(
-      context,
+    await _openCommentsForPost(
       postId: post.postId,
       commentCount: post.commentCount,
+    );
+  }
+
+  Future<void> _openCommentsForPost({
+    required String postId,
+    required int commentCount,
+  }) async {
+    await showCommentSheet(
+      context,
+      postId: postId,
+      commentCount: commentCount,
+      feedService: _feedService,
       onCountChanged: (count) {
         if (!mounted) return;
         setState(() {
-          final idx = _posts.indexWhere((p) => p.postId == post.postId);
+          final idx = _posts.indexWhere((p) => p.postId == postId);
           if (idx >= 0) {
             _posts[idx] = _posts[idx].copyWith(commentCount: count);
           }
         });
       },
     );
+  }
+
+  void _schedulePendingCommentOpen() {
+    final postId = widget.pendingCommentPostId;
+    final token = widget.pendingCommentOpenToken;
+    if (widget.mineOnly ||
+        postId == null ||
+        token == 0 ||
+        token == _handledCommentOpenToken ||
+        _openingPendingComments) {
+      return;
+    }
+
+    _handledCommentOpenToken = token;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        unawaited(_openPendingComments(postId));
+      }
+    });
+  }
+
+  Future<void> _openPendingComments(String postId) async {
+    if (_openingPendingComments || !mounted) {
+      return;
+    }
+
+    _openingPendingComments = true;
+    try {
+      var post = _findPost(postId);
+      if (post == null) {
+        await _loadInitial();
+        if (!mounted) return;
+        post = _findPost(postId);
+      }
+      await _openCommentsForPost(
+        postId: postId,
+        commentCount: post?.commentCount ?? 0,
+      );
+    } finally {
+      _openingPendingComments = false;
+    }
+  }
+
+  FeedPost? _findPost(String postId) {
+    for (final post in _posts) {
+      if (post.postId == postId) {
+        return post;
+      }
+    }
+    return null;
   }
 
   @override
@@ -225,10 +334,7 @@ class _FeedTabViewState extends State<_FeedTabView>
               style: TextStyle(color: FuryColors.muted),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: _loadInitial,
-              child: const Text('다시 시도'),
-            ),
+            OutlinedButton(onPressed: _loadInitial, child: const Text('다시 시도')),
           ],
         ),
       );

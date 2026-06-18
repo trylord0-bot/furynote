@@ -1,8 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+class ReminderNotificationTap {
+  const ReminderNotificationTap({required this.noteId});
+
+  final int noteId;
+}
+
+abstract class ReminderNotificationTapSource {
+  Stream<ReminderNotificationTap> get reminderNotificationTaps;
+
+  ReminderNotificationTap? takeInitialReminderNotificationTap();
+}
 
 abstract class ReminderScheduler {
   Future<void> initialize();
@@ -14,14 +28,29 @@ abstract class ReminderScheduler {
   });
 }
 
-class LocalReminderScheduler implements ReminderScheduler {
+class LocalReminderScheduler
+    implements ReminderScheduler, ReminderNotificationTapSource {
   LocalReminderScheduler({FlutterLocalNotificationsPlugin? plugin})
     : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   static final LocalReminderScheduler instance = LocalReminderScheduler();
 
   final FlutterLocalNotificationsPlugin _plugin;
+  final StreamController<ReminderNotificationTap> _tapController =
+      StreamController<ReminderNotificationTap>.broadcast();
+  ReminderNotificationTap? _initialTap;
   bool _initialized = false;
+
+  @override
+  Stream<ReminderNotificationTap> get reminderNotificationTaps =>
+      _tapController.stream;
+
+  @override
+  ReminderNotificationTap? takeInitialReminderNotificationTap() {
+    final tap = _initialTap;
+    _initialTap = null;
+    return tap;
+  }
 
   @override
   Future<void> initialize() async {
@@ -35,7 +64,11 @@ class LocalReminderScheduler implements ReminderScheduler {
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(),
       );
-      await _plugin.initialize(settings: initializationSettings);
+      await _plugin.initialize(
+        settings: initializationSettings,
+        onDidReceiveNotificationResponse: _handleNotificationResponse,
+      );
+      await _captureLaunchNotification();
       await _plugin
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
@@ -50,6 +83,34 @@ class LocalReminderScheduler implements ReminderScheduler {
     } on MissingPluginException {
       _initialized = false;
     }
+  }
+
+  Future<void> _captureLaunchNotification() async {
+    final details = await _plugin.getNotificationAppLaunchDetails();
+    if (details?.didNotificationLaunchApp ?? false) {
+      _initialTap = _tapFromPayload(details?.notificationResponse?.payload);
+    }
+  }
+
+  void _handleNotificationResponse(NotificationResponse response) {
+    final tap = _tapFromPayload(response.payload);
+    if (tap != null) {
+      _tapController.add(tap);
+    }
+  }
+
+  ReminderNotificationTap? _tapFromPayload(String? payload) {
+    const prefix = 'rage_note:';
+    if (payload == null || !payload.startsWith(prefix)) {
+      return null;
+    }
+
+    final noteId = int.tryParse(payload.substring(prefix.length));
+    if (noteId == null) {
+      return null;
+    }
+
+    return ReminderNotificationTap(noteId: noteId);
   }
 
   @override
