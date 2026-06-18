@@ -5,6 +5,50 @@ import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
 
+class FurySnackBar {
+  const FurySnackBar._();
+
+  static SnackBar success(String message) {
+    return _build(message, backgroundColor: FuryColors.toastSuccess);
+  }
+
+  static SnackBar error(String message) {
+    return _build(message, backgroundColor: FuryColors.toastError);
+  }
+
+  static void show(
+    BuildContext context,
+    String message, {
+    bool isError = false,
+  }) {
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(isError ? error(message) : success(message));
+  }
+
+  static SnackBar _build(String message, {required Color backgroundColor}) {
+    return SnackBar(
+      content: Text(
+        message,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: FuryColors.toastText,
+          fontSize: 14,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: backgroundColor,
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: FuryColors.toastText.withValues(alpha: 0.16)),
+      ),
+      duration: const Duration(seconds: 2),
+    );
+  }
+}
+
 class FuryPostCard extends StatelessWidget {
   const FuryPostCard({
     required this.emoji,

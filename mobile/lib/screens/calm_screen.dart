@@ -68,7 +68,9 @@ class _CalmScreenState extends State<CalmScreen> {
     if (choice == null) {
       // 진정됨 — reminder 해제 후 목록에서 제거
       await RageNoteRepository.instance.clearReminderAt(note.id!);
-      if (mounted) setState(() => _reminders.removeWhere((n) => n.id == note.id));
+      if (mounted) {
+        setState(() => _reminders.removeWhere((n) => n.id == note.id));
+      }
     } else {
       // 분노 수준 업데이트
       await RageNoteRepository.instance.updateRageLevel(
@@ -206,7 +208,9 @@ class _CalmScreenState extends State<CalmScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                note.body.isEmpty ? '아까 그 분노, 지금은 어때요?' : note.body,
+                                note.body.isEmpty
+                                    ? '아까 그 분노, 지금은 어때요?'
+                                    : note.body,
                                 style: const TextStyle(
                                   color: FuryColors.text,
                                   fontSize: 14,
@@ -348,14 +352,9 @@ class _ReminderCheckSheetState extends State<_ReminderCheckSheet> {
                                   )[_selectedLevel! - 1];
                             Navigator.of(context).pop();
                             widget.onSaved(choice);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  isCalmed ? '잘 진정됐네요!' : '기록됐어요',
-                                ),
-                                backgroundColor: FuryColors.panel,
-                                behavior: SnackBarBehavior.floating,
-                              ),
+                            FurySnackBar.show(
+                              context,
+                              isCalmed ? '잘 진정됐네요!' : '기록됐어요',
                             );
                           },
                     style: ElevatedButton.styleFrom(
@@ -426,8 +425,7 @@ class _RageOptionTile extends StatelessWidget {
               style: TextStyle(
                 color: selected ? choice.color : FuryColors.muted,
                 fontSize: 11,
-                fontWeight:
-                    selected ? FontWeight.w700 : FontWeight.w400,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
               ),
             ),
           ],
@@ -476,10 +474,7 @@ class _CalmToolCard extends StatelessWidget {
               Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: FuryColors.faint,
-                  fontSize: 11,
-                ),
+                style: const TextStyle(color: FuryColors.faint, fontSize: 11),
               ),
             ],
           ),

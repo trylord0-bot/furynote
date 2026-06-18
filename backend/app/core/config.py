@@ -20,6 +20,10 @@ def _load_dotenv(path: Path) -> dict[str, str]:
 
 
 DEFAULT_HMAC_SECRET = "dev-only-change-me"
+DEFAULT_FIREBASE_CREDENTIALS_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "furynote-firebase-adminsdk-fbsvc-c60c7a3f0c.json"
+)
 
 
 @dataclass(frozen=True)
@@ -66,7 +70,8 @@ def build_settings(env: dict[str, str] | None = None, dotenv_path: Path | None =
         db_user=merged.get("DB_USER", "furynote"),
         db_password=merged.get("DB_PASSWORD", "furynote"),
         openai_api_key=merged.get("OPENAI_API_KEY") or None,
-        firebase_credentials_path=merged.get("FIREBASE_CREDENTIALS_PATH") or None,
+        firebase_credentials_path=merged.get("FIREBASE_CREDENTIALS_PATH")
+        or str(DEFAULT_FIREBASE_CREDENTIALS_PATH),
         apple_verify_url=merged.get(
             "APPLE_VERIFY_URL", "https://buy.itunes.apple.com/verifyReceipt"
         ),

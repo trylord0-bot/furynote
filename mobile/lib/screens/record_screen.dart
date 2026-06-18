@@ -252,9 +252,7 @@ class _RecordScreenState extends State<RecordScreen> {
         if (!mounted) {
           return;
         }
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('마이크 권한이 필요합니다.')));
+        FurySnackBar.show(context, '마이크 권한이 필요합니다.', isError: true);
         return;
       }
 
@@ -271,8 +269,10 @@ class _RecordScreenState extends State<RecordScreen> {
         return;
       }
       setState(() => _isRecording = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${l10n.voiceInput}을 시작할 수 없습니다.')),
+      FurySnackBar.show(
+        context,
+        '${l10n.voiceInput}을 시작할 수 없습니다.',
+        isError: true,
       );
     }
   }
@@ -283,15 +283,18 @@ class _RecordScreenState extends State<RecordScreen> {
     CategoryChoice category,
   ) async {
     final categoryValue =
-        category.key == 'custom' && _customCategoryController.text.trim().isNotEmpty
-            ? _customCategoryController.text.trim()
-            : category.key;
+        category.key == 'custom' &&
+            _customCategoryController.text.trim().isNotEmpty
+        ? _customCategoryController.text.trim()
+        : category.key;
     final text = _textController.text.trim();
 
     setState(() => _isPosting = true);
     try {
       await FeedService.instance.createPost(
-        nickname: AppProfileController.instance.displayName(fallback: l10n.profileName),
+        nickname: AppProfileController.instance.displayName(
+          fallback: l10n.profileName,
+        ),
         rageLevel: rage.level,
         category: categoryValue,
         text: text.isEmpty ? null : text,
@@ -299,14 +302,10 @@ class _RecordScreenState extends State<RecordScreen> {
       widget.onPost?.call();
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
+      FurySnackBar.show(context, e.message, isError: true);
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('피드 전송에 실패했어요. 다시 시도해주세요.')),
-      );
+      FurySnackBar.show(context, '피드 전송에 실패했어요. 다시 시도해주세요.', isError: true);
     } finally {
       if (mounted) setState(() => _isPosting = false);
     }
@@ -353,9 +352,7 @@ class _RecordScreenState extends State<RecordScreen> {
       if (!mounted) {
         return;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('기록을 저장하지 못했습니다. 다시 시도해주세요.')),
-      );
+      FurySnackBar.show(context, '기록을 저장하지 못했습니다. 다시 시도해주세요.', isError: true);
     } finally {
       if (mounted) {
         setState(() => _isSaving = false);
@@ -649,10 +646,9 @@ class _RecordScreenState extends State<RecordScreen> {
                         builder: (context, _) {
                           return FuryPostCard(
                             emoji: rage.emoji,
-                            nickname: AppProfileController.instance
-                                .displayName(
-                                  fallback: l10n.profileName,
-                                ),
+                            nickname: AppProfileController.instance.displayName(
+                              fallback: l10n.profileName,
+                            ),
                             category: '${category.emoji} ${category.label}',
                             text: _textController.text.trim(),
                             showProfileAvatar: true,

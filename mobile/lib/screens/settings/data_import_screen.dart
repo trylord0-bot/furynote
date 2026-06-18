@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../main.dart';
+import '../../widgets/shared_widgets.dart';
 
 class DataImportScreen extends StatelessWidget {
   const DataImportScreen({super.key});
@@ -20,22 +21,7 @@ class DataImportScreen extends StatelessWidget {
             InkWell(
               borderRadius: BorderRadius.circular(20),
               onTap: () {
-                ScaffoldMessenger.of(context)
-                  ..clearSnackBars()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: const Text(
-                        '📥 파일 선택 기능은 준비 중이에요!',
-                        style: TextStyle(fontWeight: FontWeight.w800),
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: const Color(0xFF2E6B3E),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
+                FurySnackBar.show(context, '📥 파일 선택 기능은 준비 중이에요!');
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 36),
@@ -158,7 +144,8 @@ class DataImportScreen extends StatelessWidget {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: '새 기기에서 앱 설치 후 백업 파일을 가져오면 모든 기록이 복원돼요.',
+                                  text:
+                                      '새 기기에서 앱 설치 후 백업 파일을 가져오면 모든 기록이 복원돼요.',
                                   style: TextStyle(
                                     color: FuryColors.muted,
                                     fontSize: 11,

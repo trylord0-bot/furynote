@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "112328233861",
+    "project_id": "furynote",
+    "storage_bucket": "furynote.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112328233861:android:5ab770d4c7f4f27e196aec",
+        "android_client_info": {
+          "package_name": "kr.co.lunlu.furynote"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY4G16LuS6nlpspds3Ui1DyxmK7sL_Vx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

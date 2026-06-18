@@ -22,3 +22,12 @@ def test_dotenv_can_override_database_port(tmp_path: Path) -> None:
     settings = build_settings(dotenv_path=dotenv)
 
     assert settings.db_port == 4406
+
+
+def test_firebase_credentials_path_defaults_to_backend_service_account_file() -> None:
+    settings = build_settings({})
+
+    assert settings.firebase_credentials_path is not None
+    assert settings.firebase_credentials_path.endswith(
+        "furynote-firebase-adminsdk-fbsvc-c60c7a3f0c.json"
+    )

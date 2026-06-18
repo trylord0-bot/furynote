@@ -83,22 +83,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       }
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(
-              '✅ "$displayName"으로 변경됐어요!',
-              style: const TextStyle(fontWeight: FontWeight.w800),
-            ),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color(0xFF2E6B3E),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            duration: const Duration(seconds: 2),
-          ),
-        );
+      FurySnackBar.show(context, '✅ "$displayName"으로 변경됐어요!');
       Future.delayed(const Duration(milliseconds: 700), () {
         if (mounted) Navigator.of(context).pop();
       });
@@ -203,24 +188,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     if (!mounted) {
       return;
     }
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            message,
-            style: const TextStyle(fontWeight: FontWeight.w800),
-          ),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: isError
-              ? FuryColors.deepRed
-              : const Color(0xFF2E6B3E),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          duration: const Duration(seconds: 2),
-        ),
-      );
+    FurySnackBar.show(context, message, isError: isError);
   }
 
   @override
@@ -397,7 +365,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       )
                     : const Text(
                         '변경 저장',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
               ),
             ),

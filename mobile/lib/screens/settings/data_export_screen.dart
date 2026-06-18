@@ -89,24 +89,7 @@ class DataExportScreen extends StatelessWidget {
                         width: double.infinity,
                         child: FilledButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context)
-                              ..clearSnackBars()
-                              ..showSnackBar(
-                                SnackBar(
-                                  content: const Text(
-                                    '✨ 결제 기능은 준비 중이에요!',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: const Color(0xFF2E6B3E),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
+                            FurySnackBar.show(context, '✨ 결제 기능은 준비 중이에요!');
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: const Color(0xFFFFD700),

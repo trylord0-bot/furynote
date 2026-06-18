@@ -9,6 +9,7 @@ from app.api.v1.router import api_router
 from app.core.config import DEFAULT_HMAC_SECRET, get_settings
 from app.core.middleware import SignatureMiddleware
 from app.db.base import Base
+from app.services import push_service
 import app.models.entities  # noqa: F401 — registers ORM models with Base.metadata
 
 logging.basicConfig(
@@ -41,6 +42,7 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
     logger.info("서버 시작 — 환경: %s, 앱: %s", settings.app_env, settings.app_name)
     _init_db()
+    push_service.init_firebase(settings.firebase_credentials_path)
     yield
     logger.info("서버 종료")
 

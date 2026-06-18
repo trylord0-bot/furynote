@@ -1,11 +1,12 @@
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException, Query
 
 from app.core.responses import error, ok
 from app.repositories.db_repository import DbStore, get_db_store
 from app.repositories.memory import DeleteResult
 from app.schemas.posts import CommentCreateRequest, PostCreateRequest
+from app.services import push_service
 from app.services.content_policy import check_rate_limit, check_text_policy
 
 
@@ -71,12 +72,26 @@ def toggle_like(
 def create_comment(
     post_id: str,
     payload: CommentCreateRequest,
+    background_tasks: BackgroundTasks,
     x_device_id: str = Header(alias="X-Device-ID"),
     store: DbStore = Depends(get_db_store),
 ) -> dict:
     comment = store.create_comment(post_id, x_device_id, payload.nickname, payload.text)
     if comment is None:
         raise HTTPException(status_code=404, detail=error("POST_NOT_FOUND", "포스팅을 찾을 수 없어요."))
+
+    owner_device_id = comment["post_owner_device_id"]
+    owner_device = store.get_device_token(owner_device_id)
+    if owner_device is not None and owner_device["notify_comment"]:
+        background_tasks.add_task(
+            push_service.send_comment_notification,
+            device_id=owner_device_id,
+            fcm_token=owner_device["fcm_token"],
+            nickname=payload.nickname,
+            text=payload.text,
+            post_id=post_id,
+        )
+
     return ok(store.serialize_comment(comment, x_device_id))
 
 

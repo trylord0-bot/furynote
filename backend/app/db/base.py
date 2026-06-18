@@ -32,3 +32,8 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
+
+
+def create_session() -> Session:
+    """Standalone session for use outside FastAPI's request dependency lifecycle (e.g. background tasks)."""
+    return _get_factory()()

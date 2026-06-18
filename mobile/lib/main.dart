@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fury_note/firebase_options.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/screens/calm_guide_screen.dart';
 import 'package:fury_note/screens/calm_screen.dart';
@@ -9,21 +11,21 @@ import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
 import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
-import 'package:fury_note/src/api/device_service.dart';
 import 'package:fury_note/src/api/env_config.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
+import 'package:fury_note/src/notifications/push_notification_service.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import 'package:fury_note/widgets/shared_widgets.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await EnvConfig.instance.load();
   await LocalReminderScheduler.instance.initialize();
   await AppProfileController.instance.load();
-  // 백엔드에 디바이스 등록 (fire-and-forget — 앱 시작을 블록하지 않음)
-  unawaited(DeviceService.instance.registerDevice());
+  unawaited(PushNotificationService.instance.initialize());
   runApp(const FuryNoteApp());
 }
 
@@ -42,6 +44,9 @@ class FuryColors {
   static const deepRed = Color(0xFF9B1D20);
   static const orange = Color(0xFFFF6B35);
   static const yellow = Color(0xFFFFD93D);
+  static const toastText = Color(0xFFFFFFFF);
+  static const toastSuccess = Color(0xFFB3262F);
+  static const toastError = Color(0xFF8F1D28);
 }
 
 String formatDottedLocaleDateTime(Locale locale, DateTime value) {
@@ -397,10 +402,10 @@ class FuryBottomToast extends StatelessWidget {
                     vertical: 11,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF242020),
+                    color: FuryColors.toastSuccess,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: FuryColors.red.withValues(alpha: 0.7),
+                      color: FuryColors.toastText.withValues(alpha: 0.18),
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -409,7 +414,7 @@ class FuryBottomToast extends StatelessWidget {
                         offset: const Offset(0, 8),
                       ),
                       BoxShadow(
-                        color: FuryColors.red.withValues(alpha: 0.18),
+                        color: FuryColors.toastSuccess.withValues(alpha: 0.2),
                         blurRadius: 22,
                         offset: const Offset(0, 4),
                       ),
@@ -419,7 +424,7 @@ class FuryBottomToast extends StatelessWidget {
                     message!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: FuryColors.text,
+                      color: FuryColors.toastText,
                       fontSize: 14,
                       fontWeight: FontWeight.w900,
                     ),

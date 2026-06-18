@@ -53,6 +53,28 @@ class DbStore:
         self.session.commit()
         return {"device_id": device.device_id, "notify_comment": device.notify_comment}
 
+    def get_device_token(self, device_id: str) -> dict | None:
+        device = self.session.execute(
+            select(DeviceToken).where(DeviceToken.device_id == device_id)
+        ).scalar_one_or_none()
+
+        if device is None:
+            return None
+        return {
+            "device_id": device.device_id,
+            "fcm_token": device.fcm_token,
+            "notify_comment": device.notify_comment,
+        }
+
+    def delete_device_token(self, device_id: str) -> None:
+        device = self.session.execute(
+            select(DeviceToken).where(DeviceToken.device_id == device_id)
+        ).scalar_one_or_none()
+
+        if device is not None:
+            self.session.delete(device)
+            self.session.commit()
+
     def update_avatar(self, device_id: str, avatar_data: str | None) -> None:
         device = self.session.execute(
             select(DeviceToken).where(DeviceToken.device_id == device_id)
@@ -207,6 +229,7 @@ class DbStore:
             "text": comment.text,
             "created_at": comment.created_at,
             "deleted_at": comment.deleted_at,
+            "post_owner_device_id": post.device_id,
         }
 
     def list_comments(self, post_id: str, device_id: str, size: int) -> list[dict]:

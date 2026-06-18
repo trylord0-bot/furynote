@@ -613,7 +613,7 @@ void _expectToastAboveTabs(WidgetTester tester, String message) {
   final toastText = tester.widget<Text>(textFinder);
 
   expect(toastFinder, findsOneWidget);
-  expect(toastText.style?.color, FuryColors.text);
+  expect(toastText.style?.color, FuryColors.toastText);
   expect(toastBottom, lessThanOrEqualTo(tabTop));
   expect(toastBottom, greaterThan(tabTop - 24));
 }
