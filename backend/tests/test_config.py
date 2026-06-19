@@ -24,6 +24,31 @@ def test_dotenv_can_override_database_port(tmp_path: Path) -> None:
     assert settings.db_port == 4406
 
 
+def test_dotenv_relative_firebase_credentials_path_resolves_from_dotenv_dir(
+    tmp_path: Path,
+) -> None:
+    dotenv = tmp_path / ".env"
+    dotenv.write_text("FIREBASE_CREDENTIALS_PATH=service-account.json\n", encoding="utf-8")
+
+    settings = build_settings(dotenv_path=dotenv)
+
+    assert settings.firebase_credentials_path == str(
+        (tmp_path / "service-account.json").resolve()
+    )
+
+
+def test_explicit_env_firebase_credentials_path_takes_precedence(tmp_path: Path) -> None:
+    dotenv = tmp_path / ".env"
+    dotenv.write_text("FIREBASE_CREDENTIALS_PATH=from-dotenv.json\n", encoding="utf-8")
+
+    settings = build_settings(
+        {"FIREBASE_CREDENTIALS_PATH": "from-explicit-env.json"},
+        dotenv_path=dotenv,
+    )
+
+    assert settings.firebase_credentials_path == "from-explicit-env.json"
+
+
 def test_firebase_credentials_path_defaults_to_backend_service_account_file() -> None:
     settings = build_settings({})
 
