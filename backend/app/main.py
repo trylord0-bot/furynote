@@ -41,6 +41,10 @@ def _init_db() -> None:
 async def lifespan(app: FastAPI):
     settings = get_settings()
     logger.info("서버 시작 — 환경: %s, 앱: %s", settings.app_env, settings.app_name)
+    if settings.openai_api_key:
+        logger.info("OpenAI Moderation API 활성화 (key=%s...%s)", settings.openai_api_key[:8], settings.openai_api_key[-4:])
+    else:
+        logger.warning("OPENAI_API_KEY 미설정 — Moderation 검사가 비활성화됩니다.")
     _init_db()
     push_service.init_firebase(settings.firebase_credentials_path)
     yield

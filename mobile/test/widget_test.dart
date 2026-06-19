@@ -677,6 +677,42 @@ void main() {
     _expectToastAboveTabs(tester, '포스팅했어요');
   });
 
+  testWidgets('record action toast stays in the global overlay above drawer', (
+    WidgetTester tester,
+  ) async {
+    final repository = _FakeRageNoteRepository();
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    await _openRecordTab(tester, label: '기록');
+    await _advanceRecordToPostStep(tester);
+    await tester.tap(find.text('그냥 저장만 할게요'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 120));
+
+    await tester.tap(find.byTooltip('menu'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    final toastFinder = find.byKey(const ValueKey('bottom-action-toast'));
+    expect(find.byType(FuryDrawer), findsOneWidget);
+    expect(toastFinder, findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('fury-toast-overlay')),
+        matching: toastFinder,
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('stats calendar and selected list render saved notes', (
     WidgetTester tester,
   ) async {

@@ -105,6 +105,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recordSavedToast => 'Saved';
 
   @override
+  String get apiErrorContentBlockedUrl =>
+      'Posts with links cannot be submitted.';
+
+  @override
+  String get apiErrorContentBlockedSpam =>
+      'Promotional text cannot be submitted.';
+
+  @override
+  String get apiErrorContentBlockedModeration =>
+      'This content cannot be submitted.';
+
+  @override
+  String get apiErrorRateLimitExceeded => 'Please try again in a moment.';
+
+  @override
+  String get apiErrorInternal =>
+      'A server error occurred. Please try again in a moment.';
+
+  @override
+  String get apiErrorInvalidRequest => 'Invalid request.';
+
+  @override
+  String get apiErrorForbidden => 'You do not have permission.';
+
+  @override
+  String get apiErrorPostNotFound => 'Post not found.';
+
+  @override
+  String get apiErrorCommentNotFound => 'Comment not found.';
+
+  @override
+  String get apiErrorSignatureRequired => 'Request signature is required.';
+
+  @override
+  String get apiErrorSignatureInvalid => 'Invalid request.';
+
+  @override
+  String get apiErrorSignatureExpired =>
+      'The request expired. Please try again.';
+
+  @override
+  String get apiErrorSignatureReplay =>
+      'This request has already been processed.';
+
+  @override
+  String get apiErrorUnknown => 'An unknown error occurred.';
+
+  @override
   String get reminderNotification => 'Reminder notification';
 
   @override

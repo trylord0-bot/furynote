@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/api/api_client.dart';
+import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
@@ -302,7 +303,11 @@ class _RecordScreenState extends State<RecordScreen> {
       widget.onPost?.call();
     } on ApiException catch (e) {
       if (!mounted) return;
-      FurySnackBar.show(context, e.message, isError: true);
+      FurySnackBar.show(
+        context,
+        localizedApiErrorMessage(l10n, e),
+        isError: true,
+      );
     } catch (_) {
       if (!mounted) return;
       FurySnackBar.show(context, '피드 전송에 실패했어요. 다시 시도해주세요.', isError: true);

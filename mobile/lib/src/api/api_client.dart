@@ -28,6 +28,32 @@ class ApiException implements Exception {
   String toString() => 'ApiException($statusCode/$code): $message';
 }
 
+ApiException parseApiException(Map<String, dynamic> json, int statusCode) {
+  final error = _extractError(json);
+  return ApiException(
+    error?['code'] as String? ?? 'UNKNOWN',
+    error?['message'] as String? ?? '알 수 없는 오류가 발생했어요.',
+    statusCode,
+  );
+}
+
+Map<String, dynamic>? _extractError(Map<String, dynamic> json) {
+  final topLevelError = json['error'];
+  if (topLevelError is Map<String, dynamic>) {
+    return topLevelError;
+  }
+
+  final detail = json['detail'];
+  if (detail is Map<String, dynamic>) {
+    final detailError = detail['error'];
+    if (detailError is Map<String, dynamic>) {
+      return detailError;
+    }
+  }
+
+  return null;
+}
+
 class ApiClient {
   static final ApiClient instance = ApiClient._();
   ApiClient._();
@@ -37,12 +63,20 @@ class ApiClient {
   /// 백엔드와 동일한 방식(HMAC-SHA256 over method/path/timestamp/nonce/body)으로
   /// 요청 서명을 만든다. 비밀키가 없는 임의의 클라이언트(Postman 등)가 API를
   /// 직접 호출하는 것을 막기 위한 용도.
-  Map<String, String> _signatureHeaders(String method, String path, String body) {
+  Map<String, String> _signatureHeaders(
+    String method,
+    String path,
+    String body,
+  ) {
     final secret = EnvConfig.instance.hmacSecret;
-    final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+    final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000)
+        .toString();
     final nonce = _uuid.v4();
     final message = '${method.toUpperCase()}\n$path\n$timestamp\n$nonce\n$body';
-    final signature = Hmac(sha256, utf8.encode(secret)).convert(utf8.encode(message)).toString();
+    final signature = Hmac(
+      sha256,
+      utf8.encode(secret),
+    ).convert(utf8.encode(message)).toString();
     return {
       'X-Timestamp': timestamp,
       'X-Nonce': nonce,
@@ -50,7 +84,11 @@ class ApiClient {
     };
   }
 
-  Future<Map<String, String>> _authHeaders(String method, String path, String body) async {
+  Future<Map<String, String>> _authHeaders(
+    String method,
+    String path,
+    String body,
+  ) async {
     final deviceId = await DeviceIdService.instance.getOrCreate();
     return {
       'Content-Type': 'application/json; charset=utf-8',
@@ -113,15 +151,11 @@ class ApiClient {
   }
 
   dynamic _parse(http.Response response) {
-    final json = jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+    final json =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return json['data'];
     }
-    final err = json['error'] as Map<String, dynamic>?;
-    throw ApiException(
-      err?['code'] as String? ?? 'UNKNOWN',
-      err?['message'] as String? ?? '알 수 없는 오류가 발생했어요.',
-      response.statusCode,
-    );
+    throw parseApiException(json, response.statusCode);
   }
 }

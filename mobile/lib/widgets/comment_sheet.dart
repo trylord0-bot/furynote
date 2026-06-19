@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/main.dart';
+import 'package:fury_note/src/api/api_client.dart';
+import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import 'package:fury_note/widgets/shared_widgets.dart';
@@ -136,8 +138,18 @@ class _CommentSheetState extends State<CommentSheet> {
           );
         }
       });
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      setState(() => _sending = false);
+      FurySnackBar.show(
+        context,
+        localizedApiErrorMessage(l10n, e),
+        isError: true,
+      );
     } catch (_) {
-      if (mounted) setState(() => _sending = false);
+      if (!mounted) return;
+      setState(() => _sending = false);
+      FurySnackBar.show(context, '댓글 전송에 실패했어요. 다시 시도해주세요.', isError: true);
     }
   }
 

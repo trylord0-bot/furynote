@@ -202,6 +202,16 @@ class DbStore:
 
     # ── Comments ──────────────────────────────────────────────────────────────
 
+    def recent_comment_attempts(self, device_id: str) -> list[datetime]:
+        since = datetime.utcnow() - timedelta(seconds=60)
+        rows = self.session.execute(
+            select(Comment.created_at)
+            .where(Comment.device_id == device_id)
+            .where(Comment.created_at >= since)
+            .where(Comment.deleted_at.is_(None))
+        ).all()
+        return [row[0] for row in rows]
+
     def create_comment(self, post_id: str, device_id: str, nickname: str, text: str) -> dict | None:
         post = self.session.execute(
             select(Post).where(Post.post_id == post_id).where(Post.deleted_at.is_(None))

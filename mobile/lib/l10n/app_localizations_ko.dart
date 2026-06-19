@@ -105,6 +105,48 @@ class AppLocalizationsKo extends AppLocalizations {
   String get recordSavedToast => '기록됐어요';
 
   @override
+  String get apiErrorContentBlockedUrl => '링크가 포함된 글은 등록할 수 없어요.';
+
+  @override
+  String get apiErrorContentBlockedSpam => '광고성 문구가 포함되어 있어요.';
+
+  @override
+  String get apiErrorContentBlockedModeration => '부적절한 내용이 포함되어 있어요.';
+
+  @override
+  String get apiErrorRateLimitExceeded => '잠시 후 다시 시도해주세요.';
+
+  @override
+  String get apiErrorInternal => '서버 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get apiErrorInvalidRequest => '잘못된 요청이에요.';
+
+  @override
+  String get apiErrorForbidden => '권한이 없어요.';
+
+  @override
+  String get apiErrorPostNotFound => '포스팅을 찾을 수 없어요.';
+
+  @override
+  String get apiErrorCommentNotFound => '댓글을 찾을 수 없어요.';
+
+  @override
+  String get apiErrorSignatureRequired => '요청 서명이 필요해요.';
+
+  @override
+  String get apiErrorSignatureInvalid => '잘못된 요청이에요.';
+
+  @override
+  String get apiErrorSignatureExpired => '요청 유효 시간이 지났어요. 다시 시도해주세요.';
+
+  @override
+  String get apiErrorSignatureReplay => '이미 처리된 요청이에요.';
+
+  @override
+  String get apiErrorUnknown => '알 수 없는 오류가 발생했어요.';
+
+  @override
   String get reminderNotification => '리마인드 알림';
 
   @override

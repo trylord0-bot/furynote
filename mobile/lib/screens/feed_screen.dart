@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/api/api_client.dart';
+import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import '../main.dart';
 import '../widgets/comment_sheet.dart';
@@ -178,6 +180,13 @@ class _FeedTabViewState extends State<_FeedTabView>
           _loading = false;
         });
         _schedulePendingCommentOpen();
+      }
+    } on ApiException catch (e) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _error = localizedApiErrorMessage(AppLocalizations.of(context), e);
+        });
       }
     } catch (e) {
       if (mounted) {

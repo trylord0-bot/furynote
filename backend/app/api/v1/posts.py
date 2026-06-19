@@ -1,16 +1,27 @@
+import logging
 from datetime import datetime
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException, Query
 
+from app.core.config import get_settings
 from app.core.responses import error, ok
 from app.repositories.db_repository import DbStore, get_db_store
 from app.repositories.memory import DeleteResult
 from app.schemas.posts import CommentCreateRequest, PostCreateRequest
 from app.services import push_service
-from app.services.content_policy import check_rate_limit, check_text_policy
+from app.services.content_policy import PolicyResult, check_moderation, check_rate_limit, check_text_policy
 
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+
+def _policy_error(result: PolicyResult) -> HTTPException:
+    status_code = 500 if result.is_internal_error else 400
+    return HTTPException(
+        status_code=status_code,
+        detail=error(result.code or "INVALID_REQUEST", result.message or "Blocked"),
+    )
 
 
 @router.post("", status_code=201)
@@ -19,15 +30,25 @@ def create_post(
     x_device_id: str = Header(alias="X-Device-ID"),
     store: DbStore = Depends(get_db_store),
 ) -> dict:
+    logger.info("포스팅 요청 — device_id=%s", x_device_id)
+
     text_result = check_text_policy(payload.text)
     if not text_result.allowed:
-        raise HTTPException(status_code=400, detail=error(text_result.code or "INVALID_REQUEST", text_result.message or "Blocked"))
+        logger.info("포스팅 거절 — code=%s device_id=%s", text_result.code, x_device_id)
+        raise _policy_error(text_result)
+
+    mod_result = check_moderation(payload.text, get_settings().openai_api_key)
+    if not mod_result.allowed:
+        logger.info("포스팅 거절 — code=%s device_id=%s", mod_result.code, x_device_id)
+        raise _policy_error(mod_result)
 
     rate_result = check_rate_limit([*store.recent_post_attempts(x_device_id), datetime.utcnow()])
     if not rate_result.allowed:
+        logger.info("포스팅 거절 — code=%s device_id=%s", rate_result.code, x_device_id)
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
 
     post = store.create_post(x_device_id, payload.nickname, payload.rage_level, payload.category, payload.text)
+    logger.info("포스팅 등록 완료 — post_id=%s device_id=%s", post["post_id"], x_device_id)
     return ok({"post_id": post["post_id"], "created_at": post["created_at"].isoformat()})
 
 
@@ -76,6 +97,23 @@ def create_comment(
     x_device_id: str = Header(alias="X-Device-ID"),
     store: DbStore = Depends(get_db_store),
 ) -> dict:
+    logger.info("댓글 요청 — post_id=%s device_id=%s", post_id, x_device_id)
+
+    text_result = check_text_policy(payload.text)
+    if not text_result.allowed:
+        logger.info("댓글 거절 — code=%s device_id=%s", text_result.code, x_device_id)
+        raise _policy_error(text_result)
+
+    mod_result = check_moderation(payload.text, get_settings().openai_api_key)
+    if not mod_result.allowed:
+        logger.info("댓글 거절 — code=%s device_id=%s", mod_result.code, x_device_id)
+        raise _policy_error(mod_result)
+
+    rate_result = check_rate_limit([*store.recent_comment_attempts(x_device_id), datetime.utcnow()])
+    if not rate_result.allowed:
+        logger.info("댓글 거절 — code=%s device_id=%s", rate_result.code, x_device_id)
+        raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
+
     comment = store.create_comment(post_id, x_device_id, payload.nickname, payload.text)
     if comment is None:
         raise HTTPException(status_code=404, detail=error("POST_NOT_FOUND", "포스팅을 찾을 수 없어요."))
@@ -92,6 +130,7 @@ def create_comment(
             post_id=post_id,
         )
 
+    logger.info("댓글 등록 완료 — comment_id=%s post_id=%s device_id=%s", comment["comment_id"], post_id, x_device_id)
     return ok(store.serialize_comment(comment, x_device_id))
 
 

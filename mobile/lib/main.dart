@@ -50,6 +50,61 @@ class FuryColors {
   static const toastError = Color(0xFF8F1D28);
 }
 
+class FuryToastController extends ChangeNotifier {
+  FuryToastController._();
+
+  static final FuryToastController instance = FuryToastController._();
+
+  String? message;
+  bool visible = false;
+  bool isError = false;
+  Timer? _timer;
+  int _version = 0;
+
+  Color get backgroundColor =>
+      isError ? FuryColors.toastError : FuryColors.toastSuccess;
+
+  void show(String nextMessage, {bool isError = false}) {
+    _timer?.cancel();
+    final nextVersion = _version + 1;
+    _version = nextVersion;
+    message = nextMessage;
+    visible = true;
+    this.isError = isError;
+    notifyListeners();
+
+    _timer = Timer(const Duration(seconds: 2), () {
+      if (_version != nextVersion) {
+        return;
+      }
+
+      visible = false;
+      notifyListeners();
+
+      Future<void>.delayed(const Duration(milliseconds: 220), () {
+        if (_version != nextVersion || visible) {
+          return;
+        }
+
+        message = null;
+        notifyListeners();
+      });
+    });
+  }
+
+  void clear({bool notify = true}) {
+    _timer?.cancel();
+    _timer = null;
+    _version += 1;
+    message = null;
+    visible = false;
+    isError = false;
+    if (notify) {
+      notifyListeners();
+    }
+  }
+}
+
 String formatDottedLocaleDateTime(Locale locale, DateTime value) {
   final dateParts = _datePartsForLocale(locale, value);
   final hour = value.hour.toString().padLeft(2, '0');
@@ -103,6 +158,11 @@ class FuryNoteApp extends StatelessWidget {
       title: 'Fury Note',
       locale: initialLocale,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return FuryAppFrame(
+          child: FuryToastOverlay(child: child ?? const SizedBox.shrink()),
+        );
+      },
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -183,15 +243,13 @@ class FuryNoteApp extends StatelessWidget {
           ),
         ),
       ),
-      home: FuryAppFrame(
-        child: FuryShell(
-          feedService: feedService,
-          noteRepository: noteRepository,
-          reminderScheduler: reminderScheduler,
-          reminderNotificationTapSource: reminderNotificationTapSource,
-          commentPushTapSource: commentPushTapSource,
-          voiceRecorder: voiceRecorder,
-        ),
+      home: FuryShell(
+        feedService: feedService,
+        noteRepository: noteRepository,
+        reminderScheduler: reminderScheduler,
+        reminderNotificationTapSource: reminderNotificationTapSource,
+        commentPushTapSource: commentPushTapSource,
+        voiceRecorder: voiceRecorder,
       ),
     );
   }
@@ -245,6 +303,56 @@ class FuryAppFrame extends StatelessWidget {
   }
 }
 
+class FuryToastOverlay extends StatefulWidget {
+  const FuryToastOverlay({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  State<FuryToastOverlay> createState() => _FuryToastOverlayState();
+}
+
+class _FuryToastOverlayState extends State<FuryToastOverlay> {
+  @override
+  void initState() {
+    super.initState();
+    FuryToastController.instance.clear(notify: false);
+  }
+
+  @override
+  void dispose() {
+    FuryToastController.instance.clear(notify: false);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      key: const ValueKey('fury-toast-overlay'),
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(child: widget.child),
+        Positioned(
+          left: 16,
+          right: 16,
+          bottom: 88 + MediaQuery.paddingOf(context).bottom,
+          child: AnimatedBuilder(
+            animation: FuryToastController.instance,
+            builder: (context, _) {
+              final controller = FuryToastController.instance;
+              return FuryBottomToast(
+                message: controller.message,
+                visible: controller.visible,
+                backgroundColor: controller.backgroundColor,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class FuryShell extends StatefulWidget {
   const FuryShell({
     this.feedService,
@@ -272,10 +380,6 @@ class _FuryShellState extends State<FuryShell> {
   static const int _calmIndex = 3;
 
   int _index = _feedIndex;
-  String? _toastMessage;
-  bool _toastVisible = false;
-  Timer? _toastTimer;
-  int _toastVersion = 0;
   StreamSubscription<ReminderNotificationTap>? _reminderTapSubscription;
   StreamSubscription<CommentPushTap>? _commentPushTapSubscription;
   String? _pendingCommentPostId;
@@ -304,7 +408,6 @@ class _FuryShellState extends State<FuryShell> {
 
   @override
   void dispose() {
-    _toastTimer?.cancel();
     unawaited(_reminderTapSubscription?.cancel());
     unawaited(_commentPushTapSubscription?.cancel());
     super.dispose();
@@ -330,12 +433,9 @@ class _FuryShellState extends State<FuryShell> {
     }
 
     Navigator.of(context).popUntil((route) => route.isFirst);
-    _toastTimer?.cancel();
+    FuryToastController.instance.clear();
     setState(() {
       _index = _calmIndex;
-      _toastVersion += 1;
-      _toastMessage = null;
-      _toastVisible = false;
     });
   }
 
@@ -363,46 +463,27 @@ class _FuryShellState extends State<FuryShell> {
     }
 
     Navigator.of(context).popUntil((route) => route.isFirst);
-    _toastTimer?.cancel();
+    FuryToastController.instance.clear();
     setState(() {
       _index = _feedIndex;
       _pendingCommentPostId = tap.postId;
       _pendingCommentOpenToken += 1;
-      _toastVersion += 1;
-      _toastMessage = null;
-      _toastVisible = false;
     });
   }
 
   void _openFeed({String? toastMessage}) {
-    _toastTimer?.cancel();
-    final nextToastVersion = _toastVersion + 1;
-
-    setState(() {
-      _index = _feedIndex;
-      _toastVersion = nextToastVersion;
-      _toastMessage = toastMessage;
-      _toastVisible = toastMessage != null;
-    });
-
     if (toastMessage == null) {
+      FuryToastController.instance.clear();
+    } else {
+      FuryToastController.instance.show(toastMessage);
+    }
+
+    if (_index == _feedIndex) {
       return;
     }
 
-    _toastTimer = Timer(const Duration(seconds: 2), () {
-      if (!mounted || _toastVersion != nextToastVersion) {
-        return;
-      }
-
-      setState(() => _toastVisible = false);
-
-      Future<void>.delayed(const Duration(milliseconds: 220), () {
-        if (!mounted || _toastVersion != nextToastVersion || _toastVisible) {
-          return;
-        }
-
-        setState(() => _toastMessage = null);
-      });
+    setState(() {
+      _index = _feedIndex;
     });
   }
 
@@ -450,29 +531,13 @@ class _FuryShellState extends State<FuryShell> {
         surfaceTintColor: Colors.transparent,
         child: FuryDrawer(),
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(child: screens[_index]),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 12,
-            child: FuryBottomToast(
-              message: _toastMessage,
-              visible: _toastVisible,
-            ),
-          ),
-        ],
-      ),
+      body: Stack(children: [Positioned.fill(child: screens[_index])]),
       bottomNavigationBar: FuryBottomNav(
         selectedIndex: _index,
         onSelected: (value) {
-          _toastTimer?.cancel();
+          FuryToastController.instance.clear();
           setState(() {
             _index = value;
-            _toastVersion += 1;
-            _toastMessage = null;
-            _toastVisible = false;
           });
         },
         labels: [l10n.record, l10n.feed, l10n.stats, l10n.calm],
@@ -485,15 +550,21 @@ class FuryBottomToast extends StatelessWidget {
   const FuryBottomToast({
     required this.message,
     required this.visible,
+    this.backgroundColor = FuryColors.toastSuccess,
     super.key,
   });
 
   final String? message;
   final bool visible;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final shown = visible && message != null;
+
+    if (!shown && message == null) {
+      return const SizedBox.shrink();
+    }
 
     return IgnorePointer(
       child: AnimatedSlide(
@@ -514,7 +585,7 @@ class FuryBottomToast extends StatelessWidget {
                     vertical: 11,
                   ),
                   decoration: BoxDecoration(
-                    color: FuryColors.toastSuccess,
+                    color: backgroundColor,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: FuryColors.toastText.withValues(alpha: 0.18),
@@ -526,7 +597,7 @@ class FuryBottomToast extends StatelessWidget {
                         offset: const Offset(0, 8),
                       ),
                       BoxShadow(
-                        color: FuryColors.toastSuccess.withValues(alpha: 0.2),
+                        color: backgroundColor.withValues(alpha: 0.2),
                         blurRadius: 22,
                         offset: const Offset(0, 4),
                       ),
@@ -537,6 +608,7 @@ class FuryBottomToast extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: FuryColors.toastText,
+                      decoration: TextDecoration.none,
                       fontSize: 14,
                       fontWeight: FontWeight.w900,
                     ),

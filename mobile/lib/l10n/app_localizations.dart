@@ -290,6 +290,90 @@ abstract class AppLocalizations {
   /// **'기록됐어요'**
   String get recordSavedToast;
 
+  /// No description provided for @apiErrorContentBlockedUrl.
+  ///
+  /// In ko, this message translates to:
+  /// **'링크가 포함된 글은 등록할 수 없어요.'**
+  String get apiErrorContentBlockedUrl;
+
+  /// No description provided for @apiErrorContentBlockedSpam.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고성 문구가 포함되어 있어요.'**
+  String get apiErrorContentBlockedSpam;
+
+  /// No description provided for @apiErrorContentBlockedModeration.
+  ///
+  /// In ko, this message translates to:
+  /// **'부적절한 내용이 포함되어 있어요.'**
+  String get apiErrorContentBlockedModeration;
+
+  /// No description provided for @apiErrorRateLimitExceeded.
+  ///
+  /// In ko, this message translates to:
+  /// **'잠시 후 다시 시도해주세요.'**
+  String get apiErrorRateLimitExceeded;
+
+  /// No description provided for @apiErrorInternal.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 오류가 발생했어요. 잠시 후 다시 시도해주세요.'**
+  String get apiErrorInternal;
+
+  /// No description provided for @apiErrorInvalidRequest.
+  ///
+  /// In ko, this message translates to:
+  /// **'잘못된 요청이에요.'**
+  String get apiErrorInvalidRequest;
+
+  /// No description provided for @apiErrorForbidden.
+  ///
+  /// In ko, this message translates to:
+  /// **'권한이 없어요.'**
+  String get apiErrorForbidden;
+
+  /// No description provided for @apiErrorPostNotFound.
+  ///
+  /// In ko, this message translates to:
+  /// **'포스팅을 찾을 수 없어요.'**
+  String get apiErrorPostNotFound;
+
+  /// No description provided for @apiErrorCommentNotFound.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글을 찾을 수 없어요.'**
+  String get apiErrorCommentNotFound;
+
+  /// No description provided for @apiErrorSignatureRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'요청 서명이 필요해요.'**
+  String get apiErrorSignatureRequired;
+
+  /// No description provided for @apiErrorSignatureInvalid.
+  ///
+  /// In ko, this message translates to:
+  /// **'잘못된 요청이에요.'**
+  String get apiErrorSignatureInvalid;
+
+  /// No description provided for @apiErrorSignatureExpired.
+  ///
+  /// In ko, this message translates to:
+  /// **'요청 유효 시간이 지났어요. 다시 시도해주세요.'**
+  String get apiErrorSignatureExpired;
+
+  /// No description provided for @apiErrorSignatureReplay.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 처리된 요청이에요.'**
+  String get apiErrorSignatureReplay;
+
+  /// No description provided for @apiErrorUnknown.
+  ///
+  /// In ko, this message translates to:
+  /// **'알 수 없는 오류가 발생했어요.'**
+  String get apiErrorUnknown;
+
   /// No description provided for @reminderNotification.
   ///
   /// In ko, this message translates to:

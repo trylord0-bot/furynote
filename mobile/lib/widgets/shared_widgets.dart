@@ -21,9 +21,7 @@ class FurySnackBar {
     String message, {
     bool isError = false,
   }) {
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(isError ? error(message) : success(message));
+    FuryToastController.instance.show(message, isError: isError);
   }
 
   static SnackBar _build(String message, {required Color backgroundColor}) {
