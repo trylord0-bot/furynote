@@ -20,6 +20,7 @@ import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 import 'package:fury_note/src/notifications/push_notification_service.dart';
 import 'package:fury_note/widgets/comment_sheet.dart';
+import 'package:fury_note/widgets/shared_widgets.dart';
 
 void main() {
   setUpAll(() {
@@ -161,6 +162,56 @@ void main() {
     } finally {
       await pushTapSource.dispose();
     }
+  });
+
+  testWidgets('comment sheet shows the source post above scrollable comments', (
+    WidgetTester tester,
+  ) async {
+    final feedService = _FakeFeedService(
+      posts: const [],
+      comments: {
+        'post-1': [
+          FeedComment(
+            commentId: 'comment-1',
+            nickname: '친구',
+            text: '댓글 목록 첫 줄',
+            isMine: false,
+            createdAt: DateTime.now(),
+          ),
+        ],
+      },
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: CommentSheet(
+            postId: 'post-1',
+            initialCommentCount: 1,
+            postNickname: '원글 작성자',
+            postText: '댓글 팝업 원글',
+            postRageLevel: 5,
+            postCategory: 'work',
+            feedService: feedService,
+            onCountChanged: (_) {},
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.text('댓글 1개'), findsOneWidget);
+    expect(find.text('원글 작성자'), findsOneWidget);
+    expect(find.byType(FuryProfileAvatar), findsWidgets);
+    expect(find.text('댓글 팝업 원글'), findsOneWidget);
+    expect(find.text('🤬'), findsOneWidget);
+    expect(find.text('💼 직장'), findsOneWidget);
+    expect(find.byType(ListView), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('댓글 팝업 원글')).dy,
+      lessThan(tester.getTopLeft(find.text('댓글 목록 첫 줄')).dy),
+    );
   });
 
   testWidgets(

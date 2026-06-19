@@ -239,17 +239,24 @@ class _FeedTabViewState extends State<_FeedTabView>
     await _openCommentsForPost(
       postId: post.postId,
       commentCount: post.commentCount,
+      post: post,
     );
   }
 
   Future<void> _openCommentsForPost({
     required String postId,
     required int commentCount,
+    FeedPost? post,
   }) async {
     await showCommentSheet(
       context,
       postId: postId,
       commentCount: commentCount,
+      postNickname: post?.nickname,
+      postAvatarBytes: post?.avatarBytes,
+      postText: post?.text,
+      postRageLevel: post?.rageLevel,
+      postCategory: post?.category,
       feedService: _feedService,
       onCountChanged: (count) {
         if (!mounted) return;
@@ -298,6 +305,7 @@ class _FeedTabViewState extends State<_FeedTabView>
       await _openCommentsForPost(
         postId: postId,
         commentCount: post?.commentCount ?? 0,
+        post: post,
       );
     } finally {
       _openingPendingComments = false;

@@ -3,11 +3,17 @@ import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/main.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
+import 'package:fury_note/widgets/shared_widgets.dart';
 
 Future<void> showCommentSheet(
   BuildContext context, {
   required String postId,
   required int commentCount,
+  String? postNickname,
+  List<int>? postAvatarBytes,
+  String? postText,
+  int? postRageLevel,
+  String? postCategory,
   FeedService? feedService,
   required void Function(int) onCountChanged,
 }) {
@@ -22,6 +28,11 @@ Future<void> showCommentSheet(
     builder: (ctx) => CommentSheet(
       postId: postId,
       initialCommentCount: commentCount,
+      postNickname: postNickname,
+      postAvatarBytes: postAvatarBytes,
+      postText: postText,
+      postRageLevel: postRageLevel,
+      postCategory: postCategory,
       feedService: feedService,
       onCountChanged: onCountChanged,
     ),
@@ -33,6 +44,11 @@ class CommentSheet extends StatefulWidget {
     required this.postId,
     required this.initialCommentCount,
     required this.onCountChanged,
+    this.postNickname,
+    this.postAvatarBytes,
+    this.postText,
+    this.postRageLevel,
+    this.postCategory,
     this.feedService,
     super.key,
   });
@@ -40,6 +56,11 @@ class CommentSheet extends StatefulWidget {
   final String postId;
   final int initialCommentCount;
   final void Function(int) onCountChanged;
+  final String? postNickname;
+  final List<int>? postAvatarBytes;
+  final String? postText;
+  final int? postRageLevel;
+  final String? postCategory;
   final FeedService? feedService;
 
   @override
@@ -173,6 +194,9 @@ class _CommentSheetState extends State<CommentSheet> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final postRageLevel = widget.postRageLevel;
+    final postCategory = widget.postCategory;
+    final showPostSummary = postRageLevel != null && postCategory != null;
 
     return SizedBox(
       height: screenHeight * 0.75,
@@ -216,6 +240,16 @@ class _CommentSheetState extends State<CommentSheet> {
             ),
           ),
           const Divider(color: FuryColors.border, height: 1),
+          if (showPostSummary) ...[
+            _SourcePostSummary(
+              nickname: widget.postNickname,
+              avatarBytes: widget.postAvatarBytes,
+              text: widget.postText ?? '',
+              emoji: rageEmoji(postRageLevel),
+              category: categoryDisplay(postCategory),
+            ),
+            const Divider(color: FuryColors.border, height: 1),
+          ],
           // Comment list
           Expanded(
             child: _loading
@@ -333,6 +367,116 @@ class _CommentSheetState extends State<CommentSheet> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SourcePostSummary extends StatelessWidget {
+  const _SourcePostSummary({
+    required this.nickname,
+    required this.avatarBytes,
+    required this.text,
+    required this.emoji,
+    required this.category,
+  });
+
+  final String? nickname;
+  final List<int>? avatarBytes;
+  final String text;
+  final String emoji;
+  final String category;
+
+  @override
+  Widget build(BuildContext context) {
+    final displayText = text.trim();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: FuryColors.panelAlt,
+          border: Border.all(color: FuryColors.border),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                FuryProfileAvatar(
+                  size: 28,
+                  borderRadius: 10,
+                  fallbackFontSize: 15,
+                  bytes: avatarBytes,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    nickname?.trim().isNotEmpty == true
+                        ? nickname!.trim()
+                        : AppLocalizations.of(context).profileName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: FuryColors.muted,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              displayText.isEmpty
+                  ? '<${AppLocalizations.of(context).noContent}>'
+                  : displayText,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: displayText.isEmpty
+                    ? FuryColors.faint
+                    : const Color(0xFFCCCCCC),
+                fontSize: 13,
+                height: 1.45,
+                fontStyle: displayText.isEmpty
+                    ? FontStyle.italic
+                    : FontStyle.normal,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Text(emoji, style: const TextStyle(fontSize: 18)),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.06),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      category,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: FuryColors.muted,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
