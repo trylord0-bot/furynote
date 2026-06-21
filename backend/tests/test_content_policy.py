@@ -23,6 +23,20 @@ def test_spam_keyword_is_blocked() -> None:
     assert result.code == "CONTENT_BLOCKED_SPAM"
 
 
+def test_profanity_from_badwords_file_is_blocked() -> None:
+    result = check_text_policy("진짜 시발 너무 화난다")
+
+    assert result.allowed is False
+    assert result.code == "CONTENT_BLOCKED_PROFANITY"
+
+
+def test_regex_like_badword_is_matched_as_literal_text() -> None:
+    result = check_text_policy("문장 안의 @!@ 문자열")
+
+    assert result.allowed is False
+    assert result.code == "CONTENT_BLOCKED_PROFANITY"
+
+
 def test_five_attempts_in_sixty_seconds_is_rate_limited() -> None:
     now = datetime(2026, 6, 10, 12, 0, 0)
     attempts = [now - timedelta(seconds=offset) for offset in (1, 5, 10, 20, 59)]

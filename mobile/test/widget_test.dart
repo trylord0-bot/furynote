@@ -14,6 +14,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:fury_note/main.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
+import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
@@ -212,6 +213,50 @@ void main() {
       tester.getTopLeft(find.text('댓글 팝업 원글')).dy,
       lessThan(tester.getTopLeft(find.text('댓글 목록 첫 줄')).dy),
     );
+  });
+
+  testWidgets('rejected profanity comment shows localized error toast', (
+    WidgetTester tester,
+  ) async {
+    final pushTapSource = _FakeCommentPushTapSource();
+    final feedService = _FakeFeedService(
+      posts: const [],
+      createCommentError: const ApiException(
+        'CONTENT_BLOCKED_PROFANITY',
+        '부적절한 내용이 포함되어 있어요.',
+        400,
+      ),
+    );
+
+    try {
+      await tester.pumpWidget(
+        FuryNoteApp(
+          initialLocale: const Locale('ko'),
+          feedService: feedService,
+          commentPushTapSource: pushTapSource,
+        ),
+      );
+      await tester.pump();
+
+      pushTapSource.emit(const CommentPushTap(postId: 'post-1'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      await tester.enterText(find.byType(TextField), '시발');
+      final sendButton = tester.widget<GestureDetector>(
+        find.ancestor(
+          of: find.byIcon(Icons.send_rounded),
+          matching: find.byType(GestureDetector),
+        ),
+      );
+      sendButton.onTap!();
+      await tester.pump();
+
+      expect(find.text('비속어가 포함되어 있어 등록할 수 없어요.'), findsOneWidget);
+    } finally {
+      await pushTapSource.dispose();
+    }
   });
 
   testWidgets(
@@ -975,6 +1020,7 @@ class _FakeFeedService implements FeedService {
   _FakeFeedService({
     required List<FeedPost> posts,
     Map<String, List<FeedComment>> comments = const {},
+    this.createCommentError,
   }) : _posts = List<FeedPost>.of(posts),
        _comments = comments.map(
          (postId, comments) => MapEntry(postId, List<FeedComment>.of(comments)),
@@ -982,6 +1028,7 @@ class _FakeFeedService implements FeedService {
 
   final List<FeedPost> _posts;
   final Map<String, List<FeedComment>> _comments;
+  final ApiException? createCommentError;
 
   @override
   Future<({bool hasMore, String? nextCursor, List<FeedPost> posts})> listPosts({
@@ -1017,6 +1064,7 @@ class _FakeFeedService implements FeedService {
     required String nickname,
     required String text,
   }) async {
+    if (createCommentError case final error?) throw error;
     final comment = FeedComment(
       commentId: 'new-comment',
       nickname: nickname,

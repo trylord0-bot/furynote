@@ -34,6 +34,7 @@
   "recordSavedToast": "기록됐어요",
   "apiErrorContentBlockedUrl": "링크가 포함된 글은 등록할 수 없어요.",
   "apiErrorContentBlockedSpam": "광고성 문구가 포함되어 있어요.",
+  "apiErrorContentBlockedProfanity": "비속어가 포함되어 있어 등록할 수 없어요.",
   "apiErrorContentBlockedModeration": "부적절한 내용이 포함되어 있어요.",
   "apiErrorRateLimitExceeded": "잠시 후 다시 시도해주세요.",
   "apiErrorInternal": "서버 오류가 발생했어요. 잠시 후 다시 시도해주세요.",

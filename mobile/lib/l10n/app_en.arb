@@ -34,6 +34,7 @@
   "recordSavedToast": "Saved",
   "apiErrorContentBlockedUrl": "Posts with links cannot be submitted.",
   "apiErrorContentBlockedSpam": "Promotional text cannot be submitted.",
+  "apiErrorContentBlockedProfanity": "Content containing profanity cannot be submitted.",
   "apiErrorContentBlockedModeration": "This content cannot be submitted.",
   "apiErrorRateLimitExceeded": "Please try again in a moment.",
   "apiErrorInternal": "A server error occurred. Please try again in a moment.",

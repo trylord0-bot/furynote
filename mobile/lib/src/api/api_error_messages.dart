@@ -6,6 +6,7 @@ String localizedApiErrorMessage(AppLocalizations l10n, ApiException exception) {
   return switch (exception.code) {
     'CONTENT_BLOCKED_URL' => l10n.apiErrorContentBlockedUrl,
     'CONTENT_BLOCKED_SPAM' => l10n.apiErrorContentBlockedSpam,
+    'CONTENT_BLOCKED_PROFANITY' => l10n.apiErrorContentBlockedProfanity,
     'CONTENT_BLOCKED_MODERATION' => l10n.apiErrorContentBlockedModeration,
     'RATE_LIMIT_EXCEEDED' => l10n.apiErrorRateLimitExceeded,
     'INTERNAL_ERROR' => l10n.apiErrorInternal,

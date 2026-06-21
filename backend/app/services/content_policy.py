@@ -4,11 +4,23 @@ import logging
 import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from functools import cache
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 URL_PATTERN = re.compile(r"https?://|www\.", re.IGNORECASE)
 SPAM_KEYWORDS = ("무료", "대출", "카지노", "가입", "수익", "광고")
+BADWORDS_PATH = Path(__file__).resolve().parents[2] / "badwords_kr.txt"
+
+
+@cache
+def load_badwords() -> tuple[str, ...]:
+    return tuple(
+        word
+        for line in BADWORDS_PATH.read_text(encoding="utf-8").splitlines()
+        if (word := line.strip())
+    )
 
 
 @dataclass(frozen=True)
@@ -31,6 +43,14 @@ def check_text_policy(text: str | None) -> PolicyResult:
         logger.info("[Step 2] 광고 키워드 감지 — 차단")
         return PolicyResult(False, "CONTENT_BLOCKED_SPAM", "광고성 문구가 포함되어 있어요.")
     logger.info("[Step 2] 광고 키워드 검사 통과")
+    if any(word in text for word in load_badwords()):
+        logger.info("[Step 3] 비속어 감지 — 차단")
+        return PolicyResult(
+            False,
+            "CONTENT_BLOCKED_PROFANITY",
+            "부적절한 내용이 포함되어 있어요.",
+        )
+    logger.info("[Step 3] 비속어 검사 통과")
     return PolicyResult(True)
 
 

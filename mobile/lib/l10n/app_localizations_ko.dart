@@ -111,6 +111,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get apiErrorContentBlockedSpam => '광고성 문구가 포함되어 있어요.';
 
   @override
+  String get apiErrorContentBlockedProfanity => '비속어가 포함되어 있어 등록할 수 없어요.';
+
+  @override
   String get apiErrorContentBlockedModeration => '부적절한 내용이 포함되어 있어요.';
 
   @override

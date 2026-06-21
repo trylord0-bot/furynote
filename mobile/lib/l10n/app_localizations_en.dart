@@ -113,6 +113,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Promotional text cannot be submitted.';
 
   @override
+  String get apiErrorContentBlockedProfanity =>
+      'Content containing profanity cannot be submitted.';
+
+  @override
   String get apiErrorContentBlockedModeration =>
       'This content cannot be submitted.';
 

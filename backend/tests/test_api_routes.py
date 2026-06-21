@@ -1,13 +1,15 @@
 import json
 import time
+from datetime import datetime
 from urllib.parse import urlsplit
 from uuid import uuid4
 
 from fastapi.testclient import TestClient
 
-from app.core.config import DEFAULT_HMAC_SECRET
+from app.core.config import DEFAULT_HMAC_SECRET, build_settings
 from app.core.signature import compute_signature
 from app.main import create_app
+from app.repositories.db_repository import get_db_store
 from app.repositories.memory import reset_store
 
 
@@ -89,6 +91,70 @@ def test_post_create_blocks_urls_with_envelope_error() -> None:
 
     assert response.status_code == 400
     assert response.json()["detail"]["error"]["code"] == "CONTENT_BLOCKED_URL"
+
+
+def test_post_and_comment_creation_block_file_based_profanity(monkeypatch) -> None:
+    settings = build_settings(
+        env={
+            "APP_ENV": "local",
+            "API_V1_PREFIX": "/v1",
+            "APP_HMAC_SECRET": DEFAULT_HMAC_SECRET,
+            "OPENAI_API_KEY": "",
+        }
+    )
+    monkeypatch.setattr("app.main.get_settings", lambda: settings)
+    monkeypatch.setattr("app.api.v1.posts.get_settings", lambda: settings)
+
+    api = client()
+    now = datetime.utcnow()
+
+    class RouteStore:
+        def recent_post_attempts(self, device_id: str) -> list[datetime]:
+            return []
+
+        def create_post(self, *args) -> dict:
+            return {"post_id": "post-1", "created_at": now}
+
+        def recent_comment_attempts(self, device_id: str) -> list[datetime]:
+            return []
+
+        def create_comment(self, *args) -> dict:
+            return {
+                "comment_id": "comment-1",
+                "post_id": "post-1",
+                "device_id": "device-1",
+                "nickname": "테스터",
+                "text": "댓글에도 시발 포함",
+                "created_at": now,
+                "post_owner_device_id": "device-1",
+            }
+
+        def get_device_token(self, device_id: str) -> None:
+            return None
+
+        def serialize_comment(self, comment: dict, device_id: str) -> dict:
+            return comment
+
+    api.app.dependency_overrides[get_db_store] = RouteStore
+    headers = {"X-Device-ID": "device-1"}
+
+    blocked_post = signed_post(
+        api,
+        "/v1/posts",
+        {"nickname": "테스터", "rage_level": 3, "category": "work", "text": "시발 화난다"},
+        headers,
+    )
+    blocked_comment = signed_post(
+        api,
+        "/v1/posts/post-1/comments",
+        {"nickname": "테스터", "text": "댓글에도 시발 포함"},
+        headers,
+    )
+
+    assert blocked_post.status_code == 400
+    assert blocked_post.json()["detail"]["error"]["code"] == "CONTENT_BLOCKED_PROFANITY"
+    assert blocked_comment.status_code == 400
+    assert blocked_comment.json()["detail"]["error"]["code"] == "CONTENT_BLOCKED_PROFANITY"
 
 
 def test_post_create_list_like_comment_and_delete_flow() -> None:

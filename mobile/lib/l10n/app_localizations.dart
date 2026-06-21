@@ -302,6 +302,12 @@ abstract class AppLocalizations {
   /// **'광고성 문구가 포함되어 있어요.'**
   String get apiErrorContentBlockedSpam;
 
+  /// No description provided for @apiErrorContentBlockedProfanity.
+  ///
+  /// In ko, this message translates to:
+  /// **'비속어가 포함되어 있어 등록할 수 없어요.'**
+  String get apiErrorContentBlockedProfanity;
+
   /// No description provided for @apiErrorContentBlockedModeration.
   ///
   /// In ko, this message translates to:
