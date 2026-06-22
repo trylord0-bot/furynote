@@ -335,7 +335,7 @@ class _FuryToastOverlayState extends State<FuryToastOverlay> {
         Positioned(
           left: 16,
           right: 16,
-          bottom: 88 + MediaQuery.paddingOf(context).bottom,
+          top: MediaQuery.paddingOf(context).top + 52 + 12,
           child: AnimatedBuilder(
             animation: FuryToastController.instance,
             builder: (context, _) {
@@ -570,7 +570,7 @@ class FuryBottomToast extends StatelessWidget {
       child: AnimatedSlide(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOutCubic,
-        offset: shown ? Offset.zero : const Offset(0, 0.16),
+        offset: shown ? Offset.zero : const Offset(0, -0.16),
         child: AnimatedOpacity(
           duration: const Duration(milliseconds: 140),
           curve: Curves.easeOutCubic,

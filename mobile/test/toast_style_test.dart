@@ -19,8 +19,11 @@ void main() {
     final toastText = tester.widget<Text>(
       find.descendant(of: toastFinder, matching: find.text('전역 토스트')),
     );
+    final toastTop = tester.getTopLeft(toastFinder).dy;
+    final headerBottom = tester.getBottomLeft(find.byType(FuryHeader)).dy;
     expect(find.text('전역 토스트'), findsOneWidget);
     expect(toastText.style?.decoration, TextDecoration.none);
+    expect(toastTop, headerBottom + 12);
     expect(
       find.descendant(
         of: find.byKey(const ValueKey('fury-toast-overlay')),
