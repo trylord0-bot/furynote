@@ -12,6 +12,7 @@ __pycache__/
 .venv/
 venv/
 htmlcov/
+logs/
 
 # Flutter and Dart
 .dart_tool/

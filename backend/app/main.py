@@ -1,22 +1,52 @@
 import logging
 from contextlib import asynccontextmanager
+from logging.handlers import TimedRotatingFileHandler
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
 
 from app.api.v1.router import api_router
-from app.core.config import DEFAULT_HMAC_SECRET, get_settings
+from app.core.config import DEFAULT_HMAC_SECRET, Settings, get_settings
 from app.core.middleware import SignatureMiddleware
 from app.db.base import Base
 from app.services import push_service
 import app.models.entities  # noqa: F401 — registers ORM models with Base.metadata
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+LOG_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+LOG_FILE_NAME = "backend.log"
 logger = logging.getLogger(__name__)
+
+
+def _configure_logging(settings: Settings) -> None:
+    log_dir = Path(settings.log_dir)
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / LOG_FILE_NAME
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    formatter = logging.Formatter(LOG_FORMAT)
+
+    if not root_logger.handlers:
+        stream_handler = logging.StreamHandler()
+        stream_handler.setFormatter(formatter)
+        root_logger.addHandler(stream_handler)
+
+    log_file_key = str(log_file.resolve())
+    for handler in root_logger.handlers:
+        if getattr(handler, "_furynote_log_file", None) == log_file_key:
+            return
+
+    file_handler = TimedRotatingFileHandler(
+        log_file,
+        when="midnight",
+        interval=1,
+        encoding="utf-8",
+    )
+    file_handler.setFormatter(formatter)
+    file_handler._furynote_log_file = log_file_key
+    root_logger.addHandler(file_handler)
 
 
 def _init_db() -> None:
@@ -53,6 +83,7 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     settings = get_settings()
+    _configure_logging(settings)
     app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
     app.add_middleware(

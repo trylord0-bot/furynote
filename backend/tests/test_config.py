@@ -24,6 +24,21 @@ def test_dotenv_can_override_database_port(tmp_path: Path) -> None:
     assert settings.db_port == 4406
 
 
+def test_dotenv_relative_log_dir_resolves_from_dotenv_dir(tmp_path: Path) -> None:
+    dotenv = tmp_path / ".env"
+    dotenv.write_text("LOG_DIR=custom-logs\n", encoding="utf-8")
+
+    settings = build_settings(dotenv_path=dotenv)
+
+    assert settings.log_dir == str((tmp_path / "custom-logs").resolve())
+
+
+def test_log_dir_defaults_to_backend_logs_directory() -> None:
+    settings = build_settings({})
+
+    assert settings.log_dir.endswith("logs")
+
+
 def test_dotenv_relative_firebase_credentials_path_resolves_from_dotenv_dir(
     tmp_path: Path,
 ) -> None:

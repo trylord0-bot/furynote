@@ -25,7 +25,9 @@ DEFAULT_FIREBASE_CREDENTIALS_PATH = (
     / "furynote-firebase-adminsdk-fbsvc-c60c7a3f0c.json"
 )
 DEFAULT_DOTENV_PATH = Path(__file__).resolve().parents[2] / ".env"
+DEFAULT_LOG_DIR = Path(__file__).resolve().parents[2] / "logs"
 FIREBASE_CREDENTIALS_PATH_ENV = "FIREBASE_CREDENTIALS_PATH"
+LOG_DIR_ENV = "LOG_DIR"
 
 
 @dataclass(frozen=True)
@@ -40,6 +42,7 @@ class Settings:
     db_password: str
     openai_api_key: str | None
     firebase_credentials_path: str | None
+    log_dir: str
     apple_verify_url: str
     google_package_name: str
     hmac_secret: str
@@ -70,6 +73,14 @@ def build_settings(env: dict[str, str] | None = None, dotenv_path: Path | None =
         env=env,
         dotenv_path=dotenv_path,
     )
+    log_dir = _path_from_env(
+        env_name=LOG_DIR_ENV,
+        default_path=DEFAULT_LOG_DIR,
+        process_env=process_env,
+        dotenv_values=dotenv_values,
+        env=env,
+        dotenv_path=dotenv_path,
+    )
 
     return Settings(
         app_env=app_env,
@@ -82,6 +93,7 @@ def build_settings(env: dict[str, str] | None = None, dotenv_path: Path | None =
         db_password=merged.get("DB_PASSWORD", "furynote"),
         openai_api_key=merged.get("OPENAI_API_KEY") or None,
         firebase_credentials_path=firebase_credentials_path,
+        log_dir=log_dir,
         apple_verify_url=merged.get(
             "APPLE_VERIFY_URL", "https://buy.itunes.apple.com/verifyReceipt"
         ),
@@ -97,24 +109,41 @@ def _firebase_credentials_path(
     env: dict[str, str] | None,
     dotenv_path: Path | None,
 ) -> str:
-    if env and FIREBASE_CREDENTIALS_PATH_ENV in env:
-        return env[FIREBASE_CREDENTIALS_PATH_ENV] or str(DEFAULT_FIREBASE_CREDENTIALS_PATH)
+    return _path_from_env(
+        env_name=FIREBASE_CREDENTIALS_PATH_ENV,
+        default_path=DEFAULT_FIREBASE_CREDENTIALS_PATH,
+        process_env=process_env,
+        dotenv_values=dotenv_values,
+        env=env,
+        dotenv_path=dotenv_path,
+    )
 
-    if FIREBASE_CREDENTIALS_PATH_ENV in dotenv_values:
-        raw_path = dotenv_values[FIREBASE_CREDENTIALS_PATH_ENV]
+
+def _path_from_env(
+    *,
+    env_name: str,
+    default_path: Path,
+    process_env: dict[str, str],
+    dotenv_values: dict[str, str],
+    env: dict[str, str] | None,
+    dotenv_path: Path | None,
+) -> str:
+    if env and env_name in env:
+        return env[env_name] or str(default_path)
+
+    if env_name in dotenv_values:
+        raw_path = dotenv_values[env_name]
         if not raw_path:
-            return str(DEFAULT_FIREBASE_CREDENTIALS_PATH)
+            return str(default_path)
         path = Path(raw_path)
         if path.is_absolute() or dotenv_path is None:
             return raw_path
         return str((dotenv_path.resolve().parent / path).resolve())
 
-    if FIREBASE_CREDENTIALS_PATH_ENV in process_env:
-        return process_env[FIREBASE_CREDENTIALS_PATH_ENV] or str(
-            DEFAULT_FIREBASE_CREDENTIALS_PATH
-        )
+    if env_name in process_env:
+        return process_env[env_name] or str(default_path)
 
-    return str(DEFAULT_FIREBASE_CREDENTIALS_PATH)
+    return str(default_path)
 
 
 @lru_cache
