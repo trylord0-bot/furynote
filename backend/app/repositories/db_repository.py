@@ -64,6 +64,7 @@ class DbStore:
             "device_id": device.device_id,
             "fcm_token": device.fcm_token,
             "notify_comment": device.notify_comment,
+            "avatar_base64": device.avatar_data,
         }
 
     def delete_device_token(self, device_id: str) -> None:
@@ -231,6 +232,9 @@ class DbStore:
         post.comment_count += 1
         self.session.commit()
         self.session.refresh(comment)
+        avatar_data = self.session.execute(
+            select(DeviceToken.avatar_data).where(DeviceToken.device_id == device_id)
+        ).scalar_one_or_none()
         return {
             "comment_id": comment.comment_id,
             "post_id": comment.post_id,
@@ -240,16 +244,18 @@ class DbStore:
             "created_at": comment.created_at,
             "deleted_at": comment.deleted_at,
             "post_owner_device_id": post.device_id,
+            "avatar_base64": avatar_data,
         }
 
     def list_comments(self, post_id: str, device_id: str, size: int) -> list[dict]:
-        comments = self.session.execute(
-            select(Comment)
+        rows = self.session.execute(
+            select(Comment, DeviceToken.avatar_data)
+            .outerjoin(DeviceToken, Comment.device_id == DeviceToken.device_id)
             .where(Comment.post_id == post_id)
             .where(Comment.deleted_at.is_(None))
             .order_by(Comment.created_at.asc())
             .limit(size)
-        ).scalars().all()
+        ).all()
 
         return [self.serialize_comment(
             {
@@ -258,9 +264,10 @@ class DbStore:
                 "nickname": c.nickname,
                 "text": c.text,
                 "created_at": c.created_at,
+                "avatar_base64": avatar_data,
             },
             device_id,
-        ) for c in comments]
+        ) for c, avatar_data in rows]
 
     def delete_comment(self, post_id: str, comment_id: str, device_id: str) -> DeleteResult:
         comment = self.session.execute(
@@ -309,6 +316,7 @@ class DbStore:
             "text": comment["text"],
             "is_mine": comment["device_id"] == viewer_device_id,
             "created_at": comment["created_at"].isoformat(),
+            "avatar_base64": comment.get("avatar_base64"),
         }
 
 

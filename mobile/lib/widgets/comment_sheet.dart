@@ -502,6 +502,9 @@ class _CommentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final avatarBytes = comment.avatarBytes;
+    final hasAvatar = avatarBytes != null && avatarBytes.isNotEmpty;
+
     return GestureDetector(
       onLongPress: onDelete,
       child: Padding(
@@ -509,17 +512,24 @@ class _CommentItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: FuryColors.red.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Center(
-                child: Text('🔥', style: TextStyle(fontSize: 15)),
-              ),
-            ),
+            hasAvatar
+                ? FuryProfileAvatar(
+                    size: 32,
+                    borderRadius: 10,
+                    fallbackFontSize: 15,
+                    bytes: avatarBytes,
+                  )
+                : Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: FuryColors.red.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Center(
+                      child: Text('🔥', style: TextStyle(fontSize: 15)),
+                    ),
+                  ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(

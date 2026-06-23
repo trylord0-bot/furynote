@@ -215,6 +215,46 @@ void main() {
     );
   });
 
+  testWidgets('comment sheet renders comment author avatar images', (
+    WidgetTester tester,
+  ) async {
+    const avatarBase64 =
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=';
+    final feedService = _FakeFeedService(
+      posts: const [],
+      comments: {
+        'post-1': [
+          FeedComment.fromJson({
+            'comment_id': 'comment-1',
+            'nickname': '친구',
+            'text': '아바타가 있는 댓글',
+            'is_mine': false,
+            'created_at': DateTime.now().toIso8601String(),
+            'avatar_base64': avatarBase64,
+          }),
+        ],
+      },
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: CommentSheet(
+            postId: 'post-1',
+            initialCommentCount: 1,
+            feedService: feedService,
+            onCountChanged: (_) {},
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.text('아바타가 있는 댓글'), findsOneWidget);
+    expect(find.byType(Image), findsOneWidget);
+  });
+
   testWidgets('rejected profanity comment shows localized error toast', (
     WidgetTester tester,
   ) async {

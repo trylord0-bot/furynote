@@ -57,6 +57,22 @@ class MemoryStore:
         device["updated_at"] = datetime.utcnow()
         return device
 
+    def get_device_token(self, device_id: str) -> dict | None:
+        return self.devices.get(device_id)
+
+    def update_avatar(self, device_id: str, avatar_data: str | None) -> None:
+        device = self.devices.setdefault(
+            device_id,
+            {
+                "device_id": device_id,
+                "fcm_token": "",
+                "notify_comment": True,
+                "created_at": datetime.utcnow(),
+            },
+        )
+        device["avatar_data"] = avatar_data
+        device["updated_at"] = datetime.utcnow()
+
     def create_post(self, device_id: str, rage_level: int, category: str, text: str | None) -> dict:
         now = datetime.utcnow()
         post_id = str(uuid4())
@@ -189,6 +205,7 @@ class MemoryStore:
             "is_liked": (post["post_id"], viewer_device_id) in self.likes,
             "is_mine": post["device_id"] == viewer_device_id,
             "created_at": post["created_at"].isoformat(),
+            "avatar_base64": self.devices.get(post["device_id"], {}).get("avatar_data"),
         }
 
     def serialize_comment(self, comment: dict, viewer_device_id: str) -> dict:
@@ -198,6 +215,7 @@ class MemoryStore:
             "text": comment["text"],
             "is_mine": comment["device_id"] == viewer_device_id,
             "created_at": comment["created_at"].isoformat(),
+            "avatar_base64": self.devices.get(comment["device_id"], {}).get("avatar_data"),
         }
 
 

@@ -76,6 +76,7 @@ class FeedComment {
     required this.text,
     required this.isMine,
     required this.createdAt,
+    this.avatarBytes,
   });
 
   final String commentId;
@@ -83,14 +84,23 @@ class FeedComment {
   final String text;
   final bool isMine;
   final DateTime createdAt;
+  final List<int>? avatarBytes;
 
   factory FeedComment.fromJson(Map<String, dynamic> json) {
+    List<int>? avatarBytes;
+    final avatarBase64 = json['avatar_base64'] as String?;
+    if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+      try {
+        avatarBytes = base64Decode(avatarBase64);
+      } catch (_) {}
+    }
     return FeedComment(
       commentId: json['comment_id'] as String,
       nickname: json['nickname'] as String,
       text: json['text'] as String,
       isMine: json['is_mine'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
+      avatarBytes: avatarBytes,
     );
   }
 }
@@ -109,8 +119,9 @@ class FeedService {
       'cursor': ?cursor,
       if (mineOnly) 'mine': 'true',
     };
-    final data = await ApiClient.instance.get('/v1/posts', query: query)
-        as Map<String, dynamic>;
+    final data =
+        await ApiClient.instance.get('/v1/posts', query: query)
+            as Map<String, dynamic>;
     final posts = (data['posts'] as List<dynamic>)
         .map((p) => FeedPost.fromJson(p as Map<String, dynamic>))
         .toList();
@@ -134,13 +145,15 @@ class FeedService {
       if (text != null && text.isNotEmpty) 'text': text,
     };
     final data =
-        await ApiClient.instance.post('/v1/posts', body) as Map<String, dynamic>;
+        await ApiClient.instance.post('/v1/posts', body)
+            as Map<String, dynamic>;
     return data['post_id'] as String;
   }
 
   Future<({bool isLiked, int likeCount})> toggleLike(String postId) async {
-    final data = await ApiClient.instance.post('/v1/posts/$postId/like')
-        as Map<String, dynamic>;
+    final data =
+        await ApiClient.instance.post('/v1/posts/$postId/like')
+            as Map<String, dynamic>;
     return (
       isLiked: data['is_liked'] as bool,
       likeCount: data['like_count'] as int,
@@ -152,8 +165,9 @@ class FeedService {
   }
 
   Future<List<FeedComment>> listComments(String postId) async {
-    final data = await ApiClient.instance.get('/v1/posts/$postId/comments')
-        as Map<String, dynamic>;
+    final data =
+        await ApiClient.instance.get('/v1/posts/$postId/comments')
+            as Map<String, dynamic>;
     return (data['comments'] as List<dynamic>)
         .map((c) => FeedComment.fromJson(c as Map<String, dynamic>))
         .toList();
@@ -165,8 +179,9 @@ class FeedService {
     required String text,
   }) async {
     final body = <String, dynamic>{'nickname': nickname, 'text': text};
-    final data = await ApiClient.instance
-        .post('/v1/posts/$postId/comments', body) as Map<String, dynamic>;
+    final data =
+        await ApiClient.instance.post('/v1/posts/$postId/comments', body)
+            as Map<String, dynamic>;
     return FeedComment.fromJson(data);
   }
 

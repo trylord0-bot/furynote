@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from app.core.config import DEFAULT_HMAC_SECRET, build_settings
 from app.core.signature import compute_signature
 from app.main import create_app
-from app.repositories.db_repository import get_db_store
+from app.repositories.db_repository import DbStore, get_db_store
 from app.repositories.memory import reset_store
 
 
@@ -193,6 +193,25 @@ def test_post_create_list_like_comment_and_delete_flow() -> None:
     assert comments.json()["data"]["comments"][0]["text"] == "나도 그랬어요"
     assert deleted.json()["data"]["deleted"] is True
     assert after_delete.json()["data"]["posts"] == []
+
+
+def test_comment_serialization_includes_author_avatar() -> None:
+    store = DbStore.__new__(DbStore)
+    now = datetime.utcnow()
+
+    serialized = store.serialize_comment(
+        {
+            "comment_id": "comment-1",
+            "device_id": "commenter",
+            "nickname": "친구",
+            "text": "아바타가 있는 댓글",
+            "created_at": now,
+            "avatar_base64": "encoded-avatar",
+        },
+        "viewer",
+    )
+
+    assert serialized["avatar_base64"] == "encoded-avatar"
 
 
 def test_purchase_verify_updates_status() -> None:
