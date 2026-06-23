@@ -105,6 +105,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get recordSavedToast => '기록됐어요';
 
   @override
+  String get commentPostedToast => '댓글이 등록되었어요';
+
+  @override
   String get apiErrorContentBlockedUrl => '링크가 포함된 글은 등록할 수 없어요.';
 
   @override

@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recordSavedToast => 'Saved';
 
   @override
+  String get commentPostedToast => 'Comment posted';
+
+  @override
   String get apiErrorContentBlockedUrl =>
       'Posts with links cannot be submitted.';
 

@@ -32,6 +32,7 @@
   "feedPostedToast": "Sent to feed",
   "recordPostedToast": "Posted",
   "recordSavedToast": "Saved",
+  "commentPostedToast": "Comment posted",
   "apiErrorContentBlockedUrl": "Posts with links cannot be submitted.",
   "apiErrorContentBlockedSpam": "Promotional text cannot be submitted.",
   "apiErrorContentBlockedProfanity": "Content containing profanity cannot be submitted.",

@@ -290,6 +290,12 @@ abstract class AppLocalizations {
   /// **'기록됐어요'**
   String get recordSavedToast;
 
+  /// No description provided for @commentPostedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글이 등록되었어요'**
+  String get commentPostedToast;
+
   /// No description provided for @apiErrorContentBlockedUrl.
   ///
   /// In ko, this message translates to:

@@ -129,6 +129,7 @@ class _CommentSheetState extends State<CommentSheet> {
         _sending = false;
       });
       widget.onCountChanged(_commentCount);
+      FurySnackBar.show(context, l10n.commentPostedToast);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(

@@ -299,6 +299,44 @@ void main() {
     }
   });
 
+  testWidgets('successful comment submit shows localized success toast', (
+    WidgetTester tester,
+  ) async {
+    final pushTapSource = _FakeCommentPushTapSource();
+    final feedService = _FakeFeedService(posts: const []);
+
+    try {
+      await tester.pumpWidget(
+        FuryNoteApp(
+          initialLocale: const Locale('ko'),
+          feedService: feedService,
+          commentPushTapSource: pushTapSource,
+        ),
+      );
+      await tester.pump();
+
+      pushTapSource.emit(const CommentPushTap(postId: 'post-1'));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+
+      await tester.enterText(find.byType(TextField), '반가워요');
+      final sendButton = tester.widget<GestureDetector>(
+        find.ancestor(
+          of: find.byIcon(Icons.send_rounded),
+          matching: find.byType(GestureDetector),
+        ),
+      );
+      sendButton.onTap!();
+      await tester.pump();
+
+      expect(find.text('반가워요'), findsOneWidget);
+      expect(find.text('댓글이 등록되었어요'), findsOneWidget);
+    } finally {
+      await pushTapSource.dispose();
+    }
+  });
+
   testWidgets(
     'comment push opens comments even when post is not in feed page',
     (WidgetTester tester) async {
