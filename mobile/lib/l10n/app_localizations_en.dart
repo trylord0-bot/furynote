@@ -84,6 +84,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Next';
 
   @override
+  String get previous => 'Previous';
+
+  @override
   String get skip => 'Skip';
 
   @override
@@ -254,6 +257,128 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get decreaseRate => 'Decrease';
+
+  @override
+  String get statsIntensityTrend => 'Rage intensity trend';
+
+  @override
+  String get statsCategoryDistribution => 'Cause distribution';
+
+  @override
+  String get statsNoRecords => 'No records to show.';
+
+  @override
+  String get statsCalendarButtonTitle => 'View records by calendar';
+
+  @override
+  String get statsCalendarButtonSubtitle =>
+      'Check and manage rage notes by date';
+
+  @override
+  String get statsSummaryButtonTitle => 'View rage summary';
+
+  @override
+  String get statsSummaryButtonSubtitle =>
+      'Flip through your anger patterns by category';
+
+  @override
+  String get statsSummaryTitle => 'Rage Summary';
+
+  @override
+  String get statsSummaryClose => 'Close';
+
+  @override
+  String get statsSummaryEmptyTitle => 'No records to summarize yet';
+
+  @override
+  String get statsSummaryEmptyBody =>
+      'Once you add rage notes, category patterns will appear here.';
+
+  @override
+  String statsSummaryTopHeadline(String category) {
+    return '\"$category\" made you angry most often';
+  }
+
+  @override
+  String statsSummaryCategoryHeadline(String category) {
+    return 'Looking at \"$category\"';
+  }
+
+  @override
+  String get statsSummaryComfortGeneric => 'It\'s okay. That can happen.';
+
+  @override
+  String get statsSummaryComfortFamily =>
+      'The closer someone is, the harder it can land.';
+
+  @override
+  String get statsSummaryComfortRomance =>
+      'A precious relationship can make small moments feel sharper.';
+
+  @override
+  String get statsSummaryComfortWork =>
+      'Work may have pushed your mind faster than it wanted to go.';
+
+  @override
+  String get statsSummaryComfortPeople =>
+      'Words and expressions from others can linger longer than expected.';
+
+  @override
+  String get statsSummaryComfortDriving =>
+      'Tension on the road often reaches the body first.';
+
+  @override
+  String get statsSummaryMetricCount => 'Count';
+
+  @override
+  String get statsSummaryMetricCategory => 'Category';
+
+  @override
+  String get statsSummaryMetricFeed => 'Feed posts';
+
+  @override
+  String get statsSummaryMetricCalm => 'Calm tries';
+
+  @override
+  String get statsSummaryMetricAverage => 'Avg. level';
+
+  @override
+  String get statsSummaryMetricPeak => 'Peak level';
+
+  @override
+  String get statsSummaryConclusion => 'Conclusion';
+
+  @override
+  String statsSummaryRecordsUnit(int count) {
+    return '$count times';
+  }
+
+  @override
+  String statsSummaryAverageValue(String value) {
+    return '$value/5';
+  }
+
+  @override
+  String get statsSummaryConclusionTop =>
+      'This is your most repeated anger signal. Next time, try checking body tension before the anger rises fully.';
+
+  @override
+  String get statsSummaryConclusionCategory =>
+      'Writing this category down while it is still small can help you notice the pattern sooner.';
+
+  @override
+  String statsSummaryPageIndicator(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get statsSummaryCategoryShare => 'Category share';
+
+  @override
+  String get statsSummaryCalmRate => 'Calm rate';
+
+  @override
+  String get statsSummaryShareRate => 'Share rate';
 
   @override
   String get noContent => 'No content';

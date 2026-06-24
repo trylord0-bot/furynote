@@ -84,6 +84,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get next => '다음';
 
   @override
+  String get previous => '이전';
+
+  @override
   String get skip => '건너뛰기';
 
   @override
@@ -247,6 +250,120 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get decreaseRate => '감소율';
+
+  @override
+  String get statsIntensityTrend => '분노 강도 추이';
+
+  @override
+  String get statsCategoryDistribution => '원인별 분포';
+
+  @override
+  String get statsNoRecords => '표시할 기록이 없습니다.';
+
+  @override
+  String get statsCalendarButtonTitle => '달력으로 기록 보기';
+
+  @override
+  String get statsCalendarButtonSubtitle => '날짜별 분노 기록을 확인하고 관리해요';
+
+  @override
+  String get statsSummaryButtonTitle => '분노 요약 보기';
+
+  @override
+  String get statsSummaryButtonSubtitle => '카테고리별로 내 분노 패턴을 넘겨봐요';
+
+  @override
+  String get statsSummaryTitle => '분노 요약';
+
+  @override
+  String get statsSummaryClose => '닫기';
+
+  @override
+  String get statsSummaryEmptyTitle => '아직 요약할 기록이 없어요';
+
+  @override
+  String get statsSummaryEmptyBody => '분노 기록을 남기면 카테고리별 패턴을 여기서 볼 수 있어요.';
+
+  @override
+  String statsSummaryTopHeadline(String category) {
+    return '나를 가장 화나게 하는 건 \"$category\"이었네요';
+  }
+
+  @override
+  String statsSummaryCategoryHeadline(String category) {
+    return '\"$category\" 기록을 살펴봤어요';
+  }
+
+  @override
+  String get statsSummaryComfortGeneric => '괜찮아요. 그럴 수도 있어요.';
+
+  @override
+  String get statsSummaryComfortFamily => '가까운 사람일수록 마음이 더 크게 흔들릴 때가 있어요.';
+
+  @override
+  String get statsSummaryComfortRomance => '소중한 관계라서 더 예민하게 느껴졌을 수 있어요.';
+
+  @override
+  String get statsSummaryComfortWork => '일이 마음의 속도를 너무 밀어붙였나 봐요.';
+
+  @override
+  String get statsSummaryComfortPeople => '사람 사이의 말과 표정은 생각보다 오래 남죠.';
+
+  @override
+  String get statsSummaryComfortDriving => '도로 위 긴장은 몸에 먼저 쌓이곤 해요.';
+
+  @override
+  String get statsSummaryMetricCount => '횟수';
+
+  @override
+  String get statsSummaryMetricCategory => '카테고리';
+
+  @override
+  String get statsSummaryMetricFeed => '피드 공유';
+
+  @override
+  String get statsSummaryMetricCalm => '진정 시도';
+
+  @override
+  String get statsSummaryMetricAverage => '평균 강도';
+
+  @override
+  String get statsSummaryMetricPeak => '최고 강도';
+
+  @override
+  String get statsSummaryConclusion => '결론';
+
+  @override
+  String statsSummaryRecordsUnit(int count) {
+    return '$count회';
+  }
+
+  @override
+  String statsSummaryAverageValue(String value) {
+    return '$value/5';
+  }
+
+  @override
+  String get statsSummaryConclusionTop =>
+      '가장 자주 반복된 감정 신호예요. 다음 기록에서는 화가 올라오기 전 몸의 긴장을 먼저 확인해봐요.';
+
+  @override
+  String get statsSummaryConclusionCategory =>
+      '이 카테고리는 아직 작은 불씨일 때 적어두면 패턴을 더 빨리 알아차릴 수 있어요.';
+
+  @override
+  String statsSummaryPageIndicator(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get statsSummaryCategoryShare => '카테고리 비중';
+
+  @override
+  String get statsSummaryCalmRate => '진정 비율';
+
+  @override
+  String get statsSummaryShareRate => '공유 비율';
 
   @override
   String get noContent => '내용없음';

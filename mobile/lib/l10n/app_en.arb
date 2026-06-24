@@ -25,6 +25,7 @@
   "stepPostSub": "It will be anonymous",
   "voiceInput": "Voice recording",
   "next": "Next",
+  "previous": "Previous",
   "skip": "Skip",
   "saveNote": "Save note",
   "postIt": "Post",
@@ -80,6 +81,78 @@
   "highestLevel": "Highest",
   "dailyAverage": "Daily avg.",
   "decreaseRate": "Decrease",
+  "statsIntensityTrend": "Rage intensity trend",
+  "statsCategoryDistribution": "Cause distribution",
+  "statsNoRecords": "No records to show.",
+  "statsCalendarButtonTitle": "View records by calendar",
+  "statsCalendarButtonSubtitle": "Check and manage rage notes by date",
+  "statsSummaryButtonTitle": "View rage summary",
+  "statsSummaryButtonSubtitle": "Flip through your anger patterns by category",
+  "statsSummaryTitle": "Rage Summary",
+  "statsSummaryClose": "Close",
+  "statsSummaryEmptyTitle": "No records to summarize yet",
+  "statsSummaryEmptyBody": "Once you add rage notes, category patterns will appear here.",
+  "statsSummaryTopHeadline": "\"{category}\" made you angry most often",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "Looking at \"{category}\"",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "It's okay. That can happen.",
+  "statsSummaryComfortFamily": "The closer someone is, the harder it can land.",
+  "statsSummaryComfortRomance": "A precious relationship can make small moments feel sharper.",
+  "statsSummaryComfortWork": "Work may have pushed your mind faster than it wanted to go.",
+  "statsSummaryComfortPeople": "Words and expressions from others can linger longer than expected.",
+  "statsSummaryComfortDriving": "Tension on the road often reaches the body first.",
+  "statsSummaryMetricCount": "Count",
+  "statsSummaryMetricCategory": "Category",
+  "statsSummaryMetricFeed": "Feed posts",
+  "statsSummaryMetricCalm": "Calm tries",
+  "statsSummaryMetricAverage": "Avg. level",
+  "statsSummaryMetricPeak": "Peak level",
+  "statsSummaryConclusion": "Conclusion",
+  "statsSummaryRecordsUnit": "{count} times",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "This is your most repeated anger signal. Next time, try checking body tension before the anger rises fully.",
+  "statsSummaryConclusionCategory": "Writing this category down while it is still small can help you notice the pattern sooner.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Category share",
+  "statsSummaryCalmRate": "Calm rate",
+  "statsSummaryShareRate": "Share rate",
   "noContent": "No content",
   "voicePlayback": "Play voice",
   "deleteConfirm": "Delete?",

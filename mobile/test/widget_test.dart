@@ -1121,6 +1121,111 @@ void main() {
     expect(find.text('오늘 저장된 기록'), findsNothing);
     expect(repository.savedNotes.map((note) => note.id), isNot(contains(1)));
   });
+
+  testWidgets('stats summary opens like calendar popup with vertical paging', (
+    WidgetTester tester,
+  ) async {
+    final repository = _FakeRageNoteRepository(
+      seedNotes: [
+        RageNote(
+          id: 1,
+          createdAt: DateTime.now(),
+          rageLevel: 4,
+          rageEmoji: '😡',
+          rageLabel: '매우 화남',
+          categoryKey: 'family',
+          categoryEmoji: '👨‍👩‍👧',
+          categoryLabel: '가족',
+          body: '가족 모임에서 서운했다',
+          posted: true,
+          reminderAt: DateTime.now().add(const Duration(hours: 1)),
+        ),
+        RageNote(
+          id: 2,
+          createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          rageLevel: 3,
+          rageEmoji: '😠',
+          rageLabel: '꽤 화남',
+          categoryKey: 'family',
+          categoryEmoji: '👨‍👩‍👧',
+          categoryLabel: '가족',
+          body: '말이 통하지 않았다',
+        ),
+        RageNote(
+          id: 3,
+          createdAt: DateTime.now().subtract(const Duration(days: 2)),
+          rageLevel: 5,
+          rageEmoji: '🤬',
+          rageLabel: '폭발',
+          categoryKey: 'work',
+          categoryEmoji: '💼',
+          categoryLabel: '직장',
+          body: '야근이 생겼다',
+          posted: true,
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+        feedService: _FakeFeedService(posts: const []),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    await tester.tap(find.text('통계'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    await tester.scrollUntilVisible(
+      find.text('달력으로 기록 보기'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.scrollUntilVisible(
+      find.text('분노 요약 보기'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+
+    expect(
+      tester.getTopLeft(find.text('분노 요약 보기')).dy,
+      greaterThan(tester.getTopLeft(find.text('달력으로 기록 보기')).dy),
+    );
+
+    await tester.tap(find.text('분노 요약 보기'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('분노 요약'), findsOneWidget);
+    expect(find.text('분노 통계'), findsNothing);
+    expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+    expect(find.byIcon(Icons.keyboard_arrow_up), findsOneWidget);
+    expect(find.byIcon(Icons.keyboard_arrow_down), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('stats-summary-page-view')),
+      findsOneWidget,
+    );
+    expect(find.text('나를 가장 화나게 하는 건 "가족"이었네요'), findsOneWidget);
+    expect(find.text('괜찮아요. 그럴 수도 있어요.'), findsOneWidget);
+    expect(find.text('횟수'), findsOneWidget);
+    expect(find.text('카테고리'), findsOneWidget);
+    expect(find.text('피드 공유'), findsOneWidget);
+    expect(find.text('진정 시도'), findsOneWidget);
+    expect(find.text('결론'), findsOneWidget);
+
+    final nextButtons = find.widgetWithText(FilledButton, '다음');
+    expect(nextButtons, findsWidgets);
+    await tester.tap(nextButtons.last);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.textContaining('직장'), findsWidgets);
+    expect(find.widgetWithText(FilledButton, '이전'), findsWidgets);
+  });
 }
 
 Finder _headerTitle(String text) {

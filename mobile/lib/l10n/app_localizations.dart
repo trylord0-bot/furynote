@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'다음'**
   String get next;
 
+  /// No description provided for @previous.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전'**
+  String get previous;
+
   /// No description provided for @skip.
   ///
   /// In ko, this message translates to:
@@ -577,6 +583,210 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'감소율'**
   String get decreaseRate;
+
+  /// No description provided for @statsIntensityTrend.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 강도 추이'**
+  String get statsIntensityTrend;
+
+  /// No description provided for @statsCategoryDistribution.
+  ///
+  /// In ko, this message translates to:
+  /// **'원인별 분포'**
+  String get statsCategoryDistribution;
+
+  /// No description provided for @statsNoRecords.
+  ///
+  /// In ko, this message translates to:
+  /// **'표시할 기록이 없습니다.'**
+  String get statsNoRecords;
+
+  /// No description provided for @statsCalendarButtonTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'달력으로 기록 보기'**
+  String get statsCalendarButtonTitle;
+
+  /// No description provided for @statsCalendarButtonSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'날짜별 분노 기록을 확인하고 관리해요'**
+  String get statsCalendarButtonSubtitle;
+
+  /// No description provided for @statsSummaryButtonTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 요약 보기'**
+  String get statsSummaryButtonTitle;
+
+  /// No description provided for @statsSummaryButtonSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리별로 내 분노 패턴을 넘겨봐요'**
+  String get statsSummaryButtonSubtitle;
+
+  /// No description provided for @statsSummaryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 요약'**
+  String get statsSummaryTitle;
+
+  /// No description provided for @statsSummaryClose.
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기'**
+  String get statsSummaryClose;
+
+  /// No description provided for @statsSummaryEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 요약할 기록이 없어요'**
+  String get statsSummaryEmptyTitle;
+
+  /// No description provided for @statsSummaryEmptyBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 기록을 남기면 카테고리별 패턴을 여기서 볼 수 있어요.'**
+  String get statsSummaryEmptyBody;
+
+  /// No description provided for @statsSummaryTopHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'나를 가장 화나게 하는 건 \"{category}\"이었네요'**
+  String statsSummaryTopHeadline(String category);
+
+  /// No description provided for @statsSummaryCategoryHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'\"{category}\" 기록을 살펴봤어요'**
+  String statsSummaryCategoryHeadline(String category);
+
+  /// No description provided for @statsSummaryComfortGeneric.
+  ///
+  /// In ko, this message translates to:
+  /// **'괜찮아요. 그럴 수도 있어요.'**
+  String get statsSummaryComfortGeneric;
+
+  /// No description provided for @statsSummaryComfortFamily.
+  ///
+  /// In ko, this message translates to:
+  /// **'가까운 사람일수록 마음이 더 크게 흔들릴 때가 있어요.'**
+  String get statsSummaryComfortFamily;
+
+  /// No description provided for @statsSummaryComfortRomance.
+  ///
+  /// In ko, this message translates to:
+  /// **'소중한 관계라서 더 예민하게 느껴졌을 수 있어요.'**
+  String get statsSummaryComfortRomance;
+
+  /// No description provided for @statsSummaryComfortWork.
+  ///
+  /// In ko, this message translates to:
+  /// **'일이 마음의 속도를 너무 밀어붙였나 봐요.'**
+  String get statsSummaryComfortWork;
+
+  /// No description provided for @statsSummaryComfortPeople.
+  ///
+  /// In ko, this message translates to:
+  /// **'사람 사이의 말과 표정은 생각보다 오래 남죠.'**
+  String get statsSummaryComfortPeople;
+
+  /// No description provided for @statsSummaryComfortDriving.
+  ///
+  /// In ko, this message translates to:
+  /// **'도로 위 긴장은 몸에 먼저 쌓이곤 해요.'**
+  String get statsSummaryComfortDriving;
+
+  /// No description provided for @statsSummaryMetricCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'횟수'**
+  String get statsSummaryMetricCount;
+
+  /// No description provided for @statsSummaryMetricCategory.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리'**
+  String get statsSummaryMetricCategory;
+
+  /// No description provided for @statsSummaryMetricFeed.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드 공유'**
+  String get statsSummaryMetricFeed;
+
+  /// No description provided for @statsSummaryMetricCalm.
+  ///
+  /// In ko, this message translates to:
+  /// **'진정 시도'**
+  String get statsSummaryMetricCalm;
+
+  /// No description provided for @statsSummaryMetricAverage.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 강도'**
+  String get statsSummaryMetricAverage;
+
+  /// No description provided for @statsSummaryMetricPeak.
+  ///
+  /// In ko, this message translates to:
+  /// **'최고 강도'**
+  String get statsSummaryMetricPeak;
+
+  /// No description provided for @statsSummaryConclusion.
+  ///
+  /// In ko, this message translates to:
+  /// **'결론'**
+  String get statsSummaryConclusion;
+
+  /// No description provided for @statsSummaryRecordsUnit.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}회'**
+  String statsSummaryRecordsUnit(int count);
+
+  /// No description provided for @statsSummaryAverageValue.
+  ///
+  /// In ko, this message translates to:
+  /// **'{value}/5'**
+  String statsSummaryAverageValue(String value);
+
+  /// No description provided for @statsSummaryConclusionTop.
+  ///
+  /// In ko, this message translates to:
+  /// **'가장 자주 반복된 감정 신호예요. 다음 기록에서는 화가 올라오기 전 몸의 긴장을 먼저 확인해봐요.'**
+  String get statsSummaryConclusionTop;
+
+  /// No description provided for @statsSummaryConclusionCategory.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 카테고리는 아직 작은 불씨일 때 적어두면 패턴을 더 빨리 알아차릴 수 있어요.'**
+  String get statsSummaryConclusionCategory;
+
+  /// No description provided for @statsSummaryPageIndicator.
+  ///
+  /// In ko, this message translates to:
+  /// **'{current}/{total}'**
+  String statsSummaryPageIndicator(int current, int total);
+
+  /// No description provided for @statsSummaryCategoryShare.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 비중'**
+  String get statsSummaryCategoryShare;
+
+  /// No description provided for @statsSummaryCalmRate.
+  ///
+  /// In ko, this message translates to:
+  /// **'진정 비율'**
+  String get statsSummaryCalmRate;
+
+  /// No description provided for @statsSummaryShareRate.
+  ///
+  /// In ko, this message translates to:
+  /// **'공유 비율'**
+  String get statsSummaryShareRate;
 
   /// No description provided for @noContent.
   ///
