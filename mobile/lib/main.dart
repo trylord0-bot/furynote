@@ -160,7 +160,9 @@ class FuryNoteApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return FuryAppFrame(
-          child: FuryToastOverlay(child: child ?? const SizedBox.shrink()),
+          child: FuryKeyboardDismissScope(
+            child: FuryToastOverlay(child: child ?? const SizedBox.shrink()),
+          ),
         );
       },
       localizationsDelegates: const [
@@ -251,6 +253,28 @@ class FuryNoteApp extends StatelessWidget {
         commentPushTapSource: commentPushTapSource,
         voiceRecorder: voiceRecorder,
       ),
+    );
+  }
+}
+
+class FuryKeyboardDismissScope extends StatelessWidget {
+  const FuryKeyboardDismissScope({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Actions(
+      actions: <Type, Action<Intent>>{
+        EditableTextTapOutsideIntent:
+            CallbackAction<EditableTextTapOutsideIntent>(
+              onInvoke: (_) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                return null;
+              },
+            ),
+      },
+      child: child,
     );
   }
 }

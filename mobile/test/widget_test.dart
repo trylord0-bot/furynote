@@ -553,6 +553,35 @@ void main() {
     expect(find.text('나중에 다시 볼까요?'), findsOneWidget);
   });
 
+  testWidgets('tapping outside a focused text field clears focus', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pump();
+    await tester.pump();
+
+    await tester.tap(find.text('기록'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    await tester.tap(find.text('매우 화남'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    await tester.tap(find.text('직장'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+
+    final textField = find.byType(TextField);
+    await tester.showKeyboard(textField);
+    await tester.pump();
+
+    expect(tester.testTextInput.isVisible, isTrue);
+
+    await tester.tap(find.text('무슨 일이 있었나요?'));
+    await tester.pump();
+
+    expect(tester.testTextInput.isVisible, isFalse);
+  });
+
   testWidgets('reminder step next button waits for reminder selection', (
     WidgetTester tester,
   ) async {
