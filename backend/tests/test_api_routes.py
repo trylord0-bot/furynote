@@ -209,7 +209,7 @@ def test_post_create_blocks_urls_with_envelope_error() -> None:
     assert response.json()["detail"]["error"]["code"] == "CONTENT_BLOCKED_URL"
 
 
-def test_post_and_comment_creation_block_file_based_profanity(monkeypatch) -> None:
+def test_post_and_comment_creation_replace_file_based_profanity(monkeypatch) -> None:
     settings = build_settings(
         env={
             "APP_ENV": "local",
@@ -225,22 +225,27 @@ def test_post_and_comment_creation_block_file_based_profanity(monkeypatch) -> No
     now = datetime.utcnow()
 
     class RouteStore:
+        created_post_text: str | None = None
+        created_comment_text: str | None = None
+
         def recent_post_attempts(self, device_id: str) -> list[datetime]:
             return []
 
         def create_post(self, *args) -> dict:
+            self.created_post_text = args[4]
             return {"post_id": "post-1", "created_at": now}
 
         def recent_comment_attempts(self, device_id: str) -> list[datetime]:
             return []
 
         def create_comment(self, *args) -> dict:
+            self.created_comment_text = args[3]
             return {
                 "comment_id": "comment-1",
                 "post_id": "post-1",
                 "device_id": "device-1",
                 "nickname": "테스터",
-                "text": "댓글에도 시발 포함",
+                "text": args[3],
                 "created_at": now,
                 "post_owner_device_id": "device-1",
             }
@@ -251,26 +256,28 @@ def test_post_and_comment_creation_block_file_based_profanity(monkeypatch) -> No
         def serialize_comment(self, comment: dict, device_id: str) -> dict:
             return comment
 
-    api.app.dependency_overrides[get_db_store] = RouteStore
+    route_store = RouteStore()
+    api.app.dependency_overrides[get_db_store] = lambda: route_store
     headers = {"X-Device-ID": "device-1"}
 
-    blocked_post = signed_post(
+    created_post = signed_post(
         api,
         "/v1/posts",
         {"nickname": "테스터", "rage_level": 3, "category": "work", "text": "시발 화난다"},
         headers,
     )
-    blocked_comment = signed_post(
+    created_comment = signed_post(
         api,
         "/v1/posts/post-1/comments",
         {"nickname": "테스터", "text": "댓글에도 시발 포함"},
         headers,
     )
 
-    assert blocked_post.status_code == 400
-    assert blocked_post.json()["detail"]["error"]["code"] == "CONTENT_BLOCKED_PROFANITY"
-    assert blocked_comment.status_code == 400
-    assert blocked_comment.json()["detail"]["error"]["code"] == "CONTENT_BLOCKED_PROFANITY"
+    assert created_post.status_code == 201
+    assert route_store.created_post_text == "멍멍 화난다"
+    assert created_comment.status_code == 201
+    assert route_store.created_comment_text == "댓글에도 멍멍 포함"
+    assert created_comment.json()["data"]["text"] == "댓글에도 멍멍 포함"
 
 
 def test_post_create_list_like_comment_and_delete_flow() -> None:

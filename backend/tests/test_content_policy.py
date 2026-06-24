@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from app.services import content_policy
 from app.services.content_policy import check_rate_limit, check_text_policy
 
 
@@ -23,18 +24,25 @@ def test_spam_keyword_is_blocked() -> None:
     assert result.code == "CONTENT_BLOCKED_SPAM"
 
 
-def test_profanity_from_badwords_file_is_blocked() -> None:
-    result = check_text_policy("진짜 시발 너무 화난다")
+def test_profanity_from_badwords_file_is_replaced_with_animal_sound() -> None:
+    result = content_policy.sanitize_text_policy("진짜 시발 너무 화난다")
 
-    assert result.allowed is False
-    assert result.code == "CONTENT_BLOCKED_PROFANITY"
+    assert result.allowed is True
+    assert result.text == "진짜 멍멍 너무 화난다"
 
 
 def test_regex_like_badword_is_matched_as_literal_text() -> None:
-    result = check_text_policy("문장 안의 @!@ 문자열")
+    result = content_policy.sanitize_text_policy("문장 안의 @!@ 문자열")
 
-    assert result.allowed is False
-    assert result.code == "CONTENT_BLOCKED_PROFANITY"
+    assert result.allowed is True
+    assert result.text == "문장 안의 멍멍 문자열"
+
+
+def test_korean_animal_sound_file_has_at_least_ten_entries() -> None:
+    sounds = content_policy.load_animal_sounds()
+
+    assert len(sounds) >= 10
+    assert "멍멍" in sounds
 
 
 def test_five_attempts_in_sixty_seconds_is_rate_limited() -> None:
