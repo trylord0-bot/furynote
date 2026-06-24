@@ -1174,6 +1174,84 @@ void main() {
   });
 
   testWidgets(
+    'stats distribution pins default categories and groups extra custom ones',
+    (WidgetTester tester) async {
+      final now = DateTime.now();
+      var id = 1;
+      RageNote note({
+        required String key,
+        required String emoji,
+        required String label,
+      }) {
+        return RageNote(
+          id: id++,
+          createdAt: now.subtract(Duration(minutes: id)),
+          rageLevel: 3,
+          rageEmoji: '😠',
+          rageLabel: '꽤 화남',
+          categoryKey: key,
+          categoryEmoji: emoji,
+          categoryLabel: label,
+          body: '$label 기록',
+        );
+      }
+
+      final repository = _FakeRageNoteRepository(
+        seedNotes: [
+          note(key: 'work', emoji: '💼', label: '직장'),
+          for (var i = 0; i < 5; i++)
+            note(key: 'custom', emoji: '➕', label: '육아'),
+          for (var i = 0; i < 4; i++)
+            note(key: 'custom', emoji: '➕', label: '주차'),
+          for (var i = 0; i < 3; i++)
+            note(key: 'custom', emoji: '➕', label: '쇼핑'),
+          for (var i = 0; i < 2; i++)
+            note(key: 'custom', emoji: '➕', label: '소음'),
+          note(key: 'custom', emoji: '➕', label: '날씨'),
+          note(key: 'custom', emoji: '➕', label: '게임'),
+        ],
+      );
+
+      await tester.pumpWidget(
+        FuryNoteApp(
+          initialLocale: const Locale('ko'),
+          noteRepository: repository,
+          feedService: _FakeFeedService(posts: const []),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      await tester.tap(find.text('통계'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      for (final label in [
+        '💼 직장 6%',
+        '➕ 육아 29%',
+        '➕ 주차 24%',
+        '➕ 쇼핑 18%',
+        '➕ 소음 12%',
+        '기타 12%',
+      ]) {
+        expect(find.text(label), findsOneWidget);
+      }
+
+      for (final label in [
+        '👨‍👩‍👧 가족 0%',
+        '💕 연애 0%',
+        '🧑 사람 0%',
+        '🚗 운전 0%',
+      ]) {
+        expect(find.text(label), findsNothing);
+      }
+
+      expect(find.textContaining('날씨'), findsNothing);
+      expect(find.textContaining('게임'), findsNothing);
+    },
+  );
+
+  testWidgets(
     'stats summary shows every written category with actual metrics',
     (WidgetTester tester) async {
       final now = DateTime.now();

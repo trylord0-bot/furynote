@@ -220,21 +220,39 @@ class _StatsScreenState extends State<StatsScreen>
     if (records.isEmpty) {
       return const [];
     }
-    final counts = <String, ({String label, int count})>{};
+    final defaultCounts = {
+      for (final category in _defaultDistributionCategories) category.key: 0,
+    };
+    final customCounts = <String, ({String label, int count})>{};
     for (final record in records) {
+      if (defaultCounts.containsKey(record.categoryKey)) {
+        defaultCounts[record.categoryKey] =
+            defaultCounts[record.categoryKey]! + 1;
+        continue;
+      }
+
       final key = _categoryIdentityFor(record);
       final label = '${record.categoryEmoji} ${record.categoryLabel}';
-      counts[key] = (label: label, count: (counts[key]?.count ?? 0) + 1);
+      customCounts[key] = (
+        label: label,
+        count: (customCounts[key]?.count ?? 0) + 1,
+      );
     }
-    final sorted = counts.values.toList()
+    final sortedCustom = customCounts.values.toList()
       ..sort((a, b) => b.count.compareTo(a.count));
-    final visible = sorted.take(4).toList();
-    final remainingCount = sorted
+    final visibleCustom = sortedCustom.take(4).toList();
+    final remainingCustomCount = sortedCustom
         .skip(4)
         .fold<int>(0, (sum, category) => sum + category.count);
     final chartItems = [
-      ...visible,
-      if (remainingCount > 0) (label: '기타', count: remainingCount),
+      for (final category in _defaultDistributionCategories)
+        if (defaultCounts[category.key]! > 0)
+          (
+            label: '${category.emoji} ${category.label}',
+            count: defaultCounts[category.key]!,
+          ),
+      ...visibleCustom,
+      if (remainingCustomCount > 0) (label: '기타', count: remainingCustomCount),
     ];
 
     return [
@@ -448,6 +466,26 @@ const _categoryChartColors = <Color>[
   Color(0xFF64B4FF),
   Color(0xFFA8D8A8),
 ];
+
+const _defaultDistributionCategories = <_DistributionCategory>[
+  _DistributionCategory(key: 'family', emoji: '👨‍👩‍👧', label: '가족'),
+  _DistributionCategory(key: 'romance', emoji: '💕', label: '연애'),
+  _DistributionCategory(key: 'work', emoji: '💼', label: '직장'),
+  _DistributionCategory(key: 'people', emoji: '🧑', label: '사람'),
+  _DistributionCategory(key: 'driving', emoji: '🚗', label: '운전'),
+];
+
+class _DistributionCategory {
+  const _DistributionCategory({
+    required this.key,
+    required this.emoji,
+    required this.label,
+  });
+
+  final String key;
+  final String emoji;
+  final String label;
+}
 
 class _IntensityPoint {
   const _IntensityPoint({required this.label, required this.value});
