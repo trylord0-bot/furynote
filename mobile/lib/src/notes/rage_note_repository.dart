@@ -45,7 +45,11 @@ class RageNoteRepository {
     final db = await _open();
     await db.update(
       tableName,
-      {'rage_level': rageLevel, 'rage_emoji': rageEmoji, 'rage_label': rageLabel},
+      {
+        'rage_level': rageLevel,
+        'rage_emoji': rageEmoji,
+        'rage_label': rageLabel,
+      },
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -59,6 +63,11 @@ class RageNoteRepository {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> markPosted(int id) async {
+    final db = await _open();
+    await db.update(tableName, {'posted': 1}, where: 'id = ?', whereArgs: [id]);
   }
 
   Future<void> close() async {

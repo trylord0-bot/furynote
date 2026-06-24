@@ -54,6 +54,7 @@ class RecordScreen extends StatefulWidget {
   const RecordScreen({
     this.onPost,
     this.onSaveOnly,
+    this.feedService,
     this.noteRepository,
     this.reminderScheduler,
     this.voiceRecorder,
@@ -62,6 +63,7 @@ class RecordScreen extends StatefulWidget {
 
   final VoidCallback? onPost;
   final VoidCallback? onSaveOnly;
+  final FeedService? feedService;
   final RageNoteRepository? noteRepository;
   final ReminderScheduler? reminderScheduler;
   final FuryVoiceRecorder? voiceRecorder;
@@ -292,7 +294,7 @@ class _RecordScreenState extends State<RecordScreen> {
 
     setState(() => _isPosting = true);
     try {
-      await FeedService.instance.createPost(
+      await (widget.feedService ?? FeedService.instance).createPost(
         nickname: AppProfileController.instance.displayName(
           fallback: l10n.profileName,
         ),
@@ -300,6 +302,12 @@ class _RecordScreenState extends State<RecordScreen> {
         category: categoryValue,
         text: text.isEmpty ? null : text,
       );
+      final savedNoteId = _savedNoteId;
+      if (savedNoteId != null) {
+        await (widget.noteRepository ?? RageNoteRepository.instance).markPosted(
+          savedNoteId,
+        );
+      }
       widget.onPost?.call();
     } on ApiException catch (e) {
       if (!mounted) return;

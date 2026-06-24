@@ -222,8 +222,9 @@ class _StatsScreenState extends State<StatsScreen>
     }
     final counts = <String, ({String label, int count})>{};
     for (final record in records) {
-      final key = '${record.categoryEmoji} ${record.categoryLabel}';
-      counts[key] = (label: key, count: (counts[key]?.count ?? 0) + 1);
+      final key = _categoryIdentityFor(record);
+      final label = '${record.categoryEmoji} ${record.categoryLabel}';
+      counts[key] = (label: label, count: (counts[key]?.count ?? 0) + 1);
     }
     final sorted = counts.values.toList()
       ..sort((a, b) => b.count.compareTo(a.count));
@@ -253,7 +254,7 @@ class _StatsScreenState extends State<StatsScreen>
 
     final grouped = <String, List<RageNote>>{};
     for (final record in records) {
-      final key = '${record.categoryEmoji} ${record.categoryLabel}';
+      final key = _categoryIdentityFor(record);
       grouped.putIfAbsent(key, () => []).add(record);
     }
 
@@ -383,7 +384,7 @@ class _StatsScreenState extends State<StatsScreen>
               _SummaryRecordsButton(
                 title: l10n.statsSummaryButtonTitle,
                 subtitle: l10n.statsSummaryButtonSubtitle,
-                onTap: () => _openSummaryScreen(l10n, filteredRecords),
+                onTap: () => _openSummaryScreen(l10n, _records),
               ),
             ],
           ),
@@ -467,9 +468,14 @@ class _CategorySlice {
   final Color color;
 }
 
+String _categoryIdentityFor(RageNote record) {
+  return '${record.categoryKey}|${record.categoryEmoji}|${record.categoryLabel}';
+}
+
 class _CategorySummary {
   const _CategorySummary({
-    required this.key,
+    required this.identityKey,
+    required this.categoryKey,
     required this.emoji,
     required this.label,
     required this.count,
@@ -480,7 +486,8 @@ class _CategorySummary {
     required this.peakLabel,
   });
 
-  final String key;
+  final String identityKey;
+  final String categoryKey;
   final String emoji;
   final String label;
   final int count;
@@ -504,7 +511,8 @@ class _CategorySummary {
     );
 
     return _CategorySummary(
-      key: first.categoryKey,
+      identityKey: _categoryIdentityFor(first),
+      categoryKey: first.categoryKey,
       emoji: first.categoryEmoji,
       label: first.categoryLabel,
       count: records.length,
@@ -983,7 +991,7 @@ class _StatsSummaryScreenState extends State<_StatsSummaryScreen> {
                       for (var i = 0; i < widget.summaries.length; i++)
                         _StatsSummaryCategoryPage(
                           key: ValueKey(
-                            'stats-summary-${widget.summaries[i].key}',
+                            'stats-summary-${widget.summaries[i].identityKey}',
                           ),
                           summary: widget.summaries[i],
                           l10n: l10n,
@@ -1069,13 +1077,13 @@ class _StatsSummaryCategoryPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _comfortEmojiFor(summary.key),
+                    _comfortEmojiFor(summary.categoryKey),
                     style: const TextStyle(fontSize: 18),
                   ),
                   const SizedBox(width: 7),
                   Flexible(
                     child: Text(
-                      _comfortFor(l10n, summary.key),
+                      _comfortFor(l10n, summary.categoryKey),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: FuryColors.muted,

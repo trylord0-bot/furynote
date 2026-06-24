@@ -87,6 +87,27 @@ void main() {
     expect(notes.map((note) => note.body), ['오늘 기록', '어제 기록']);
   });
 
+  test('marks a saved rage note as posted after feed sharing', () async {
+    final id = await repository.insert(
+      RageNote(
+        createdAt: DateTime(2026, 6, 12, 8),
+        rageLevel: 4,
+        rageEmoji: '😡',
+        rageLabel: '매우 화남',
+        categoryKey: 'work',
+        categoryEmoji: '💼',
+        categoryLabel: '직장',
+        body: '공유할 기록',
+      ),
+    );
+
+    await repository.markPosted(id);
+
+    final notes = await repository.getAll();
+
+    expect(notes.single.posted, isTrue);
+  });
+
   test('migrates a version 1 database before saving new metadata', () async {
     final tempDirectory = await Directory.systemTemp.createTemp(
       'fury_note_repository_test_',

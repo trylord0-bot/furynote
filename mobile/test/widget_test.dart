@@ -534,6 +534,54 @@ void main() {
     );
   });
 
+  testWidgets('drawer shows the actual saved rage note count', (
+    WidgetTester tester,
+  ) async {
+    final repository = _FakeRageNoteRepository(
+      seedNotes: [
+        RageNote(
+          id: 1,
+          createdAt: DateTime.now(),
+          rageLevel: 3,
+          rageEmoji: '😠',
+          rageLabel: '꽤 화남',
+          categoryKey: 'work',
+          categoryEmoji: '💼',
+          categoryLabel: '직장',
+          body: '첫 기록',
+        ),
+        RageNote(
+          id: 2,
+          createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          rageLevel: 2,
+          rageEmoji: '😤',
+          rageLabel: '화남',
+          categoryKey: 'family',
+          categoryEmoji: '👨‍👩‍👧',
+          categoryLabel: '가족',
+          body: '둘째 기록',
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+        feedService: _FakeFeedService(posts: const []),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    await tester.tap(find.byTooltip('menu'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('🔥 분노 기록 2회'), findsOneWidget);
+    expect(find.text('🔥 분노 기록 47회'), findsNothing);
+  });
+
   testWidgets('Korean locale renders Korean record copy', (
     WidgetTester tester,
   ) async {
@@ -894,6 +942,7 @@ void main() {
         FuryNoteApp(
           initialLocale: const Locale('ko'),
           noteRepository: repository,
+          feedService: _FakeFeedService(posts: const []),
         ),
       );
       await tester.pumpAndSettle();
@@ -906,6 +955,7 @@ void main() {
 
       expect(find.text('피드'), findsWidgets);
       expect(find.text('기록됐어요'), findsOneWidget);
+      expect(repository.savedNotes.single.posted, isFalse);
       _expectToastBelowTitleBar(tester, '기록됐어요');
 
       await tester.tap(find.text('기록'));
@@ -917,6 +967,7 @@ void main() {
 
       expect(find.text('피드'), findsWidgets);
       expect(find.text('포스팅했어요'), findsOneWidget);
+      expect(repository.savedNotes.last.posted, isTrue);
       _expectToastBelowTitleBar(tester, '포스팅했어요');
     },
   );
@@ -1122,110 +1173,144 @@ void main() {
     expect(repository.savedNotes.map((note) => note.id), isNot(contains(1)));
   });
 
-  testWidgets('stats summary opens like calendar popup with vertical paging', (
-    WidgetTester tester,
-  ) async {
-    final repository = _FakeRageNoteRepository(
-      seedNotes: [
-        RageNote(
-          id: 1,
-          createdAt: DateTime.now(),
-          rageLevel: 4,
-          rageEmoji: '😡',
-          rageLabel: '매우 화남',
-          categoryKey: 'family',
-          categoryEmoji: '👨‍👩‍👧',
-          categoryLabel: '가족',
-          body: '가족 모임에서 서운했다',
-          posted: true,
-          reminderAt: DateTime.now().add(const Duration(hours: 1)),
+  testWidgets(
+    'stats summary shows every written category with actual metrics',
+    (WidgetTester tester) async {
+      final now = DateTime.now();
+      final repository = _FakeRageNoteRepository(
+        seedNotes: [
+          RageNote(
+            id: 1,
+            createdAt: now,
+            rageLevel: 4,
+            rageEmoji: '😡',
+            rageLabel: '매우 화남',
+            categoryKey: 'family',
+            categoryEmoji: '👨‍👩‍👧',
+            categoryLabel: '가족',
+            body: '가족 모임에서 서운했다',
+            posted: true,
+            reminderAt: DateTime.now().add(const Duration(hours: 1)),
+          ),
+          RageNote(
+            id: 2,
+            createdAt: now.subtract(const Duration(days: 1)),
+            rageLevel: 3,
+            rageEmoji: '😠',
+            rageLabel: '꽤 화남',
+            categoryKey: 'family',
+            categoryEmoji: '👨‍👩‍👧',
+            categoryLabel: '가족',
+            body: '말이 통하지 않았다',
+          ),
+          RageNote(
+            id: 3,
+            createdAt: now.subtract(const Duration(days: 2)),
+            rageLevel: 5,
+            rageEmoji: '🤬',
+            rageLabel: '폭발',
+            categoryKey: 'work',
+            categoryEmoji: '💼',
+            categoryLabel: '직장',
+            body: '야근이 생겼다',
+            posted: true,
+          ),
+          RageNote(
+            id: 4,
+            createdAt: now.subtract(const Duration(days: 45)),
+            rageLevel: 2,
+            rageEmoji: '😤',
+            rageLabel: '화남',
+            categoryKey: 'custom',
+            categoryEmoji: '➕',
+            categoryLabel: '육아',
+            body: '아침 준비가 힘들었다',
+          ),
+          RageNote(
+            id: 5,
+            createdAt: now.subtract(const Duration(days: 46)),
+            rageLevel: 1,
+            rageEmoji: '😒',
+            rageLabel: '살짝 화남',
+            categoryKey: 'custom',
+            categoryEmoji: '➕',
+            categoryLabel: '주차',
+            body: '주차 공간이 없었다',
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        FuryNoteApp(
+          initialLocale: const Locale('ko'),
+          noteRepository: repository,
+          feedService: _FakeFeedService(posts: const []),
         ),
-        RageNote(
-          id: 2,
-          createdAt: DateTime.now().subtract(const Duration(days: 1)),
-          rageLevel: 3,
-          rageEmoji: '😠',
-          rageLabel: '꽤 화남',
-          categoryKey: 'family',
-          categoryEmoji: '👨‍👩‍👧',
-          categoryLabel: '가족',
-          body: '말이 통하지 않았다',
-        ),
-        RageNote(
-          id: 3,
-          createdAt: DateTime.now().subtract(const Duration(days: 2)),
-          rageLevel: 5,
-          rageEmoji: '🤬',
-          rageLabel: '폭발',
-          categoryKey: 'work',
-          categoryEmoji: '💼',
-          categoryLabel: '직장',
-          body: '야근이 생겼다',
-          posted: true,
-        ),
-      ],
-    );
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    await tester.pumpWidget(
-      FuryNoteApp(
-        initialLocale: const Locale('ko'),
-        noteRepository: repository,
-        feedService: _FakeFeedService(posts: const []),
-      ),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.text('통계'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    await tester.tap(find.text('통계'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+      await tester.scrollUntilVisible(
+        find.text('달력으로 기록 보기'),
+        500,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.scrollUntilVisible(
+        find.text('분노 요약 보기'),
+        500,
+        scrollable: find.byType(Scrollable).first,
+      );
 
-    await tester.scrollUntilVisible(
-      find.text('달력으로 기록 보기'),
-      500,
-      scrollable: find.byType(Scrollable).first,
-    );
-    await tester.scrollUntilVisible(
-      find.text('분노 요약 보기'),
-      500,
-      scrollable: find.byType(Scrollable).first,
-    );
+      expect(
+        tester.getTopLeft(find.text('분노 요약 보기')).dy,
+        greaterThan(tester.getTopLeft(find.text('달력으로 기록 보기')).dy),
+      );
 
-    expect(
-      tester.getTopLeft(find.text('분노 요약 보기')).dy,
-      greaterThan(tester.getTopLeft(find.text('달력으로 기록 보기')).dy),
-    );
+      await tester.tap(find.text('분노 요약 보기'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    await tester.tap(find.text('분노 요약 보기'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+      expect(find.text('분노 요약'), findsOneWidget);
+      expect(find.text('분노 통계'), findsNothing);
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+      expect(find.byIcon(Icons.keyboard_arrow_up), findsOneWidget);
+      expect(find.byIcon(Icons.keyboard_arrow_down), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('stats-summary-page-view')),
+        findsOneWidget,
+      );
+      expect(find.text('나를 가장 화나게 하는 건 "가족"이었네요'), findsOneWidget);
+      expect(find.text('괜찮아요. 그럴 수도 있어요.'), findsOneWidget);
+      expect(find.text('횟수'), findsOneWidget);
+      expect(find.text('카테고리'), findsOneWidget);
+      expect(find.text('피드 공유'), findsOneWidget);
+      expect(find.text('진정 시도'), findsOneWidget);
+      expect(find.text('결론'), findsOneWidget);
+      expect(find.text('2회'), findsOneWidget);
+      expect(find.text('40%'), findsOneWidget);
 
-    expect(find.text('분노 요약'), findsOneWidget);
-    expect(find.text('분노 통계'), findsNothing);
-    expect(find.byIcon(Icons.arrow_back), findsOneWidget);
-    expect(find.byIcon(Icons.keyboard_arrow_up), findsOneWidget);
-    expect(find.byIcon(Icons.keyboard_arrow_down), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('stats-summary-page-view')),
-      findsOneWidget,
-    );
-    expect(find.text('나를 가장 화나게 하는 건 "가족"이었네요'), findsOneWidget);
-    expect(find.text('괜찮아요. 그럴 수도 있어요.'), findsOneWidget);
-    expect(find.text('횟수'), findsOneWidget);
-    expect(find.text('카테고리'), findsOneWidget);
-    expect(find.text('피드 공유'), findsOneWidget);
-    expect(find.text('진정 시도'), findsOneWidget);
-    expect(find.text('결론'), findsOneWidget);
+      final nextButtons = find.widgetWithText(FilledButton, '다음');
+      expect(nextButtons, findsWidgets);
+      await tester.tap(nextButtons.last);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    final nextButtons = find.widgetWithText(FilledButton, '다음');
-    expect(nextButtons, findsWidgets);
-    await tester.tap(nextButtons.last);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+      expect(find.textContaining('직장'), findsWidgets);
+      expect(find.widgetWithText(FilledButton, '이전'), findsWidgets);
 
-    expect(find.textContaining('직장'), findsWidgets);
-    expect(find.widgetWithText(FilledButton, '이전'), findsWidgets);
-  });
+      for (final label in ['육아', '주차']) {
+        await tester.tap(nextButtons.last);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        expect(find.textContaining(label), findsWidgets);
+      }
+    },
+  );
 }
 
 Finder _headerTitle(String text) {
@@ -1315,6 +1400,15 @@ class _FakeRageNoteRepository extends RageNoteRepository {
 
   @override
   Future<List<RageNote>> getAll() async => List<RageNote>.of(_notes.reversed);
+
+  @override
+  Future<void> markPosted(int id) async {
+    final index = _notes.indexWhere((note) => note.id == id);
+    if (index == -1) {
+      return;
+    }
+    _notes[index] = _notes[index].copyWith(posted: true);
+  }
 
   @override
   Future<void> deleteById(int id) async {

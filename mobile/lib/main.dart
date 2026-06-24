@@ -525,6 +525,7 @@ class _FuryShellState extends State<FuryShell> {
       RecordScreen(
         onPost: () => _openFeed(toastMessage: l10n.recordPostedToast),
         onSaveOnly: () => _openFeed(toastMessage: l10n.recordSavedToast),
+        feedService: widget.feedService,
         noteRepository: widget.noteRepository,
         reminderScheduler: widget.reminderScheduler,
         voiceRecorder: widget.voiceRecorder,
@@ -550,10 +551,10 @@ class _FuryShellState extends State<FuryShell> {
           ),
         ),
       ),
-      endDrawer: const Drawer(
+      endDrawer: Drawer(
         backgroundColor: FuryColors.panel,
         surfaceTintColor: Colors.transparent,
-        child: FuryDrawer(),
+        child: FuryDrawer(noteRepository: widget.noteRepository),
       ),
       body: Stack(children: [Positioned.fill(child: screens[_index])]),
       bottomNavigationBar: FuryBottomNav(
@@ -829,7 +830,9 @@ class FuryBottomNav extends StatelessWidget {
 }
 
 class FuryDrawer extends StatelessWidget {
-  const FuryDrawer({super.key});
+  const FuryDrawer({this.noteRepository, super.key});
+
+  final RageNoteRepository? noteRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -877,26 +880,32 @@ class FuryDrawer extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: FuryColors.red.withValues(alpha: 0.12),
-                    border: Border.all(
-                      color: FuryColors.red.withValues(alpha: 0.25),
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    '🔥 분노 기록 47회',
-                    style: TextStyle(
-                      color: FuryColors.red,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                FutureBuilder<int>(
+                  future: _rageNoteCount(),
+                  builder: (context, snapshot) {
+                    final count = snapshot.data ?? 0;
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: FuryColors.red.withValues(alpha: 0.12),
+                        border: Border.all(
+                          color: FuryColors.red.withValues(alpha: 0.25),
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        '🔥 분노 기록 $count회',
+                        style: const TextStyle(
+                          color: FuryColors.red,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -939,6 +948,12 @@ class FuryDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<int> _rageNoteCount() async {
+    final records = await (noteRepository ?? RageNoteRepository.instance)
+        .getAll();
+    return records.length;
   }
 }
 
