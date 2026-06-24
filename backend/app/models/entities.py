@@ -35,6 +35,7 @@ class Post(TimestampMixin, Base):
     rage_level: Mapped[int] = mapped_column(nullable=False)
     category: Mapped[str] = mapped_column(String(32), nullable=False)
     text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    avatar_data: Mapped[str | None] = mapped_column(Text, nullable=True)
     like_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     comment_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
@@ -57,6 +58,7 @@ class Comment(TimestampMixin, Base):
     post_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
     device_id: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
     nickname: Mapped[str] = mapped_column(String(64), nullable=False)
+    avatar_data: Mapped[str | None] = mapped_column(Text, nullable=True)
     text: Mapped[str] = mapped_column(String(200), nullable=False)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
 

@@ -424,6 +424,7 @@ class _SourcePostSummary extends StatelessWidget {
                   borderRadius: 10,
                   fallbackFontSize: 15,
                   bytes: avatarBytes,
+                  useProfileFallback: false,
                 ),
                 const SizedBox(width: 8),
                 Expanded(

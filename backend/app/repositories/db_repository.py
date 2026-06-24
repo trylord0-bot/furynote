@@ -89,6 +89,11 @@ class DbStore:
 
         self.session.commit()
 
+    def _avatar_for_device(self, device_id: str) -> str | None:
+        return self.session.execute(
+            select(DeviceToken.avatar_data).where(DeviceToken.device_id == device_id)
+        ).scalar_one_or_none()
+
     # ── Posts ─────────────────────────────────────────────────────────────────
 
     def recent_post_attempts(self, device_id: str) -> list[datetime]:
@@ -106,6 +111,7 @@ class DbStore:
             post_id=str(uuid4()),
             device_id=device_id,
             nickname=nickname,
+            avatar_data=self._avatar_for_device(device_id),
             rage_level=rage_level,
             category=category,
             text=text,
@@ -124,8 +130,7 @@ class DbStore:
         total = self.session.execute(count_q).scalar_one()
 
         rows_q = (
-            select(Post, DeviceToken.avatar_data)
-            .outerjoin(DeviceToken, Post.device_id == DeviceToken.device_id)
+            select(Post)
             .where(Post.deleted_at.is_(None))
         )
         if mine_only:
@@ -149,7 +154,7 @@ class DbStore:
         next_offset = offset + size
         has_more = total > next_offset
         return {
-            "posts": [self._serialize_post(row[0], device_id, liked_ids, row[1]) for row in rows],
+            "posts": [self._serialize_post(row[0], device_id, liked_ids) for row in rows],
             "next_cursor": str(next_offset) if has_more else None,
             "has_more": has_more,
         }
@@ -226,15 +231,13 @@ class DbStore:
             post_id=post_id,
             device_id=device_id,
             nickname=nickname,
+            avatar_data=self._avatar_for_device(device_id),
             text=text,
         )
         self.session.add(comment)
         post.comment_count += 1
         self.session.commit()
         self.session.refresh(comment)
-        avatar_data = self.session.execute(
-            select(DeviceToken.avatar_data).where(DeviceToken.device_id == device_id)
-        ).scalar_one_or_none()
         return {
             "comment_id": comment.comment_id,
             "post_id": comment.post_id,
@@ -244,30 +247,29 @@ class DbStore:
             "created_at": comment.created_at,
             "deleted_at": comment.deleted_at,
             "post_owner_device_id": post.device_id,
-            "avatar_base64": avatar_data,
+            "avatar_base64": comment.avatar_data,
         }
 
     def list_comments(self, post_id: str, device_id: str, size: int) -> list[dict]:
-        rows = self.session.execute(
-            select(Comment, DeviceToken.avatar_data)
-            .outerjoin(DeviceToken, Comment.device_id == DeviceToken.device_id)
+        comments = self.session.execute(
+            select(Comment)
             .where(Comment.post_id == post_id)
             .where(Comment.deleted_at.is_(None))
             .order_by(Comment.created_at.asc())
             .limit(size)
-        ).all()
+        ).scalars().all()
 
         return [self.serialize_comment(
             {
-                "comment_id": c.comment_id,
-                "device_id": c.device_id,
-                "nickname": c.nickname,
-                "text": c.text,
-                "created_at": c.created_at,
-                "avatar_base64": avatar_data,
+                "comment_id": comment.comment_id,
+                "device_id": comment.device_id,
+                "nickname": comment.nickname,
+                "text": comment.text,
+                "created_at": comment.created_at,
+                "avatar_base64": comment.avatar_data,
             },
             device_id,
-        ) for c, avatar_data in rows]
+        ) for comment in comments]
 
     def delete_comment(self, post_id: str, comment_id: str, device_id: str) -> DeleteResult:
         comment = self.session.execute(
@@ -294,7 +296,7 @@ class DbStore:
 
     # ── Serialization ─────────────────────────────────────────────────────────
 
-    def _serialize_post(self, post: Post, device_id: str, liked_ids: set[str], avatar_data: str | None = None) -> dict:
+    def _serialize_post(self, post: Post, device_id: str, liked_ids: set[str]) -> dict:
         return {
             "post_id": post.post_id,
             "nickname": post.nickname,
@@ -306,7 +308,7 @@ class DbStore:
             "is_liked": post.post_id in liked_ids,
             "is_mine": post.device_id == device_id,
             "created_at": post.created_at.isoformat(),
-            "avatar_base64": avatar_data,
+            "avatar_base64": post.avatar_data,
         }
 
     def serialize_comment(self, comment: dict, viewer_device_id: str) -> dict:

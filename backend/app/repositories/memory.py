@@ -73,13 +73,14 @@ class MemoryStore:
         device["avatar_data"] = avatar_data
         device["updated_at"] = datetime.utcnow()
 
-    def create_post(self, device_id: str, rage_level: int, category: str, text: str | None) -> dict:
+    def create_post(self, device_id: str, nickname: str, rage_level: int, category: str, text: str | None) -> dict:
         now = datetime.utcnow()
         post_id = str(uuid4())
         post = {
             "post_id": post_id,
             "device_id": device_id,
-            "nickname": self.nickname_for(device_id),
+            "nickname": nickname,
+            "avatar_base64": self.devices.get(device_id, {}).get("avatar_data"),
             "rage_level": rage_level,
             "category": category,
             "text": text,
@@ -137,7 +138,7 @@ class MemoryStore:
             is_liked = True
         return {"is_liked": is_liked, "like_count": post["like_count"]}
 
-    def create_comment(self, post_id: str, device_id: str, text: str) -> dict | None:
+    def create_comment(self, post_id: str, device_id: str, nickname: str, text: str) -> dict | None:
         post = self.posts.get(post_id)
         if not post or post["deleted_at"] is not None:
             return None
@@ -146,7 +147,8 @@ class MemoryStore:
             "comment_id": comment_id,
             "post_id": post_id,
             "device_id": device_id,
-            "nickname": self.nickname_for(device_id),
+            "nickname": nickname,
+            "avatar_base64": self.devices.get(device_id, {}).get("avatar_data"),
             "text": text,
             "created_at": datetime.utcnow(),
             "deleted_at": None,
@@ -205,7 +207,7 @@ class MemoryStore:
             "is_liked": (post["post_id"], viewer_device_id) in self.likes,
             "is_mine": post["device_id"] == viewer_device_id,
             "created_at": post["created_at"].isoformat(),
-            "avatar_base64": self.devices.get(post["device_id"], {}).get("avatar_data"),
+            "avatar_base64": post.get("avatar_base64"),
         }
 
     def serialize_comment(self, comment: dict, viewer_device_id: str) -> dict:
@@ -215,7 +217,7 @@ class MemoryStore:
             "text": comment["text"],
             "is_mine": comment["device_id"] == viewer_device_id,
             "created_at": comment["created_at"].isoformat(),
-            "avatar_base64": self.devices.get(comment["device_id"], {}).get("avatar_data"),
+            "avatar_base64": comment.get("avatar_base64"),
         }
 
 

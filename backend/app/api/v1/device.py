@@ -2,7 +2,7 @@ import base64
 import io
 
 from fastapi import APIRouter, Depends, Header, HTTPException
-from PIL import Image
+from PIL import Image, ImageOps
 
 from app.core.responses import ok
 from app.repositories.db_repository import DbStore, get_db_store
@@ -60,7 +60,9 @@ def update_avatar(
 
     try:
         image_bytes = base64.b64decode(payload.avatar_base64)
-        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        img = ImageOps.exif_transpose(
+            Image.open(io.BytesIO(image_bytes))
+        ).convert("RGB")
         w, h = img.size
         side = min(w, h)
         left = (w - side) // 2

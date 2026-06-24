@@ -1,3 +1,5 @@
+import base64
+import io
 import json
 import time
 from datetime import datetime
@@ -5,12 +7,17 @@ from urllib.parse import urlsplit
 from uuid import uuid4
 
 from fastapi.testclient import TestClient
+from PIL import Image
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
 
+from app.api.v1.device import update_avatar
 from app.core.config import DEFAULT_HMAC_SECRET, build_settings
 from app.core.signature import compute_signature
 from app.main import create_app
 from app.repositories.db_repository import DbStore, get_db_store
 from app.repositories.memory import reset_store
+from app.schemas.device import AvatarUpdateRequest
 
 
 def client() -> TestClient:
@@ -60,6 +67,78 @@ def signed_delete(api: TestClient, url: str, headers: dict | None = None):
     return api.delete(url, headers=_signed_headers("DELETE", url, "", headers))
 
 
+def sqlite_store() -> DbStore:
+    engine = create_engine("sqlite:///:memory:")
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                """
+                CREATE TABLE device_tokens (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  device_id VARCHAR(128) UNIQUE NOT NULL,
+                  fcm_token VARCHAR(256) NOT NULL,
+                  notify_comment BOOLEAN NOT NULL,
+                  avatar_data TEXT NULL,
+                  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )
+        )
+        conn.execute(
+            text(
+                """
+                CREATE TABLE posts (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  post_id VARCHAR(36) UNIQUE NOT NULL,
+                  device_id VARCHAR(128) NOT NULL,
+                  nickname VARCHAR(64) NOT NULL,
+                  rage_level INTEGER NOT NULL,
+                  category VARCHAR(32) NOT NULL,
+                  text TEXT NULL,
+                  avatar_data TEXT NULL,
+                  like_count INTEGER NOT NULL DEFAULT 0,
+                  comment_count INTEGER NOT NULL DEFAULT 0,
+                  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  deleted_at DATETIME NULL
+                )
+                """
+            )
+        )
+        conn.execute(
+            text(
+                """
+                CREATE TABLE post_likes (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  post_id VARCHAR(36) NOT NULL,
+                  device_id VARCHAR(128) NOT NULL,
+                  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  UNIQUE (post_id, device_id)
+                )
+                """
+            )
+        )
+        conn.execute(
+            text(
+                """
+                CREATE TABLE comments (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  comment_id VARCHAR(36) UNIQUE NOT NULL,
+                  post_id VARCHAR(36) NOT NULL,
+                  device_id VARCHAR(128) NOT NULL,
+                  nickname VARCHAR(64) NOT NULL,
+                  avatar_data TEXT NULL,
+                  text VARCHAR(200) NOT NULL,
+                  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  deleted_at DATETIME NULL
+                )
+                """
+            )
+        )
+    session = sessionmaker(bind=engine, autoflush=False, autocommit=False)()
+    return DbStore(session)
+
+
 def test_device_register_upserts_token_and_notification_setting() -> None:
     api = client()
 
@@ -76,6 +155,43 @@ def test_device_register_upserts_token_and_notification_setting() -> None:
     assert updated.json()["data"]["registered"] is True
     assert updated.json()["data"]["fcm_token"] == "token-b"
     assert notification.json()["data"]["notify_comment"] is False
+
+
+def test_avatar_upload_applies_exif_orientation_before_snapshot() -> None:
+    image = Image.new("RGB", (120, 60), "red")
+    for x in range(60, 120):
+        for y in range(60):
+            image.putpixel((x, y), (0, 0, 255))
+    exif = image.getexif()
+    exif[274] = 6
+    raw = io.BytesIO()
+    image.save(raw, format="JPEG", exif=exif.tobytes())
+
+    class Store:
+        avatar_base64: str | None = None
+
+        def update_avatar(self, device_id: str, avatar_data: str | None) -> None:
+            self.avatar_base64 = avatar_data
+
+    store = Store()
+
+    update_avatar(
+        AvatarUpdateRequest(avatar_base64=base64.b64encode(raw.getvalue()).decode()),
+        x_device_id="device-1",
+        store=store,
+    )
+
+    assert store.avatar_base64 is not None
+    saved = Image.open(io.BytesIO(base64.b64decode(store.avatar_base64)))
+    top = saved.crop((0, 0, saved.width, 24)).resize((1, 1)).getpixel((0, 0))
+    bottom = (
+        saved.crop((0, saved.height - 24, saved.width, saved.height))
+        .resize((1, 1))
+        .getpixel((0, 0))
+    )
+
+    assert top[0] > 200 and top[2] < 80
+    assert bottom[2] > 200 and bottom[0] < 80
 
 
 def test_post_create_blocks_urls_with_envelope_error() -> None:
@@ -212,6 +328,36 @@ def test_comment_serialization_includes_author_avatar() -> None:
     )
 
     assert serialized["avatar_base64"] == "encoded-avatar"
+
+
+def test_post_avatar_is_snapshotted_when_post_is_created() -> None:
+    store = sqlite_store()
+    store.update_avatar("device-1", "avatar-at-post-time")
+
+    store.create_post("device-1", "화난 호랑이", 4, "work", "회의가 너무 늦게 잡혔다")
+    store.update_avatar("device-1", "new-current-avatar")
+
+    posts = store.list_posts_page("viewer", size=10)["posts"]
+
+    assert posts[0]["nickname"] == "화난 호랑이"
+    assert posts[0]["avatar_base64"] == "avatar-at-post-time"
+
+
+def test_comment_avatar_is_snapshotted_when_comment_is_created() -> None:
+    store = sqlite_store()
+    store.create_post("owner", "작성자", 3, "people", "원글")
+    post_id = store.list_posts_page("viewer", size=10)["posts"][0]["post_id"]
+    store.update_avatar("commenter", "avatar-at-comment-time")
+
+    comment = store.create_comment(post_id, "commenter", "댓글러", "나도 그랬어요")
+    store.update_avatar("commenter", "new-current-avatar")
+
+    comments = store.list_comments(post_id, "viewer", size=10)
+
+    assert comment is not None
+    assert comment["avatar_base64"] == "avatar-at-comment-time"
+    assert comments[0]["nickname"] == "댓글러"
+    assert comments[0]["avatar_base64"] == "avatar-at-comment-time"
 
 
 def test_purchase_verify_updates_status() -> None:

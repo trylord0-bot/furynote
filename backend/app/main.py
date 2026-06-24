@@ -5,7 +5,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, inspect, text
 
 from app.api.v1.router import api_router
 from app.core.config import DEFAULT_HMAC_SECRET, Settings, get_settings
@@ -56,6 +56,7 @@ def _init_db() -> None:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         Base.metadata.create_all(bind=engine)
+        _ensure_avatar_snapshot_columns(engine)
         engine.dispose()
         logger.info(
             "MariaDB 연결 성공 및 테이블 초기화: %s:%s/%s",
@@ -65,6 +66,22 @@ def _init_db() -> None:
         )
     except Exception as exc:
         logger.error("MariaDB 초기화 실패: %s", exc)
+
+
+def _ensure_avatar_snapshot_columns(engine) -> None:
+    inspector = inspect(engine)
+    for table_name in ("posts", "comments"):
+        columns = {column["name"] for column in inspector.get_columns(table_name)}
+        if "avatar_data" in columns:
+            continue
+        with engine.begin() as conn:
+            conn.execute(
+                text(
+                    f"ALTER TABLE {table_name} "
+                    "ADD COLUMN avatar_data MEDIUMTEXT NULL "
+                    "COMMENT 'Avatar image snapshot as base64 JPEG (256x256)'"
+                )
+            )
 
 
 @asynccontextmanager

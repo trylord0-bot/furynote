@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 // This is a basic Flutter widget test.
 //
@@ -9,6 +10,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -20,6 +22,7 @@ import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 import 'package:fury_note/src/notifications/push_notification_service.dart';
+import 'package:fury_note/src/profile/app_profile.dart';
 import 'package:fury_note/widgets/comment_sheet.dart';
 import 'package:fury_note/widgets/shared_widgets.dart';
 
@@ -253,6 +256,36 @@ void main() {
 
     expect(find.text('아바타가 있는 댓글'), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
+  });
+
+  testWidgets('feed post without avatar does not fall back to profile avatar', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    AppProfileController.instance.resetForTesting();
+    addTearDown(AppProfileController.instance.resetForTesting);
+    await AppProfileController.instance.updateAvatar(
+      base64Decode(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=',
+      ),
+    );
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: FuryPostCard(
+            emoji: '😡',
+            nickname: '다른 설치',
+            category: '💼 직장',
+            text: '아바타 없는 글',
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('다른 설치'), findsOneWidget);
+    expect(find.byType(Image), findsNothing);
   });
 
   testWidgets('rejected profanity comment shows localized error toast', (

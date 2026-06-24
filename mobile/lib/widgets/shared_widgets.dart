@@ -107,6 +107,7 @@ class FuryPostCard extends StatelessWidget {
                   borderRadius: 10,
                   fallbackFontSize: 15,
                   bytes: avatarBytes,
+                  useProfileFallback: false,
                 ),
               const SizedBox(width: 8),
               Flexible(
@@ -255,6 +256,7 @@ class FuryProfileAvatar extends StatelessWidget {
     this.borderRadius = 16,
     this.fallbackFontSize = 22,
     this.bytes,
+    this.useProfileFallback = true,
     super.key,
   });
 
@@ -262,6 +264,7 @@ class FuryProfileAvatar extends StatelessWidget {
   final double borderRadius;
   final double fallbackFontSize;
   final List<int>? bytes;
+  final bool useProfileFallback;
 
   @override
   Widget build(BuildContext context) {
@@ -272,6 +275,10 @@ class FuryProfileAvatar extends StatelessWidget {
         borderRadius: borderRadius,
         bytes: explicitBytes,
       );
+    }
+
+    if (!useProfileFallback) {
+      return _fallbackAvatar();
     }
 
     return AnimatedBuilder(
@@ -286,19 +293,23 @@ class FuryProfileAvatar extends StatelessWidget {
           );
         }
 
-        return Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: FuryColors.red.withValues(alpha: 0.18),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(color: FuryColors.red.withValues(alpha: 0.18)),
-          ),
-          child: Center(
-            child: Text('🔥', style: TextStyle(fontSize: fallbackFontSize)),
-          ),
-        );
+        return _fallbackAvatar();
       },
+    );
+  }
+
+  Widget _fallbackAvatar() {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: FuryColors.red.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(color: FuryColors.red.withValues(alpha: 0.18)),
+      ),
+      child: Center(
+        child: Text('🔥', style: TextStyle(fontSize: fallbackFontSize)),
+      ),
     );
   }
 }
