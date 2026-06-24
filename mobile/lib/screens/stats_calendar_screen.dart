@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
+import 'package:fury_note/widgets/shared_widgets.dart';
 import '../main.dart';
 
 class StatsCalendarScreen extends StatefulWidget {
@@ -341,7 +342,6 @@ class _SelectedDayRecordList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     final dateLabel =
         '${selectedDate.year}. ${selectedDate.month}. ${selectedDate.day}';
 
@@ -371,54 +371,10 @@ class _SelectedDayRecordList extends StatelessWidget {
             )
           else
             for (final record in records) ...[
-              Dismissible(
+              _StatsRecordTile(
                 key: ValueKey(record.id),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.only(right: 24),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: FuryColors.red,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-                confirmDismiss: (_) async {
-                  return await showDialog<bool>(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          backgroundColor: FuryColors.panel,
-                          title: Text(
-                            l10n.deleteConfirm,
-                            style: const TextStyle(color: FuryColors.text),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(ctx, false),
-                              child: Text(
-                                l10n.cancel,
-                                style: const TextStyle(color: FuryColors.muted),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(ctx, true),
-                              child: Text(
-                                l10n.delete,
-                                style: const TextStyle(color: FuryColors.red),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ) ??
-                      false;
-                },
-                onDismissed: (_) => onDelete(record),
-                child: _StatsRecordTile(record: record),
+                record: record,
+                onDelete: () => onDelete(record),
               ),
               const SizedBox(height: 10),
             ],
@@ -429,9 +385,14 @@ class _SelectedDayRecordList extends StatelessWidget {
 }
 
 class _StatsRecordTile extends StatefulWidget {
-  const _StatsRecordTile({required this.record});
+  const _StatsRecordTile({
+    required this.record,
+    required this.onDelete,
+    super.key,
+  });
 
   final RageNote record;
+  final VoidCallback onDelete;
 
   @override
   State<_StatsRecordTile> createState() => _StatsRecordTileState();
@@ -478,94 +439,42 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
     final timeLabel =
         '${widget.record.createdAt.hour.toString().padLeft(2, '0')}:${widget.record.createdAt.minute.toString().padLeft(2, '0')}';
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.04),
-        border: Border.all(color: FuryColors.border),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              timeLabel,
-              style: const TextStyle(color: FuryColors.faint, fontSize: 11),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FuryPostCard(
+          emoji: widget.record.rageEmoji,
+          nickname: '',
+          category:
+              '${widget.record.categoryEmoji} ${widget.record.categoryLabel}',
+          text: widget.record.body,
+          showAuthor: false,
+          createdTimeLabel: timeLabel,
+          isMine: true,
+          onDelete: widget.onDelete,
+          deleteTitle: l10n.deleteConfirm,
+          deleteContent: '',
+        ),
+        if (_hasReminder || _hasAudio)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                if (_hasReminder)
+                  FuryPostAction(icon: Icons.calendar_today, label: '리마인더'),
+                if (_hasAudio)
+                  FuryPostAction(
+                    icon: _isPlaying ? Icons.pause : Icons.play_arrow,
+                    label: _isPlaying ? '일시정지' : '재생',
+                    isActive: _isPlaying,
+                    onPressed: _togglePlayback,
+                  ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            widget.record.body.isEmpty ? l10n.noContent : widget.record.body,
-            style: const TextStyle(
-              color: Color(0xFFCCCCCC),
-              fontSize: 13,
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: FuryColors.red.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '${widget.record.categoryEmoji} ${widget.record.categoryLabel}',
-                  style: const TextStyle(
-                    color: FuryColors.red,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              if (_hasReminder)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: FuryColors.yellow.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(
-                    Icons.calendar_today,
-                    size: 12,
-                    color: FuryColors.yellow,
-                  ),
-                ),
-              if (_hasReminder && _hasAudio) const SizedBox(width: 6),
-              if (_hasAudio)
-                GestureDetector(
-                  onTap: _togglePlayback,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: FuryColors.orange.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Icon(
-                      _isPlaying ? Icons.pause : Icons.play_arrow,
-                      size: 14,
-                      color: FuryColors.orange,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

@@ -552,7 +552,7 @@ class _CommentItem extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        _relativeTime(comment.createdAt),
+                        relativeTime(comment.createdAt),
                         style: const TextStyle(
                           color: FuryColors.faint,
                           fontSize: 10,
@@ -588,12 +588,4 @@ class _CommentItem extends StatelessWidget {
       ),
     );
   }
-}
-
-String _relativeTime(DateTime dt) {
-  final diff = DateTime.now().difference(dt);
-  if (diff.inMinutes < 1) return '방금';
-  if (diff.inMinutes < 60) return '${diff.inMinutes}분 전';
-  if (diff.inHours < 24) return '${diff.inHours}시간 전';
-  return '${diff.inDays}일 전';
 }

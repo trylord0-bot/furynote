@@ -218,6 +218,64 @@ void main() {
     );
   });
 
+  testWidgets('feed post shows relative time at the card bottom right', (
+    WidgetTester tester,
+  ) async {
+    final now = DateTime.now();
+    final feedService = _FakeFeedService(
+      posts: [
+        FeedPost(
+          postId: 'post-minutes',
+          nickname: '시간 기록자',
+          rageLevel: 4,
+          category: 'work',
+          text: '방금 전 피드',
+          likeCount: 0,
+          commentCount: 0,
+          isLiked: false,
+          isMine: false,
+          createdAt: now.subtract(const Duration(minutes: 5)),
+        ),
+        FeedPost(
+          postId: 'post-days',
+          nickname: '오래된 기록자',
+          rageLevel: 3,
+          category: 'family',
+          text: '며칠 전 피드',
+          likeCount: 0,
+          commentCount: 0,
+          isLiked: false,
+          isMine: false,
+          createdAt: now.subtract(const Duration(days: 2, minutes: 5)),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      FuryNoteApp(initialLocale: const Locale('ko'), feedService: feedService),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    final card = find.ancestor(
+      of: find.text('방금 전 피드'),
+      matching: find.byType(FuryPostCard),
+    );
+    expect(card, findsOneWidget);
+    expect(
+      find.descendant(of: card, matching: find.byIcon(Icons.access_time)),
+      findsNothing,
+    );
+    _expectTextAtCardBottomRight(tester, card, '5분 전');
+
+    final oldCard = find.ancestor(
+      of: find.text('며칠 전 피드'),
+      matching: find.byType(FuryPostCard),
+    );
+    expect(oldCard, findsOneWidget);
+    _expectTextAtCardBottomRight(tester, oldCard, '2일 전');
+  });
+
   testWidgets('comment sheet renders comment author avatar images', (
     WidgetTester tester,
   ) async {
@@ -947,12 +1005,15 @@ void main() {
       FuryNoteApp(
         initialLocale: const Locale('ko'),
         noteRepository: repository,
+        feedService: _FakeFeedService(posts: const []),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     await tester.tap(find.text('통계'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(
       find.byKey(const ValueKey('stats-intensity-line-chart')),
@@ -966,7 +1027,8 @@ void main() {
     expect(find.text('2'), findsWidgets);
 
     await tester.tap(find.text('전체'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('💼 직장 67%'), findsOneWidget);
     expect(find.text('${oldDay.month}/${oldDay.day}'), findsOneWidget);
@@ -978,7 +1040,8 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     await tester.tap(find.text('달력으로 기록 보기'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(_headerTitle('Rage Stats'), findsNothing);
     expect(find.text('달력으로 기록 보기'), findsOneWidget);
@@ -990,6 +1053,73 @@ void main() {
     );
     expect(find.text('오늘 저장된 기록'), findsOneWidget);
     expect(find.text('💼 직장'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(FuryPostCard),
+        matching: find.text('오늘 저장된 기록'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byType(FuryPostCard),
+        matching: find.text('💼 직장'),
+      ),
+      findsOneWidget,
+    );
+    final selectedRecordCard = find.ancestor(
+      of: find.text('오늘 저장된 기록'),
+      matching: find.byType(FuryPostCard),
+    );
+    expect(
+      find.descendant(
+        of: selectedRecordCard,
+        matching: find.byType(FuryProfileAvatar),
+      ),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: selectedRecordCard, matching: find.text('화난 호랑이')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: selectedRecordCard,
+        matching: find.byIcon(Icons.access_time),
+      ),
+      findsNothing,
+    );
+    _expectTextAtCardBottomRight(tester, selectedRecordCard, '09:30');
+    expect(
+      find.ancestor(of: selectedRecordCard, matching: find.byType(Dismissible)),
+      findsNothing,
+    );
+
+    final deleteIcon = find.descendant(
+      of: selectedRecordCard,
+      matching: find.byIcon(Icons.delete_outline),
+    );
+    expect(deleteIcon, findsOneWidget);
+
+    await tester.tap(deleteIcon);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+
+    expect(find.text('삭제할까요?'), findsOneWidget);
+    await tester.tap(find.text('취소'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.text('오늘 저장된 기록'), findsOneWidget);
+
+    await tester.tap(deleteIcon);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    await tester.tap(find.text('삭제'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('오늘 저장된 기록'), findsNothing);
+    expect(repository.savedNotes.map((note) => note.id), isNot(contains(1)));
   });
 }
 
@@ -1043,6 +1173,20 @@ void _expectToastBelowTitleBar(WidgetTester tester, String message) {
   expect(toastTop, headerBottom + 12);
 }
 
+void _expectTextAtCardBottomRight(
+  WidgetTester tester,
+  Finder cardFinder,
+  String text,
+) {
+  final timeFinder = find.descendant(of: cardFinder, matching: find.text(text));
+  expect(timeFinder, findsOneWidget);
+
+  final cardRect = tester.getRect(cardFinder);
+  final timeRect = tester.getRect(timeFinder);
+  expect(timeRect.right, greaterThan(cardRect.right - 72));
+  expect(timeRect.bottom, greaterThan(cardRect.bottom - 32));
+}
+
 class _FakeRageNoteRepository extends RageNoteRepository {
   _FakeRageNoteRepository({List<RageNote> seedNotes = const []})
     : _notes = List<RageNote>.of(seedNotes),
@@ -1066,6 +1210,11 @@ class _FakeRageNoteRepository extends RageNoteRepository {
 
   @override
   Future<List<RageNote>> getAll() async => List<RageNote>.of(_notes.reversed);
+
+  @override
+  Future<void> deleteById(int id) async {
+    _notes.removeWhere((note) => note.id == id);
+  }
 
   @override
   Future<void> close() async {}

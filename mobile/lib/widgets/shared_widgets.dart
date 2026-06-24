@@ -5,6 +5,14 @@ import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
 
+String relativeTime(DateTime value) {
+  final diff = DateTime.now().difference(value);
+  if (diff.inMinutes < 1) return '방금';
+  if (diff.inMinutes < 60) return '${diff.inMinutes}분 전';
+  if (diff.inHours < 24) return '${diff.inHours}시간 전';
+  return '${diff.inDays}일 전';
+}
+
 class FurySnackBar {
   const FurySnackBar._();
 
@@ -54,11 +62,15 @@ class FuryPostCard extends StatelessWidget {
     required this.category,
     required this.text,
     this.avatarBytes,
+    this.showAuthor = true,
     this.showProfileAvatar = false,
     this.angerRecordCount,
     this.postCount,
+    this.createdTimeLabel,
     this.isMine = false,
     this.onDelete,
+    this.deleteTitle,
+    this.deleteContent,
     super.key,
   });
 
@@ -67,11 +79,15 @@ class FuryPostCard extends StatelessWidget {
   final String category;
   final String text;
   final List<int>? avatarBytes;
+  final bool showAuthor;
   final bool showProfileAvatar;
   final int? angerRecordCount;
   final int? postCount;
+  final String? createdTimeLabel;
   final bool isMine;
   final VoidCallback? onDelete;
+  final String? deleteTitle;
+  final String? deleteContent;
 
   @override
   Widget build(BuildContext context) {
@@ -93,37 +109,39 @@ class FuryPostCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              if (showProfileAvatar)
-                const FuryProfileAvatar(
-                  size: 28,
-                  borderRadius: 10,
-                  fallbackFontSize: 15,
-                )
-              else
-                FuryProfileAvatar(
-                  size: 28,
-                  borderRadius: 10,
-                  fallbackFontSize: 15,
-                  bytes: avatarBytes,
-                  useProfileFallback: false,
-                ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  nickname,
-                  style: const TextStyle(
-                    color: FuryColors.muted,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
+          if (showAuthor) ...[
+            Row(
+              children: [
+                if (showProfileAvatar)
+                  const FuryProfileAvatar(
+                    size: 28,
+                    borderRadius: 10,
+                    fallbackFontSize: 15,
+                  )
+                else
+                  FuryProfileAvatar(
+                    size: 28,
+                    borderRadius: 10,
+                    fallbackFontSize: 15,
+                    bytes: avatarBytes,
+                    useProfileFallback: false,
                   ),
-                  overflow: TextOverflow.ellipsis,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    nickname,
+                    style: const TextStyle(
+                      color: FuryColors.muted,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
+              ],
+            ),
+            const SizedBox(height: 12),
+          ],
           text.isNotEmpty
               ? Text(
                   text,
@@ -182,6 +200,18 @@ class FuryPostCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+              if ((angerRecordCount != null || postCount != null) &&
+                  createdTimeLabel != null)
+                const SizedBox(width: 8),
+              if (createdTimeLabel != null)
+                Text(
+                  createdTimeLabel!,
+                  style: const TextStyle(
+                    color: FuryColors.faint,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
             ],
           ),
         ],
@@ -199,6 +229,8 @@ class FuryPostCard extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               final l10n = AppLocalizations.of(context);
+              final resolvedDeleteContent =
+                  deleteContent ?? l10n.feedDeleteContent;
               showDialog<void>(
                 context: context,
                 builder: (ctx) => AlertDialog(
@@ -208,17 +240,19 @@ class FuryPostCard extends StatelessWidget {
                     side: const BorderSide(color: FuryColors.border),
                   ),
                   title: Text(
-                    l10n.feedDeleteTitle,
+                    deleteTitle ?? l10n.feedDeleteTitle,
                     style: const TextStyle(
                       color: FuryColors.text,
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  content: Text(
-                    l10n.feedDeleteContent,
-                    style: const TextStyle(color: FuryColors.muted),
-                  ),
+                  content: resolvedDeleteContent.isEmpty
+                      ? null
+                      : Text(
+                          resolvedDeleteContent,
+                          style: const TextStyle(color: FuryColors.muted),
+                        ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(ctx),
@@ -246,6 +280,37 @@ class FuryPostCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class FuryPostAction extends StatelessWidget {
+  const FuryPostAction({
+    required this.icon,
+    required this.label,
+    this.onPressed,
+    this.isActive = false,
+    super.key,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onPressed;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 17),
+      label: Text(label),
+      style: TextButton.styleFrom(
+        foregroundColor: isActive ? FuryColors.red : FuryColors.muted,
+        disabledForegroundColor: FuryColors.muted,
+        minimumSize: const Size(0, 36),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
     );
   }
 }

@@ -442,6 +442,7 @@ class _FeedPostItem extends StatelessWidget {
           category: categoryDisplay(post.category),
           text: post.text ?? '',
           avatarBytes: post.avatarBytes,
+          createdTimeLabel: relativeTime(post.createdAt),
           isMine: post.isMine,
           onDelete: onDelete,
         ),
@@ -467,36 +468,6 @@ class _FeedPostItem extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class FuryPostAction extends StatelessWidget {
-  const FuryPostAction({
-    required this.icon,
-    required this.label,
-    this.onPressed,
-    this.isActive = false,
-    super.key,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback? onPressed;
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 17),
-      label: Text(label),
-      style: TextButton.styleFrom(
-        foregroundColor: isActive ? FuryColors.red : FuryColors.muted,
-        minimumSize: const Size(0, 36),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
     );
   }
 }
