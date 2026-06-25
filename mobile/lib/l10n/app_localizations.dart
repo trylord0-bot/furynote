@@ -617,7 +617,7 @@ abstract class AppLocalizations {
   /// No description provided for @statsSummaryButtonTitle.
   ///
   /// In ko, this message translates to:
-  /// **'분노 요약 보기'**
+  /// **'분노 보고서 보기'**
   String get statsSummaryButtonTitle;
 
   /// No description provided for @statsSummaryButtonSubtitle.
@@ -629,7 +629,7 @@ abstract class AppLocalizations {
   /// No description provided for @statsSummaryTitle.
   ///
   /// In ko, this message translates to:
-  /// **'분노 요약'**
+  /// **'분노 보고서'**
   String get statsSummaryTitle;
 
   /// No description provided for @statsSummaryClose.

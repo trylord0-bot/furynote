@@ -267,13 +267,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get statsCalendarButtonSubtitle => '날짜별 분노 기록을 확인하고 관리해요';
 
   @override
-  String get statsSummaryButtonTitle => '분노 요약 보기';
+  String get statsSummaryButtonTitle => '분노 보고서 보기';
 
   @override
   String get statsSummaryButtonSubtitle => '카테고리별로 내 분노 패턴을 넘겨봐요';
 
   @override
-  String get statsSummaryTitle => '분노 요약';
+  String get statsSummaryTitle => '분노 보고서';
 
   @override
   String get statsSummaryClose => '닫기';

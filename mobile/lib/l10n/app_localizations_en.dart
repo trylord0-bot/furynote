@@ -275,14 +275,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Check and manage rage notes by date';
 
   @override
-  String get statsSummaryButtonTitle => 'View rage summary';
+  String get statsSummaryButtonTitle => 'View rage report';
 
   @override
   String get statsSummaryButtonSubtitle =>
       'Flip through your anger patterns by category';
 
   @override
-  String get statsSummaryTitle => 'Rage Summary';
+  String get statsSummaryTitle => 'Rage Report';
 
   @override
   String get statsSummaryClose => 'Close';

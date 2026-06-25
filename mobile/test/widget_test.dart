@@ -1338,21 +1338,21 @@ void main() {
         scrollable: find.byType(Scrollable).first,
       );
       await tester.scrollUntilVisible(
-        find.text('분노 요약 보기'),
+        find.text('분노 보고서 보기'),
         500,
         scrollable: find.byType(Scrollable).first,
       );
 
       expect(
-        tester.getTopLeft(find.text('분노 요약 보기')).dy,
+        tester.getTopLeft(find.text('분노 보고서 보기')).dy,
         greaterThan(tester.getTopLeft(find.text('달력으로 기록 보기')).dy),
       );
 
-      await tester.tap(find.text('분노 요약 보기'));
+      await tester.tap(find.text('분노 보고서 보기'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
-      expect(find.text('분노 요약'), findsOneWidget);
+      expect(find.text('분노 보고서'), findsOneWidget);
       expect(find.text('분노 통계'), findsNothing);
       expect(find.byIcon(Icons.arrow_back), findsOneWidget);
       expect(find.byIcon(Icons.keyboard_arrow_up), findsOneWidget);
