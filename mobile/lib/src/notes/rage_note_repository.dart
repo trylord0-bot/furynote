@@ -25,6 +25,45 @@ class RageNoteRepository {
     return db.insert(tableName, note.toMap()..remove('id'));
   }
 
+  Future<int> importMany(List<RageNote> notes) async {
+    final db = await _open();
+    var inserted = 0;
+    await db.transaction((txn) async {
+      for (final note in notes) {
+        final existing = await txn.query(
+          tableName,
+          columns: const ['id'],
+          where: '''
+created_at = ? AND rage_level = ? AND category_key = ? AND body = ?
+''',
+          whereArgs: [
+            note.createdAt.toIso8601String(),
+            note.rageLevel,
+            note.categoryKey,
+            note.body,
+          ],
+          limit: 1,
+        );
+        if (existing.isNotEmpty) continue;
+
+        await txn.insert(tableName, note.toMap()..remove('id'));
+        inserted++;
+      }
+    });
+    return inserted;
+  }
+
+  Future<int> replaceAll(List<RageNote> notes) async {
+    final db = await _open();
+    await db.transaction((txn) async {
+      await txn.delete(tableName);
+      for (final note in notes) {
+        await txn.insert(tableName, note.toMap()..remove('id'));
+      }
+    });
+    return notes.length;
+  }
+
   Future<List<RageNote>> getAll() async {
     final db = await _open();
     final rows = await db.query(tableName, orderBy: 'created_at DESC, id DESC');

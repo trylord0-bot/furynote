@@ -53,7 +53,11 @@ void main() {
     expect(decoded['manifest']['version'], '1.0');
     expect(decoded['manifest']['app_version'], '1.0.0');
     expect(decoded['manifest']['device_id'], 'device-1');
+    expect(decoded['data']['device_id'], 'device-1');
     expect(decoded['data']['notes'], hasLength(1));
+
+    final imported = service.importBackup(package.encryptedBytes);
+    expect(imported.deviceId, 'device-1');
   });
 
   test('import rejects package with mismatched checksum', () {
@@ -117,5 +121,56 @@ void main() {
     expect(exportedProfile['avatar_base64'], isNotEmpty);
 
     AppProfileController.instance.resetForTesting();
+  });
+
+  test('debug export bypasses PRO entitlement', () {
+    final service = FuryBackupService(cipher: PlainTextBackupCipher());
+
+    final package = service.exportBackup(
+      data: const BackupData(
+        profile: {},
+        settings: {},
+        notes: [],
+        reminders: [],
+        challenges: [],
+      ),
+      deviceId: 'debug-device',
+      appVersion: '1.0.0',
+      isPro: false,
+      isDebugMode: true,
+      createdAt: DateTime(2026, 6, 25, 10, 30),
+    );
+
+    expect(package.fileName, 'furynote_backup_20260625_103000.fnbackup');
+  });
+
+  test('backup history stores newest exports first', () async {
+    SharedPreferences.setMockInitialValues({});
+    final store = BackupHistoryStore();
+
+    await store.add(
+      BackupHistoryEntry(
+        fileName: 'older.fnbackup',
+        filePath: '/exports/older.fnbackup',
+        createdAt: DateTime(2026, 6, 24, 9),
+        byteCount: 12,
+      ),
+    );
+    await store.add(
+      BackupHistoryEntry(
+        fileName: 'newer.fnbackup',
+        filePath: '/exports/newer.fnbackup',
+        createdAt: DateTime(2026, 6, 25, 9),
+        byteCount: 34,
+      ),
+    );
+
+    final history = await store.load();
+
+    expect(history.map((entry) => entry.fileName), [
+      'newer.fnbackup',
+      'older.fnbackup',
+    ]);
+    expect(history.first.byteCount, 34);
   });
 }

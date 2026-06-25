@@ -23,4 +23,13 @@ class DeviceIdService {
     _deviceId = id;
     return id;
   }
+
+  Future<void> restore(String deviceId) async {
+    final restoredId = deviceId.trim();
+    if (restoredId.isEmpty) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, restoredId);
+    _deviceId = restoredId;
+  }
 }

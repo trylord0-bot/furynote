@@ -22,6 +22,7 @@ class AppProfileController extends ChangeNotifier {
 
   static final AppProfileController instance = AppProfileController._();
   static const int maxAvatarBytes = 5 * 1024 * 1024;
+  static const String profileNumber = '#4827';
   static const String _avatarKey = 'profile.avatar.base64';
   static const String _displayNameKey = 'profile.display_name';
 
@@ -95,10 +96,39 @@ class AppProfileController extends ChangeNotifier {
   }
 
   Map<String, Object?> toExportJson({required String fallbackDisplayName}) {
+    final exportedDisplayName = displayName(fallback: fallbackDisplayName);
     return {
-      'display_name': displayName(fallback: fallbackDisplayName),
+      'display_name': exportedDisplayName,
+      'profile_number': _profileNumber(exportedDisplayName) ?? profileNumber,
       'avatar_base64': _avatarBase64,
     };
+  }
+
+  Future<void> importFromJson(Map<String, Object?> json) async {
+    final preferences = await SharedPreferences.getInstance();
+    final displayName = (json['display_name'] as String?)?.trim();
+    final avatarBase64 = json['avatar_base64'] as String?;
+
+    if (displayName != null && displayName.isNotEmpty) {
+      await preferences.setString(_displayNameKey, displayName);
+      _displayName = displayName;
+    }
+
+    if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+      await preferences.setString(_avatarKey, avatarBase64);
+      _avatarBase64 = avatarBase64;
+    } else if (json.containsKey('avatar_base64')) {
+      await preferences.remove(_avatarKey);
+      _avatarBase64 = null;
+    }
+
+    _loaded = true;
+    notifyListeners();
+  }
+
+  String? _profileNumber(String displayName) {
+    final match = RegExp(r'#\d{4}$').firstMatch(displayName);
+    return match?.group(0);
   }
 
   @visibleForTesting

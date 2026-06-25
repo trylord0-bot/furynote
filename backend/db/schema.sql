@@ -1,5 +1,17 @@
 -- Fury Note MariaDB schema
--- Local development uses DB_PORT=3303. Non-local environments default to 3306.
+-- Local development uses DB_PORT=3307, matching backend/.env.
+
+CREATE DATABASE IF NOT EXISTS `furynote`
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'furynote'@'127.0.0.1' IDENTIFIED BY 'furynote';
+CREATE USER IF NOT EXISTS 'furynote'@'localhost' IDENTIFIED BY 'furynote';
+
+GRANT ALL PRIVILEGES ON `furynote`.* TO 'furynote'@'127.0.0.1';
+GRANT ALL PRIVILEGES ON `furynote`.* TO 'furynote'@'localhost';
+
+USE `furynote`;
 
 CREATE TABLE device_tokens (
   id               BIGINT        NOT NULL AUTO_INCREMENT,

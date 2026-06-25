@@ -81,8 +81,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _SettingsTile(
                 icon: Icons.upload_outlined,
                 iconColor: const Color(0xFF64B4FF),
-                title: '데이터 내보내기',
-                subtitle: '내 기록을 CSV / JSON으로 저장',
+                title: l10n.dataExportTitle,
+                subtitle: l10n.settingsDataExportSubtitle,
                 trailing: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _SettingsTile(
                 icon: Icons.download_outlined,
                 iconColor: const Color(0xFFA8D8A8),
-                title: '데이터 가져오기',
+                title: l10n.dataImportTitle,
                 subtitle: '백업 파일로 기록 복원',
                 trailing: const Icon(
                   Icons.chevron_right,

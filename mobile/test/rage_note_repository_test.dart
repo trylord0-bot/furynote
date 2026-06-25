@@ -108,6 +108,33 @@ void main() {
     expect(notes.single.posted, isTrue);
   });
 
+  test('imports notes without duplicating existing records', () async {
+    final note = RageNote(
+      createdAt: DateTime(2026, 6, 12, 8),
+      rageLevel: 4,
+      rageEmoji: '😡',
+      rageLabel: '매우 화남',
+      categoryKey: 'work',
+      categoryEmoji: '💼',
+      categoryLabel: '직장',
+      body: '중복 없이 가져올 기록',
+      audioPath: 'voice/rage.m4a',
+      reminderAt: DateTime(2026, 6, 12, 18),
+      posted: true,
+    );
+
+    final firstCount = await repository.importMany([note]);
+    final secondCount = await repository.importMany([note]);
+    final notes = await repository.getAll();
+
+    expect(firstCount, 1);
+    expect(secondCount, 0);
+    expect(notes, hasLength(1));
+    expect(notes.single.audioPath, 'voice/rage.m4a');
+    expect(notes.single.reminderAt, DateTime(2026, 6, 12, 18));
+    expect(notes.single.posted, isTrue);
+  });
+
   test('migrates a version 1 database before saving new metadata', () async {
     final tempDirectory = await Directory.systemTemp.createTemp(
       'fury_note_repository_test_',

@@ -172,6 +172,53 @@
   "commentNotification": "댓글 알림",
   "proPlan": "PRO 데이터 내보내기",
   "backupImport": "데이터 가져오기",
+  "settingsDataExportSubtitle": "백업 파일 생성 · 히스토리 · 공유",
+  "dataExportTitle": "데이터 내보내기",
+  "dataExportProTitle": "PRO 데이터 내보내기",
+  "dataExportDescription": "앱의 모든 로컬 데이터를 하나의 백업 파일로 만들고 메일이나 메신저로 공유할 수 있어요.",
+  "dataExportOneTimePurchase": "1회 결제 · 영구 사용",
+  "dataExportInProgress": "내보내는 중",
+  "dataExportPaymentChecking": "결제 확인 중",
+  "dataExportCreateButton": "내보내기 생성",
+  "dataExportPayAndCreateButton": "결제 후 내보내기",
+  "dataExportRestorePurchase": "구매 복원",
+  "dataExportCreatedToast": "내보내기 파일을 만들었어요.",
+  "dataExportFailedToast": "내보내기 파일을 만들지 못했어요.",
+  "dataExportShareSubject": "Fury Note 데이터 백업",
+  "dataExportShareText": "Fury Note 데이터 백업 파일입니다.",
+  "dataExportShareFailedToast": "공유 화면을 열지 못했어요.",
+  "dataExportAllDataIncluded": "앱의 모든 로컬 데이터가 백업에 포함돼요",
+  "dataExportHistoryTitle": "내보내기 히스토리",
+  "dataExportHistoryCount": "{count}개",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "공유",
+  "dataExportEmptyHistory": "아직 만든 내보내기 파일이 없어요.",
+  "dataImportTitle": "데이터 가져오기",
+  "dataImportPickTitle": "백업 파일 선택",
+  "dataImportPickDescription": "Fury Note에서 내보낸\n.fnbackup 파일을 선택하세요",
+  "dataImportPickButton": "파일 선택하기",
+  "dataImportInProgress": "가져오는 중",
+  "dataImportSuccessToast": "백업 데이터로 교체했어요. ({count}개 기록)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "백업 데이터로 교체했어요. (0개 기록)",
+  "dataImportFailedToast": "백업 파일을 가져오지 못했어요.",
+  "dataImportInvalidFileToast": ".fnbackup 파일만 가져올 수 있어요.",
+  "dataImportNoticeTitle": "가져오기 전 주의사항",
+  "dataImportNoticeBody": "기존 데이터는 모두 삭제되고 백업 파일의 데이터로 교체돼요.",
+  "dataImportTransferTitle": "기기 이전 시",
+  "dataImportTransferBody": "새 기기에서 앱 설치 후 백업 파일을 가져오면 현재 로컬 데이터를 백업 데이터로 교체해요.",
   "feedDeleteTitle": "피드 삭제",
   "feedDeleteContent": "이 피드를 삭제할까요?",
   "calmGuideTitle": "화가 올라올 때,\n먼저 몸을 안전하게 낮춰요",

@@ -440,6 +440,116 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupImport => 'Import data';
 
   @override
+  String get settingsDataExportSubtitle => 'Backup file · history · sharing';
+
+  @override
+  String get dataExportTitle => 'Export data';
+
+  @override
+  String get dataExportProTitle => 'PRO data export';
+
+  @override
+  String get dataExportDescription =>
+      'Create one backup file with all local app data and share it by email or messenger.';
+
+  @override
+  String get dataExportOneTimePurchase => 'One-time purchase · lifetime access';
+
+  @override
+  String get dataExportInProgress => 'Exporting';
+
+  @override
+  String get dataExportPaymentChecking => 'Checking payment';
+
+  @override
+  String get dataExportCreateButton => 'Create export';
+
+  @override
+  String get dataExportPayAndCreateButton => 'Pay and export';
+
+  @override
+  String get dataExportRestorePurchase => 'Restore purchase';
+
+  @override
+  String get dataExportCreatedToast => 'Export file created.';
+
+  @override
+  String get dataExportFailedToast => 'Could not create the export file.';
+
+  @override
+  String get dataExportShareSubject => 'Fury Note data backup';
+
+  @override
+  String get dataExportShareText => 'This is a Fury Note data backup file.';
+
+  @override
+  String get dataExportShareFailedToast => 'Could not open the share sheet.';
+
+  @override
+  String get dataExportAllDataIncluded =>
+      'All local app data is included in the backup';
+
+  @override
+  String get dataExportHistoryTitle => 'Export history';
+
+  @override
+  String dataExportHistoryCount(int count) {
+    return '$count';
+  }
+
+  @override
+  String get dataExportShareTooltip => 'Share';
+
+  @override
+  String get dataExportEmptyHistory => 'No export files yet.';
+
+  @override
+  String get dataImportTitle => 'Import data';
+
+  @override
+  String get dataImportPickTitle => 'Select backup file';
+
+  @override
+  String get dataImportPickDescription =>
+      'Select a .fnbackup file\nexported from Fury Note';
+
+  @override
+  String get dataImportPickButton => 'Choose file';
+
+  @override
+  String get dataImportInProgress => 'Importing';
+
+  @override
+  String dataImportSuccessToast(int count) {
+    return 'Replaced data from backup. ($count records)';
+  }
+
+  @override
+  String get dataImportNoNewDataToast =>
+      'Replaced data from backup. (0 records)';
+
+  @override
+  String get dataImportFailedToast => 'Could not import the backup file.';
+
+  @override
+  String get dataImportInvalidFileToast =>
+      'Only .fnbackup files can be imported.';
+
+  @override
+  String get dataImportNoticeTitle => 'Before importing';
+
+  @override
+  String get dataImportNoticeBody =>
+      'Existing data will be deleted and replaced with the data in the backup file.';
+
+  @override
+  String get dataImportTransferTitle => 'Moving devices';
+
+  @override
+  String get dataImportTransferBody =>
+      'After installing the app on a new device, import a backup file to replace current local data with the backup data.';
+
+  @override
   String get feedDeleteTitle => 'Delete Feed';
 
   @override

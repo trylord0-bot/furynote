@@ -172,6 +172,53 @@
   "commentNotification": "Comment alerts",
   "proPlan": "PRO data export",
   "backupImport": "Import data",
+  "settingsDataExportSubtitle": "Backup file · history · sharing",
+  "dataExportTitle": "Export data",
+  "dataExportProTitle": "PRO data export",
+  "dataExportDescription": "Create one backup file with all local app data and share it by email or messenger.",
+  "dataExportOneTimePurchase": "One-time purchase · lifetime access",
+  "dataExportInProgress": "Exporting",
+  "dataExportPaymentChecking": "Checking payment",
+  "dataExportCreateButton": "Create export",
+  "dataExportPayAndCreateButton": "Pay and export",
+  "dataExportRestorePurchase": "Restore purchase",
+  "dataExportCreatedToast": "Export file created.",
+  "dataExportFailedToast": "Could not create the export file.",
+  "dataExportShareSubject": "Fury Note data backup",
+  "dataExportShareText": "This is a Fury Note data backup file.",
+  "dataExportShareFailedToast": "Could not open the share sheet.",
+  "dataExportAllDataIncluded": "All local app data is included in the backup",
+  "dataExportHistoryTitle": "Export history",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Share",
+  "dataExportEmptyHistory": "No export files yet.",
+  "dataImportTitle": "Import data",
+  "dataImportPickTitle": "Select backup file",
+  "dataImportPickDescription": "Select a .fnbackup file\nexported from Fury Note",
+  "dataImportPickButton": "Choose file",
+  "dataImportInProgress": "Importing",
+  "dataImportSuccessToast": "Replaced data from backup. ({count} records)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Replaced data from backup. (0 records)",
+  "dataImportFailedToast": "Could not import the backup file.",
+  "dataImportInvalidFileToast": "Only .fnbackup files can be imported.",
+  "dataImportNoticeTitle": "Before importing",
+  "dataImportNoticeBody": "Existing data will be deleted and replaced with the data in the backup file.",
+  "dataImportTransferTitle": "Moving devices",
+  "dataImportTransferBody": "After installing the app on a new device, import a backup file to replace current local data with the backup data.",
   "feedDeleteTitle": "Delete Feed",
   "feedDeleteContent": "Delete this feed?",
   "calmGuideTitle": "When anger rises,\nlower your body safely first",

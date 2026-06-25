@@ -425,6 +425,112 @@ class AppLocalizationsKo extends AppLocalizations {
   String get backupImport => '데이터 가져오기';
 
   @override
+  String get settingsDataExportSubtitle => '백업 파일 생성 · 히스토리 · 공유';
+
+  @override
+  String get dataExportTitle => '데이터 내보내기';
+
+  @override
+  String get dataExportProTitle => 'PRO 데이터 내보내기';
+
+  @override
+  String get dataExportDescription =>
+      '앱의 모든 로컬 데이터를 하나의 백업 파일로 만들고 메일이나 메신저로 공유할 수 있어요.';
+
+  @override
+  String get dataExportOneTimePurchase => '1회 결제 · 영구 사용';
+
+  @override
+  String get dataExportInProgress => '내보내는 중';
+
+  @override
+  String get dataExportPaymentChecking => '결제 확인 중';
+
+  @override
+  String get dataExportCreateButton => '내보내기 생성';
+
+  @override
+  String get dataExportPayAndCreateButton => '결제 후 내보내기';
+
+  @override
+  String get dataExportRestorePurchase => '구매 복원';
+
+  @override
+  String get dataExportCreatedToast => '내보내기 파일을 만들었어요.';
+
+  @override
+  String get dataExportFailedToast => '내보내기 파일을 만들지 못했어요.';
+
+  @override
+  String get dataExportShareSubject => 'Fury Note 데이터 백업';
+
+  @override
+  String get dataExportShareText => 'Fury Note 데이터 백업 파일입니다.';
+
+  @override
+  String get dataExportShareFailedToast => '공유 화면을 열지 못했어요.';
+
+  @override
+  String get dataExportAllDataIncluded => '앱의 모든 로컬 데이터가 백업에 포함돼요';
+
+  @override
+  String get dataExportHistoryTitle => '내보내기 히스토리';
+
+  @override
+  String dataExportHistoryCount(int count) {
+    return '$count개';
+  }
+
+  @override
+  String get dataExportShareTooltip => '공유';
+
+  @override
+  String get dataExportEmptyHistory => '아직 만든 내보내기 파일이 없어요.';
+
+  @override
+  String get dataImportTitle => '데이터 가져오기';
+
+  @override
+  String get dataImportPickTitle => '백업 파일 선택';
+
+  @override
+  String get dataImportPickDescription =>
+      'Fury Note에서 내보낸\n.fnbackup 파일을 선택하세요';
+
+  @override
+  String get dataImportPickButton => '파일 선택하기';
+
+  @override
+  String get dataImportInProgress => '가져오는 중';
+
+  @override
+  String dataImportSuccessToast(int count) {
+    return '백업 데이터로 교체했어요. ($count개 기록)';
+  }
+
+  @override
+  String get dataImportNoNewDataToast => '백업 데이터로 교체했어요. (0개 기록)';
+
+  @override
+  String get dataImportFailedToast => '백업 파일을 가져오지 못했어요.';
+
+  @override
+  String get dataImportInvalidFileToast => '.fnbackup 파일만 가져올 수 있어요.';
+
+  @override
+  String get dataImportNoticeTitle => '가져오기 전 주의사항';
+
+  @override
+  String get dataImportNoticeBody => '기존 데이터는 모두 삭제되고 백업 파일의 데이터로 교체돼요.';
+
+  @override
+  String get dataImportTransferTitle => '기기 이전 시';
+
+  @override
+  String get dataImportTransferBody =>
+      '새 기기에서 앱 설치 후 백업 파일을 가져오면 현재 로컬 데이터를 백업 데이터로 교체해요.';
+
+  @override
   String get feedDeleteTitle => '피드 삭제';
 
   @override

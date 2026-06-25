@@ -902,6 +902,204 @@ abstract class AppLocalizations {
   /// **'데이터 가져오기'**
   String get backupImport;
 
+  /// No description provided for @settingsDataExportSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 파일 생성 · 히스토리 · 공유'**
+  String get settingsDataExportSubtitle;
+
+  /// No description provided for @dataExportTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터 내보내기'**
+  String get dataExportTitle;
+
+  /// No description provided for @dataExportProTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'PRO 데이터 내보내기'**
+  String get dataExportProTitle;
+
+  /// No description provided for @dataExportDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱의 모든 로컬 데이터를 하나의 백업 파일로 만들고 메일이나 메신저로 공유할 수 있어요.'**
+  String get dataExportDescription;
+
+  /// No description provided for @dataExportOneTimePurchase.
+  ///
+  /// In ko, this message translates to:
+  /// **'1회 결제 · 영구 사용'**
+  String get dataExportOneTimePurchase;
+
+  /// No description provided for @dataExportInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'내보내는 중'**
+  String get dataExportInProgress;
+
+  /// No description provided for @dataExportPaymentChecking.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제 확인 중'**
+  String get dataExportPaymentChecking;
+
+  /// No description provided for @dataExportCreateButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'내보내기 생성'**
+  String get dataExportCreateButton;
+
+  /// No description provided for @dataExportPayAndCreateButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제 후 내보내기'**
+  String get dataExportPayAndCreateButton;
+
+  /// No description provided for @dataExportRestorePurchase.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 복원'**
+  String get dataExportRestorePurchase;
+
+  /// No description provided for @dataExportCreatedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'내보내기 파일을 만들었어요.'**
+  String get dataExportCreatedToast;
+
+  /// No description provided for @dataExportFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'내보내기 파일을 만들지 못했어요.'**
+  String get dataExportFailedToast;
+
+  /// No description provided for @dataExportShareSubject.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note 데이터 백업'**
+  String get dataExportShareSubject;
+
+  /// No description provided for @dataExportShareText.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note 데이터 백업 파일입니다.'**
+  String get dataExportShareText;
+
+  /// No description provided for @dataExportShareFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'공유 화면을 열지 못했어요.'**
+  String get dataExportShareFailedToast;
+
+  /// No description provided for @dataExportAllDataIncluded.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱의 모든 로컬 데이터가 백업에 포함돼요'**
+  String get dataExportAllDataIncluded;
+
+  /// No description provided for @dataExportHistoryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'내보내기 히스토리'**
+  String get dataExportHistoryTitle;
+
+  /// No description provided for @dataExportHistoryCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개'**
+  String dataExportHistoryCount(int count);
+
+  /// No description provided for @dataExportShareTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'공유'**
+  String get dataExportShareTooltip;
+
+  /// No description provided for @dataExportEmptyHistory.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 만든 내보내기 파일이 없어요.'**
+  String get dataExportEmptyHistory;
+
+  /// No description provided for @dataImportTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터 가져오기'**
+  String get dataImportTitle;
+
+  /// No description provided for @dataImportPickTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 파일 선택'**
+  String get dataImportPickTitle;
+
+  /// No description provided for @dataImportPickDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note에서 내보낸\n.fnbackup 파일을 선택하세요'**
+  String get dataImportPickDescription;
+
+  /// No description provided for @dataImportPickButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'파일 선택하기'**
+  String get dataImportPickButton;
+
+  /// No description provided for @dataImportInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'가져오는 중'**
+  String get dataImportInProgress;
+
+  /// No description provided for @dataImportSuccessToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 데이터로 교체했어요. ({count}개 기록)'**
+  String dataImportSuccessToast(int count);
+
+  /// No description provided for @dataImportNoNewDataToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 데이터로 교체했어요. (0개 기록)'**
+  String get dataImportNoNewDataToast;
+
+  /// No description provided for @dataImportFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 파일을 가져오지 못했어요.'**
+  String get dataImportFailedToast;
+
+  /// No description provided for @dataImportInvalidFileToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'.fnbackup 파일만 가져올 수 있어요.'**
+  String get dataImportInvalidFileToast;
+
+  /// No description provided for @dataImportNoticeTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'가져오기 전 주의사항'**
+  String get dataImportNoticeTitle;
+
+  /// No description provided for @dataImportNoticeBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'기존 데이터는 모두 삭제되고 백업 파일의 데이터로 교체돼요.'**
+  String get dataImportNoticeBody;
+
+  /// No description provided for @dataImportTransferTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'기기 이전 시'**
+  String get dataImportTransferTitle;
+
+  /// No description provided for @dataImportTransferBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 기기에서 앱 설치 후 백업 파일을 가져오면 현재 로컬 데이터를 백업 데이터로 교체해요.'**
+  String get dataImportTransferBody;
+
   /// No description provided for @feedDeleteTitle.
   ///
   /// In ko, this message translates to:

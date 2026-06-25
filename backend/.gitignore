@@ -11,3 +11,19 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+
+# MariaDB 바이너리 폴더 (용량 매우 큼)
+db/mariadb_portable/bin/
+db/mariadb_portable/lib/
+db/mariadb_portable/include/
+db/mariadb_portable/share/
+
+# DB 실제 데이터 폴더 (절대 커밋 금지 - 개인 데이터)
+db/mariadb_portable/data/
+
+# MariaDB 실행 중 생성되는 임시/로그 파일
+db/mariadb_portable/*.sock
+db/mariadb_portable/*.pid
+db/mariadb_portable/*.err
+db/mariadb_portable/*.log
