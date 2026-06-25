@@ -1362,11 +1362,15 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('나를 가장 화나게 하는 건 "가족"이었네요'), findsOneWidget);
+      expect(find.text('💛'), findsOneWidget);
+      expect(find.text('🫶'), findsNothing);
       expect(find.text('괜찮아요. 그럴 수도 있어요.'), findsOneWidget);
       expect(find.text('횟수'), findsOneWidget);
       expect(find.text('카테고리'), findsOneWidget);
       expect(find.text('피드 공유'), findsOneWidget);
       expect(find.text('진정 시도'), findsOneWidget);
+      expect(find.text('😡'), findsOneWidget);
+      expect(find.text('😡 매우 화남'), findsNothing);
       expect(find.text('결론'), findsOneWidget);
       expect(find.text('2회'), findsOneWidget);
       expect(find.text('40%'), findsOneWidget);

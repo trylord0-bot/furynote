@@ -521,7 +521,7 @@ class _CategorySummary {
     required this.postedCount,
     required this.calmCount,
     required this.averageLevel,
-    required this.peakLabel,
+    required this.peakEmoji,
   });
 
   final String identityKey;
@@ -533,7 +533,7 @@ class _CategorySummary {
   final int postedCount;
   final int calmCount;
   final double averageLevel;
-  final String peakLabel;
+  final String peakEmoji;
 
   factory _CategorySummary.fromRecords({
     required List<RageNote> records,
@@ -560,7 +560,7 @@ class _CategorySummary {
       postedCount: records.where((record) => record.posted).length,
       calmCount: records.where((record) => record.reminderAt != null).length,
       averageLevel: totalLevel / records.length,
-      peakLabel: '${peak.rageEmoji} ${peak.rageLabel}',
+      peakEmoji: peak.rageEmoji,
     );
   }
 }
@@ -1186,7 +1186,7 @@ class _StatsSummaryCategoryPage extends StatelessWidget {
                 _SummaryMetricChip(
                   delay: const Duration(milliseconds: 340),
                   label: l10n.statsSummaryMetricPeak,
-                  value: summary.peakLabel,
+                  value: summary.peakEmoji,
                   icon: Icons.local_fire_department_outlined,
                   color: FuryColors.deepRed,
                 ),
@@ -1681,7 +1681,7 @@ String _comfortFor(AppLocalizations l10n, String key) {
 
 String _comfortEmojiFor(String key) {
   return switch (key) {
-    'family' => '🫶',
+    'family' => '💛',
     'romance' => '🌙',
     'work' => '☕',
     'people' => '🤝',
