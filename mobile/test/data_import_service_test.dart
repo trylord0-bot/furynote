@@ -102,6 +102,7 @@ void main() {
         AppProfileController.instance.displayName(fallback: '화난 호랑이'),
         '복원 닉네임',
       );
+      expect(AppProfileController.instance.profileCode, '#4827');
       expect(
         AppProfileController.instance.avatarBytes,
         Uint8List.fromList([7, 8, 9]),

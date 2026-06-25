@@ -46,7 +46,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   bool get _canSave {
     final text = _nickController.text.trim();
-    return text.length >= 2 && text.length <= 12;
+    return text.length >= 2 && text.length <= 12 && !text.contains('#');
   }
 
   void _onNickChanged(String value) {
@@ -55,6 +55,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       if (text.isEmpty) {
         _hasError = true;
         _errorMsg = '닉네임을 입력해주세요';
+      } else if (text.contains('#')) {
+        _hasError = true;
+        _errorMsg = '고유번호는 자동으로 붙어요';
       } else if (text.length < 2) {
         _hasError = true;
         _errorMsg = '2자 이상 입력해주세요';
@@ -302,45 +305,50 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               ],
             ),
             const SizedBox(height: 28),
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: FuryColors.panel,
-                border: Border.all(color: FuryColors.border),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Row(
-                children: [
-                  Text('🔑', style: TextStyle(fontSize: 16)),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '고유번호 (변경 불가)',
-                          style: TextStyle(
-                            color: FuryColors.faint,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          '#4827',
-                          style: TextStyle(
-                            color: FuryColors.muted,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ],
-                    ),
+            AnimatedBuilder(
+              animation: AppProfileController.instance,
+              builder: (context, _) {
+                return Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: FuryColors.panel,
+                    border: Border.all(color: FuryColors.border),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  Text('🔒', style: TextStyle(fontSize: 13)),
-                ],
-              ),
+                  child: Row(
+                    children: [
+                      const Text('🔑', style: TextStyle(fontSize: 16)),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              '고유번호 (변경 불가)',
+                              style: TextStyle(
+                                color: FuryColors.faint,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              AppProfileController.instance.profileCode,
+                              style: const TextStyle(
+                                color: FuryColors.muted,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Text('🔒', style: TextStyle(fontSize: 13)),
+                    ],
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 32),
             SizedBox(

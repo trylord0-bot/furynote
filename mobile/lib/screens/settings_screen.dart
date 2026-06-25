@@ -198,7 +198,7 @@ class _SettingsProfileCard extends StatelessWidget {
                       animation: AppProfileController.instance,
                       builder: (context, _) {
                         return Text(
-                          AppProfileController.instance.displayName(
+                          AppProfileController.instance.displayNameWithCode(
                             fallback: l10n.profileName,
                           ),
                           maxLines: 1,

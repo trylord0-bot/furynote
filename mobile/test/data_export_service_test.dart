@@ -60,6 +60,8 @@ void main() {
 
     expect(file.existsSync(), isTrue);
     expect(entry.fileName, 'furynote_backup_20260625_103000.fnbackup');
+    expect(decoded['data']['profile']['display_name'], isNot(contains('#')));
+    expect(decoded['data']['profile']['profile_code'], matches(r'^#\d{4}$'));
     expect(decoded['data']['notes'], hasLength(1));
     expect(decoded['data']['notes'].single['body'], '내보낼 기록');
     expect(decoded['data']['notes'].single['audio_file_name'], 'rage.m4a');

@@ -863,7 +863,7 @@ class FuryDrawer extends StatelessWidget {
                         builder: (context, _) {
                           return Text(
                             key: const ValueKey('drawer-profile-name'),
-                            AppProfileController.instance.displayName(
+                            AppProfileController.instance.displayNameWithCode(
                               fallback: l10n.profileName,
                             ),
                             maxLines: 1,

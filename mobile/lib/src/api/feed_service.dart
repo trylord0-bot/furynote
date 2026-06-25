@@ -6,6 +6,7 @@ class FeedPost {
   const FeedPost({
     required this.postId,
     required this.nickname,
+    this.profileCode,
     required this.rageLevel,
     required this.category,
     this.text,
@@ -19,6 +20,7 @@ class FeedPost {
 
   final String postId;
   final String nickname;
+  final String? profileCode;
   final int rageLevel;
   final String category;
   final String? text;
@@ -40,6 +42,7 @@ class FeedPost {
     return FeedPost(
       postId: json['post_id'] as String,
       nickname: json['nickname'] as String,
+      profileCode: json['profile_code'] as String?,
       rageLevel: json['rage_level'] as int,
       category: json['category'] as String,
       text: json['text'] as String?,
@@ -56,6 +59,7 @@ class FeedPost {
     return FeedPost(
       postId: postId,
       nickname: nickname,
+      profileCode: profileCode,
       rageLevel: rageLevel,
       category: category,
       text: text,
@@ -73,6 +77,7 @@ class FeedComment {
   const FeedComment({
     required this.commentId,
     required this.nickname,
+    this.profileCode,
     required this.text,
     required this.isMine,
     required this.createdAt,
@@ -81,6 +86,7 @@ class FeedComment {
 
   final String commentId;
   final String nickname;
+  final String? profileCode;
   final String text;
   final bool isMine;
   final DateTime createdAt;
@@ -97,6 +103,7 @@ class FeedComment {
     return FeedComment(
       commentId: json['comment_id'] as String,
       nickname: json['nickname'] as String,
+      profileCode: json['profile_code'] as String?,
       text: json['text'] as String,
       isMine: json['is_mine'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String).toLocal(),
@@ -134,12 +141,15 @@ class FeedService {
 
   Future<String> createPost({
     required String nickname,
+    String? profileCode,
     required int rageLevel,
     required String category,
     String? text,
   }) async {
     final body = <String, dynamic>{
       'nickname': nickname,
+      if (profileCode != null && profileCode.isNotEmpty)
+        'profile_code': profileCode,
       'rage_level': rageLevel,
       'category': category,
       if (text != null && text.isNotEmpty) 'text': text,
@@ -176,9 +186,15 @@ class FeedService {
   Future<FeedComment> createComment({
     required String postId,
     required String nickname,
+    String? profileCode,
     required String text,
   }) async {
-    final body = <String, dynamic>{'nickname': nickname, 'text': text};
+    final body = <String, dynamic>{
+      'nickname': nickname,
+      if (profileCode != null && profileCode.isNotEmpty)
+        'profile_code': profileCode,
+      'text': text,
+    };
     final data =
         await ApiClient.instance.post('/v1/posts/$postId/comments', body)
             as Map<String, dynamic>;

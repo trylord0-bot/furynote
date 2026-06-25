@@ -12,6 +12,7 @@ Future<void> showCommentSheet(
   required String postId,
   required int commentCount,
   String? postNickname,
+  String? postProfileCode,
   List<int>? postAvatarBytes,
   String? postText,
   int? postRageLevel,
@@ -31,6 +32,7 @@ Future<void> showCommentSheet(
       postId: postId,
       initialCommentCount: commentCount,
       postNickname: postNickname,
+      postProfileCode: postProfileCode,
       postAvatarBytes: postAvatarBytes,
       postText: postText,
       postRageLevel: postRageLevel,
@@ -47,6 +49,7 @@ class CommentSheet extends StatefulWidget {
     required this.initialCommentCount,
     required this.onCountChanged,
     this.postNickname,
+    this.postProfileCode,
     this.postAvatarBytes,
     this.postText,
     this.postRageLevel,
@@ -59,6 +62,7 @@ class CommentSheet extends StatefulWidget {
   final int initialCommentCount;
   final void Function(int) onCountChanged;
   final String? postNickname;
+  final String? postProfileCode;
   final List<int>? postAvatarBytes;
   final String? postText;
   final int? postRageLevel;
@@ -114,11 +118,13 @@ class _CommentSheetState extends State<CommentSheet> {
     final nickname = AppProfileController.instance.displayName(
       fallback: l10n.profileName,
     );
+    final profileCode = AppProfileController.instance.profileCode;
     setState(() => _sending = true);
     try {
       final comment = await _feedService.createComment(
         postId: widget.postId,
         nickname: nickname,
+        profileCode: profileCode,
         text: text,
       );
       if (!mounted) return;
@@ -256,6 +262,7 @@ class _CommentSheetState extends State<CommentSheet> {
           if (showPostSummary) ...[
             _SourcePostSummary(
               nickname: widget.postNickname,
+              profileCode: widget.postProfileCode,
               avatarBytes: widget.postAvatarBytes,
               text: widget.postText ?? '',
               emoji: rageEmoji(postRageLevel),
@@ -388,6 +395,7 @@ class _CommentSheetState extends State<CommentSheet> {
 class _SourcePostSummary extends StatelessWidget {
   const _SourcePostSummary({
     required this.nickname,
+    required this.profileCode,
     required this.avatarBytes,
     required this.text,
     required this.emoji,
@@ -395,6 +403,7 @@ class _SourcePostSummary extends StatelessWidget {
   });
 
   final String? nickname;
+  final String? profileCode;
   final List<int>? avatarBytes;
   final String text;
   final String emoji;
@@ -429,9 +438,11 @@ class _SourcePostSummary extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    nickname?.trim().isNotEmpty == true
-                        ? nickname!.trim()
-                        : AppLocalizations.of(context).profileName,
+                    profileDisplayName(
+                      nickname: nickname ?? '',
+                      profileCode: profileCode,
+                      fallback: profileNameFallback(context),
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -541,7 +552,11 @@ class _CommentItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          comment.nickname,
+                          profileDisplayName(
+                            nickname: comment.nickname,
+                            profileCode: comment.profileCode,
+                            fallback: profileNameFallback(context),
+                          ),
                           style: const TextStyle(
                             color: FuryColors.muted,
                             fontSize: 11,

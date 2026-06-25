@@ -88,7 +88,7 @@ void main() {
   });
 
   test('profile export includes saved nickname and avatar', () async {
-    SharedPreferences.setMockInitialValues({});
+    SharedPreferences.setMockInitialValues({'profile.profile_code': '#4827'});
     AppProfileController.instance.resetForTesting();
     await AppProfileController.instance.load();
     await AppProfileController.instance.updateDisplayName('불꽃 고양이');
@@ -117,6 +117,7 @@ void main() {
     final exportedProfile = decoded['data']['profile'] as Map<String, dynamic>;
 
     expect(exportedProfile['display_name'], '불꽃 고양이');
+    expect(exportedProfile['profile_code'], '#4827');
     expect(exportedProfile['profile_number'], '#4827');
     expect(exportedProfile['avatar_base64'], isNotEmpty);
 

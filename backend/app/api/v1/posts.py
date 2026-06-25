@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import datetime
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException, Query
@@ -15,6 +16,8 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+_PROFILE_CODE_RE = re.compile(r"\s*(#\d{4})$")
+
 
 def _policy_error(result: PolicyResult) -> HTTPException:
     status_code = 500 if result.is_internal_error else 400
@@ -22,6 +25,30 @@ def _policy_error(result: PolicyResult) -> HTTPException:
         status_code=status_code,
         detail=error(result.code or "INVALID_REQUEST", result.message or "Blocked"),
     )
+
+
+def _author_snapshot(
+    nickname: str | None,
+    profile_code: str | None,
+    device_id: str,
+    store: DbStore,
+) -> tuple[str, str | None]:
+    resolved_nickname = (nickname or "").strip()
+    resolved_profile_code = profile_code
+    match = _PROFILE_CODE_RE.search(resolved_nickname)
+    if match is not None:
+        resolved_profile_code = resolved_profile_code or match.group(1)
+        resolved_nickname = _PROFILE_CODE_RE.sub("", resolved_nickname).strip()
+
+    if not resolved_nickname:
+        nickname_for = getattr(store, "nickname_for", None)
+        resolved_nickname = nickname_for(device_id) if nickname_for else "화난 호랑이"
+
+    if resolved_profile_code is None:
+        profile_code_for = getattr(store, "profile_code_for", None)
+        resolved_profile_code = profile_code_for(device_id) if profile_code_for else None
+
+    return resolved_nickname, resolved_profile_code
 
 
 @router.post("", status_code=201)
@@ -48,7 +75,20 @@ def create_post(
         logger.info("포스팅 거절 — code=%s device_id=%s", rate_result.code, x_device_id)
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
 
-    post = store.create_post(x_device_id, payload.nickname, payload.rage_level, payload.category, sanitized_text)
+    nickname, profile_code = _author_snapshot(
+        payload.nickname,
+        payload.profile_code,
+        x_device_id,
+        store,
+    )
+    post = store.create_post(
+        x_device_id,
+        nickname,
+        profile_code,
+        payload.rage_level,
+        payload.category,
+        sanitized_text,
+    )
     logger.info("포스팅 등록 완료 — post_id=%s device_id=%s", post["post_id"], x_device_id)
     return ok({"post_id": post["post_id"], "created_at": post["created_at"].isoformat()})
 
@@ -116,7 +156,19 @@ def create_comment(
         logger.info("댓글 거절 — code=%s device_id=%s", rate_result.code, x_device_id)
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
 
-    comment = store.create_comment(post_id, x_device_id, payload.nickname, sanitized_text)
+    nickname, profile_code = _author_snapshot(
+        payload.nickname,
+        payload.profile_code,
+        x_device_id,
+        store,
+    )
+    comment = store.create_comment(
+        post_id,
+        x_device_id,
+        nickname,
+        profile_code,
+        sanitized_text,
+    )
     if comment is None:
         raise HTTPException(status_code=404, detail=error("POST_NOT_FOUND", "포스팅을 찾을 수 없어요."))
 
@@ -127,7 +179,7 @@ def create_comment(
             push_service.send_comment_notification,
             device_id=owner_device_id,
             fcm_token=owner_device["fcm_token"],
-            nickname=payload.nickname,
+            nickname=nickname,
             text=sanitized_text,
             post_id=post_id,
         )

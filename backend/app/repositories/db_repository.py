@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime, timedelta
 from uuid import uuid4
 
@@ -94,6 +95,14 @@ class DbStore:
             select(DeviceToken.avatar_data).where(DeviceToken.device_id == device_id)
         ).scalar_one_or_none()
 
+    def nickname_for(self, device_id: str) -> str:
+        return "화난 호랑이"
+
+    def profile_code_for(self, device_id: str) -> str:
+        digest = hashlib.sha256(device_id.encode("utf-8")).hexdigest()
+        number = int(digest[:8], 16) % 10000
+        return f"#{number:04d}"
+
     # ── Posts ─────────────────────────────────────────────────────────────────
 
     def recent_post_attempts(self, device_id: str) -> list[datetime]:
@@ -106,11 +115,20 @@ class DbStore:
         ).all()
         return [row[0] for row in rows]
 
-    def create_post(self, device_id: str, nickname: str, rage_level: int, category: str, text: str | None) -> dict:
+    def create_post(
+        self,
+        device_id: str,
+        nickname: str,
+        profile_code: str | None,
+        rage_level: int,
+        category: str,
+        text: str | None,
+    ) -> dict:
         post = Post(
             post_id=str(uuid4()),
             device_id=device_id,
             nickname=nickname,
+            profile_code=profile_code,
             avatar_data=self._avatar_for_device(device_id),
             rage_level=rage_level,
             category=category,
@@ -218,7 +236,14 @@ class DbStore:
         ).all()
         return [row[0] for row in rows]
 
-    def create_comment(self, post_id: str, device_id: str, nickname: str, text: str) -> dict | None:
+    def create_comment(
+        self,
+        post_id: str,
+        device_id: str,
+        nickname: str,
+        profile_code: str | None,
+        text: str,
+    ) -> dict | None:
         post = self.session.execute(
             select(Post).where(Post.post_id == post_id).where(Post.deleted_at.is_(None))
         ).scalar_one_or_none()
@@ -231,6 +256,7 @@ class DbStore:
             post_id=post_id,
             device_id=device_id,
             nickname=nickname,
+            profile_code=profile_code,
             avatar_data=self._avatar_for_device(device_id),
             text=text,
         )
@@ -243,6 +269,7 @@ class DbStore:
             "post_id": comment.post_id,
             "device_id": comment.device_id,
             "nickname": comment.nickname,
+            "profile_code": comment.profile_code,
             "text": comment.text,
             "created_at": comment.created_at,
             "deleted_at": comment.deleted_at,
@@ -264,6 +291,7 @@ class DbStore:
                 "comment_id": comment.comment_id,
                 "device_id": comment.device_id,
                 "nickname": comment.nickname,
+                "profile_code": comment.profile_code,
                 "text": comment.text,
                 "created_at": comment.created_at,
                 "avatar_base64": comment.avatar_data,
@@ -300,6 +328,7 @@ class DbStore:
         return {
             "post_id": post.post_id,
             "nickname": post.nickname,
+            "profile_code": post.profile_code,
             "rage_level": post.rage_level,
             "category": post.category,
             "text": post.text,
@@ -315,6 +344,7 @@ class DbStore:
         return {
             "comment_id": comment["comment_id"],
             "nickname": comment["nickname"],
+            "profile_code": comment.get("profile_code"),
             "text": comment["text"],
             "is_mine": comment["device_id"] == viewer_device_id,
             "created_at": comment["created_at"].isoformat(),

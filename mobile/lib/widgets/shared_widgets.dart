@@ -13,6 +13,14 @@ String relativeTime(DateTime value) {
   return '${diff.inDays}일 전';
 }
 
+String profileNameFallback(BuildContext context) {
+  return Localizations.of<AppLocalizations>(
+        context,
+        AppLocalizations,
+      )?.profileName ??
+      '화난 호랑이';
+}
+
 class FurySnackBar {
   const FurySnackBar._();
 
@@ -61,6 +69,7 @@ class FuryPostCard extends StatelessWidget {
     required this.nickname,
     required this.category,
     required this.text,
+    this.profileCode,
     this.avatarBytes,
     this.showAuthor = true,
     this.showProfileAvatar = false,
@@ -76,6 +85,7 @@ class FuryPostCard extends StatelessWidget {
 
   final String emoji;
   final String nickname;
+  final String? profileCode;
   final String category;
   final String text;
   final List<int>? avatarBytes;
@@ -91,6 +101,11 @@ class FuryPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authorName = profileDisplayName(
+      nickname: nickname,
+      profileCode: profileCode,
+      fallback: profileNameFallback(context),
+    );
     final card = Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -129,7 +144,7 @@ class FuryPostCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    nickname,
+                    authorName,
                     style: const TextStyle(
                       color: FuryColors.muted,
                       fontSize: 11,

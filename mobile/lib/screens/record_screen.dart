@@ -298,6 +298,7 @@ class _RecordScreenState extends State<RecordScreen> {
         nickname: AppProfileController.instance.displayName(
           fallback: l10n.profileName,
         ),
+        profileCode: AppProfileController.instance.profileCode,
         rageLevel: rage.level,
         category: categoryValue,
         text: text.isEmpty ? null : text,
@@ -662,6 +663,8 @@ class _RecordScreenState extends State<RecordScreen> {
                             nickname: AppProfileController.instance.displayName(
                               fallback: l10n.profileName,
                             ),
+                            profileCode:
+                                AppProfileController.instance.profileCode,
                             category: '${category.emoji} ${category.label}',
                             text: _textController.text.trim(),
                             showProfileAvatar: true,

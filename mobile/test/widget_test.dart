@@ -1620,6 +1620,7 @@ class _FakeFeedService implements FeedService {
   @override
   Future<String> createPost({
     required String nickname,
+    String? profileCode,
     required int rageLevel,
     required String category,
     String? text,
@@ -1631,12 +1632,14 @@ class _FakeFeedService implements FeedService {
   Future<FeedComment> createComment({
     required String postId,
     required String nickname,
+    String? profileCode,
     required String text,
   }) async {
     if (createCommentError case final error?) throw error;
     final comment = FeedComment(
       commentId: 'new-comment',
       nickname: nickname,
+      profileCode: profileCode,
       text: text,
       isMine: true,
       createdAt: DateTime.now(),

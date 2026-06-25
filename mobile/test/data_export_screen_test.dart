@@ -14,9 +14,9 @@ void main() {
     expect(
       exportProfileDisplayName({
         'display_name': '화난 호랑이',
-        'profile_number': '#4827',
+        'profile_code': '#4827',
       }),
-      '화난 호랑이 #4827',
+      '화난 호랑이#4827',
     );
   });
 }

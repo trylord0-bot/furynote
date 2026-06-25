@@ -93,6 +93,7 @@ def sqlite_store() -> DbStore:
                   post_id VARCHAR(36) UNIQUE NOT NULL,
                   device_id VARCHAR(128) NOT NULL,
                   nickname VARCHAR(64) NOT NULL,
+                  profile_code VARCHAR(5) NULL,
                   rage_level INTEGER NOT NULL,
                   category VARCHAR(32) NOT NULL,
                   text TEXT NULL,
@@ -127,6 +128,7 @@ def sqlite_store() -> DbStore:
                   post_id VARCHAR(36) NOT NULL,
                   device_id VARCHAR(128) NOT NULL,
                   nickname VARCHAR(64) NOT NULL,
+                  profile_code VARCHAR(5) NULL,
                   avatar_data TEXT NULL,
                   text VARCHAR(200) NOT NULL,
                   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -232,20 +234,21 @@ def test_post_and_comment_creation_replace_file_based_profanity(monkeypatch) -> 
             return []
 
         def create_post(self, *args) -> dict:
-            self.created_post_text = args[4]
+            self.created_post_text = args[5]
             return {"post_id": "post-1", "created_at": now}
 
         def recent_comment_attempts(self, device_id: str) -> list[datetime]:
             return []
 
         def create_comment(self, *args) -> dict:
-            self.created_comment_text = args[3]
+            self.created_comment_text = args[4]
             return {
                 "comment_id": "comment-1",
                 "post_id": "post-1",
                 "device_id": "device-1",
                 "nickname": "테스터",
-                "text": args[3],
+                "profile_code": "#4827",
+                "text": args[4],
                 "created_at": now,
                 "post_owner_device_id": "device-1",
             }
@@ -327,6 +330,7 @@ def test_comment_serialization_includes_author_avatar() -> None:
             "comment_id": "comment-1",
             "device_id": "commenter",
             "nickname": "친구",
+            "profile_code": "#1111",
             "text": "아바타가 있는 댓글",
             "created_at": now,
             "avatar_base64": "encoded-avatar",
@@ -335,28 +339,30 @@ def test_comment_serialization_includes_author_avatar() -> None:
     )
 
     assert serialized["avatar_base64"] == "encoded-avatar"
+    assert serialized["profile_code"] == "#1111"
 
 
 def test_post_avatar_is_snapshotted_when_post_is_created() -> None:
     store = sqlite_store()
     store.update_avatar("device-1", "avatar-at-post-time")
 
-    store.create_post("device-1", "화난 호랑이", 4, "work", "회의가 너무 늦게 잡혔다")
+    store.create_post("device-1", "화난 호랑이", "#4827", 4, "work", "회의가 너무 늦게 잡혔다")
     store.update_avatar("device-1", "new-current-avatar")
 
     posts = store.list_posts_page("viewer", size=10)["posts"]
 
     assert posts[0]["nickname"] == "화난 호랑이"
+    assert posts[0]["profile_code"] == "#4827"
     assert posts[0]["avatar_base64"] == "avatar-at-post-time"
 
 
 def test_comment_avatar_is_snapshotted_when_comment_is_created() -> None:
     store = sqlite_store()
-    store.create_post("owner", "작성자", 3, "people", "원글")
+    store.create_post("owner", "작성자", "#1234", 3, "people", "원글")
     post_id = store.list_posts_page("viewer", size=10)["posts"][0]["post_id"]
     store.update_avatar("commenter", "avatar-at-comment-time")
 
-    comment = store.create_comment(post_id, "commenter", "댓글러", "나도 그랬어요")
+    comment = store.create_comment(post_id, "commenter", "댓글러", "#5678", "나도 그랬어요")
     store.update_avatar("commenter", "new-current-avatar")
 
     comments = store.list_comments(post_id, "viewer", size=10)
@@ -364,6 +370,7 @@ def test_comment_avatar_is_snapshotted_when_comment_is_created() -> None:
     assert comment is not None
     assert comment["avatar_base64"] == "avatar-at-comment-time"
     assert comments[0]["nickname"] == "댓글러"
+    assert comments[0]["profile_code"] == "#5678"
     assert comments[0]["avatar_base64"] == "avatar-at-comment-time"
 
 

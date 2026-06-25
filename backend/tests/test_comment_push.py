@@ -3,17 +3,29 @@ import logging
 from starlette.background import BackgroundTasks
 
 from app.api.v1.posts import create_comment
+from app.core.config import build_settings
 from app.schemas.posts import CommentCreateRequest
 from app.services import push_service
 
 
 class _FakeStore:
-    def create_comment(self, post_id: str, device_id: str, nickname: str, text: str) -> dict:
+    def recent_comment_attempts(self, device_id: str) -> list:
+        return []
+
+    def create_comment(
+        self,
+        post_id: str,
+        device_id: str,
+        nickname: str,
+        profile_code: str | None,
+        text: str,
+    ) -> dict:
         return {
             "comment_id": "comment-1",
             "post_id": post_id,
             "device_id": device_id,
             "nickname": nickname,
+            "profile_code": profile_code,
             "text": text,
             "created_at": _CreatedAt(),
             "post_owner_device_id": device_id,
@@ -30,6 +42,7 @@ class _FakeStore:
         return {
             "comment_id": comment["comment_id"],
             "nickname": comment["nickname"],
+            "profile_code": comment.get("profile_code"),
             "text": comment["text"],
             "is_mine": comment["device_id"] == viewer_device_id,
             "created_at": comment["created_at"].isoformat(),
@@ -41,7 +54,9 @@ class _CreatedAt:
         return "2026-06-18T00:00:00"
 
 
-def test_author_comment_enqueues_push_notification_to_author() -> None:
+def test_author_comment_enqueues_push_notification_to_author(monkeypatch) -> None:
+    settings = build_settings(env={"OPENAI_API_KEY": ""})
+    monkeypatch.setattr("app.api.v1.posts.get_settings", lambda: settings)
     tasks = BackgroundTasks()
 
     response = create_comment(

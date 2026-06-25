@@ -12,12 +12,15 @@ import '../../widgets/shared_widgets.dart';
 
 String exportProfileDisplayName(Map<String, Object?> profile) {
   final displayName = (profile['display_name'] as String?)?.trim() ?? '';
-  final profileNumber = (profile['profile_number'] as String?)?.trim() ?? '';
-  if (displayName.isEmpty) return profileNumber;
-  if (profileNumber.isEmpty || displayName.endsWith(profileNumber)) {
+  final profileCode =
+      (profile['profile_code'] as String?)?.trim() ??
+      (profile['profile_number'] as String?)?.trim() ??
+      '';
+  if (displayName.isEmpty) return profileCode;
+  if (profileCode.isEmpty || displayName.endsWith(profileCode)) {
     return displayName;
   }
-  return '$displayName $profileNumber';
+  return '$displayName$profileCode';
 }
 
 class DataExportScreen extends StatefulWidget {

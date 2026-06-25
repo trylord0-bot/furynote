@@ -262,6 +262,7 @@ class _FeedTabViewState extends State<_FeedTabView>
       postId: postId,
       commentCount: commentCount,
       postNickname: post?.nickname,
+      postProfileCode: post?.profileCode,
       postAvatarBytes: post?.avatarBytes,
       postText: post?.text,
       postRageLevel: post?.rageLevel,
@@ -439,6 +440,7 @@ class _FeedPostItem extends StatelessWidget {
         FuryPostCard(
           emoji: rageEmoji(post.rageLevel),
           nickname: post.nickname,
+          profileCode: post.profileCode,
           category: categoryDisplay(post.category),
           text: post.text ?? '',
           avatarBytes: post.avatarBytes,

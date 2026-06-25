@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -73,13 +74,22 @@ class MemoryStore:
         device["avatar_data"] = avatar_data
         device["updated_at"] = datetime.utcnow()
 
-    def create_post(self, device_id: str, nickname: str, rage_level: int, category: str, text: str | None) -> dict:
+    def create_post(
+        self,
+        device_id: str,
+        nickname: str,
+        profile_code: str | None,
+        rage_level: int,
+        category: str,
+        text: str | None,
+    ) -> dict:
         now = datetime.utcnow()
         post_id = str(uuid4())
         post = {
             "post_id": post_id,
             "device_id": device_id,
             "nickname": nickname,
+            "profile_code": profile_code,
             "avatar_base64": self.devices.get(device_id, {}).get("avatar_data"),
             "rage_level": rage_level,
             "category": category,
@@ -96,8 +106,16 @@ class MemoryStore:
     def recent_post_attempts(self, device_id: str) -> list[datetime]:
         return self.post_attempts.get(device_id, [])
 
-    def list_posts_page(self, device_id: str, size: int, cursor: str | None = None) -> dict:
+    def list_posts_page(
+        self,
+        device_id: str,
+        size: int,
+        cursor: str | None = None,
+        mine_only: bool = False,
+    ) -> dict:
         visible = [post for post in self.posts.values() if post["deleted_at"] is None]
+        if mine_only:
+            visible = [post for post in visible if post["device_id"] == device_id]
         visible.sort(key=lambda post: post["created_at"], reverse=True)
         offset = int(cursor) if cursor else 0
         page_items = visible[offset : offset + size]
@@ -138,7 +156,14 @@ class MemoryStore:
             is_liked = True
         return {"is_liked": is_liked, "like_count": post["like_count"]}
 
-    def create_comment(self, post_id: str, device_id: str, nickname: str, text: str) -> dict | None:
+    def create_comment(
+        self,
+        post_id: str,
+        device_id: str,
+        nickname: str,
+        profile_code: str | None,
+        text: str,
+    ) -> dict | None:
         post = self.posts.get(post_id)
         if not post or post["deleted_at"] is not None:
             return None
@@ -148,6 +173,7 @@ class MemoryStore:
             "post_id": post_id,
             "device_id": device_id,
             "nickname": nickname,
+            "profile_code": profile_code,
             "avatar_base64": self.devices.get(device_id, {}).get("avatar_data"),
             "text": text,
             "created_at": datetime.utcnow(),
@@ -192,13 +218,18 @@ class MemoryStore:
         return self.purchases.get(device_id)
 
     def nickname_for(self, device_id: str) -> str:
-        number = abs(hash(device_id)) % 10000
-        return f"화난 호랑이#{number:04d}"
+        return "화난 호랑이"
+
+    def profile_code_for(self, device_id: str) -> str:
+        digest = hashlib.sha256(device_id.encode("utf-8")).hexdigest()
+        number = int(digest[:8], 16) % 10000
+        return f"#{number:04d}"
 
     def serialize_post(self, post: dict, viewer_device_id: str) -> dict:
         return {
             "post_id": post["post_id"],
             "nickname": post["nickname"],
+            "profile_code": post.get("profile_code"),
             "rage_level": post["rage_level"],
             "category": post["category"],
             "text": post["text"],
@@ -214,6 +245,7 @@ class MemoryStore:
         return {
             "comment_id": comment["comment_id"],
             "nickname": comment["nickname"],
+            "profile_code": comment.get("profile_code"),
             "text": comment["text"],
             "is_mine": comment["device_id"] == viewer_device_id,
             "created_at": comment["created_at"].isoformat(),
