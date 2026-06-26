@@ -23,6 +23,18 @@ class EnvConfig {
     return 'env/local.json';
   }
 
-  String get apiBaseUrl => _values['API_BASE_URL'] ?? '';
+  String get apiBaseUrl => applyApiPort(_values['API_BASE_URL'] ?? '', apiPort);
+  String get apiPort => _values['API_PORT'] ?? '';
   String get hmacSecret => _values['HMAC_SECRET'] ?? '';
+
+  @visibleForTesting
+  static String applyApiPort(String baseUrl, String apiPort) {
+    if (baseUrl.isEmpty || apiPort.isEmpty) return baseUrl;
+
+    final uri = Uri.tryParse(baseUrl);
+    final port = int.tryParse(apiPort);
+    if (uri == null || !uri.hasAuthority || port == null) return baseUrl;
+
+    return uri.replace(port: port).toString();
+  }
 }

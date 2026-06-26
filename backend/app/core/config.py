@@ -34,6 +34,7 @@ LOG_DIR_ENV = "LOG_DIR"
 class Settings:
     app_env: str
     app_name: str
+    api_port: int
     api_v1_prefix: str
     db_host: str
     db_port: int
@@ -85,6 +86,7 @@ def build_settings(env: dict[str, str] | None = None, dotenv_path: Path | None =
     return Settings(
         app_env=app_env,
         app_name=merged.get("APP_NAME", "Fury Note API"),
+        api_port=int(merged.get("API_PORT", "8000")),
         api_v1_prefix=merged.get("API_V1_PREFIX", "/v1"),
         db_host=merged.get("DB_HOST", "127.0.0.1"),
         db_port=int(merged.get("DB_PORT", default_port)),

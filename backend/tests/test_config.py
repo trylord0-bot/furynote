@@ -3,6 +3,21 @@ from pathlib import Path
 from app.core.config import build_settings
 
 
+def test_api_port_defaults_to_8000() -> None:
+    settings = build_settings({})
+
+    assert settings.api_port == 8000
+
+
+def test_dotenv_can_override_api_port(tmp_path: Path) -> None:
+    dotenv = tmp_path / ".env"
+    dotenv.write_text("API_PORT=8010\n", encoding="utf-8")
+
+    settings = build_settings(dotenv_path=dotenv)
+
+    assert settings.api_port == 8010
+
+
 def test_local_env_defaults_to_3303() -> None:
     settings = build_settings({"APP_ENV": "local"})
 

@@ -12,9 +12,11 @@ import 'env_config.dart';
 String get apiBaseUrl {
   final envUrl = EnvConfig.instance.apiBaseUrl;
   if (envUrl.isNotEmpty) return envUrl;
-  if (kIsWeb) return 'http://localhost:8000';
-  if (Platform.isAndroid) return 'http://10.0.2.2:8000';
-  return 'http://127.0.0.1:8000';
+  final apiPort = EnvConfig.instance.apiPort;
+  final port = apiPort.isNotEmpty ? apiPort : '8000';
+  if (kIsWeb) return 'http://localhost:$port';
+  if (Platform.isAndroid) return 'http://10.0.2.2:$port';
+  return 'http://127.0.0.1:$port';
 }
 
 class ApiException implements Exception {
