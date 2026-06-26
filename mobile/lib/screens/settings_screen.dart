@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../main.dart';
+import '../src/api/device_service.dart';
+import '../src/notifications/notification_settings.dart';
+import '../src/notifications/reminder_notification_service.dart';
 import '../src/profile/app_profile.dart';
 import '../widgets/shared_widgets.dart';
 import 'settings/profile_edit_screen.dart';
@@ -11,16 +14,70 @@ import 'settings/privacy_screen.dart';
 
 const _feedbackEmail = 'lunlu.co.kr@gmail.com';
 
+typedef CommentNotificationUpdater =
+    Future<void> Function({required bool notifyComment});
+typedef ReminderNotificationCanceler = Future<void> Function();
+
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  const SettingsScreen({
+    this.notificationSettingsStore,
+    this.updateCommentNotification,
+    this.cancelReminderNotifications,
+    super.key,
+  });
+
+  final NotificationSettingsStore? notificationSettingsStore;
+  final CommentNotificationUpdater? updateCommentNotification;
+  final ReminderNotificationCanceler? cancelReminderNotifications;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  late final NotificationSettingsStore _notificationSettingsStore;
   bool _remindNotification = true;
   bool _commentNotification = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationSettingsStore =
+        widget.notificationSettingsStore ?? NotificationSettingsStore.instance;
+    _loadNotificationSettings();
+  }
+
+  Future<void> _loadNotificationSettings() async {
+    final settings = await _notificationSettingsStore.load();
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _remindNotification = settings.reminderEnabled;
+      _commentNotification = settings.commentEnabled;
+    });
+  }
+
+  Future<void> _setReminderNotification(bool enabled) async {
+    setState(() => _remindNotification = enabled);
+    await _notificationSettingsStore.setReminderEnabled(enabled);
+    if (!enabled) {
+      final cancelNotifications =
+          widget.cancelReminderNotifications ??
+          LocalReminderScheduler.instance.cancelAllRageReminders;
+      await cancelNotifications();
+    }
+  }
+
+  Future<void> _setCommentNotification(bool enabled) async {
+    setState(() => _commentNotification = enabled);
+    await _notificationSettingsStore.setCommentEnabled(enabled);
+    final updateNotification =
+        widget.updateCommentNotification ??
+        DeviceService.instance.updateNotification;
+    await updateNotification(notifyComment: enabled);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 subtitle: '설정한 시간에 분노 노트 알림',
                 trailing: Switch(
                   value: _remindNotification,
-                  onChanged: (v) => setState(() => _remindNotification = v),
+                  onChanged: _setReminderNotification,
                   activeThumbColor: FuryColors.red,
                 ),
               ),
@@ -69,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 subtitle: '내 포스팅에 댓글이 달리면 알림',
                 trailing: Switch(
                   value: _commentNotification,
-                  onChanged: (v) => setState(() => _commentNotification = v),
+                  onChanged: _setCommentNotification,
                   activeThumbColor: FuryColors.red,
                 ),
               ),

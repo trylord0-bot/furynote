@@ -9,6 +9,9 @@ from app.services import push_service
 
 
 class _FakeStore:
+    def __init__(self, post_owner_device_id: str = "author-device") -> None:
+        self.post_owner_device_id = post_owner_device_id
+
     def recent_comment_attempts(self, device_id: str) -> list:
         return []
 
@@ -28,7 +31,7 @@ class _FakeStore:
             "profile_code": profile_code,
             "text": text,
             "created_at": _CreatedAt(),
-            "post_owner_device_id": device_id,
+            "post_owner_device_id": self.post_owner_device_id,
         }
 
     def get_device_token(self, device_id: str) -> dict:
@@ -54,7 +57,7 @@ class _CreatedAt:
         return "2026-06-18T00:00:00"
 
 
-def test_author_comment_enqueues_push_notification_to_author(monkeypatch) -> None:
+def test_author_comment_does_not_enqueue_push_notification_to_author(monkeypatch) -> None:
     settings = build_settings(env={"OPENAI_API_KEY": ""})
     monkeypatch.setattr("app.api.v1.posts.get_settings", lambda: settings)
     tasks = BackgroundTasks()
@@ -68,13 +71,30 @@ def test_author_comment_enqueues_push_notification_to_author(monkeypatch) -> Non
     )
 
     assert response["success"] is True
+    assert tasks.tasks == []
+
+
+def test_other_user_comment_enqueues_push_notification_to_author(monkeypatch) -> None:
+    settings = build_settings(env={"OPENAI_API_KEY": ""})
+    monkeypatch.setattr("app.api.v1.posts.get_settings", lambda: settings)
+    tasks = BackgroundTasks()
+
+    response = create_comment(
+        "post-1",
+        CommentCreateRequest(nickname="댓글러", text="내 글에 남긴 댓글"),
+        tasks,
+        x_device_id="commenter-device",
+        store=_FakeStore(post_owner_device_id="author-device"),
+    )
+
+    assert response["success"] is True
     assert len(tasks.tasks) == 1
     task = tasks.tasks[0]
     assert task.func == push_service.send_comment_notification
     assert task.kwargs == {
         "device_id": "author-device",
         "fcm_token": "owner-fcm-token",
-        "nickname": "작성자",
+        "nickname": "댓글러",
         "text": "내 글에 남긴 댓글",
         "post_id": "post-1",
     }

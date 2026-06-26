@@ -7,6 +7,7 @@ import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
+import 'package:fury_note/src/notifications/notification_settings.dart';
 import 'package:fury_note/src/notifications/reminder_notification_service.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
@@ -56,6 +57,7 @@ class RecordScreen extends StatefulWidget {
     this.onSaveOnly,
     this.feedService,
     this.noteRepository,
+    this.notificationSettingsStore,
     this.reminderScheduler,
     this.voiceRecorder,
     super.key,
@@ -65,6 +67,7 @@ class RecordScreen extends StatefulWidget {
   final VoidCallback? onSaveOnly;
   final FeedService? feedService;
   final RageNoteRepository? noteRepository;
+  final NotificationSettingsStore? notificationSettingsStore;
   final ReminderScheduler? reminderScheduler;
   final FuryVoiceRecorder? voiceRecorder;
 
@@ -353,7 +356,11 @@ class _RecordScreenState extends State<RecordScreen> {
               reminderAt: reminderAt,
             ),
           );
-      if (reminderAt != null) {
+      final reminderNotificationsEnabled =
+          await (widget.notificationSettingsStore ??
+                  NotificationSettingsStore.instance)
+              .isReminderEnabled();
+      if (reminderAt != null && reminderNotificationsEnabled) {
         await (widget.reminderScheduler ?? LocalReminderScheduler.instance)
             .scheduleRageReminder(id: id, scheduledAt: reminderAt, body: body);
       }

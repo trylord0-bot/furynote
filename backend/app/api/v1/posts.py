@@ -174,7 +174,11 @@ def create_comment(
 
     owner_device_id = comment["post_owner_device_id"]
     owner_device = store.get_device_token(owner_device_id)
-    if owner_device is not None and owner_device["notify_comment"]:
+    if (
+        owner_device_id != x_device_id
+        and owner_device is not None
+        and owner_device["notify_comment"]
+    ):
         background_tasks.add_task(
             push_service.send_comment_notification,
             device_id=owner_device_id,

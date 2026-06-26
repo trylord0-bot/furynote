@@ -39,6 +39,7 @@ class LocalReminderScheduler
   final StreamController<ReminderNotificationTap> _tapController =
       StreamController<ReminderNotificationTap>.broadcast();
   ReminderNotificationTap? _initialTap;
+  bool _pluginInitialized = false;
   bool _initialized = false;
 
   @override
@@ -59,16 +60,7 @@ class LocalReminderScheduler
     }
 
     try {
-      await _configureLocalTimezone();
-      const initializationSettings = InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-        iOS: DarwinInitializationSettings(),
-      );
-      await _plugin.initialize(
-        settings: initializationSettings,
-        onDidReceiveNotificationResponse: _handleNotificationResponse,
-      );
-      await _captureLaunchNotification();
+      await _initializePlugin();
       await _plugin
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
@@ -83,6 +75,24 @@ class LocalReminderScheduler
     } on MissingPluginException {
       _initialized = false;
     }
+  }
+
+  Future<void> _initializePlugin() async {
+    if (_pluginInitialized) {
+      return;
+    }
+
+    await _configureLocalTimezone();
+    const initializationSettings = InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      iOS: DarwinInitializationSettings(),
+    );
+    await _plugin.initialize(
+      settings: initializationSettings,
+      onDidReceiveNotificationResponse: _handleNotificationResponse,
+    );
+    await _captureLaunchNotification();
+    _pluginInitialized = true;
   }
 
   Future<void> _captureLaunchNotification() async {
@@ -143,6 +153,15 @@ class LocalReminderScheduler
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         payload: 'rage_note:$id',
       );
+    } on MissingPluginException {
+      return;
+    }
+  }
+
+  Future<void> cancelAllRageReminders() async {
+    try {
+      await _initializePlugin();
+      await _plugin.cancelAll();
     } on MissingPluginException {
       return;
     }

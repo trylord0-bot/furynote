@@ -582,6 +582,51 @@ void main() {
     );
   });
 
+  testWidgets('settings notification switches load disabled preferences', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'notification.remind_enabled': false,
+      'notification.comment_enabled': false,
+    });
+
+    await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('설정'));
+    await tester.pumpAndSettle();
+
+    final switches = tester.widgetList<Switch>(find.byType(Switch)).toList();
+    expect(switches, hasLength(2));
+    expect(switches[0].value, isFalse);
+    expect(switches[1].value, isFalse);
+  });
+
+  testWidgets('settings notification switches persist changes', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+
+    await tester.pumpWidget(const FuryNoteApp(initialLocale: Locale('ko')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('설정'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(Switch).first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(Switch).last);
+    await tester.pumpAndSettle();
+
+    final preferences = await SharedPreferences.getInstance();
+    expect(preferences.getBool('notification.remind_enabled'), isFalse);
+    expect(preferences.getBool('notification.comment_enabled'), isFalse);
+  });
+
   testWidgets('drawer shows the actual saved rage note count', (
     WidgetTester tester,
   ) async {
@@ -801,6 +846,7 @@ void main() {
   testWidgets('saving a note with reminder schedules local notification', (
     WidgetTester tester,
   ) async {
+    SharedPreferences.setMockInitialValues({});
     final repository = _FakeRageNoteRepository();
     final scheduler = _FakeReminderScheduler();
 
@@ -834,6 +880,45 @@ void main() {
     expect(scheduler.calls, hasLength(1));
     expect(scheduler.calls.single.id, 1);
     expect(scheduler.calls.single.scheduledAt.isAfter(DateTime.now()), isTrue);
+  });
+
+  testWidgets('disabled reminder notifications skip local scheduling', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'notification.remind_enabled': false,
+    });
+    final repository = _FakeRageNoteRepository();
+    final scheduler = _FakeReminderScheduler();
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+        reminderScheduler: scheduler,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const ValueKey('text-step-skip')));
+    await tester.tap(find.byKey(const ValueKey('text-step-skip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('1시간 후'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('다음'));
+    await tester.tap(find.text('다음'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('기록하기'));
+    await tester.tap(find.text('기록하기'));
+    await tester.pumpAndSettle();
+
+    expect(repository.savedNotes, hasLength(1));
+    expect(scheduler.calls, isEmpty);
   });
 
   testWidgets(
