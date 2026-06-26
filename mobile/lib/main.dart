@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fury_note/firebase_options.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/screens/calm_guide_screen.dart';
+import 'package:fury_note/screens/splash_screen.dart';
 import 'package:fury_note/screens/calm_screen.dart';
 import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
@@ -245,7 +246,7 @@ class FuryNoteApp extends StatelessWidget {
           ),
         ),
       ),
-      home: FuryShell(
+      home: _FurySplashGate(
         feedService: feedService,
         noteRepository: noteRepository,
         reminderScheduler: reminderScheduler,
@@ -253,6 +254,52 @@ class FuryNoteApp extends StatelessWidget {
         commentPushTapSource: commentPushTapSource,
         voiceRecorder: voiceRecorder,
       ),
+    );
+  }
+}
+
+class _FurySplashGate extends StatefulWidget {
+  const _FurySplashGate({
+    this.feedService,
+    this.noteRepository,
+    this.reminderScheduler,
+    this.reminderNotificationTapSource,
+    this.commentPushTapSource,
+    this.voiceRecorder,
+  });
+
+  final FeedService? feedService;
+  final RageNoteRepository? noteRepository;
+  final ReminderScheduler? reminderScheduler;
+  final ReminderNotificationTapSource? reminderNotificationTapSource;
+  final CommentPushTapSource? commentPushTapSource;
+  final FuryVoiceRecorder? voiceRecorder;
+
+  @override
+  State<_FurySplashGate> createState() => _FurySplashGateState();
+}
+
+class _FurySplashGateState extends State<_FurySplashGate> {
+  bool _splashDone = false;
+
+  void _onSplashDone() {
+    if (!mounted) return;
+    setState(() => _splashDone = true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_splashDone) {
+      return SplashScreen(onDone: _onSplashDone);
+    }
+
+    return FuryShell(
+      feedService: widget.feedService,
+      noteRepository: widget.noteRepository,
+      reminderScheduler: widget.reminderScheduler,
+      reminderNotificationTapSource: widget.reminderNotificationTapSource,
+      commentPushTapSource: widget.commentPushTapSource,
+      voiceRecorder: widget.voiceRecorder,
     );
   }
 }

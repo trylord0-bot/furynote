@@ -84,6 +84,7 @@ flutter:
     - env/local.json
     - env/local.ios.json
     - env/prod.json
+    - assets/icon/logo_1024.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
