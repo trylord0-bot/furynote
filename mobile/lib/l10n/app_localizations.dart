@@ -101,13 +101,13 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In ko, this message translates to:
-  /// **'Fury Note'**
+  /// **'분노노트'**
   String get appTitle;
 
   /// No description provided for @appKoreanName.
   ///
   /// In ko, this message translates to:
-  /// **'분노의노트'**
+  /// **'분노노트'**
   String get appKoreanName;
 
   /// No description provided for @record.

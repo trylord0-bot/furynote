@@ -9,10 +9,10 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appTitle => 'Fury Note';
+  String get appTitle => '분노노트';
 
   @override
-  String get appKoreanName => '분노의노트';
+  String get appKoreanName => '분노노트';
 
   @override
   String get record => '기록';

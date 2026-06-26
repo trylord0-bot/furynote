@@ -1,7 +1,7 @@
 {
   "@@locale": "ko",
-  "appTitle": "Fury Note",
-  "appKoreanName": "분노의노트",
+  "appTitle": "분노노트",
+  "appKoreanName": "분노노트",
   "record": "기록",
   "feed": "피드",
   "stats": "통계",
