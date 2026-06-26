@@ -290,17 +290,27 @@ class _FurySplashGateState extends State<_FurySplashGate> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_splashDone) {
-      return SplashScreen(onDone: _onSplashDone);
-    }
-
-    return FuryShell(
-      feedService: widget.feedService,
-      noteRepository: widget.noteRepository,
-      reminderScheduler: widget.reminderScheduler,
-      reminderNotificationTapSource: widget.reminderNotificationTapSource,
-      commentPushTapSource: widget.commentPushTapSource,
-      voiceRecorder: widget.voiceRecorder,
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeIn,
+      transitionBuilder: (child, animation) =>
+          FadeTransition(opacity: animation, child: child),
+      child: _splashDone
+          ? FuryShell(
+              key: const ValueKey('fury-shell'),
+              feedService: widget.feedService,
+              noteRepository: widget.noteRepository,
+              reminderScheduler: widget.reminderScheduler,
+              reminderNotificationTapSource:
+                  widget.reminderNotificationTapSource,
+              commentPushTapSource: widget.commentPushTapSource,
+              voiceRecorder: widget.voiceRecorder,
+            )
+          : SplashScreen(
+              key: const ValueKey('fury-splash'),
+              onDone: _onSplashDone,
+            ),
     );
   }
 }

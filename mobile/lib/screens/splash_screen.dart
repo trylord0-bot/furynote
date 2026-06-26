@@ -18,6 +18,9 @@ class _SplashScreenState extends State<SplashScreen>
   late final Animation<double> _logoFade;
   late final Animation<double> _logoScale;
 
+  double _screenOpacity = 0.0;
+  bool _exiting = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,12 +44,23 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _logoController, curve: Curves.easeOutCubic),
     );
 
-    _logoController.forward();
+    // 첫 프레임에서 화면 페이드인 시작
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => _screenOpacity = 1.0);
+    });
 
-    Future<void>.delayed(const Duration(seconds: 4), () {
-      if (mounted) {
-        widget.onDone();
-      }
+    // 화면이 어느 정도 나타난 뒤 로고 등장
+    Future<void>.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _logoController.forward();
+    });
+
+    // 페이드아웃 시작
+    Future<void>.delayed(const Duration(milliseconds: 3000), () {
+      if (!mounted) return;
+      setState(() {
+        _exiting = true;
+        _screenOpacity = 0.0;
+      });
     });
   }
 
@@ -60,51 +74,61 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0000),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // 불꽃 재 파티클 배경
-          AnimatedBuilder(
-            animation: _ashController,
-            builder: (context, _) {
-              return CustomPaint(
-                painter: _AshParticlePainter(_ashController.value),
-              );
-            },
-          ),
-          // 하단 불색 → 상단 배경색 그라디언트
-          const DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                stops: [0.0, 0.28, 0.58, 1.0],
-                colors: [
-                  Color(0xFFCC2200),
-                  Color(0x99550A00),
-                  Color(0x331A0500),
-                  Color(0x000A0000),
-                ],
-              ),
+      backgroundColor: Colors.black,
+      body: AnimatedOpacity(
+        opacity: _screenOpacity,
+        duration: _exiting
+            ? const Duration(milliseconds: 700)
+            : const Duration(milliseconds: 450),
+        curve: Curves.easeInOut,
+        onEnd: () {
+          if (_exiting && mounted) widget.onDone();
+        },
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // 불꽃 재 파티클 배경
+            AnimatedBuilder(
+              animation: _ashController,
+              builder: (context, _) {
+                return CustomPaint(
+                  painter: _AshParticlePainter(_ashController.value),
+                );
+              },
             ),
-          ),
-          // 로고
-          Center(
-            child: FadeTransition(
-              opacity: _logoFade,
-              child: ScaleTransition(
-                scale: _logoScale,
-                child: Image.asset(
-                  'assets/icon/logo_1024.png',
-                  width: 180,
-                  height: 180,
-                  filterQuality: FilterQuality.high,
+            // 하단 불색 → 상단 배경색 그라디언트
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  stops: [0.0, 0.28, 0.58, 1.0],
+                  colors: [
+                    Color(0xFFCC2200),
+                    Color(0x99550A00),
+                    Color(0x331A0500),
+                    Color(0x000A0000),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+            // 로고
+            Center(
+              child: FadeTransition(
+                opacity: _logoFade,
+                child: ScaleTransition(
+                  scale: _logoScale,
+                  child: Image.asset(
+                    'assets/icon/logo_1024.png',
+                    width: 180,
+                    height: 180,
+                    filterQuality: FilterQuality.high,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
