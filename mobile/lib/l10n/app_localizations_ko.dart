@@ -746,4 +746,109 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get privacySection6Body =>
       '개인정보와 관련한 문의는 아래 이메일로 연락하여 주시기 바랍니다.\nlunlu.co.kr@gmail.com';
+
+  @override
+  String get appGuideTitle => 'Fury Note 사용 가이드';
+
+  @override
+  String get appGuideSubtitle => '분노를 기록하고, 통계로 패턴을 파악하고, 피드에서 공감받는 방법을 안내합니다.';
+
+  @override
+  String get appGuideRecordTitle => '분노 기록하기';
+
+  @override
+  String get appGuideRecordBody => '화가 날 때 화면 하단 🔥 버튼을 탭해 기록을 시작하세요.';
+
+  @override
+  String get appGuideRecordStep1 => '강도 선택: 이모지로 지금 화남 정도를 고르세요';
+
+  @override
+  String get appGuideRecordStep2 => '카테고리 선택: 원인을 하나 고르세요';
+
+  @override
+  String get appGuideRecordStep3 => '내용 작성: 무슨 일인지 적어요 (건너뛰기 가능)';
+
+  @override
+  String get appGuideRecordStep4 => '리마인드: 나중에 다시 보고 싶다면 시간을 설정하세요';
+
+  @override
+  String get appGuideRecordStep5 => '저장 또는 포스팅: 기록만 남기거나 피드에 공유하세요';
+
+  @override
+  String get appGuideFeedTitle => '피드에서 공감받기';
+
+  @override
+  String get appGuideFeedBody => '분노를 공유하면 비슷한 감정의 사람들과 연결될 수 있어요.';
+
+  @override
+  String get appGuideFeedItem1 => '기록 저장 후 **익명**으로 피드에 포스팅할 수 있어요';
+
+  @override
+  String get appGuideFeedItem2 => '다른 사람의 포스팅에 공감하거나 댓글을 달 수 있어요';
+
+  @override
+  String get appGuideFeedItem3 => '내 포스팅은 언제든 삭제할 수 있어요';
+
+  @override
+  String get appGuideStatsTitle => '내 감정 패턴 파악하기';
+
+  @override
+  String get appGuideStatsBody => '통계 탭에서 내 분노 패턴을 돌아볼 수 있어요.';
+
+  @override
+  String get appGuideStatsItem1 => '기간별 분노 강도 추이 그래프';
+
+  @override
+  String get appGuideStatsItem2 => '카테고리별 원인 분포 확인';
+
+  @override
+  String get appGuideStatsItem3 => '달력으로 날짜별 기록 보기';
+
+  @override
+  String get appGuideStatsItem4 => '분노 보고서로 카테고리별 패턴 분석';
+
+  @override
+  String get appGuideCalmTitle => '감정 진정시키기';
+
+  @override
+  String get appGuideCalmBody => '분노 기록 후 진정 탭에서 감정을 낮추는 방법을 시도해보세요.';
+
+  @override
+  String get appGuideCalmItem1 => '리마인드 노트: 예약한 기록을 다시 확인해요';
+
+  @override
+  String get appGuideCalmItem2 => '호흡운동: 4-7-8 호흡법으로 마음을 안정시켜요';
+
+  @override
+  String get appGuideCalmItem3 => '타임아웃: 10분 타이머로 반응을 잠시 늦춰요';
+
+  @override
+  String get appGuideCalmItem4 => '이미지 명상: 자연 이미지로 감정을 전환해요';
+
+  @override
+  String get appGuideProfileTitle => '닉네임과 프로필';
+
+  @override
+  String get appGuideProfileBody => '햄버거 메뉴 > 설정에서 닉네임과 아바타를 바꿀 수 있어요.';
+
+  @override
+  String get appGuideProfileItem1 => '닉네임: 직접 입력하거나 랜덤 생성';
+
+  @override
+  String get appGuideProfileItem2 => '아바타: 이모지로 나를 표현해요';
+
+  @override
+  String get appGuideNotificationTitle => '알림 설정';
+
+  @override
+  String get appGuideNotificationItem1 => '리마인드 알림: 설정한 시간에 분노 노트를 다시 확인해요';
+
+  @override
+  String get appGuideNotificationItem2 => '댓글 알림: 내 포스팅에 댓글이 달리면 알림을 받아요';
+
+  @override
+  String get appGuideNotificationHint => '설정 > 알림에서 켜거나 끌 수 있어요';
+
+  @override
+  String get appGuideFooterTitle => 'Fury Note App Guide';
 }

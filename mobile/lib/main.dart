@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fury_note/firebase_options.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/screens/app_guide_screen.dart';
 import 'package:fury_note/screens/calm_guide_screen.dart';
 import 'package:fury_note/screens/splash_screen.dart';
 import 'package:fury_note/screens/calm_screen.dart';
@@ -972,6 +973,12 @@ class FuryDrawer extends StatelessWidget {
             icon: Icons.menu_book_outlined,
             title: l10n.drawerGuide,
             subtitle: 'Fury Note 사용 방법',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const AppGuideScreen()),
+              );
+            },
           ),
           FuryDrawerTile(
             icon: Icons.spa_outlined,

@@ -1507,6 +1507,216 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'개인정보와 관련한 문의는 아래 이메일로 연락하여 주시기 바랍니다.\nlunlu.co.kr@gmail.com'**
   String get privacySection6Body;
+
+  /// No description provided for @appGuideTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note 사용 가이드'**
+  String get appGuideTitle;
+
+  /// No description provided for @appGuideSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노를 기록하고, 통계로 패턴을 파악하고, 피드에서 공감받는 방법을 안내합니다.'**
+  String get appGuideSubtitle;
+
+  /// No description provided for @appGuideRecordTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 기록하기'**
+  String get appGuideRecordTitle;
+
+  /// No description provided for @appGuideRecordBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'화가 날 때 화면 하단 🔥 버튼을 탭해 기록을 시작하세요.'**
+  String get appGuideRecordBody;
+
+  /// No description provided for @appGuideRecordStep1.
+  ///
+  /// In ko, this message translates to:
+  /// **'강도 선택: 이모지로 지금 화남 정도를 고르세요'**
+  String get appGuideRecordStep1;
+
+  /// No description provided for @appGuideRecordStep2.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 선택: 원인을 하나 고르세요'**
+  String get appGuideRecordStep2;
+
+  /// No description provided for @appGuideRecordStep3.
+  ///
+  /// In ko, this message translates to:
+  /// **'내용 작성: 무슨 일인지 적어요 (건너뛰기 가능)'**
+  String get appGuideRecordStep3;
+
+  /// No description provided for @appGuideRecordStep4.
+  ///
+  /// In ko, this message translates to:
+  /// **'리마인드: 나중에 다시 보고 싶다면 시간을 설정하세요'**
+  String get appGuideRecordStep4;
+
+  /// No description provided for @appGuideRecordStep5.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 또는 포스팅: 기록만 남기거나 피드에 공유하세요'**
+  String get appGuideRecordStep5;
+
+  /// No description provided for @appGuideFeedTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드에서 공감받기'**
+  String get appGuideFeedTitle;
+
+  /// No description provided for @appGuideFeedBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노를 공유하면 비슷한 감정의 사람들과 연결될 수 있어요.'**
+  String get appGuideFeedBody;
+
+  /// No description provided for @appGuideFeedItem1.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록 저장 후 **익명**으로 피드에 포스팅할 수 있어요'**
+  String get appGuideFeedItem1;
+
+  /// No description provided for @appGuideFeedItem2.
+  ///
+  /// In ko, this message translates to:
+  /// **'다른 사람의 포스팅에 공감하거나 댓글을 달 수 있어요'**
+  String get appGuideFeedItem2;
+
+  /// No description provided for @appGuideFeedItem3.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 포스팅은 언제든 삭제할 수 있어요'**
+  String get appGuideFeedItem3;
+
+  /// No description provided for @appGuideStatsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 감정 패턴 파악하기'**
+  String get appGuideStatsTitle;
+
+  /// No description provided for @appGuideStatsBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'통계 탭에서 내 분노 패턴을 돌아볼 수 있어요.'**
+  String get appGuideStatsBody;
+
+  /// No description provided for @appGuideStatsItem1.
+  ///
+  /// In ko, this message translates to:
+  /// **'기간별 분노 강도 추이 그래프'**
+  String get appGuideStatsItem1;
+
+  /// No description provided for @appGuideStatsItem2.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리별 원인 분포 확인'**
+  String get appGuideStatsItem2;
+
+  /// No description provided for @appGuideStatsItem3.
+  ///
+  /// In ko, this message translates to:
+  /// **'달력으로 날짜별 기록 보기'**
+  String get appGuideStatsItem3;
+
+  /// No description provided for @appGuideStatsItem4.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 보고서로 카테고리별 패턴 분석'**
+  String get appGuideStatsItem4;
+
+  /// No description provided for @appGuideCalmTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 진정시키기'**
+  String get appGuideCalmTitle;
+
+  /// No description provided for @appGuideCalmBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'분노 기록 후 진정 탭에서 감정을 낮추는 방법을 시도해보세요.'**
+  String get appGuideCalmBody;
+
+  /// No description provided for @appGuideCalmItem1.
+  ///
+  /// In ko, this message translates to:
+  /// **'리마인드 노트: 예약한 기록을 다시 확인해요'**
+  String get appGuideCalmItem1;
+
+  /// No description provided for @appGuideCalmItem2.
+  ///
+  /// In ko, this message translates to:
+  /// **'호흡운동: 4-7-8 호흡법으로 마음을 안정시켜요'**
+  String get appGuideCalmItem2;
+
+  /// No description provided for @appGuideCalmItem3.
+  ///
+  /// In ko, this message translates to:
+  /// **'타임아웃: 10분 타이머로 반응을 잠시 늦춰요'**
+  String get appGuideCalmItem3;
+
+  /// No description provided for @appGuideCalmItem4.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미지 명상: 자연 이미지로 감정을 전환해요'**
+  String get appGuideCalmItem4;
+
+  /// No description provided for @appGuideProfileTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임과 프로필'**
+  String get appGuideProfileTitle;
+
+  /// No description provided for @appGuideProfileBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'햄버거 메뉴 > 설정에서 닉네임과 아바타를 바꿀 수 있어요.'**
+  String get appGuideProfileBody;
+
+  /// No description provided for @appGuideProfileItem1.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임: 직접 입력하거나 랜덤 생성'**
+  String get appGuideProfileItem1;
+
+  /// No description provided for @appGuideProfileItem2.
+  ///
+  /// In ko, this message translates to:
+  /// **'아바타: 이모지로 나를 표현해요'**
+  String get appGuideProfileItem2;
+
+  /// No description provided for @appGuideNotificationTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 설정'**
+  String get appGuideNotificationTitle;
+
+  /// No description provided for @appGuideNotificationItem1.
+  ///
+  /// In ko, this message translates to:
+  /// **'리마인드 알림: 설정한 시간에 분노 노트를 다시 확인해요'**
+  String get appGuideNotificationItem1;
+
+  /// No description provided for @appGuideNotificationItem2.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글 알림: 내 포스팅에 댓글이 달리면 알림을 받아요'**
+  String get appGuideNotificationItem2;
+
+  /// No description provided for @appGuideNotificationHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'설정 > 알림에서 켜거나 끌 수 있어요'**
+  String get appGuideNotificationHint;
+
+  /// No description provided for @appGuideFooterTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note App Guide'**
+  String get appGuideFooterTitle;
 }
 
 class _AppLocalizationsDelegate

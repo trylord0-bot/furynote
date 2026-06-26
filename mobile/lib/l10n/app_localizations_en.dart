@@ -788,4 +788,129 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get privacySection6Body =>
       'For inquiries regarding personal information, please contact the email address below.\nlunlu.co.kr@gmail.com';
+
+  @override
+  String get appGuideTitle => 'How to use Fury Note';
+
+  @override
+  String get appGuideSubtitle =>
+      'A guide to logging anger, tracking patterns, and getting support on the feed.';
+
+  @override
+  String get appGuideRecordTitle => 'Log your anger';
+
+  @override
+  String get appGuideRecordBody =>
+      'When you\'re angry, tap the 🔥 button at the bottom to start a record.';
+
+  @override
+  String get appGuideRecordStep1 =>
+      'Pick intensity: choose an emoji that matches how angry you are';
+
+  @override
+  String get appGuideRecordStep2 => 'Pick a category: choose one cause';
+
+  @override
+  String get appGuideRecordStep3 =>
+      'Write it out: describe what happened (you can skip this)';
+
+  @override
+  String get appGuideRecordStep4 =>
+      'Reminder: set a time if you want to revisit this later';
+
+  @override
+  String get appGuideRecordStep5 =>
+      'Save or post: keep the record private or share it to the feed';
+
+  @override
+  String get appGuideFeedTitle => 'Find support on the feed';
+
+  @override
+  String get appGuideFeedBody =>
+      'Sharing your anger can connect you with others feeling the same way.';
+
+  @override
+  String get appGuideFeedItem1 =>
+      'After saving, you can post **anonymously** to the feed';
+
+  @override
+  String get appGuideFeedItem2 => 'Like or comment on other people\'s posts';
+
+  @override
+  String get appGuideFeedItem3 => 'You can delete your own post anytime';
+
+  @override
+  String get appGuideStatsTitle => 'Track your emotional patterns';
+
+  @override
+  String get appGuideStatsBody =>
+      'The stats tab helps you look back at your anger patterns.';
+
+  @override
+  String get appGuideStatsItem1 => 'Rage intensity trend graph by period';
+
+  @override
+  String get appGuideStatsItem2 => 'Cause distribution by category';
+
+  @override
+  String get appGuideStatsItem3 => 'Calendar view to browse records by date';
+
+  @override
+  String get appGuideStatsItem4 =>
+      'Rage report to analyze patterns by category';
+
+  @override
+  String get appGuideCalmTitle => 'Lower your anger';
+
+  @override
+  String get appGuideCalmBody =>
+      'After logging, head to the calm tab to try bringing your emotion down.';
+
+  @override
+  String get appGuideCalmItem1 =>
+      'Reminder notes: revisit records you flagged for later';
+
+  @override
+  String get appGuideCalmItem2 =>
+      'Breathing: settle your mind with the 4-7-8 technique';
+
+  @override
+  String get appGuideCalmItem3 =>
+      'Timeout: slow your reaction with a 10-minute timer';
+
+  @override
+  String get appGuideCalmItem4 =>
+      'Image meditation: shift your mood with nature imagery';
+
+  @override
+  String get appGuideProfileTitle => 'Nickname and profile';
+
+  @override
+  String get appGuideProfileBody =>
+      'Go to menu > Settings to change your nickname and avatar.';
+
+  @override
+  String get appGuideProfileItem1 =>
+      'Nickname: type your own or generate one randomly';
+
+  @override
+  String get appGuideProfileItem2 => 'Avatar: represent yourself with an emoji';
+
+  @override
+  String get appGuideNotificationTitle => 'Notification settings';
+
+  @override
+  String get appGuideNotificationItem1 =>
+      'Reminder alerts: get reminded of a rage note at the time you set';
+
+  @override
+  String get appGuideNotificationItem2 =>
+      'Comment alerts: get notified when someone comments on your post';
+
+  @override
+  String get appGuideNotificationHint =>
+      'Toggle these in Settings > Notifications';
+
+  @override
+  String get appGuideFooterTitle => 'Fury Note App Guide';
 }
