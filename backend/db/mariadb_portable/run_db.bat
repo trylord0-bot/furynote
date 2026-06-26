@@ -6,7 +6,7 @@
 :: 3. lib\plugin\  : 인증 및 스토리지 엔진 플러그인 (필수)
 :: ===================================================
 
-:: ★ 아래 3가지를 환경에 맞게 수정하세요
+:: 아래 3가지를 환경에 맞게 수정하세요
 set DB_USER=furynote
 set DB_PASS=furynote
 set DB_NAME=furynote

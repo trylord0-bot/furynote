@@ -304,18 +304,13 @@ class _CommentSheetState extends State<CommentSheet> {
           Padding(
             padding: EdgeInsets.fromLTRB(14, 10, 14, 10 + bottomInset),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: FuryColors.red.withValues(alpha: 0.18),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Text('🔥', style: TextStyle(fontSize: 16)),
-                  ),
+                const FuryProfileAvatar(
+                  key: ValueKey('comment-input-avatar'),
+                  size: 32,
+                  borderRadius: 10,
+                  fallbackFontSize: 16,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -356,6 +351,7 @@ class _CommentSheetState extends State<CommentSheet> {
                 ),
                 const SizedBox(width: 8),
                 GestureDetector(
+                  key: const ValueKey('comment-send-button'),
                   onTap: _sendComment,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 150),

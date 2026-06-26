@@ -316,6 +316,54 @@ void main() {
     expect(find.byType(Image), findsOneWidget);
   });
 
+  testWidgets('comment sheet input shows saved profile avatar centered', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    AppProfileController.instance.resetForTesting();
+    addTearDown(AppProfileController.instance.resetForTesting);
+    await AppProfileController.instance.updateAvatar(
+      base64Decode(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=',
+      ),
+    );
+
+    final feedService = _FakeFeedService(posts: const []);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: CommentSheet(
+            postId: 'post-1',
+            initialCommentCount: 0,
+            feedService: feedService,
+            onCountChanged: (_) {},
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    final avatarFinder = find.byKey(const ValueKey('comment-input-avatar'));
+    final sendButtonFinder = find.byKey(const ValueKey('comment-send-button'));
+    final fieldFinder = find.byType(TextField);
+
+    expect(avatarFinder, findsOneWidget);
+    expect(
+      find.descendant(of: avatarFinder, matching: find.byType(Image)),
+      findsOneWidget,
+    );
+    expect(
+      tester.getCenter(avatarFinder).dy,
+      moreOrLessEquals(tester.getCenter(fieldFinder).dy, epsilon: 0.5),
+    );
+    expect(
+      tester.getCenter(avatarFinder).dy,
+      moreOrLessEquals(tester.getCenter(sendButtonFinder).dy, epsilon: 0.5),
+    );
+  });
+
   testWidgets('feed post without avatar does not fall back to profile avatar', (
     WidgetTester tester,
   ) async {
