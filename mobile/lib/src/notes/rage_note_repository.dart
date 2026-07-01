@@ -109,6 +109,18 @@ created_at = ? AND rage_level = ? AND category_key = ? AND body = ?
     await db.update(tableName, {'posted': 1}, where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<({int total, int posted})> getCounts() async {
+    final db = await _open();
+    final totalRows = await db.rawQuery('SELECT COUNT(*) AS c FROM $tableName');
+    final postedRows = await db.rawQuery(
+      'SELECT COUNT(*) AS c FROM $tableName WHERE posted = 1',
+    );
+    return (
+      total: Sqflite.firstIntValue(totalRows) ?? 0,
+      posted: Sqflite.firstIntValue(postedRows) ?? 0,
+    );
+  }
+
   Future<void> close() async {
     final db = _database;
     _database = null;

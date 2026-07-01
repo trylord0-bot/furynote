@@ -3,6 +3,7 @@ import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../main.dart';
 import '../src/api/device_service.dart';
+import '../src/notes/rage_note_repository.dart';
 import '../src/notifications/notification_settings.dart';
 import '../src/notifications/reminder_notification_service.dart';
 import '../src/profile/app_profile.dart';
@@ -23,12 +24,14 @@ class SettingsScreen extends StatefulWidget {
     this.notificationSettingsStore,
     this.updateCommentNotification,
     this.cancelReminderNotifications,
+    this.noteRepository,
     super.key,
   });
 
   final NotificationSettingsStore? notificationSettingsStore;
   final CommentNotificationUpdater? updateCommentNotification;
   final ReminderNotificationCanceler? cancelReminderNotifications;
+  final RageNoteRepository? noteRepository;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -38,6 +41,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final NotificationSettingsStore _notificationSettingsStore;
   bool _remindNotification = true;
   bool _commentNotification = true;
+  int _recordCount = 0;
+  int _postedCount = 0;
 
   @override
   void initState() {
@@ -45,6 +50,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _notificationSettingsStore =
         widget.notificationSettingsStore ?? NotificationSettingsStore.instance;
     _loadNotificationSettings();
+    _loadCounts();
+  }
+
+  Future<void> _loadCounts() async {
+    final repository = widget.noteRepository ?? RageNoteRepository.instance;
+    final counts = await repository.getCounts();
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _recordCount = counts.total;
+      _postedCount = counts.posted;
+    });
   }
 
   Future<void> _loadNotificationSettings() async {
@@ -98,6 +117,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           const SizedBox(height: 16),
           _SettingsProfileCard(
+            recordCount: _recordCount,
+            postedCount: _postedCount,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const ProfileEditScreen()),
@@ -214,8 +235,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 }
 
 class _SettingsProfileCard extends StatelessWidget {
-  const _SettingsProfileCard({required this.onTap});
+  const _SettingsProfileCard({
+    required this.recordCount,
+    required this.postedCount,
+    required this.onTap,
+  });
 
+  final int recordCount;
+  final int postedCount;
   final VoidCallback onTap;
 
   @override
@@ -271,9 +298,9 @@ class _SettingsProfileCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Text(
-                          '🔥 47',
-                          style: TextStyle(
+                        Text(
+                          '🔥 $recordCount',
+                          style: const TextStyle(
                             color: FuryColors.red,
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -287,9 +314,9 @@ class _SettingsProfileCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Text(
-                          '📮 12',
-                          style: TextStyle(
+                        Text(
+                          '📮 $postedCount',
+                          style: const TextStyle(
                             color: FuryColors.red,
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
