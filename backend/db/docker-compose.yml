@@ -1,0 +1,26 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: furynote-mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-furynote}
+      MARIADB_DATABASE: ${DB_NAME:-furynote}
+      MARIADB_USER: ${DB_USER:-furynote}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-furynote}
+      TZ: ${TZ:-Asia/Seoul}
+    ports:
+      - "${DB_HOST_PORT:-3307}:3306"
+    volumes:
+      - ${DATA_DIR:-./data}:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mariadb-admin ping -h 127.0.0.1 -uroot -p$$MARIADB_ROOT_PASSWORD --silent",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s

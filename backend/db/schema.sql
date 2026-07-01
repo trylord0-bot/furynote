@@ -1,5 +1,6 @@
 -- Fury Note MariaDB schema
--- Local development uses DB_PORT=3307, matching backend/.env.
+-- Local Docker development uses DB_PORT=3303, matching backend/.env defaults.
+-- The Windows portable MariaDB helper uses port 3307 separately.
 
 CREATE DATABASE IF NOT EXISTS `furynote`
   DEFAULT CHARACTER SET utf8mb4
