@@ -48,7 +48,11 @@ fi
 
 echo "---------------------------------------------------"
 echo "[설정] DB=${DB_NAME}, USER=${DB_USER}, PORT=${DB_HOST_PORT}->3306"
-echo "[실행] MariaDB 서버를 시작합니다... (종료하려면 Ctrl+C를 누르세요)"
+echo "[실행] MariaDB 서버를 백그라운드로 시작합니다..."
 echo "---------------------------------------------------"
 
-"${COMPOSE[@]}" -f docker-compose.yml up mariadb
+"${COMPOSE[@]}" -f docker-compose.yml up -d mariadb
+
+echo "[완료] MariaDB가 백그라운드에서 실행 중입니다."
+echo "[확인] 로그 보기: docker compose -f $(pwd)/docker-compose.yml logs -f mariadb"
+echo "[종료] 중지하려면: $(pwd)/stop_db.sh"
