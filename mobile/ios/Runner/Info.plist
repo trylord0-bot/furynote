@@ -26,6 +26,17 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- AdMob 앱 ID. 현재는 Google 공식 테스트 앱 ID이며, 정식 출시 전
+	     실제 AdMob 콘솔에서 발급받은 앱 ID로 교체해야 한다. -->
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>분노 기록에 음성 녹음을 첨부하기 위해 마이크를 사용합니다.</string>
 	<key>UIApplicationSceneManifest</key>

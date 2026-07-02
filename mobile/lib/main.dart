@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:fury_note/firebase_options.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/l10n/l10n_extensions.dart';
@@ -30,6 +31,7 @@ Future<void> main() async {
   await EnvConfig.instance.load();
   await LocalReminderScheduler.instance.initialize();
   await AppProfileController.instance.load();
+  unawaited(MobileAds.instance.initialize());
   unawaited(PushNotificationService.instance.initialize());
   runApp(const FuryNoteApp());
 }

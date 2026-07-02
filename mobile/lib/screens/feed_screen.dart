@@ -9,6 +9,7 @@ import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import '../main.dart';
 import '../widgets/comment_sheet.dart';
+import '../widgets/feed_ad_card.dart';
 import '../widgets/shared_widgets.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -399,21 +400,41 @@ class _FeedTabViewState extends State<_FeedTabView>
     }
 
     if (_posts.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('📮', style: TextStyle(fontSize: 40)),
-            const SizedBox(height: 12),
-            Text(
-              widget.mineOnly ? l10n.feedEmptyMine : l10n.feedEmptyAll,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: FuryColors.muted, height: 1.6),
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: (constraints.maxHeight - 40).clamp(
+                  0,
+                  double.infinity,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('📮', style: TextStyle(fontSize: 40)),
+                  const SizedBox(height: 12),
+                  Text(
+                    widget.mineOnly ? l10n.feedEmptyMine : l10n.feedEmptyAll,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: FuryColors.muted,
+                      height: 1.6,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const FeedAdCard(key: ValueKey('feed-ad-0')),
+                ],
+              ),
             ),
-          ],
-        ),
+          );
+        },
       );
     }
+
+    final slots = _buildFeedSlots();
 
     return RefreshIndicator(
       onRefresh: _loadInitial,
@@ -422,9 +443,9 @@ class _FeedTabViewState extends State<_FeedTabView>
       child: ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.all(20),
-        itemCount: _posts.length + (_hasMore ? 1 : 0),
+        itemCount: slots.length + (_hasMore ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index == _posts.length) {
+          if (index == slots.length) {
             return const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Center(
@@ -436,7 +457,14 @@ class _FeedTabViewState extends State<_FeedTabView>
               ),
             );
           }
-          final post = _posts[index];
+          final slot = slots[index];
+          if (slot.isAd) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 18),
+              child: FeedAdCard(key: ValueKey('feed-ad-${slot.adIndex}')),
+            );
+          }
+          final post = _posts[slot.postIndex];
           return _FeedPostItem(
             key: ValueKey(post.postId),
             post: post,
@@ -450,6 +478,36 @@ class _FeedTabViewState extends State<_FeedTabView>
       ),
     );
   }
+
+  // 리스트의 2번째 자리(첫 게시물 바로 다음)에 광고를 배치하고, 이후로는
+  // 스크롤을 내릴 때마다 광고가 하나씩 더 보이도록 일정 간격(5개 게시물)마다
+  // 광고 슬롯을 끼워 넣는다.
+  static const _adInterval = 5;
+
+  List<_FeedSlot> _buildFeedSlots() {
+    final slots = <_FeedSlot>[];
+    var sincePostCount = 0;
+    var adIndex = 0;
+    for (var i = 0; i < _posts.length; i++) {
+      slots.add(_FeedSlot.post(i));
+      sincePostCount++;
+      if (i == 0 || sincePostCount == _adInterval) {
+        slots.add(_FeedSlot.ad(adIndex++));
+        sincePostCount = 0;
+      }
+    }
+    return slots;
+  }
+}
+
+class _FeedSlot {
+  const _FeedSlot.post(this.postIndex) : adIndex = -1;
+  const _FeedSlot.ad(this.adIndex) : postIndex = -1;
+
+  final int postIndex;
+  final int adIndex;
+
+  bool get isAd => adIndex >= 0;
 }
 
 class _FeedPostItem extends StatelessWidget {
