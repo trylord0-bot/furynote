@@ -300,6 +300,7 @@ class _StatsScreenState extends State<StatsScreen>
   ) async {
     await Navigator.of(context).push<void>(
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'stats_summary'),
         builder: (context) {
           return _StatsSummaryScreen(
             summaries: _categorySummaries(records),
@@ -388,6 +389,7 @@ class _StatsScreenState extends State<StatsScreen>
                 onTap: () async {
                   await Navigator.of(context).push(
                     MaterialPageRoute(
+                      settings: const RouteSettings(name: 'stats_calendar'),
                       builder: (_) => StatsCalendarScreen(
                         noteRepository: widget.noteRepository,
                       ),

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:fury_note/main.dart';
+import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
@@ -18,6 +21,7 @@ Future<void> showCommentSheet(
   int? postRageLevel,
   String? postCategory,
   FeedService? feedService,
+  AppAnalytics analytics = const NoopAppAnalytics(),
   required void Function(int) onCountChanged,
 }) {
   return showModalBottomSheet<void>(
@@ -38,6 +42,7 @@ Future<void> showCommentSheet(
       postRageLevel: postRageLevel,
       postCategory: postCategory,
       feedService: feedService,
+      analytics: analytics,
       onCountChanged: onCountChanged,
     ),
   );
@@ -55,6 +60,7 @@ class CommentSheet extends StatefulWidget {
     this.postRageLevel,
     this.postCategory,
     this.feedService,
+    this.analytics = const NoopAppAnalytics(),
     super.key,
   });
 
@@ -68,6 +74,7 @@ class CommentSheet extends StatefulWidget {
   final int? postRageLevel;
   final String? postCategory;
   final FeedService? feedService;
+  final AppAnalytics analytics;
 
   @override
   State<CommentSheet> createState() => _CommentSheetState();
@@ -135,6 +142,16 @@ class _CommentSheetState extends State<CommentSheet> {
         _sending = false;
       });
       widget.onCountChanged(_commentCount);
+      unawaited(
+        widget.analytics.logEvent(
+          'comment_created',
+          parameters: {
+            'post_id': widget.postId,
+            'comment_count': _commentCount,
+            'text_length': text.length,
+          },
+        ),
+      );
       FurySnackBar.show(context, l10n.commentPostedToast);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {
@@ -206,6 +223,15 @@ class _CommentSheetState extends State<CommentSheet> {
         _commentCount--;
       });
       widget.onCountChanged(_commentCount);
+      unawaited(
+        widget.analytics.logEvent(
+          'comment_deleted',
+          parameters: {
+            'post_id': widget.postId,
+            'comment_count': _commentCount,
+          },
+        ),
+      );
     } catch (_) {}
   }
 

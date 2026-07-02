@@ -13,6 +13,7 @@ import 'package:fury_note/screens/feed_screen.dart';
 import 'package:fury_note/screens/record_screen.dart';
 import 'package:fury_note/screens/settings_screen.dart';
 import 'package:fury_note/screens/stats_screen.dart';
+import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/env_config.dart';
 import 'package:fury_note/src/api/feed_service.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
@@ -143,6 +144,7 @@ class FuryNoteApp extends StatelessWidget {
     this.reminderNotificationTapSource,
     this.commentPushTapSource,
     this.voiceRecorder,
+    this.analytics,
     super.key,
   });
 
@@ -153,9 +155,11 @@ class FuryNoteApp extends StatelessWidget {
   final ReminderNotificationTapSource? reminderNotificationTapSource;
   final CommentPushTapSource? commentPushTapSource;
   final FuryVoiceRecorder? voiceRecorder;
+  final AppAnalytics? analytics;
 
   @override
   Widget build(BuildContext context) {
+    final appAnalytics = analytics ?? _defaultAnalytics();
     return MaterialApp(
       title: 'Fury Note',
       locale: initialLocale,
@@ -174,6 +178,7 @@ class FuryNoteApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
+      navigatorObservers: [AppAnalyticsRouteObserver(appAnalytics)],
       theme: ThemeData(
         brightness: Brightness.dark,
         useMaterial3: true,
@@ -254,9 +259,17 @@ class FuryNoteApp extends StatelessWidget {
         reminderNotificationTapSource: reminderNotificationTapSource,
         commentPushTapSource: commentPushTapSource,
         voiceRecorder: voiceRecorder,
+        analytics: appAnalytics,
       ),
     );
   }
+}
+
+AppAnalytics _defaultAnalytics() {
+  if (Firebase.apps.isEmpty) {
+    return const NoopAppAnalytics();
+  }
+  return FirebaseAppAnalytics.instance;
 }
 
 class _FurySplashGate extends StatefulWidget {
@@ -267,6 +280,7 @@ class _FurySplashGate extends StatefulWidget {
     this.reminderNotificationTapSource,
     this.commentPushTapSource,
     this.voiceRecorder,
+    required this.analytics,
   });
 
   final FeedService? feedService;
@@ -275,6 +289,7 @@ class _FurySplashGate extends StatefulWidget {
   final ReminderNotificationTapSource? reminderNotificationTapSource;
   final CommentPushTapSource? commentPushTapSource;
   final FuryVoiceRecorder? voiceRecorder;
+  final AppAnalytics analytics;
 
   @override
   State<_FurySplashGate> createState() => _FurySplashGateState();
@@ -306,6 +321,7 @@ class _FurySplashGateState extends State<_FurySplashGate> {
                   widget.reminderNotificationTapSource,
               commentPushTapSource: widget.commentPushTapSource,
               voiceRecorder: widget.voiceRecorder,
+              analytics: widget.analytics,
             )
           : SplashScreen(
               key: const ValueKey('fury-splash'),
@@ -443,6 +459,7 @@ class FuryShell extends StatefulWidget {
     this.reminderNotificationTapSource,
     this.commentPushTapSource,
     this.voiceRecorder,
+    required this.analytics,
     super.key,
   });
 
@@ -452,6 +469,7 @@ class FuryShell extends StatefulWidget {
   final ReminderNotificationTapSource? reminderNotificationTapSource;
   final CommentPushTapSource? commentPushTapSource;
   final FuryVoiceRecorder? voiceRecorder;
+  final AppAnalytics analytics;
 
   @override
   State<FuryShell> createState() => _FuryShellState();
@@ -460,6 +478,7 @@ class FuryShell extends StatefulWidget {
 class _FuryShellState extends State<FuryShell> {
   static const int _feedIndex = 1;
   static const int _calmIndex = 3;
+  static const _screenNames = ['record', 'feed', 'stats', 'calm'];
 
   int _index = _feedIndex;
   StreamSubscription<ReminderNotificationTap>? _reminderTapSubscription;
@@ -484,6 +503,11 @@ class _FuryShellState extends State<FuryShell> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _trackCurrentScreen();
+      }
+    });
     _listenForReminderNotificationTaps();
     _listenForCommentPushTaps();
   }
@@ -516,9 +540,7 @@ class _FuryShellState extends State<FuryShell> {
 
     Navigator.of(context).popUntil((route) => route.isFirst);
     FuryToastController.instance.clear();
-    setState(() {
-      _index = _calmIndex;
-    });
+    _selectTab(_calmIndex, source: 'reminder_notification');
   }
 
   void _listenForCommentPushTaps() {
@@ -551,6 +573,13 @@ class _FuryShellState extends State<FuryShell> {
       _pendingCommentPostId = tap.postId;
       _pendingCommentOpenToken += 1;
     });
+    _trackCurrentScreen(source: 'comment_push');
+    unawaited(
+      widget.analytics.logEvent(
+        'comments_opened_from_push',
+        parameters: {'post_id': tap.postId},
+      ),
+    );
   }
 
   void _openFeed({String? toastMessage}) {
@@ -564,9 +593,28 @@ class _FuryShellState extends State<FuryShell> {
       return;
     }
 
+    _selectTab(_feedIndex, source: 'record_complete');
+  }
+
+  void _selectTab(int value, {required String source}) {
+    if (_index == value) {
+      return;
+    }
+
     setState(() {
-      _index = _feedIndex;
+      _index = value;
     });
+    _trackCurrentScreen(source: source);
+  }
+
+  void _trackCurrentScreen({String source = 'app'}) {
+    unawaited(
+      widget.analytics.logScreenView(
+        _screenNames[_index],
+        screenClass: 'FuryShell',
+        parameters: {'source': source},
+      ),
+    );
   }
 
   @override
@@ -587,14 +635,19 @@ class _FuryShellState extends State<FuryShell> {
         noteRepository: widget.noteRepository,
         reminderScheduler: widget.reminderScheduler,
         voiceRecorder: widget.voiceRecorder,
+        analytics: widget.analytics,
       ),
       FeedScreen(
         feedService: widget.feedService,
         pendingCommentPostId: _pendingCommentPostId,
         pendingCommentOpenToken: _pendingCommentOpenToken,
+        analytics: widget.analytics,
       ),
       StatsScreen(noteRepository: widget.noteRepository),
-      CalmScreen(onNavigateToFeed: _openFeed),
+      CalmScreen(
+        onNavigateToFeed: _openFeed,
+        noteRepository: widget.noteRepository,
+      ),
     ];
 
     return Scaffold(
@@ -619,9 +672,7 @@ class _FuryShellState extends State<FuryShell> {
         selectedIndex: _index,
         onSelected: (value) {
           FuryToastController.instance.clear();
-          setState(() {
-            _index = value;
-          });
+          _selectTab(value, source: 'bottom_nav');
         },
         labels: [l10n.record, l10n.feed, l10n.stats, l10n.calm],
       ),
@@ -974,9 +1025,12 @@ class FuryDrawer extends StatelessWidget {
             subtitle: '닉네임 변경 · 알림 설정',
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const SettingsScreen()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  settings: const RouteSettings(name: 'settings'),
+                  builder: (_) => const SettingsScreen(),
+                ),
+              );
             },
           ),
           FuryDrawerTile(
@@ -986,7 +1040,10 @@ class FuryDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const AppGuideScreen()),
+                MaterialPageRoute(
+                  settings: const RouteSettings(name: 'app_guide'),
+                  builder: (_) => const AppGuideScreen(),
+                ),
               );
             },
           ),
@@ -997,7 +1054,10 @@ class FuryDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const CalmGuideScreen()),
+                MaterialPageRoute(
+                  settings: const RouteSettings(name: 'calm_guide'),
+                  builder: (_) => const CalmGuideScreen(),
+                ),
               );
             },
           ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
@@ -14,12 +15,14 @@ class FeedScreen extends StatefulWidget {
     this.feedService,
     this.pendingCommentPostId,
     this.pendingCommentOpenToken = 0,
+    this.analytics = const NoopAppAnalytics(),
     super.key,
   });
 
   final FeedService? feedService;
   final String? pendingCommentPostId;
   final int pendingCommentOpenToken;
+  final AppAnalytics analytics;
 
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -86,8 +89,13 @@ class _FeedScreenState extends State<FeedScreen>
                 feedService: widget.feedService,
                 pendingCommentPostId: widget.pendingCommentPostId,
                 pendingCommentOpenToken: widget.pendingCommentOpenToken,
+                analytics: widget.analytics,
               ),
-              _FeedTabView(mineOnly: true, feedService: widget.feedService),
+              _FeedTabView(
+                mineOnly: true,
+                feedService: widget.feedService,
+                analytics: widget.analytics,
+              ),
             ],
           ),
         ),
@@ -102,12 +110,14 @@ class _FeedTabView extends StatefulWidget {
     this.feedService,
     this.pendingCommentPostId,
     this.pendingCommentOpenToken = 0,
+    this.analytics = const NoopAppAnalytics(),
   });
 
   final bool mineOnly;
   final FeedService? feedService;
   final String? pendingCommentPostId;
   final int pendingCommentOpenToken;
+  final AppAnalytics analytics;
 
   @override
   State<_FeedTabView> createState() => _FeedTabViewState();
@@ -225,6 +235,12 @@ class _FeedTabViewState extends State<_FeedTabView>
       await _feedService.deletePost(postId);
       if (!mounted) return;
       setState(() => _posts.removeWhere((p) => p.postId == postId));
+      unawaited(
+        widget.analytics.logEvent(
+          'feed_post_deleted',
+          parameters: {'post_id': postId},
+        ),
+      );
     } catch (_) {}
   }
 
@@ -241,6 +257,16 @@ class _FeedTabViewState extends State<_FeedTabView>
           );
         }
       });
+      unawaited(
+        widget.analytics.logEvent(
+          'feed_like_toggled',
+          parameters: {
+            'post_id': postId,
+            'is_liked': result.isLiked,
+            'like_count': result.likeCount,
+          },
+        ),
+      );
     } catch (_) {}
   }
 
@@ -257,6 +283,16 @@ class _FeedTabViewState extends State<_FeedTabView>
     required int commentCount,
     FeedPost? post,
   }) async {
+    unawaited(
+      widget.analytics.logEvent(
+        'comments_opened',
+        parameters: {
+          'post_id': postId,
+          'initial_comment_count': commentCount,
+          'source': post == null ? 'push_or_deep_link' : 'feed',
+        },
+      ),
+    );
     await showCommentSheet(
       context,
       postId: postId,
@@ -268,6 +304,7 @@ class _FeedTabViewState extends State<_FeedTabView>
       postRageLevel: post?.rageLevel,
       postCategory: post?.category,
       feedService: _feedService,
+      analytics: widget.analytics,
       onCountChanged: (count) {
         if (!mounted) return;
         setState(() {

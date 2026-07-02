@@ -10,9 +10,10 @@ import 'calm/calm_timeout_screen.dart';
 import 'record_screen.dart';
 
 class CalmScreen extends StatefulWidget {
-  const CalmScreen({this.onNavigateToFeed, super.key});
+  const CalmScreen({this.onNavigateToFeed, this.noteRepository, super.key});
 
   final VoidCallback? onNavigateToFeed;
+  final RageNoteRepository? noteRepository;
 
   @override
   State<CalmScreen> createState() => _CalmScreenState();
@@ -29,7 +30,8 @@ class _CalmScreenState extends State<CalmScreen> {
   }
 
   Future<void> _loadReminders() async {
-    final all = await RageNoteRepository.instance.getAll();
+    final all = await (widget.noteRepository ?? RageNoteRepository.instance)
+        .getAll();
     final withReminder = all.where((n) => n.reminderAt != null).toList();
     if (mounted) {
       setState(() {
@@ -135,18 +137,27 @@ class _CalmScreenState extends State<CalmScreen> {
                         case 0:
                           Navigator.of(context).push(
                             MaterialPageRoute(
+                              settings: const RouteSettings(
+                                name: 'calm_breathing',
+                              ),
                               builder: (_) => const CalmBreathingScreen(),
                             ),
                           );
                         case 1:
                           Navigator.of(context).push(
                             MaterialPageRoute(
+                              settings: const RouteSettings(
+                                name: 'calm_timeout',
+                              ),
                               builder: (_) => const CalmTimeoutScreen(),
                             ),
                           );
                         case 2:
                           Navigator.of(context).push(
                             MaterialPageRoute(
+                              settings: const RouteSettings(
+                                name: 'calm_meditation',
+                              ),
                               builder: (_) => const CalmMeditationScreen(),
                             ),
                           );

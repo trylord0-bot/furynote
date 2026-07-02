@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/api_error_messages.dart';
 import 'package:fury_note/src/api/feed_service.dart';
@@ -60,6 +63,7 @@ class RecordScreen extends StatefulWidget {
     this.notificationSettingsStore,
     this.reminderScheduler,
     this.voiceRecorder,
+    this.analytics = const NoopAppAnalytics(),
     super.key,
   });
 
@@ -70,6 +74,7 @@ class RecordScreen extends StatefulWidget {
   final NotificationSettingsStore? notificationSettingsStore;
   final ReminderScheduler? reminderScheduler;
   final FuryVoiceRecorder? voiceRecorder;
+  final AppAnalytics analytics;
 
   @override
   State<RecordScreen> createState() => _RecordScreenState();
@@ -93,6 +98,21 @@ class _RecordScreenState extends State<RecordScreen> {
   bool _isSaving = false;
   bool _isPosting = false;
 
+  static const _funnelSteps = [
+    'intensity',
+    'category',
+    'content',
+    'reminder',
+    'save',
+    'post',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _trackFunnelStep(0);
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -104,10 +124,20 @@ class _RecordScreenState extends State<RecordScreen> {
 
   void _goTo(int step) {
     setState(() => _step = step);
+    _trackFunnelStep(step);
     _controller.animateToPage(
       step,
       duration: const Duration(milliseconds: 320),
       curve: Curves.easeOutCubic,
+    );
+  }
+
+  void _trackFunnelStep(int step) {
+    unawaited(
+      widget.analytics.logEvent(
+        'record_funnel_step',
+        parameters: {'step': _funnelSteps[step], 'step_index': step},
+      ),
     );
   }
 
@@ -312,6 +342,17 @@ class _RecordScreenState extends State<RecordScreen> {
           savedNoteId,
         );
       }
+      unawaited(
+        widget.analytics.logEvent(
+          'feed_post_created',
+          parameters: {
+            'source': 'record_funnel',
+            'rage_level': rage.level,
+            'category': categoryValue,
+            'has_text': text.isNotEmpty,
+          },
+        ),
+      );
       widget.onPost?.call();
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -367,6 +408,18 @@ class _RecordScreenState extends State<RecordScreen> {
       if (!mounted) {
         return;
       }
+      unawaited(
+        widget.analytics.logEvent(
+          'record_saved',
+          parameters: {
+            'rage_level': rage.level,
+            'category': category.key,
+            'has_text': body.isNotEmpty,
+            'has_audio': _recordedAudioPath != null,
+            'has_reminder': reminderAt != null,
+          },
+        ),
+      );
       setState(() => _savedNoteId = id);
       _goTo(5);
     } catch (_) {

@@ -121,7 +121,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             postedCount: _postedCount,
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const ProfileEditScreen()),
+                MaterialPageRoute(
+                  settings: const RouteSettings(name: 'profile_edit'),
+                  builder: (_) => const ProfileEditScreen(),
+                ),
               );
             },
           ),
@@ -171,7 +174,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const DataExportScreen()),
+                    MaterialPageRoute(
+                      settings: const RouteSettings(name: 'data_export'),
+                      builder: (_) => const DataExportScreen(),
+                    ),
                   );
                 },
               ),
@@ -186,7 +192,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const DataImportScreen()),
+                    MaterialPageRoute(
+                      settings: const RouteSettings(name: 'data_import'),
+                      builder: (_) => const DataImportScreen(),
+                    ),
                   );
                 },
               ),
@@ -206,7 +215,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const PrivacyScreen()),
+                    MaterialPageRoute(
+                      settings: const RouteSettings(name: 'privacy'),
+                      builder: (_) => const PrivacyScreen(),
+                    ),
                   );
                 },
               ),
