@@ -1,0 +1,549 @@
+{
+  "@@locale": "de",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "Eintrag",
+  "feed": "Feed",
+  "stats": "Statistik",
+  "calm": "Beruhigen",
+  "settings": "Einstellungen",
+  "drawerGuide": "App-Anleitung",
+  "drawerCalmGuide": "Beruhigungsanleitung",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Menü",
+  "drawerRecordCount": "🔥 {count} Wutnotizen",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Spitzname · Benachrichtigungen",
+  "drawerGuideSubtitle": "So verwendest du Fury Note",
+  "drawerCalmGuideSubtitle": "Ruhige Karten · heutige Tipps",
+  "relativeTimeJustNow": "Gerade eben",
+  "relativeTimeMinutesAgo": "Vor {count} Minuten",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "Vor {count}Stunden",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "vor {count} Tagen",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "Wut-Eintrag",
+  "stepIntensity": "Wie wütend bist du jetzt?",
+  "stepIntensitySub": "Wählen Sie ein Emoji",
+  "stepCategory": "Was hat es verursacht?",
+  "stepCategorySub": "Wählen Sie eine Kategorie aus",
+  "stepText": "Was ist passiert?",
+  "stepTextSub": "Sie können dies überspringen",
+  "stepReminder": "Möchten Sie später noch einmal vorbeischauen?",
+  "stepReminderSub": "Sie können dies überspringen",
+  "stepSave": "Diese Notiz speichern?",
+  "stepSaveSub": "Sie können es nach dem Speichern veröffentlichen",
+  "stepPost": "Teilen Sie dieses Gefühl?",
+  "stepPostSub": "Es wird anonym sein",
+  "voiceInput": "Sprachaufzeichnung",
+  "next": "Weiter",
+  "previous": "Zurück",
+  "skip": "Überspringen",
+  "save": "Speichern",
+  "saveNote": "Notiz speichern",
+  "postIt": "Posten",
+  "saveOnly": "Nur speichern",
+  "feedPostedToast": "Zum Füttern geschickt",
+  "recordPostedToast": "Gepostet",
+  "recordSavedToast": "Gespeichert",
+  "commentPostedToast": "Kommentar gepostet",
+  "commentSendFailedToast": "Der Kommentar konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+  "commentDeleteTitle": "Kommentar löschen",
+  "commentDeleteContent": "Diesen Kommentar löschen?",
+  "commentsCount": "{count} Kommentare",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "Noch keine Kommentare\nSei der Erste, der eins hinterlässt 💬",
+  "commentInputHint": "Schreibe einen Kommentar...",
+  "apiErrorContentBlockedUrl": "Beiträge mit Links können nicht eingereicht werden.",
+  "apiErrorContentBlockedSpam": "Werbetext kann nicht eingereicht werden.",
+  "apiErrorContentBlockedProfanity": "Inhalte, die Obszönitäten enthalten, können nicht eingereicht werden.",
+  "apiErrorContentBlockedModeration": "Dieser Inhalt kann nicht übermittelt werden.",
+  "apiErrorRateLimitExceeded": "Bitte versuchen Sie es gleich noch einmal.",
+  "apiErrorInternal": "Es ist ein Serverfehler aufgetreten. Bitte versuchen Sie es gleich noch einmal.",
+  "apiErrorInvalidRequest": "Ungültige Anfrage.",
+  "apiErrorForbidden": "Sie haben keine Erlaubnis.",
+  "apiErrorPostNotFound": "Beitrag nicht gefunden.",
+  "apiErrorCommentNotFound": "Kommentar nicht gefunden.",
+  "apiErrorSignatureRequired": "Für die Anfrage ist eine Unterschrift erforderlich.",
+  "apiErrorSignatureInvalid": "Ungültige Anfrage.",
+  "apiErrorSignatureExpired": "Die Anfrage ist abgelaufen. Bitte versuchen Sie es erneut.",
+  "apiErrorSignatureReplay": "Diese Anfrage wurde bereits bearbeitet.",
+  "apiErrorUnknown": "Es ist ein unbekannter Fehler aufgetreten.",
+  "reminderNotification": "Erinnerungsbenachrichtigung",
+  "noReminder": "Nicht festgelegt",
+  "summaryIntensity": "Wutlevel",
+  "summaryCategory": "Kategorie",
+  "summaryText": "Text",
+  "summaryReminder": "Erinnerung",
+  "none": "Keine",
+  "other": "Andere",
+  "family": "Familie",
+  "romance": "Romantik",
+  "work": "Arbeit",
+  "people": "Menschen",
+  "driving": "Fahren",
+  "custom": "Benutzerdefiniert",
+  "recordCustomCategoryHint": "Geben Sie eine Kategorie ein",
+  "recordTextHint": "Schreiben Sie es hier",
+  "recordMicPermissionRequired": "Eine Mikrofonerlaubnis ist erforderlich.",
+  "recordVoiceStartFailed": "{label} konnte nicht gestartet werden.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Stoppen Sie die Aufnahme",
+  "recordVoiceRecordAgain": "Nochmals aufnehmen",
+  "recordVoiceSaved": "Sprachaufzeichnung gespeichert.",
+  "recordAudioSummaryLabel": "Stimme",
+  "recordAudioIncluded": "Aufnahme inklusive",
+  "recordSavingInProgress": "Sparen...",
+  "recordPostingInProgress": "Senden...",
+  "recordSaveFailedToast": "Die Notiz konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+  "recordProgressSemantics": "Fortschritt aufzeichnen",
+  "hourSuffix": "h",
+  "minuteSuffix": "m",
+  "reminderCustom": "Benutzerdefiniert",
+  "reminderIn30Minutes": "In 30 Minuten",
+  "reminderIn1Hour": "In 1 Stunde",
+  "reminderIn2Hours": "In 2 Stunden",
+  "reminderIn6Hours": "In 6 Stunden",
+  "reminderTomorrow": "Morgen",
+  "annoyed": "Genervt",
+  "angry": "Wütend",
+  "mad": "Verrückt",
+  "furious": "Wütend",
+  "rage": "Wut",
+  "calmed": "Ruhig",
+  "feedTitle": "Feed",
+  "feedSubtitle": "Durchsuchen Sie aktuelle Wutgeschichten",
+  "feedAllTab": "Gesamter Feed",
+  "feedMineTab": "Mein Feed",
+  "feedLoadFailed": "Der Feed konnte nicht geladen werden.",
+  "feedEmptyMine": "Sie haben noch nichts im Feed gepostet.\nTeilen Sie Ihre erste Wutnotiz!",
+  "feedEmptyAll": "Noch keine Feed-Beiträge.\nSeien Sie der Erste, der Ihre Wut teilt!",
+  "feedPostFailedToast": "Konnte nicht an den Feed gesendet werden. Bitte versuchen Sie es erneut.",
+  "like": "Fühle ich",
+  "comment": "Kommentar",
+  "retry": "Erneut versuchen",
+  "statsTitle": "Wut-Statistik",
+  "statsSubtitle": "Sehen Sie sich das emotionale Muster dieser Woche an",
+  "week": "1 Woche",
+  "month": "1 Monat",
+  "all": "Alle",
+  "totalRecords": "Aufzeichnungen",
+  "highestLevel": "Höchste",
+  "dailyAverage": "Täglicher Durchschnitt.",
+  "decreaseRate": "Abnahme",
+  "statsIntensityTrend": "Trend zur Wutintensität",
+  "statsCategoryDistribution": "Ursachenverteilung",
+  "statsNoRecords": "Keine Datensätze zum Anzeigen.",
+  "statsCalendarButtonTitle": "Datensätze nach Kalender anzeigen",
+  "statsCalendarButtonSubtitle": "Überprüfen und verwalten Sie Wutnotizen nach Datum",
+  "statsCalendarTitle": "Datensätze nach Kalender anzeigen",
+  "statsOtherCategory": "Andere",
+  "selectedDateRecordsTitle": "{date} Datensätze",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "Am ausgewählten Datum wurden keine Datensätze geschrieben.",
+  "reminderAction": "Erinnerung",
+  "play": "Abspielen",
+  "statsSummaryButtonTitle": "Wutbericht ansehen",
+  "statsSummaryButtonSubtitle": "Blättern Sie durch Ihre Wutmuster nach Kategorien",
+  "statsSummaryTitle": "Wutbericht",
+  "statsSummaryClose": "Schließen",
+  "statsSummaryEmptyTitle": "Noch keine Datensätze zum Zusammenfassen",
+  "statsSummaryEmptyBody": "Sobald Sie Wutnotizen hinzufügen, werden hier Kategoriemuster angezeigt.",
+  "statsSummaryTopHeadline": "„{category}“ hat dich am häufigsten wütend gemacht",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "Betrachtet „{category}“",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "Es ist okay. Das kann passieren.",
+  "statsSummaryComfortFamily": "Je näher jemand ist, desto schwieriger kann es landen.",
+  "statsSummaryComfortRomance": "Eine wertvolle Beziehung kann kleine Momente schärfer wirken lassen.",
+  "statsSummaryComfortWork": "Die Arbeit hat Ihren Geist möglicherweise schneller vorangetrieben, als er wollte.",
+  "statsSummaryComfortPeople": "Worte und Ausdrücke anderer können länger nachklingen als erwartet.",
+  "statsSummaryComfortDriving": "Die Spannung auf der Straße erreicht oft zuerst den Körper.",
+  "statsSummaryMetricCount": "Zählen",
+  "statsSummaryMetricCategory": "Kategorie",
+  "statsSummaryMetricFeed": "Feed-Beiträge",
+  "statsSummaryMetricCalm": "Ruhige Versuche",
+  "statsSummaryMetricAverage": "Durchschn. Ebene",
+  "statsSummaryMetricPeak": "Spitzenniveau",
+  "statsSummaryConclusion": "Fazit",
+  "statsSummaryRecordsUnit": "{count} Mal",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "Dies ist Ihr am häufigsten wiederholtes Wutsignal. Versuchen Sie das nächste Mal, die Körperspannung zu überprüfen, bevor die Wut vollständig aufsteigt.",
+  "statsSummaryConclusionCategory": "Wenn Sie diese Kategorie aufschreiben, solange sie noch klein ist, können Sie das Muster schneller erkennen.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Kategorieanteil",
+  "statsSummaryCalmRate": "Ruhiger Tarif",
+  "statsSummaryShareRate": "Aktienkurs",
+  "noContent": "Kein Inhalt",
+  "voicePlayback": "Stimme spielen",
+  "deleteConfirm": "Löschen?",
+  "delete": "Löschen",
+  "cancel": "Abbrechen",
+  "calmTitle": "Beruhigen",
+  "calmSubtitle": "Senken Sie, was noch übrig ist",
+  "reminderNotes": "Erinnerungsnotizen",
+  "breathing": "Atmen",
+  "timeout": "Auszeit",
+  "meditation": "Bildmeditation",
+  "feedSupport": "Futterunterstützung",
+  "calmReminderEmpty": "Erinnerungen werden hier angezeigt, wenn sie eintreffen",
+  "calmReminderFallbackText": "Wie fühlt sich diese Wut jetzt an?",
+  "calmCheckTitle": "Wie wütend bist du jetzt?",
+  "calmCheckSubtitle": "{emoji} {label} · dieser frühere Zorn",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Ich freue mich, dass du dich beruhigt hast.",
+  "calmSavedUpdatedToast": "Gespeichert",
+  "profileName": "Wütender Tiger",
+  "nicknameAdjectives": "wütend, wütend, wütend, explosiv, grausam, knurrend, scharf, gehörnt, erhitzt, rau, wild, tobend, feurig, donnernd, schnaufend, kochend, ärgerlich, lodernd, stürmisch, giftig",
+  "nicknameAnimals": "Tiger, Löwe, Wolf, Bär, Adler, Hai, Leopard, Gepard, Krokodil, Kobra, Stier, Wildschwein, Nashorn, Hyäne, Grizzly, Rabe, Falke, Igel, Jaguar, Puma",
+  "notificationSettings": "Benachrichtigungen",
+  "commentNotification": "Kommentarbenachrichtigungen",
+  "settingsNotificationsSection": "Benachrichtigungen",
+  "settingsReminderSubtitle": "Rage-Notiz-Erinnerung zum von Ihnen festgelegten Zeitpunkt",
+  "settingsCommentSubtitle": "Benachrichtigung, wenn jemand Ihren Beitrag kommentiert",
+  "settingsDataSection": "Daten",
+  "settingsDataImportSubtitle": "Datensätze aus einer Sicherungsdatei wiederherstellen",
+  "settingsSupportSection": "Unterstützung",
+  "settingsPrivacySubtitle": "Gesammelte Informationen und Verwendungszweck",
+  "settingsFeedbackTitle": "Feedback senden",
+  "settingsFeedbackSubtitle": "Probleme oder Verbesserungsvorschläge",
+  "settingsRecordCountUnit": "Aufzeichnungen",
+  "settingsPostCountUnit": "Beiträge",
+  "proPlan": "PRO-Datenexport",
+  "backupImport": "Daten importieren",
+  "settingsDataExportSubtitle": "Sicherungsdatei · Verlauf · Teilen",
+  "dataExportTitle": "Daten exportieren",
+  "dataExportProTitle": "PRO-Datenexport",
+  "dataExportDescription": "Erstellen Sie eine Sicherungsdatei mit allen lokalen App-Daten und teilen Sie sie per E-Mail oder Messenger.",
+  "dataExportOneTimePurchase": "Einmaliger Kauf · lebenslanger Zugriff",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "Exportieren",
+  "dataExportPaymentChecking": "Zahlung prüfen",
+  "dataExportCreateButton": "Export erstellen",
+  "dataExportPayAndCreateButton": "Bezahlen und exportieren",
+  "dataExportRestorePurchase": "Kauf wiederherstellen",
+  "dataExportCreatedToast": "Exportdatei erstellt.",
+  "dataExportFailedToast": "Die Exportdatei konnte nicht erstellt werden.",
+  "dataExportShareSubject": "Fury Note-Datensicherung",
+  "dataExportShareText": "Dies ist eine Fury Note-Datensicherungsdatei.",
+  "dataExportShareFailedToast": "Das Freigabeblatt konnte nicht geöffnet werden.",
+  "dataExportAllDataIncluded": "Alle lokalen App-Daten sind im Backup enthalten",
+  "dataExportHistoryTitle": "Verlauf exportieren",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Teilen",
+  "dataExportEmptyHistory": "Noch keine Exportdateien.",
+  "purchaseUpdateFailed": "Die Kaufaktualisierung konnte nicht verarbeitet werden.",
+  "purchaseStatusFailed": "Der Kaufstatus konnte nicht überprüft werden.",
+  "purchaseProductNotFound": "Store-Produkt nicht gefunden.",
+  "purchaseStoreUnavailable": "Es konnte keine Verbindung zum Shop hergestellt werden.",
+  "purchaseProductInfoFailed": "Die Produktinformationen des Shops konnten nicht geladen werden.",
+  "purchaseProductUnavailable": "Produktinformationen sind noch nicht fertig.",
+  "purchaseStartFailed": "Der Kauf konnte nicht gestartet werden.",
+  "purchaseCanceled": "Der Kauf wurde storniert.",
+  "purchaseReceiptInvalid": "Der Kaufbeleg konnte nicht überprüft werden.",
+  "purchaseReceiptVerifyFailed": "Die Überprüfung des Kaufbelegs ist fehlgeschlagen.",
+  "dataImportTitle": "Daten importieren",
+  "dataImportPickTitle": "Wählen Sie die Sicherungsdatei aus",
+  "dataImportPickDescription": "Wählen Sie eine .fnbackup-Datei aus\naus Fury Note exportiert",
+  "dataImportPickButton": "Datei auswählen",
+  "dataImportInProgress": "Importieren",
+  "dataImportSuccessToast": "Daten aus Backup ersetzt. ({count} Datensätze)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Daten aus Backup ersetzt. (0 Datensätze)",
+  "dataImportFailedToast": "Die Sicherungsdatei konnte nicht importiert werden.",
+  "dataImportInvalidFileToast": "Es können nur .fnbackup-Dateien importiert werden.",
+  "dataImportNoticeTitle": "Vor dem Import",
+  "dataImportNoticeBody": "Vorhandene Daten werden gelöscht und durch die Daten in der Sicherungsdatei ersetzt.",
+  "dataImportTransferTitle": "Geräte bewegen",
+  "dataImportTransferBody": "Importieren Sie nach der Installation der App auf einem neuen Gerät eine Sicherungsdatei, um die aktuellen lokalen Daten durch die Sicherungsdaten zu ersetzen.",
+  "feedDeleteTitle": "Feed löschen",
+  "feedDeleteContent": "Diesen Feed löschen?",
+  "calmBreathingTitle": "Atmen",
+  "breathPhaseInhale": "Einatmen",
+  "breathPhaseHold": "Halt",
+  "breathPhaseExhale": "Ausatmen",
+  "durationSeconds": "{count}Sekunden",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "Zyklus {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Laufen",
+  "calmTimeoutPaused": "Angehalten",
+  "reset": "Zurücksetzen",
+  "start": "Start",
+  "pause": "Pause",
+  "stop": "Stopp",
+  "calmMeditationSceneWave": "Wellen",
+  "calmMeditationSceneForest": "Wald",
+  "calmMeditationSceneSunset": "Sonnenuntergang",
+  "calmMeditationSceneMountain": "Berg",
+  "calmMeditationSceneCherryBlossom": "Kirschblüten",
+  "calmMeditationSceneNightSky": "Nachthimmel",
+  "calmMeditationPrompt": "Atme tief ein und dann aus",
+  "autoplay": "Automatische Wiedergabe",
+  "profileEditTitle": "Profil bearbeiten",
+  "nicknameLabel": "Spitzname",
+  "nicknameHint": "Geben Sie einen Spitznamen ein",
+  "nicknameRequiredError": "Bitte geben Sie einen Spitznamen ein",
+  "nicknameCodeAutomaticError": "Ihr Code wird automatisch hinzugefügt",
+  "nicknameTooShortError": "Verwenden Sie mindestens 2 Zeichen",
+  "profileSavedToast": "✅ Geändert in „{name}“!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "Beim Speichern ist ein Fehler aufgetreten.",
+  "avatarPickGallery": "Wählen Sie aus der Bibliothek",
+  "avatarPickCamera": "Machen Sie ein Foto",
+  "avatarReset": "Standard-Avatar verwenden",
+  "avatarResetToast": "Standard-Avatar wiederhergestellt.",
+  "avatarAppliedToast": "Profilfoto angewendet.",
+  "avatarTooLargeToast": "Es können nur Fotos bis 5 MB verwendet werden.",
+  "avatarLoadFailedToast": "Das Foto konnte nicht geladen werden.",
+  "profileCodeLabel": "Profilcode (kann nicht geändert werden)",
+  "profileSaveButton": "Änderungen speichern",
+  "avatarChangeLabel": "Profilfoto ändern",
+  "avatarChangeHint": "Tippen Sie auf das Foto, um es zu ändern",
+  "avatarSizeHint": "JPG, PNG, GIF · bis zu 5 MB",
+  "reminderNotificationFallbackBody": "Wie fühlt sich diese Wut jetzt an?",
+  "calmGuideTitle": "Wenn die Wut steigt,\nSenken Sie Ihren Körper zuerst sicher ab",
+  "calmGuideSubtitle": "Der ruhige Leitfaden von Fury Note fordert Sie nicht auf, Ihren Ärger loszuwerden. Es ist eine kurze Anleitung, die dabei helfen soll, dass das Gefühl vergeht, ohne dass jemand verletzt wird.",
+  "calmGuideNotice": "**Wenn Sie in unmittelbarer Gefahr sind**, bitten Sie bitte zuerst die Menschen in Ihrer Nähe um Hilfe oder wenden Sie sich an den Rettungsdienst, anstatt in dieser App zu bleiben.",
+  "calmGuideMomentTitle": "In dem Moment steigt die Wut",
+  "calmGuideMomentBody1": "Wut kann ein Signal dafür sein, dass etwas, das Ihnen am Herzen liegt, verletzt wurde. Aber in einem starken Wutzustand beschleunigt sich das Urteilsvermögen und Worte und Taten können rauer als gewöhnlich werden.",
+  "calmGuideMomentBody2": "Im Moment kommt es nicht darauf an, **völlig rational** zu sein, sondern **deine Reaktion um sogar 30 Sekunden zu verzögern**.",
+  "calmGuideRoutineTitle": "60-sekündige ruhige Routine",
+  "calmGuideStep1Title": "Stopp",
+  "calmGuideStep1Desc": "Unterbrechen Sie das Antworten, Anrufen, Kommentieren oder Verschieben. Entspannen Sie Ihre Hände und schauen Sie für einen Moment vom Bildschirm weg.",
+  "calmGuideStep2Title": "Atme",
+  "calmGuideStep2Desc": "4 Sekunden lang einatmen, 7 Sekunden lang gedrückt halten, 8 Sekunden lang ausatmen. Es ist in Ordnung, wenn es nicht perfekt ist.",
+  "calmGuideStep3Title": "Überprüfen Sie Ihren Körper",
+  "calmGuideStep3Desc": "Überprüfen Sie, ob Ihr Kiefer, Ihre Schultern, Ihre Fäuste oder Ihr Bauch angespannt sind, und lösen Sie nur eine Stelle.",
+  "calmGuideStep4Title": "Schreiben Sie es auf",
+  "calmGuideStep4Desc": "Schon ein Satz wie „Im Moment bin ich wütend, weil ___“ reicht aus.",
+  "calmGuideBreathTitle": "4-7-8 Atmung",
+  "calmGuideBreathStep1": "Atmen Sie 4 Sekunden lang durch die Nase ein.",
+  "calmGuideBreathStep2": "Halten Sie den Atem 7 Sekunden lang an.",
+  "calmGuideBreathStep3": "Atmen Sie 8 Sekunden lang langsam durch den Mund aus.",
+  "calmGuideBreathStep4": "Wiederholen Sie dies dreimal, wenn Sie können.",
+  "calmGuideBreathNote": "Wenn es schwierig ist, den Atem so lange anzuhalten, verkürzen Sie ihn auf eine angenehme Zahl wie **3-3-5**. Am wichtigsten ist ein langsames, langes Ausatmen.",
+  "calmGuideTimeoutTitle": "10-minütige Auszeit",
+  "calmGuideTimeoutBody": "Je stärker die Wut, desto stärker der Drang, sie sofort zu lösen. Aber wenn man jetzt spricht, kann es sein, dass zuerst verletzende Worte zum Vorschein kommen.",
+  "calmGuideTimeoutExamplesTitle": "Beispielhafte Timeout-Phrasen",
+  "calmGuideTimeoutExample1": "„Ich bin im Moment zu wütend, lass uns in 10 Minuten noch einmal reden.“",
+  "calmGuideTimeoutExample2": "„Ich mache eine kurze Pause, weil ich vielleicht etwas Verletzendes sage.“",
+  "calmGuideTimeoutExample3": "„Ich renne nicht weg, ich muss mich nur beruhigen, bevor wir wieder reden.“",
+  "calmGuideSensoryTitle": "Schnelle sensorische Erdung",
+  "calmGuideSensory1Title": "Kaltes Wasser",
+  "calmGuideSensory1Desc": "Halten Sie etwa 10 Sekunden lang kaltes Wasser auf Ihre Handgelenke oder Ihr Gesicht",
+  "calmGuideSensory2Title": "Spüre deine Füße",
+  "calmGuideSensory2Desc": "Nehmen Sie langsam das Gefühl wahr, wie Ihre Füße den Boden berühren",
+  "calmGuideSensory3Title": "Schauen Sie sich um",
+  "calmGuideSensory3Desc": "Nennen Sie ruhig 5 Objekte, die Sie sehen können",
+  "calmGuideSensory4Title": "Lass deine Schultern fallen",
+  "calmGuideSensory4Desc": "Atmen Sie aus und senken Sie Ihre Schultern nur um 1 cm",
+  "calmGuideQuestionsTitle": "Fragen, die beim Schreiben helfen",
+  "calmGuideQuestion1": "Was genau hat mich wütend gemacht?",
+  "calmGuideQuestion2": "Was habe ich erwartet, aber nicht erhalten?",
+  "calmGuideQuestion3": "Welche Handlung würde ich bereuen, wenn ich sie jetzt tun würde?",
+  "calmGuideQuestion4": "Für welche Wahl werde ich morgen dankbar sein?",
+  "calmGuideTag1": "Emotionsprotokoll",
+  "calmGuideTag2": "Wut distanziert",
+  "calmGuideTag3": "Erinnerungskontrolle",
+  "calmGuideDangerTitle": "Bitten Sie in diesen Fällen zunächst um Hilfe",
+  "calmGuideDanger1": "Wenn der Drang, sich selbst oder andere zu verletzen, stark ist",
+  "calmGuideDanger2": "Wenn der Drang, Dinge zu werfen oder zu zerbrechen, nicht aufhört",
+  "calmGuideDanger3": "Wenn Sie Lust haben, die andere Person zu konfrontieren oder zu bedrohen",
+  "calmGuideDanger4": "Wenn Alkohol, Drogen oder starker Schlafmangel es schwierig machen, die Kontrolle zu behalten",
+  "calmGuideDangerBody": "Versuchen Sie in diesen Fällen nicht, allein mit einer ruhigen Routine durchzukommen, sondern bitten Sie die Menschen in Ihrer Umgebung, professionelle Dienste oder den Notdienst um Hilfe.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "Dieses Dokument ersetzt keine medizinische Diagnose oder Behandlung.",
+  "privacyTitle": "Datenschutzrichtlinie",
+  "privacyLastUpdated": "Datum des Inkrafttretens: 16. Juni 2026",
+  "privacySection1Title": "1. Kategorien der erfassten Informationen",
+  "privacySection1Body": "Fury Note kann ohne Registrierung einer Mitgliedschaft genutzt werden. Das Unternehmen sammelt nur die folgenden Informationen.\n· Gerätekennung – ein zufällig ausgegebener Wert, der zur Identifizierung des Benutzers ohne Registrierung verwendet wird, um betrügerische Nutzung zu verhindern\n· Wutaufzeichnungsdaten – Intensität, Kategorie und Text (nur auf dem Gerät gespeichert)\n· Anonyme Feed-Beiträge – Spitzname, Avatarbild, Intensität, Kategorie und Text\n· Kommentare – Spitzname und Kommentartext\n· „Gefällt mir“-Datensätze – ob dem Benutzer ein bestimmter Beitrag gefallen hat\n· Push-Benachrichtigungstoken – zum Versenden von Benachrichtigungen (optional)",
+  "privacySection2Title": "2. Zweck der Verarbeitung",
+  "privacySection2Body": "· Bereitstellung von Community-Funktionen, einschließlich anonymem Feed, Kommentaren und Likes\n· Erkennung betrügerischer Nutzung, einschließlich der Verhinderung doppelter „Gefällt mir“-Angaben für denselben Beitrag\n· Versenden von Push-Benachrichtigungen, einschließlich Kommentarbenachrichtigungen\n· Betrieb des Dienstes und Analyse von Fehlern",
+  "privacySection3Title": "3. Keine Mitgliedschaftsregistrierung und keine Speicherung personenbezogener Daten",
+  "privacySection3Body": "Für Fury Note ist keine Mitgliedschaftsregistrierung erforderlich und es werden keine identitätsüberprüfbaren persönlichen Daten wie Name, E-Mail-Adresse oder Telefonnummer erfasst.\nDer Spitzname wird entweder automatisch generiert oder direkt vom Benutzer eingegeben und ist nicht mit der tatsächlichen Identität des Benutzers verknüpft. Bei der Gerätekennung handelt es sich ebenfalls um einen zufällig generierten Wert, der nicht zur Identifizierung einer bestimmten Person herangezogen werden kann.",
+  "privacySection4Title": "4. Weitergabe von Informationen an Dritte",
+  "privacySection4Body": "Das Unternehmen gibt die gesammelten Informationen nicht an Dritte weiter und verkauft diese auch nicht.",
+  "privacySection5Title": "5. Aufbewahrungs- und Nutzungszeitraum von Informationen",
+  "privacySection5Body": "· Rage-Datensätze, die nur gespeichert wurden, bleiben nur auf dem Gerät erhalten und werden beim Löschen der App zusammen gelöscht.\n· Mit dem anonymen Feed geteilte Beiträge, Avatare und Kommentare bleiben auf dem Server erhalten, bis sie vom Benutzer gelöscht werden, und werden bei einer solchen Anfrage sofort gelöscht.\n· Like-Datensätze werden beim Löschen des zugehörigen Beitrags gemeinsam gelöscht.",
+  "privacySection6Title": "6. Kontakt",
+  "privacySection6Body": "Für Anfragen zu personenbezogenen Daten wenden Sie sich bitte an die unten stehende E-Mail-Adresse.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "So verwenden Sie Fury Note",
+  "appGuideSubtitle": "Eine Anleitung zum Protokollieren von Ärger, zum Verfolgen von Mustern und zum Erhalten von Unterstützung für den Feed.",
+  "appGuideRecordTitle": "Protokollieren Sie Ihre Wut",
+  "appGuideRecordBody": "Wenn Sie wütend sind, tippen Sie unten auf die Schaltfläche 🔥, um eine Aufnahme zu starten.",
+  "appGuideRecordStep1": "Wählen Sie die Intensität: Wählen Sie ein Emoji, das zu Ihrer Wut passt",
+  "appGuideRecordStep2": "Wählen Sie eine Kategorie: Wählen Sie eine Ursache",
+  "appGuideRecordStep3": "Schreiben Sie es auf: Beschreiben Sie, was passiert ist (dies können Sie überspringen)",
+  "appGuideRecordStep4": "Erinnerung: Legen Sie einen Zeitpunkt fest, wenn Sie später noch einmal darauf zurückkommen möchten",
+  "appGuideRecordStep5": "Speichern oder posten: Halten Sie den Datensatz privat oder teilen Sie ihn im Feed",
+  "appGuideFeedTitle": "Finden Sie Unterstützung im Feed",
+  "appGuideFeedBody": "Das Teilen Ihrer Wut kann Sie mit anderen verbinden, denen es genauso geht.",
+  "appGuideFeedItem1": "Nach dem Speichern können Sie **anonym** im Feed posten",
+  "appGuideFeedItem2": "Liken oder kommentieren Sie die Beiträge anderer Personen",
+  "appGuideFeedItem3": "Sie können Ihren eigenen Beitrag jederzeit löschen",
+  "appGuideStatsTitle": "Verfolgen Sie Ihre emotionalen Muster",
+  "appGuideStatsBody": "Die Registerkarte „Statistiken“ hilft Ihnen dabei, Ihre Wutmuster im Nachhinein zu betrachten.",
+  "appGuideStatsItem1": "Trenddiagramm zur Wutintensität nach Zeitraum",
+  "appGuideStatsItem2": "Ursachenverteilung nach Kategorie",
+  "appGuideStatsItem3": "Kalenderansicht zum Durchsuchen von Datensätzen nach Datum",
+  "appGuideStatsItem4": "Wutbericht zur Analyse von Mustern nach Kategorie",
+  "appGuideCalmTitle": "Reduziere deine Wut",
+  "appGuideCalmBody": "Gehen Sie nach der Anmeldung zur Registerkarte „Beruhigung“, um zu versuchen, Ihre Emotionen zu dämpfen.",
+  "appGuideCalmItem1": "Erinnerungsnotizen: Besuchen Sie Datensätze, die Sie für später markiert haben, noch einmal",
+  "appGuideCalmItem2": "Atmung: Bringen Sie Ihren Geist mit der 4-7-8-Technik zur Ruhe",
+  "appGuideCalmItem3": "Auszeit: Verlangsamen Sie Ihre Reaktion mit einem 10-Minuten-Timer",
+  "appGuideCalmItem4": "Bildmeditation: Verändern Sie Ihre Stimmung mit Naturbildern",
+  "appGuideProfileTitle": "Spitzname und Profil",
+  "appGuideProfileBody": "Gehen Sie zu Menü > Einstellungen, um Ihren Spitznamen und Avatar zu ändern.",
+  "appGuideProfileItem1": "Spitzname: Geben Sie Ihren eigenen ein oder generieren Sie einen zufälligen",
+  "appGuideProfileItem2": "Avatar: Repräsentieren Sie sich mit einem Emoji",
+  "appGuideNotificationTitle": "Benachrichtigungseinstellungen",
+  "appGuideNotificationItem1": "Erinnerungsalarme: Lassen Sie sich zu der von Ihnen festgelegten Zeit an eine Wutnotiz erinnern",
+  "appGuideNotificationItem2": "Kommentarbenachrichtigungen: Lassen Sie sich benachrichtigen, wenn jemand Ihren Beitrag kommentiert",
+  "appGuideNotificationHint": "Schalten Sie diese unter „Einstellungen“ > „Benachrichtigungen“ um",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

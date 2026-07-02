@@ -1,0 +1,549 @@
+{
+  "@@locale": "ja",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "記録",
+  "feed": "フィード",
+  "stats": "統計",
+  "calm": "落ち着く",
+  "settings": "設定",
+  "drawerGuide": "アプリガイド",
+  "drawerCalmGuide": "クールダウンガイド",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "メニュー",
+  "drawerRecordCount": "🔥 {count} の怒りのメモ",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "ニックネーム・お知らせ",
+  "drawerGuideSubtitle": "Fury Note の使い方",
+  "drawerCalmGuideSubtitle": "クールダウンカード · 今日のヒント",
+  "relativeTimeJustNow": "たった今",
+  "relativeTimeMinutesAgo": "{count}分前",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}時間前",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count}日前",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "怒りの記録",
+  "stepIntensity": "あなたは今どのくらい怒っていますか？",
+  "stepIntensitySub": "絵文字を選択してください",
+  "stepCategory": "何が原因でしょうか?",
+  "stepCategorySub": "カテゴリを 1 つ選択してください",
+  "stepText": "何が起こったのでしょうか？",
+  "stepTextSub": "これはスキップできます",
+  "stepReminder": "後でもう一度訪れたいですか?",
+  "stepReminderSub": "これはスキップできます",
+  "stepSave": "このメモを保存しますか?",
+  "stepSaveSub": "保存後投稿可能です",
+  "stepPost": "この気持ちを共有しますか？",
+  "stepPostSub": "匿名になります",
+  "voiceInput": "音声録音",
+  "next": "次へ",
+  "previous": "前へ",
+  "skip": "スキップ",
+  "save": "保存",
+  "saveNote": "記録を保存",
+  "postIt": "投稿する",
+  "saveOnly": "保存だけする",
+  "feedPostedToast": "フィードに送信されました",
+  "recordPostedToast": "投稿しました",
+  "recordSavedToast": "保存されました",
+  "commentPostedToast": "投稿されたコメント",
+  "commentSendFailedToast": "コメントを送信できませんでした。もう一度試してください。",
+  "commentDeleteTitle": "コメントの削除",
+  "commentDeleteContent": "このコメントを削除しますか?",
+  "commentsCount": "コメント{count}",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "コメントはまだありません\n最初に残しましょう 💬",
+  "commentInputHint": "コメントを書いてください...",
+  "apiErrorContentBlockedUrl": "リンクを含む投稿は送信できません。",
+  "apiErrorContentBlockedSpam": "宣伝文は送信できません。",
+  "apiErrorContentBlockedProfanity": "冒涜的な内容を含むコンテンツは投稿できません。",
+  "apiErrorContentBlockedModeration": "このコンテンツは送信できません。",
+  "apiErrorRateLimitExceeded": "しばらくしてからもう一度お試しください。",
+  "apiErrorInternal": "サーバーエラーが発生しました。しばらくしてからもう一度お試しください。",
+  "apiErrorInvalidRequest": "無効なリクエストです。",
+  "apiErrorForbidden": "許可がありません。",
+  "apiErrorPostNotFound": "投稿が見つかりません。",
+  "apiErrorCommentNotFound": "コメントが見つかりません。",
+  "apiErrorSignatureRequired": "リクエストの署名が必要です。",
+  "apiErrorSignatureInvalid": "無効なリクエストです。",
+  "apiErrorSignatureExpired": "リクエストの有効期限が切れました。もう一度試してください。",
+  "apiErrorSignatureReplay": "このリクエストはすでに処理されています。",
+  "apiErrorUnknown": "不明なエラーが発生しました。",
+  "reminderNotification": "リマインダー通知",
+  "noReminder": "未設定",
+  "summaryIntensity": "激怒レベル",
+  "summaryCategory": "カテゴリ",
+  "summaryText": "テキスト",
+  "summaryReminder": "リマインダー",
+  "none": "なし",
+  "other": "その他",
+  "family": "家族",
+  "romance": "ロマンス",
+  "work": "仕事",
+  "people": "人々",
+  "driving": "運転",
+  "custom": "カスタム",
+  "recordCustomCategoryHint": "カテゴリを入力してください",
+  "recordTextHint": "ここに書いてください",
+  "recordMicPermissionRequired": "マイクの許可が必要です。",
+  "recordVoiceStartFailed": "{label} を開始できませんでした。",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "録音を停止する",
+  "recordVoiceRecordAgain": "再度録音する",
+  "recordVoiceSaved": "音声録音が保存されました。",
+  "recordAudioSummaryLabel": "声",
+  "recordAudioIncluded": "録音あり",
+  "recordSavingInProgress": "保存中...",
+  "recordPostingInProgress": "送信中...",
+  "recordSaveFailedToast": "メモを保存できませんでした。もう一度試してください。",
+  "recordProgressSemantics": "進行状況を記録する",
+  "hourSuffix": "h",
+  "minuteSuffix": "メートル",
+  "reminderCustom": "カスタム",
+  "reminderIn30Minutes": "30分以内",
+  "reminderIn1Hour": "1時間以内",
+  "reminderIn2Hours": "2時間以内",
+  "reminderIn6Hours": "6時間以内",
+  "reminderTomorrow": "明日",
+  "annoyed": "イライラする",
+  "angry": "怒っている",
+  "mad": "マッド",
+  "furious": "激怒",
+  "rage": "怒り",
+  "calmed": "穏やかな",
+  "feedTitle": "フィード",
+  "feedSubtitle": "最近の怒りの投稿を見る",
+  "feedAllTab": "すべてのフィード",
+  "feedMineTab": "自分のフィード",
+  "feedLoadFailed": "フィードを読み込めませんでした。",
+  "feedEmptyMine": "まだフィードに投稿していません。\n初めての怒りのメモを共有しましょう!",
+  "feedEmptyAll": "まだフィード投稿はありません。\n真っ先に怒りを分かち合いましょう！",
+  "feedPostFailedToast": "フィードに送信できませんでした。もう一度試してください。",
+  "like": "共感",
+  "comment": "コメント",
+  "retry": "再試行",
+  "statsTitle": "怒りの統計",
+  "statsSubtitle": "今週の感情パターンを見る",
+  "week": "1週間",
+  "month": "1ヶ月",
+  "all": "すべて",
+  "totalRecords": "記録",
+  "highestLevel": "最高",
+  "dailyAverage": "毎日の平均",
+  "decreaseRate": "減少",
+  "statsIntensityTrend": "怒りの強さの傾向",
+  "statsCategoryDistribution": "原因の分布",
+  "statsNoRecords": "表示する記録はありません。",
+  "statsCalendarButtonTitle": "カレンダーごとに記録を表示する",
+  "statsCalendarButtonSubtitle": "怒りのメモを日付ごとに確認して管理する",
+  "statsCalendarTitle": "カレンダーごとに記録を表示する",
+  "statsOtherCategory": "その他",
+  "selectedDateRecordsTitle": "{date} レコード",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "選択した日付にはレコードが書き込まれませんでした。",
+  "reminderAction": "リマインダー",
+  "play": "再生",
+  "statsSummaryButtonTitle": "怒りのレポートを見る",
+  "statsSummaryButtonSubtitle": "自分の怒りのパターンをカテゴリー別に確認する",
+  "statsSummaryTitle": "レイジレポート",
+  "statsSummaryClose": "閉じる",
+  "statsSummaryEmptyTitle": "要約する記録はまだありません",
+  "statsSummaryEmptyBody": "怒りノートを追加すると、ここにカテゴリ パターンが表示されます。",
+  "statsSummaryTopHeadline": "「{category}」が最も頻繁にあなたを怒らせました",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "「{category}」を見ています",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "大丈夫です。そういうことが起こり得るのです。",
+  "statsSummaryComfortFamily": "誰かが近づくほど、着地が難しくなります。",
+  "statsSummaryComfortRomance": "大切な関係は、小さな瞬間をより鮮明に感じさせます。",
+  "statsSummaryComfortWork": "仕事のせいで、頭が思った以上に早く進んでしまったかもしれません。",
+  "statsSummaryComfortPeople": "他人からの言葉や表現は、予想以上に長く残ることがあります。",
+  "statsSummaryComfortDriving": "路面の緊張は最初に体に伝わることがよくあります。",
+  "statsSummaryMetricCount": "カウント",
+  "statsSummaryMetricCategory": "カテゴリ",
+  "statsSummaryMetricFeed": "フィード投稿",
+  "statsSummaryMetricCalm": "冷静に試す",
+  "statsSummaryMetricAverage": "平均レベル",
+  "statsSummaryMetricPeak": "ピークレベル",
+  "statsSummaryConclusion": "結論",
+  "statsSummaryRecordsUnit": "{count} 回",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "これは最も繰り返される怒りのサインです。次回は、怒りが完全に高まる前に体の緊張をチェックしてみてください。",
+  "statsSummaryConclusionCategory": "このカテゴリがまだ小さいうちに書き留めておくと、パターンに早く気づくことができます。",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "カテゴリシェア",
+  "statsSummaryCalmRate": "カームレート",
+  "statsSummaryShareRate": "シェア率",
+  "noContent": "コンテンツなし",
+  "voicePlayback": "音声を再生する",
+  "deleteConfirm": "削除しますか？",
+  "delete": "削除",
+  "cancel": "キャンセル",
+  "calmTitle": "落ち着く",
+  "calmSubtitle": "まだ残っているものを下げる",
+  "reminderNotes": "リマインダーメモ",
+  "breathing": "呼吸",
+  "timeout": "タイムアウト",
+  "meditation": "イメージ瞑想",
+  "feedSupport": "フィードのサポート",
+  "calmReminderEmpty": "リマインダーが到着するとここに表示されます",
+  "calmReminderFallbackText": "その怒りは今どう感じていますか？",
+  "calmCheckTitle": "あなたは今どのくらい怒っていますか？",
+  "calmCheckSubtitle": "{emoji} {label} · 先ほどの怒り",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "落ち着いてくれて良かったです。",
+  "calmSavedUpdatedToast": "保存されました",
+  "profileName": "怒っているタイガー",
+  "nicknameAdjectives": "怒っている、激怒、激怒、爆発的、猛烈な、うなり声、鋭い、角のある、加熱された、荒々しい、猛烈な、暴れ回る、激しい、雷のような、息を呑むような、沸騰する、憤慨する、燃えるような、嵐のような、有毒な",
+  "nicknameAnimals": "トラ、ライオン、オオカミ、クマ、ワシ、サメ、ヒョウ、チーター、ワニ、コブラ、雄牛、イノシシ、サイ、ハイエナ、グリズリー、レイヴン、タカ、ハリネズミ、ジャガー、ピューマ",
+  "notificationSettings": "通知",
+  "commentNotification": "コメントアラート",
+  "settingsNotificationsSection": "通知",
+  "settingsReminderSubtitle": "設定した時間に怒りメモリマインダー",
+  "settingsCommentSubtitle": "誰かがあなたの投稿にコメントしたときに警告する",
+  "settingsDataSection": "データ",
+  "settingsDataImportSubtitle": "バックアップファイルからレコードを復元する",
+  "settingsSupportSection": "サポート",
+  "settingsPrivacySubtitle": "収集する情報と利用目的",
+  "settingsFeedbackTitle": "フィードバックを送信する",
+  "settingsFeedbackSubtitle": "問題や改善のアイデア",
+  "settingsRecordCountUnit": "記録",
+  "settingsPostCountUnit": "投稿",
+  "proPlan": "PRO データのエクスポート",
+  "backupImport": "データのインポート",
+  "settingsDataExportSubtitle": "バックアップファイル・履歴・共有",
+  "dataExportTitle": "データのエクスポート",
+  "dataExportProTitle": "PRO データのエクスポート",
+  "dataExportDescription": "すべてのローカル アプリ データを含む 1 つのバックアップ ファイルを作成し、電子メールまたはメッセンジャーで共有します。",
+  "dataExportOneTimePurchase": "1 回限りの購入と生涯アクセス",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "輸出中",
+  "dataExportPaymentChecking": "支払いの確認",
+  "dataExportCreateButton": "エクスポートの作成",
+  "dataExportPayAndCreateButton": "支払いと輸出",
+  "dataExportRestorePurchase": "購入を復元する",
+  "dataExportCreatedToast": "エクスポートファイルが作成されました。",
+  "dataExportFailedToast": "エクスポートファイルを作成できませんでした。",
+  "dataExportShareSubject": "Fury Note データバックアップ",
+  "dataExportShareText": "Fury Note のデータバックアップファイルです。",
+  "dataExportShareFailedToast": "共有シートを開けませんでした。",
+  "dataExportAllDataIncluded": "すべてのローカル アプリ データがバックアップに含まれます",
+  "dataExportHistoryTitle": "エクスポート履歴",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "シェアする",
+  "dataExportEmptyHistory": "エクスポート ファイルはまだありません。",
+  "purchaseUpdateFailed": "購入の更新を処理できませんでした。",
+  "purchaseStatusFailed": "購入状況を確認できませんでした。",
+  "purchaseProductNotFound": "ストアの商品が見つかりません。",
+  "purchaseStoreUnavailable": "ストアに接続できませんでした。",
+  "purchaseProductInfoFailed": "ストアの商品情報を読み込めませんでした。",
+  "purchaseProductUnavailable": "製品情報はまだ準備されていません。",
+  "purchaseStartFailed": "購入を開始できませんでした。",
+  "purchaseCanceled": "購入はキャンセルされました。",
+  "purchaseReceiptInvalid": "購入時のレシートを確認できませんでした。",
+  "purchaseReceiptVerifyFailed": "購入レシートの検証に失敗しました。",
+  "dataImportTitle": "データのインポート",
+  "dataImportPickTitle": "バックアップファイルを選択",
+  "dataImportPickDescription": ".fnbackup ファイルを選択します\nフューリーノートからエクスポート",
+  "dataImportPickButton": "ファイルを選択してください",
+  "dataImportInProgress": "インポート中",
+  "dataImportSuccessToast": "バックアップからデータを置き換えました。 ({count} レコード)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "バックアップからデータを置き換えました。 (0件)",
+  "dataImportFailedToast": "バックアップファイルをインポートできませんでした。",
+  "dataImportInvalidFileToast": ".fnbackup ファイルのみをインポートできます。",
+  "dataImportNoticeTitle": "輸入する前に",
+  "dataImportNoticeBody": "既存のデータは削除され、バックアップ ファイル内のデータに置き換えられます。",
+  "dataImportTransferTitle": "デバイスの移動",
+  "dataImportTransferBody": "新しいデバイスにアプリをインストールした後、バックアップ ファイルをインポートして、現在のローカル データをバックアップ データに置き換えます。",
+  "feedDeleteTitle": "フィードの削除",
+  "feedDeleteContent": "このフィードを削除しますか?",
+  "calmBreathingTitle": "呼吸",
+  "breathPhaseInhale": "吸う",
+  "breathPhaseHold": "ホールド",
+  "breathPhaseExhale": "息を吐く",
+  "durationSeconds": "{count}秒",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "サイクル {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "ランニング",
+  "calmTimeoutPaused": "一時停止中",
+  "reset": "リセット",
+  "start": "開始",
+  "pause": "一時停止",
+  "stop": "停止",
+  "calmMeditationSceneWave": "波",
+  "calmMeditationSceneForest": "森",
+  "calmMeditationSceneSunset": "日没",
+  "calmMeditationSceneMountain": "山",
+  "calmMeditationSceneCherryBlossom": "桜",
+  "calmMeditationSceneNightSky": "夜空",
+  "calmMeditationPrompt": "深く息を吸い、そして息を吐きます",
+  "autoplay": "自動再生",
+  "profileEditTitle": "プロフィールの編集",
+  "nicknameLabel": "ニックネーム",
+  "nicknameHint": "ニックネームを入力してください",
+  "nicknameRequiredError": "ニックネームを入力してください",
+  "nicknameCodeAutomaticError": "コードは自動的に追加されます",
+  "nicknameTooShortError": "少なくとも 2 文字を使用してください",
+  "profileSavedToast": "✅「{name}」に変更しました！",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "保存中にエラーが発生しました。",
+  "avatarPickGallery": "ライブラリから選ぶ",
+  "avatarPickCamera": "写真を撮ってください",
+  "avatarReset": "デフォルトのアバターを使用する",
+  "avatarResetToast": "デフォルトのアバターが復元されました。",
+  "avatarAppliedToast": "プロフィール写真が適用されました。",
+  "avatarTooLargeToast": "使用できる写真は5MBまでです。",
+  "avatarLoadFailedToast": "写真を読み込めませんでした。",
+  "profileCodeLabel": "プロフィールコード（変更不可）",
+  "profileSaveButton": "変更を保存する",
+  "avatarChangeLabel": "プロフィール写真を変更する",
+  "avatarChangeHint": "写真をタップして変更します",
+  "avatarSizeHint": "JPG、PNG、GIF・最大5MB",
+  "reminderNotificationFallbackBody": "その怒りは今どう感じていますか？",
+  "calmGuideTitle": "怒りがこみ上げてくると、\nまずは安全に体を下ろしてください",
+  "calmGuideSubtitle": "Fury Note の穏やかなガイドは、怒りを取り除くようにとは言いません。これは、誰も傷つけずに感情を乗り越えるための短いガイドです。",
+  "calmGuideNotice": "**差し迫った危険にさらされている**場合は、このアプリを使い続けるのではなく、周囲の人に助けを求めるか、まず緊急サービスに連絡してください。",
+  "calmGuideMomentTitle": "怒りが湧き上がる瞬間",
+  "calmGuideMomentBody1": "怒りは、あなたが大切にしているものが侵害されたことを示す信号である可能性があります。しかし、強い怒りの状態では判断が早くなり、普段よりも言葉や行動が荒くなってしまうことがあります。",
+  "calmGuideMomentBody2": "今必要なのは、**完全に合理的になる**ことではなく、**反応を 30 秒でも遅らせる**ことです。",
+  "calmGuideRoutineTitle": "60秒の穏やかなルーチン",
+  "calmGuideStep1Title": "停止",
+  "calmGuideStep1Desc": "返信、通話、コメント、移動を一時停止します。手をリラックスさせて、しばらく画面から目を離してください。",
+  "calmGuideStep2Title": "呼吸する",
+  "calmGuideStep2Desc": "4 秒間吸って、7 秒間止めて、8 秒間吐きます。完璧でなくても大丈夫です。",
+  "calmGuideStep3Title": "あなたの体をチェックしてください",
+  "calmGuideStep3Desc": "顎、肩、拳、お腹などが緊張していないか確認し、一か所だけ力を抜きましょう。",
+  "calmGuideStep4Title": "書き留めてください",
+  "calmGuideStep4Desc": "「今、私は○○のせいで怒っています」という一文でも十分です。",
+  "calmGuideBreathTitle": "4-7-8の呼吸",
+  "calmGuideBreathStep1": "鼻から4秒かけて息を吸います。",
+  "calmGuideBreathStep2": "7秒間息を止めてください。",
+  "calmGuideBreathStep3": "8秒かけて口からゆっくりと息を吐きます。",
+  "calmGuideBreathStep4": "できれば3回繰り返してください。",
+  "calmGuideBreathNote": "息を長く止めるのが難しい場合は、**3-3-5** などの快適なカウントに短くしてください。最も重要なのは、ゆっくりと長く息を吐くことです。",
+  "calmGuideTimeoutTitle": "10分のタイムアウト",
+  "calmGuideTimeoutBody": "怒りが強ければ強いほど、すぐに解決したいという気持ちも強くなります。しかし、今話すと、最初に傷つく言葉が出てくるかもしれません。",
+  "calmGuideTimeoutExamplesTitle": "タイムアウトフレーズの例",
+  "calmGuideTimeoutExample1": "「今はとても怒っているので、10分後にもう一度話しましょう。」",
+  "calmGuideTimeoutExample2": "「傷つくことを言うかもしれないので、少し休憩します。」",
+  "calmGuideTimeoutExample3": "「逃げているわけではありません。もう一度話す前に落ち着く必要があるだけです。」",
+  "calmGuideSensoryTitle": "感覚の素早いグラウンディング",
+  "calmGuideSensory1Title": "冷水",
+  "calmGuideSensory1Desc": "冷たい水を手首や顔に10秒ほど当てます。",
+  "calmGuideSensory2Title": "足を感じてください",
+  "calmGuideSensory2Desc": "足が床に触れる感覚にゆっくりと気づいてください",
+  "calmGuideSensory3Title": "周りを見回してください",
+  "calmGuideSensory3Desc": "目に見える 5 つのオブジェクトの名前を静かに挙げてください",
+  "calmGuideSensory4Title": "肩を落として",
+  "calmGuideSensory4Desc": "息を吐きながら肩を1cmだけ下げる",
+  "calmGuideQuestionsTitle": "執筆中に役立つ質問",
+  "calmGuideQuestion1": "いったい何が私を怒らせたのでしょうか？",
+  "calmGuideQuestion2": "期待していたのに受け取れなかったものは何ですか?",
+  "calmGuideQuestion3": "今実行したらどんな行動を後悔するでしょうか？",
+  "calmGuideQuestion4": "明日の私はどの選択に感謝するでしょうか？",
+  "calmGuideTag1": "感情ログ",
+  "calmGuideTag2": "怒りを遠ざける",
+  "calmGuideTag3": "リマインダーチェック",
+  "calmGuideDangerTitle": "このような場合はまず助けを求めてください",
+  "calmGuideDanger1": "自分や他人を傷つけたいという衝動が強いとき",
+  "calmGuideDanger2": "物を投げたり壊したりする衝動が止まらないとき",
+  "calmGuideDanger3": "相手と対峙したり、脅迫したくなったとき",
+  "calmGuideDanger4": "アルコール、薬物、または極度の睡眠不足により、コントロールを維持することが困難な場合",
+  "calmGuideDangerBody": "このような場合は、落ち着いた日常生活だけで乗り越えようとせず、周囲の人、専門サービス、または緊急サービスに助けを求めてください。",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "この文書は医学的診断や治療に代わるものではありません。",
+  "privacyTitle": "プライバシーポリシー",
+  "privacyLastUpdated": "発効日: 2026 年 6 月 16 日",
+  "privacySection1Title": "1. 収集される情報のカテゴリー",
+  "privacySection1Body": "フューリーノートは会員登録なしでご利用いただけます。当社は以下の情報のみを収集します。\n· デバイス識別子 — 不正使用を防止する目的で、登録せずにユーザーを識別するために使用されるランダムに発行される値\n· 怒りの記録データ — 強度、カテゴリー、テキスト (デバイスのみに保存)\n· 匿名フィード投稿 — ニックネーム、アバター画像、強度、カテゴリ、テキスト\n· コメント — ニックネームとコメントのテキスト\n· いいねレコード — ユーザーが特定の投稿にいいねをしたかどうか\n· プッシュ通知トークン — 通知を送信する目的 (オプション)",
+  "privacySection2Title": "2. 処理の目的",
+  "privacySection2Body": "・匿名フィード、コメント、いいねなどのコミュニティ機能の提供\n・同一投稿への重複いいね防止など不正利用の検知\n· コメントアラートを含むプッシュ通知の送信\n・サービスの運用およびエラーの分析",
+  "privacySection3Title": "3. 会員登録不要、個人情報の保持不要",
+  "privacySection3Body": "Fury Noteでは会員登録は不要で、氏名、メールアドレス、電話番号などの本人確認が可能な個人情報は収集しません。\nニックネームは自動的に生成されるか、ユーザーによって直接入力され、ユーザーの実際の身元には関連付けられません。デバイス識別子も同様にランダムに生成される値であり、特定の個人を識別するために使用することはできません。",
+  "privacySection4Title": "4. 第三者への情報提供",
+  "privacySection4Body": "当社は、収集した情報を第三者に提供・販売することはありません。",
+  "privacySection5Title": "5. 情報の保存期間および利用期間",
+  "privacySection5Body": "・保存のみされた怒り記録は端末内にのみ保持され、アプリ削除時に一緒に削除されます。\n· 匿名フィードに共有された投稿、アバター、コメントは、ユーザーによって削除されるまでサーバー上に保持され、そのような要求があった場合には直ちに削除されます。\n・いいねレコードは関連投稿の削除と同時に削除されます。",
+  "privacySection6Title": "6.連絡先",
+  "privacySection6Body": "個人情報に関するお問い合わせは下記のメールアドレスまでご連絡ください。\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "フューリーノートの使い方",
+  "appGuideSubtitle": "怒りを記録し、パターンを追跡し、フィードでサポートを受けるためのガイド。",
+  "appGuideRecordTitle": "怒りを記録する",
+  "appGuideRecordBody": "怒っているときは、下部にある 🔥 ボタンをタップして記録を開始します。",
+  "appGuideRecordStep1": "強さを選択: 怒りの度合いに応じた絵文字を選択してください",
+  "appGuideRecordStep2": "カテゴリを選択してください: 原因を 1 つ選択してください",
+  "appGuideRecordStep3": "書き出します: 何が起こったのか説明します (これはスキップできます)",
+  "appGuideRecordStep4": "リマインダー: 後でもう一度確認したい場合は、時間を設定してください",
+  "appGuideRecordStep5": "保存または投稿: 記録を非公開にするか、フィードで共有します",
+  "appGuideFeedTitle": "フィードでサポートを見つける",
+  "appGuideFeedBody": "怒りを共有すると、同じように感じている他の人たちとつながることができます。",
+  "appGuideFeedItem1": "保存後、**匿名**でフィードに投稿できます",
+  "appGuideFeedItem2": "他の人の投稿に「いいね」をしたりコメントしたりする",
+  "appGuideFeedItem3": "自分の投稿はいつでも削除できます",
+  "appGuideStatsTitle": "自分の感情パターンを追跡する",
+  "appGuideStatsBody": "統計タブは、自分の怒りのパターンを振り返るのに役立ちます。",
+  "appGuideStatsItem1": "期間別の怒りの強さの傾向グラフ",
+  "appGuideStatsItem2": "カテゴリ別原因分布",
+  "appGuideStatsItem3": "日付ごとにレコードを参照するカレンダー ビュー",
+  "appGuideStatsItem4": "カテゴリ別にパターンを分析する怒りレポート",
+  "appGuideCalmTitle": "怒りを鎮める",
+  "appGuideCalmBody": "ログインしたら、「穏やか」タブに移動して、感情を落ち着かせてみてください。",
+  "appGuideCalmItem1": "リマインダーメモ: フラグを付けたレコードを後で再確認します",
+  "appGuideCalmItem2": "呼吸：4-7-8のテクニックで心を落ち着かせる",
+  "appGuideCalmItem3": "タイムアウト: 10 分間のタイマーで反応を遅らせます。",
+  "appGuideCalmItem4": "イメージ瞑想: 自然のイメージで気分を変える",
+  "appGuideProfileTitle": "ニックネームとプロフィール",
+  "appGuideProfileBody": "メニュー > 設定に移動して、ニックネームとアバターを変更します。",
+  "appGuideProfileItem1": "ニックネーム: 独自のニックネームを入力するか、ランダムに生成します",
+  "appGuideProfileItem2": "アバター: 絵文字で自分を表現します",
+  "appGuideNotificationTitle": "通知設定",
+  "appGuideNotificationItem1": "リマインダーアラート: 設定した時間に怒りのメモを思い出させます",
+  "appGuideNotificationItem2": "コメントアラート: 誰かがあなたの投稿にコメントしたときに通知を受け取ります",
+  "appGuideNotificationHint": "[設定] > [通知] でこれらを切り替えます。",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

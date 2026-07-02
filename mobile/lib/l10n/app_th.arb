@@ -1,0 +1,549 @@
+{
+  "@@locale": "th",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "บันทึก",
+  "feed": "ฟีด",
+  "stats": "สถิติ",
+  "calm": "สงบใจ",
+  "settings": "การตั้งค่า",
+  "drawerGuide": "คู่มือแอป",
+  "drawerCalmGuide": "คู่มือสงบใจ",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "เมนู",
+  "drawerRecordCount": "🔥 {count} บันทึกความโกรธ",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "ชื่อเล่น · การแจ้งเตือน",
+  "drawerGuideSubtitle": "วิธีใช้ Fury Note",
+  "drawerCalmGuideSubtitle": "การ์ดสงบสติอารมณ์ · เคล็ดลับประจำวันนี้",
+  "relativeTimeJustNow": "แค่ตอนนี้",
+  "relativeTimeMinutesAgo": "{count} นาทีที่แล้ว",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}ชั่วโมงที่ผ่านมา",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} วันที่ผ่านมา",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "บันทึกความโกรธ",
+  "stepIntensity": "ตอนนี้คุณโกรธแค่ไหน?",
+  "stepIntensitySub": "เลือกอีโมจิ",
+  "stepCategory": "อะไรเป็นสาเหตุ?",
+  "stepCategorySub": "เลือกหนึ่งหมวดหมู่",
+  "stepText": "เกิดอะไรขึ้น?",
+  "stepTextSub": "คุณสามารถข้ามสิ่งนี้ได้",
+  "stepReminder": "ต้องการกลับมาดูอีกครั้งในภายหลังหรือไม่?",
+  "stepReminderSub": "คุณสามารถข้ามสิ่งนี้ได้",
+  "stepSave": "บันทึกบันทึกนี้ใช่ไหม",
+  "stepSaveSub": "คุณสามารถโพสต์ได้หลังจากบันทึกแล้ว",
+  "stepPost": "แบ่งปันความรู้สึกนี้?",
+  "stepPostSub": "มันจะไม่เปิดเผยตัวตน",
+  "voiceInput": "การบันทึกเสียง",
+  "next": "ถัดไป",
+  "previous": "ก่อนหน้า",
+  "skip": "ข้าม",
+  "save": "บันทึก",
+  "saveNote": "บันทึกโน้ต",
+  "postIt": "โพสต์",
+  "saveOnly": "บันทึกเท่านั้น",
+  "feedPostedToast": "ส่งไปเลี้ยงแล้ว",
+  "recordPostedToast": "โพสต์แล้ว",
+  "recordSavedToast": "บันทึกแล้ว",
+  "commentPostedToast": "โพสต์ความคิดเห็นแล้ว",
+  "commentSendFailedToast": "ไม่สามารถส่งความคิดเห็นได้ โปรดลองอีกครั้ง",
+  "commentDeleteTitle": "ลบความคิดเห็น",
+  "commentDeleteContent": "ลบความคิดเห็นนี้ใช่ไหม",
+  "commentsCount": "{count} ความคิดเห็น",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "ยังไม่มีความคิดเห็น\nเป็นคนแรกที่จะออกจากหนึ่ง 💬",
+  "commentInputHint": "เขียนความคิดเห็น...",
+  "apiErrorContentBlockedUrl": "ไม่สามารถส่งโพสต์ที่มีลิงก์ได้",
+  "apiErrorContentBlockedSpam": "ไม่สามารถส่งข้อความส่งเสริมการขายได้",
+  "apiErrorContentBlockedProfanity": "ไม่สามารถส่งเนื้อหาที่มีคำหยาบคายได้",
+  "apiErrorContentBlockedModeration": "เนื้อหานี้ไม่สามารถส่งได้",
+  "apiErrorRateLimitExceeded": "โปรดลองอีกครั้งในอีกสักครู่",
+  "apiErrorInternal": "เกิดข้อผิดพลาดของเซิร์ฟเวอร์ โปรดลองอีกครั้งในอีกสักครู่",
+  "apiErrorInvalidRequest": "คำขอไม่ถูกต้อง",
+  "apiErrorForbidden": "คุณไม่มีสิทธิ์",
+  "apiErrorPostNotFound": "ไม่พบโพสต์",
+  "apiErrorCommentNotFound": "ไม่พบความคิดเห็น",
+  "apiErrorSignatureRequired": "ต้องมีลายเซ็นคำขอ",
+  "apiErrorSignatureInvalid": "คำขอไม่ถูกต้อง",
+  "apiErrorSignatureExpired": "คำขอหมดอายุแล้ว โปรดลองอีกครั้ง",
+  "apiErrorSignatureReplay": "คำขอนี้ได้รับการประมวลผลแล้ว",
+  "apiErrorUnknown": "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ",
+  "reminderNotification": "การแจ้งเตือนการแจ้งเตือน",
+  "noReminder": "ไม่ได้ตั้งค่า",
+  "summaryIntensity": "ระดับความโกรธ",
+  "summaryCategory": "หมวดหมู่",
+  "summaryText": "ข้อความ",
+  "summaryReminder": "คำเตือน",
+  "none": "ไม่มี",
+  "other": "อื่นๆ",
+  "family": "ครอบครัว",
+  "romance": "โรแมนติก",
+  "work": "ทำงาน",
+  "people": "ผู้คน",
+  "driving": "ขับรถ",
+  "custom": "กำหนดเอง",
+  "recordCustomCategoryHint": "ป้อนหมวดหมู่",
+  "recordTextHint": "เขียนไว้ที่นี่",
+  "recordMicPermissionRequired": "ต้องได้รับอนุญาตจากไมโครโฟน",
+  "recordVoiceStartFailed": "ไม่สามารถเริ่ม {label} ได้",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "หยุดการบันทึก",
+  "recordVoiceRecordAgain": "บันทึกอีกครั้ง",
+  "recordVoiceSaved": "บันทึกการบันทึกเสียงแล้ว",
+  "recordAudioSummaryLabel": "เสียง",
+  "recordAudioIncluded": "รวมการบันทึก",
+  "recordSavingInProgress": "กำลังบันทึก...",
+  "recordPostingInProgress": "กำลังส่ง...",
+  "recordSaveFailedToast": "ไม่สามารถบันทึกบันทึกได้ โปรดลองอีกครั้ง",
+  "recordProgressSemantics": "บันทึกความคืบหน้า",
+  "hourSuffix": "ชั่วโมง",
+  "minuteSuffix": "ม",
+  "reminderCustom": "กำหนดเอง",
+  "reminderIn30Minutes": "ใน 30 นาที",
+  "reminderIn1Hour": "ใน 1 ชั่วโมง",
+  "reminderIn2Hours": "ภายใน 2 ชั่วโมง",
+  "reminderIn6Hours": "ใน 6 ชั่วโมง",
+  "reminderTomorrow": "พรุ่งนี้",
+  "annoyed": "รำคาญ",
+  "angry": "โกรธ",
+  "mad": "บ้า",
+  "furious": "โกรธมาก",
+  "rage": "ความโกรธ",
+  "calmed": "สงบ",
+  "feedTitle": "ฟีด",
+  "feedSubtitle": "เรียกดูเรื่องราวความโกรธล่าสุด",
+  "feedAllTab": "ฟีดทั้งหมด",
+  "feedMineTab": "ฟีดของฉัน",
+  "feedLoadFailed": "ไม่สามารถโหลดฟีดได้",
+  "feedEmptyMine": "คุณยังไม่ได้โพสต์ในฟีดเลย\nแบ่งปันบันทึกความโกรธครั้งแรกของคุณ!",
+  "feedEmptyAll": "ยังไม่มีการโพสต์ฟีด\nเป็นคนแรกที่จะแบ่งปันความโกรธของคุณ!",
+  "feedPostFailedToast": "ไม่สามารถส่งไปยังฟีดได้ โปรดลองอีกครั้ง",
+  "like": "เข้าใจเลย",
+  "comment": "ความคิดเห็น",
+  "retry": "ลองอีกครั้ง",
+  "statsTitle": "สถิติความโกรธ",
+  "statsSubtitle": "ดูรูปแบบทางอารมณ์ของสัปดาห์นี้",
+  "week": "1 สัปดาห์",
+  "month": "1 เดือน",
+  "all": "ทั้งหมด",
+  "totalRecords": "บันทึก",
+  "highestLevel": "สูงสุด",
+  "dailyAverage": "ค่าเฉลี่ยรายวัน",
+  "decreaseRate": "ลดลง",
+  "statsIntensityTrend": "แนวโน้มความรุนแรงของความโกรธ",
+  "statsCategoryDistribution": "สาเหตุการกระจาย",
+  "statsNoRecords": "ไม่มีบันทึกที่จะแสดง",
+  "statsCalendarButtonTitle": "ดูบันทึกตามปฏิทิน",
+  "statsCalendarButtonSubtitle": "ตรวจสอบและจัดการบันทึกความโกรธตามวันที่",
+  "statsCalendarTitle": "ดูบันทึกตามปฏิทิน",
+  "statsOtherCategory": "อื่นๆ",
+  "selectedDateRecordsTitle": "{date} บันทึก",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "ไม่มีการเขียนบันทึกในวันที่เลือก",
+  "reminderAction": "คำเตือน",
+  "play": "เล่น",
+  "statsSummaryButtonTitle": "ดูรายงานความโกรธ",
+  "statsSummaryButtonSubtitle": "พลิกดูรูปแบบความโกรธของคุณตามหมวดหมู่",
+  "statsSummaryTitle": "รายงานความโกรธ",
+  "statsSummaryClose": "ปิด",
+  "statsSummaryEmptyTitle": "ยังไม่มีบันทึกที่จะสรุป",
+  "statsSummaryEmptyBody": "เมื่อคุณเพิ่มบันทึกความโกรธ รูปแบบหมวดหมู่จะปรากฏที่นี่",
+  "statsSummaryTopHeadline": "\"{category}\" ทำให้คุณโกรธบ่อยที่สุด",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "กำลังดูที่ \"{category}\"",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "ไม่เป็นไร. ที่สามารถเกิดขึ้นได้",
+  "statsSummaryComfortFamily": "ยิ่งมีคนใกล้ชิดมากเท่าไรก็ยิ่งลงจอดได้ยากขึ้นเท่านั้น",
+  "statsSummaryComfortRomance": "ความสัมพันธ์อันล้ำค่าสามารถทำให้ช่วงเวลาเล็กๆ รู้สึกชัดเจนยิ่งขึ้น",
+  "statsSummaryComfortWork": "งานอาจทำให้จิตใจคุณเร็วกว่าที่คิด",
+  "statsSummaryComfortPeople": "คำพูดและสำนวนจากผู้อื่นอาจคงอยู่นานกว่าที่คาดไว้",
+  "statsSummaryComfortDriving": "ความตึงเครียดบนท้องถนนมักมาถึงร่างกายก่อน",
+  "statsSummaryMetricCount": "นับ",
+  "statsSummaryMetricCategory": "หมวดหมู่",
+  "statsSummaryMetricFeed": "โพสต์ฟีด",
+  "statsSummaryMetricCalm": "พยายามอย่างใจเย็น",
+  "statsSummaryMetricAverage": "เฉลี่ย ระดับ",
+  "statsSummaryMetricPeak": "ระดับสูงสุด",
+  "statsSummaryConclusion": "บทสรุป",
+  "statsSummaryRecordsUnit": "{count} ครั้ง",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "นี่คือสัญญาณความโกรธที่เกิดขึ้นซ้ำๆ ของคุณ ครั้งต่อไปลองตรวจสอบความตึงเครียดของร่างกายก่อนที่ความโกรธจะปะทุเต็มที่",
+  "statsSummaryConclusionCategory": "การเขียนหมวดหมู่นี้ในขณะที่ยังมีขนาดเล็กจะช่วยให้คุณสังเกตเห็นรูปแบบได้เร็วขึ้น",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "แบ่งปันหมวดหมู่",
+  "statsSummaryCalmRate": "อัตราความสงบ",
+  "statsSummaryShareRate": "อัตราการแบ่งปัน",
+  "noContent": "ไม่มีเนื้อหา",
+  "voicePlayback": "เล่นเสียง",
+  "deleteConfirm": "ลบเหรอ?",
+  "delete": "ลบ",
+  "cancel": "ยกเลิก",
+  "calmTitle": "สงบใจ",
+  "calmSubtitle": "ลดสิ่งที่ยังค้างอยู่ลง",
+  "reminderNotes": "บันทึกช่วยเตือน",
+  "breathing": "การหายใจ",
+  "timeout": "หมดเวลา",
+  "meditation": "การทำสมาธิภาพ",
+  "feedSupport": "การสนับสนุนฟีด",
+  "calmReminderEmpty": "การเตือนความจำจะปรากฏที่นี่เมื่อมาถึง",
+  "calmReminderFallbackText": "ตอนนี้ความโกรธนั้นรู้สึกอย่างไร?",
+  "calmCheckTitle": "ตอนนี้คุณโกรธแค่ไหน?",
+  "calmCheckSubtitle": "{emoji} {label} · ความโกรธที่เกิดขึ้นก่อนหน้านี้",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "ดีใจที่คุณสงบลงแล้ว",
+  "calmSavedUpdatedToast": "บันทึกแล้ว",
+  "profileName": "เสือโกรธ",
+  "nicknameAdjectives": "โกรธ,โมโห,โกรธจัด,ระเบิด,ดุร้าย,คำราม,คม,มีเขา,ร้อน,หยาบ,รุนแรง,อาละวาด,คะนอง,เสียงดังกึกก้อง,เดือดพล่าน,เดือดพล่าน,ขุ่นเคือง,สว่างจ้า,มีพายุ,มีพิษ",
+  "nicknameAnimals": "เสือ สิงโต หมาป่า หมี นกอินทรี ฉลาม เสือดาว เสือชีตาห์ จระเข้ งูเห่า กระทิง หมูป่า แรด หมาใน กริซลี่ นกกา เหยี่ยว เม่น เสือจากัวร์ เสือพูมา",
+  "notificationSettings": "การแจ้งเตือน",
+  "commentNotification": "การแจ้งเตือนความคิดเห็น",
+  "settingsNotificationsSection": "การแจ้งเตือน",
+  "settingsReminderSubtitle": "การแจ้งเตือนบันทึกความโกรธในเวลาที่คุณตั้งไว้",
+  "settingsCommentSubtitle": "แจ้งเตือนเมื่อมีคนแสดงความคิดเห็นในโพสต์ของคุณ",
+  "settingsDataSection": "ข้อมูล",
+  "settingsDataImportSubtitle": "กู้คืนบันทึกจากไฟล์สำรอง",
+  "settingsSupportSection": "สนับสนุน",
+  "settingsPrivacySubtitle": "ข้อมูลที่รวบรวมและวัตถุประสงค์การใช้งาน",
+  "settingsFeedbackTitle": "ส่งคำติชม",
+  "settingsFeedbackSubtitle": "ปัญหาหรือแนวคิดในการปรับปรุง",
+  "settingsRecordCountUnit": "บันทึก",
+  "settingsPostCountUnit": "โพสต์",
+  "proPlan": "การส่งออกข้อมูล PRO",
+  "backupImport": "นำเข้าข้อมูล",
+  "settingsDataExportSubtitle": "ไฟล์สำรอง·ประวัติ·การแชร์",
+  "dataExportTitle": "ส่งออกข้อมูล",
+  "dataExportProTitle": "การส่งออกข้อมูล PRO",
+  "dataExportDescription": "สร้างไฟล์สำรองข้อมูลหนึ่งไฟล์พร้อมข้อมูลแอปในเครื่องทั้งหมดแล้วแชร์ทางอีเมลหรือ Messenger",
+  "dataExportOneTimePurchase": "ซื้อครั้งเดียว · เข้าถึงได้ตลอดชีวิต",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "กำลังส่งออก",
+  "dataExportPaymentChecking": "กำลังตรวจสอบการชำระเงิน",
+  "dataExportCreateButton": "สร้างการส่งออก",
+  "dataExportPayAndCreateButton": "ชำระเงินและส่งออก",
+  "dataExportRestorePurchase": "คืนค่าการซื้อ",
+  "dataExportCreatedToast": "สร้างไฟล์ส่งออกแล้ว",
+  "dataExportFailedToast": "ไม่สามารถสร้างไฟล์ส่งออกได้",
+  "dataExportShareSubject": "การสำรองข้อมูล Fury Note",
+  "dataExportShareText": "นี่เป็นไฟล์สำรองข้อมูล Fury Note",
+  "dataExportShareFailedToast": "ไม่สามารถเปิดแผ่นแบ่งปันได้",
+  "dataExportAllDataIncluded": "ข้อมูลแอปในเครื่องทั้งหมดจะรวมอยู่ในการสำรองข้อมูล",
+  "dataExportHistoryTitle": "ประวัติการส่งออก",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "แบ่งปัน",
+  "dataExportEmptyHistory": "ยังไม่มีไฟล์ส่งออก",
+  "purchaseUpdateFailed": "ไม่สามารถประมวลผลการอัปเดตการซื้อได้",
+  "purchaseStatusFailed": "ไม่สามารถตรวจสอบสถานะการซื้อได้",
+  "purchaseProductNotFound": "ไม่พบสินค้าในร้าน",
+  "purchaseStoreUnavailable": "ไม่สามารถเชื่อมต่อกับร้านค้าได้",
+  "purchaseProductInfoFailed": "ไม่สามารถโหลดข้อมูลผลิตภัณฑ์ของร้านค้าได้",
+  "purchaseProductUnavailable": "ข้อมูลสินค้ายังไม่พร้อม",
+  "purchaseStartFailed": "ไม่สามารถเริ่มการซื้อได้",
+  "purchaseCanceled": "การซื้อถูกยกเลิก",
+  "purchaseReceiptInvalid": "ไม่สามารถตรวจสอบใบเสร็จรับเงินการซื้อได้",
+  "purchaseReceiptVerifyFailed": "การตรวจสอบใบเสร็จรับเงินการซื้อล้มเหลว",
+  "dataImportTitle": "นำเข้าข้อมูล",
+  "dataImportPickTitle": "เลือกไฟล์สำรอง",
+  "dataImportPickDescription": "เลือกไฟล์ .fnbackup\nส่งออกจาก Fury Note",
+  "dataImportPickButton": "เลือกไฟล์",
+  "dataImportInProgress": "กำลังนำเข้า",
+  "dataImportSuccessToast": "แทนที่ข้อมูลจากการสำรองข้อมูล ({count} บันทึก)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "แทนที่ข้อมูลจากการสำรองข้อมูล (0 บันทึก)",
+  "dataImportFailedToast": "ไม่สามารถนำเข้าไฟล์สำรองได้",
+  "dataImportInvalidFileToast": "สามารถนำเข้าได้เฉพาะไฟล์ .fnbackup เท่านั้น",
+  "dataImportNoticeTitle": "ก่อนนำเข้า",
+  "dataImportNoticeBody": "ข้อมูลที่มีอยู่จะถูกลบและแทนที่ด้วยข้อมูลในไฟล์สำรอง",
+  "dataImportTransferTitle": "อุปกรณ์เคลื่อนย้าย",
+  "dataImportTransferBody": "หลังจากติดตั้งแอปบนอุปกรณ์ใหม่ ให้นำเข้าไฟล์สำรองเพื่อแทนที่ข้อมูลในเครื่องปัจจุบันด้วยข้อมูลที่สำรองไว้",
+  "feedDeleteTitle": "ลบฟีด",
+  "feedDeleteContent": "ลบฟีดนี้ใช่ไหม",
+  "calmBreathingTitle": "การหายใจ",
+  "breathPhaseInhale": "หายใจเข้า",
+  "breathPhaseHold": "กดค้างไว้",
+  "breathPhaseExhale": "หายใจออก",
+  "durationSeconds": "{count}วินาที",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "วงจร {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "วิ่ง",
+  "calmTimeoutPaused": "หยุดชั่วคราว",
+  "reset": "รีเซ็ต",
+  "start": "เริ่ม",
+  "pause": "หยุดชั่วคราว",
+  "stop": "หยุด",
+  "calmMeditationSceneWave": "คลื่น",
+  "calmMeditationSceneForest": "ป่า",
+  "calmMeditationSceneSunset": "พระอาทิตย์ตก",
+  "calmMeditationSceneMountain": "ภูเขา",
+  "calmMeditationSceneCherryBlossom": "ดอกซากุระ",
+  "calmMeditationSceneNightSky": "ท้องฟ้ายามค่ำคืน",
+  "calmMeditationPrompt": "หายใจเข้าลึกๆ แล้วหายใจออก",
+  "autoplay": "เล่นอัตโนมัติ",
+  "profileEditTitle": "แก้ไขโปรไฟล์",
+  "nicknameLabel": "ชื่อเล่น",
+  "nicknameHint": "ป้อนชื่อเล่น",
+  "nicknameRequiredError": "กรุณากรอกชื่อเล่น",
+  "nicknameCodeAutomaticError": "รหัสของคุณจะถูกเพิ่มโดยอัตโนมัติ",
+  "nicknameTooShortError": "ใช้อย่างน้อย 2 ตัวอักษร",
+  "profileSavedToast": "✅ เปลี่ยนเป็น \"{name}\" แล้ว!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "เกิดข้อผิดพลาดขณะบันทึก",
+  "avatarPickGallery": "เลือกจากห้องสมุด",
+  "avatarPickCamera": "ถ่ายรูป",
+  "avatarReset": "ใช้อวตารเริ่มต้น",
+  "avatarResetToast": "กู้คืนอวตารเริ่มต้นแล้ว",
+  "avatarAppliedToast": "ใช้รูปโปรไฟล์แล้ว",
+  "avatarTooLargeToast": "สามารถใช้ได้เฉพาะภาพถ่ายที่มีขนาดไม่เกิน 5 MB",
+  "avatarLoadFailedToast": "ไม่สามารถโหลดรูปภาพได้",
+  "profileCodeLabel": "รหัสโปรไฟล์ (ไม่สามารถเปลี่ยนแปลงได้)",
+  "profileSaveButton": "บันทึกการเปลี่ยนแปลง",
+  "avatarChangeLabel": "เปลี่ยนรูปโปรไฟล์",
+  "avatarChangeHint": "แตะรูปภาพเพื่อเปลี่ยน",
+  "avatarSizeHint": "JPG, PNG, GIF · สูงสุด 5 MB",
+  "reminderNotificationFallbackBody": "ตอนนี้ความโกรธนั้นรู้สึกอย่างไร?",
+  "calmGuideTitle": "เมื่อความโกรธเกิดขึ้น\nลดร่างกายให้ปลอดภัยไว้ก่อน",
+  "calmGuideSubtitle": "คู่มือสงบสติอารมณ์ของ Fury Note ไม่ได้บอกให้คุณกำจัดความโกรธ เป็นคำแนะนำสั้นๆ ที่จะช่วยให้ความรู้สึกผ่านไปได้โดยไม่มีใครได้รับบาดเจ็บ",
+  "calmGuideNotice": "**หากคุณตกอยู่ในอันตราย** โปรดขอความช่วยเหลือจากคนรอบตัวคุณหรือติดต่อบริการฉุกเฉินก่อน แทนที่จะอยู่ในแอปนี้",
+  "calmGuideMomentTitle": "ช่วงเวลาที่ความโกรธเพิ่มขึ้น",
+  "calmGuideMomentBody1": "ความโกรธอาจเป็นสัญญาณว่ามีการละเมิดสิ่งที่คุณใส่ใจ แต่ในสภาวะโกรธจัด การตัดสินจะเร็วขึ้น และคำพูดและการกระทำอาจรุนแรงกว่าปกติ",
+  "calmGuideMomentBody2": "สิ่งที่จำเป็นในตอนนี้ไม่ใช่การ **มีเหตุผลอย่างสมบูรณ์** แต่ต้อง **ชะลอปฏิกิริยาของคุณลงแม้แต่ 30 วินาที**",
+  "calmGuideRoutineTitle": "กิจวัตรความสงบ 60 วินาที",
+  "calmGuideStep1Title": "หยุด",
+  "calmGuideStep1Desc": "หยุดตอบกลับ โทร แสดงความคิดเห็น หรือย้ายชั่วคราว ผ่อนคลายมือของคุณและละสายตาจากหน้าจอสักครู่",
+  "calmGuideStep2Title": "หายใจเข้า",
+  "calmGuideStep2Desc": "หายใจเข้า 4 วินาที ค้างไว้ 7 วินาที หายใจออก 8 วินาที ไม่เป็นไรถ้ามันไม่สมบูรณ์แบบ",
+  "calmGuideStep3Title": "ตรวจร่างกาย",
+  "calmGuideStep3Desc": "ตรวจสอบว่ากราม ไหล่ หมัด หรือท้องเกร็งหรือไม่ แล้วปล่อยเพียงจุดเดียว",
+  "calmGuideStep4Title": "เขียนมันลงไป",
+  "calmGuideStep4Desc": "แม้แต่ประโยคเดียวเช่น \"ตอนนี้ฉันโกรธเพราะ ___\" ก็เพียงพอแล้ว",
+  "calmGuideBreathTitle": "การหายใจแบบ 4-7-8",
+  "calmGuideBreathStep1": "หายใจเข้าทางจมูกเป็นเวลา 4 วินาที",
+  "calmGuideBreathStep2": "กลั้นหายใจเป็นเวลา 7 วินาที",
+  "calmGuideBreathStep3": "หายใจออกทางปากช้าๆ เป็นเวลา 8 วินาที",
+  "calmGuideBreathStep4": "ทำซ้ำ 3 ครั้งถ้าทำได้",
+  "calmGuideBreathNote": "ถ้ากลั้นลมหายใจยาวขนาดนั้นได้ยาก ให้ย่อให้เหลือนับสบายๆ เช่น **3-3-5** สิ่งที่สำคัญที่สุดคือการหายใจออกช้าๆ และยาว",
+  "calmGuideTimeoutTitle": "หมดเวลา 10 นาที",
+  "calmGuideTimeoutBody": "ยิ่งความโกรธรุนแรงขึ้นเท่าใด ความอยากที่จะแก้ไขในทันทีก็จะยิ่งมากขึ้นเท่านั้น แต่การพูดคุยตอนนี้อาจดึงคำพูดที่ทำร้ายจิตใจออกมาก่อน",
+  "calmGuideTimeoutExamplesTitle": "ตัวอย่างวลีการหมดเวลา",
+  "calmGuideTimeoutExample1": "“ตอนนี้ฉันโกรธเกินไป อีก 10 นาทีไว้คุยกันใหม่”",
+  "calmGuideTimeoutExample2": "“ฉันขอหยุดสักพักเพราะฉันอาจพูดอะไรที่ทำให้เจ็บปวด”",
+  "calmGuideTimeoutExample3": "“ฉันไม่ได้วิ่งหนี ฉันแค่ต้องใจเย็นก่อนเราจะคุยกันใหม่”",
+  "calmGuideSensoryTitle": "การต่อสายดินทางประสาทสัมผัสอย่างรวดเร็ว",
+  "calmGuideSensory1Title": "น้ำเย็น",
+  "calmGuideSensory1Desc": "ถือน้ำเย็นไว้บนข้อมือหรือใบหน้าประมาณ 10 วินาที",
+  "calmGuideSensory2Title": "รู้สึกถึงเท้าของคุณ",
+  "calmGuideSensory2Desc": "ค่อยๆ สังเกตความรู้สึกที่เท้าแตะพื้น",
+  "calmGuideSensory3Title": "มองไปรอบ ๆ",
+  "calmGuideSensory3Desc": "ตั้งชื่อวัตถุ 5 ชิ้นที่คุณเห็นอย่างเงียบๆ",
+  "calmGuideSensory4Title": "วางไหล่ของคุณ",
+  "calmGuideSensory4Desc": "หายใจออกและลดไหล่ลงเพียง 1 ซม",
+  "calmGuideQuestionsTitle": "คำถามที่ช่วยในขณะที่เขียน",
+  "calmGuideQuestion1": "อะไรทำให้ฉันโกรธจริงๆ?",
+  "calmGuideQuestion2": "ฉันคาดหวังอะไรแต่ไม่ได้รับ?",
+  "calmGuideQuestion3": "การกระทำใดที่ฉันจะเสียใจหากฉันทำตอนนี้?",
+  "calmGuideQuestion4": "พรุ่งนี้ฉันจะขอบคุณทางเลือกอะไร?",
+  "calmGuideTag1": "บันทึกอารมณ์",
+  "calmGuideTag2": "ความโกรธเคือง",
+  "calmGuideTag3": "ตรวจสอบการแจ้งเตือน",
+  "calmGuideDangerTitle": "ขอความช่วยเหลือก่อนในกรณีเหล่านี้",
+  "calmGuideDanger1": "เมื่อความรู้สึกอยากทำร้ายตัวเองหรือผู้อื่นรุนแรงขึ้น",
+  "calmGuideDanger2": "เมื่อความอยากโยนหรือทำลายสิ่งของไม่หยุด",
+  "calmGuideDanger3": "เมื่อคุณรู้สึกอยากเผชิญหน้าหรือข่มขู่อีกฝ่าย",
+  "calmGuideDanger4": "เมื่อเครื่องดื่มแอลกอฮอล์ ยาเสพติด หรือการอดนอนอย่างรุนแรงทำให้ควบคุมได้ยาก",
+  "calmGuideDangerBody": "ในกรณีเหล่านี้ อย่าพยายามผ่านมันไปได้ด้วยกิจวัตรสงบๆ เพียงอย่างเดียว ลองขอความช่วยเหลือจากผู้คนรอบตัวคุณ หน่วยงานวิชาชีพ หรือหน่วยฉุกเฉิน",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "เอกสารนี้ไม่ได้ใช้แทนการวินิจฉัยหรือการรักษาทางการแพทย์",
+  "privacyTitle": "นโยบายความเป็นส่วนตัว",
+  "privacyLastUpdated": "วันที่มีผลบังคับใช้: 16 มิถุนายน 2569",
+  "privacySection1Title": "1. ประเภทของข้อมูลที่รวบรวม",
+  "privacySection1Body": "Fury Note สามารถใช้งานได้โดยไม่ต้องลงทะเบียนสมาชิก บริษัทจะเก็บรวบรวมข้อมูลดังต่อไปนี้เท่านั้น\n· ตัวระบุอุปกรณ์ — ค่าที่ออกแบบสุ่มซึ่งใช้เพื่อระบุผู้ใช้โดยไม่ต้องลงทะเบียน เพื่อวัตถุประสงค์ในการป้องกันการใช้งานที่เป็นการฉ้อโกง\n· ข้อมูลบันทึก Rage — ความเข้มข้น หมวดหมู่ และข้อความ (จัดเก็บไว้ในอุปกรณ์เท่านั้น)\n· โพสต์ฟีดแบบไม่ระบุตัวตน — ชื่อเล่น รูปภาพประจำตัว ความเข้มข้น หมวดหมู่ และข้อความ\n· ความคิดเห็น — ชื่อเล่นและข้อความแสดงความคิดเห็น\n· บันทึกการถูกใจ — ไม่ว่าผู้ใช้จะถูกใจโพสต์ที่กำหนดหรือไม่\n· โทเค็นการแจ้งเตือนแบบพุช — เพื่อวัตถุประสงค์ในการส่งการแจ้งเตือน (ตัวเลือก)",
+  "privacySection2Title": "2. วัตถุประสงค์ของการประมวลผล",
+  "privacySection2Body": "· การจัดหาคุณลักษณะของชุมชน รวมถึงฟีด ความคิดเห็น และการถูกใจที่ไม่เปิดเผยตัวตน\n· การตรวจจับการใช้งานที่เป็นการฉ้อโกง รวมถึงการป้องกันการกดไลค์ซ้ำในโพสต์เดียวกัน\n· การส่งการแจ้งเตือนแบบพุช รวมถึงการแจ้งเตือนความคิดเห็น\n· การดำเนินงานบริการและการวิเคราะห์ข้อผิดพลาด",
+  "privacySection3Title": "3. ไม่มีการสมัครสมาชิกและไม่มีการเก็บรักษาข้อมูลส่วนบุคคล",
+  "privacySection3Body": "Fury Note ไม่จำเป็นต้องลงทะเบียนสมาชิก และไม่รวบรวมข้อมูลส่วนบุคคลที่สามารถตรวจสอบตัวตนได้ เช่น ชื่อ ที่อยู่อีเมล หรือหมายเลขโทรศัพท์\nชื่อเล่นนั้นสร้างขึ้นโดยอัตโนมัติหรือป้อนโดยผู้ใช้โดยตรง และไม่ได้เชื่อมโยงกับข้อมูลประจำตัวที่แท้จริงของผู้ใช้ ตัวระบุอุปกรณ์ก็เป็นค่าที่สร้างขึ้นแบบสุ่มเช่นเดียวกันซึ่งไม่สามารถใช้ระบุตัวบุคคลใดบุคคลหนึ่งได้",
+  "privacySection4Title": "4. การให้ข้อมูลแก่บุคคลที่สาม",
+  "privacySection4Body": "บริษัทไม่ให้หรือขายข้อมูลที่เก็บรวบรวมให้กับบุคคลที่สาม",
+  "privacySection5Title": "5. ระยะเวลาการเก็บรักษาและการใช้ข้อมูล",
+  "privacySection5Body": "· บันทึก Rage ที่บันทึกไว้เท่านั้นจะถูกเก็บไว้ในอุปกรณ์เท่านั้น และจะถูกลบพร้อมกันเมื่อลบแอป\n· โพสต์ อวตาร และความคิดเห็นที่แชร์ไปยังฟีดที่ไม่ระบุชื่อจะถูกเก็บไว้บนเซิร์ฟเวอร์จนกว่าผู้ใช้จะลบ และจะถูกลบทันทีตามคำขอดังกล่าว\n· บันทึกการถูกใจจะถูกลบพร้อมกันเมื่อมีการลบโพสต์ที่เกี่ยวข้อง",
+  "privacySection6Title": "6. ติดต่อ",
+  "privacySection6Body": "สำหรับการสอบถามเกี่ยวกับข้อมูลส่วนบุคคล โปรดติดต่อที่อยู่อีเมลด้านล่าง\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "วิธีใช้ Fury Note",
+  "appGuideSubtitle": "คำแนะนำในการบันทึกความโกรธ รูปแบบการติดตาม และการขอรับการสนับสนุนบนฟีด",
+  "appGuideRecordTitle": "บันทึกความโกรธของคุณ",
+  "appGuideRecordBody": "เมื่อคุณโกรธ ให้แตะปุ่ม 🔥 ที่ด้านล่างเพื่อเริ่มบันทึก",
+  "appGuideRecordStep1": "เลือกความเข้มข้น: เลือกอิโมจิที่ตรงกับความโกรธของคุณ",
+  "appGuideRecordStep2": "เลือกหมวดหมู่: เลือกหนึ่งสาเหตุ",
+  "appGuideRecordStep3": "เขียนออกมา: อธิบายสิ่งที่เกิดขึ้น (คุณสามารถข้ามสิ่งนี้ได้)",
+  "appGuideRecordStep4": "คำเตือน: ตั้งเวลาหากคุณต้องการกลับมาดูอีกครั้งในภายหลัง",
+  "appGuideRecordStep5": "บันทึกหรือโพสต์: เก็บบันทึกส่วนตัวหรือแชร์ไปยังฟีด",
+  "appGuideFeedTitle": "ค้นหาการสนับสนุนบนฟีด",
+  "appGuideFeedBody": "การแบ่งปันความโกรธสามารถเชื่อมโยงคุณกับผู้อื่นที่รู้สึกแบบเดียวกันได้",
+  "appGuideFeedItem1": "หลังจากบันทึกแล้ว คุณสามารถโพสต์ **โดยไม่เปิดเผยตัวตน** ในฟีดได้",
+  "appGuideFeedItem2": "ชอบหรือแสดงความคิดเห็นในโพสต์ของผู้อื่น",
+  "appGuideFeedItem3": "คุณสามารถลบโพสต์ของคุณเองได้ตลอดเวลา",
+  "appGuideStatsTitle": "ติดตามรูปแบบทางอารมณ์ของคุณ",
+  "appGuideStatsBody": "แท็บสถิติช่วยให้คุณมองย้อนกลับไปถึงรูปแบบความโกรธของคุณ",
+  "appGuideStatsItem1": "กราฟแนวโน้มความรุนแรงของความโกรธตามช่วงเวลา",
+  "appGuideStatsItem2": "สาเหตุการจำหน่ายตามประเภท",
+  "appGuideStatsItem3": "มุมมองปฏิทินเพื่อเรียกดูบันทึกตามวันที่",
+  "appGuideStatsItem4": "รายงาน Rage เพื่อวิเคราะห์รูปแบบตามหมวดหมู่",
+  "appGuideCalmTitle": "ลดความโกรธของคุณ",
+  "appGuideCalmBody": "หลังจากเข้าสู่ระบบแล้ว ให้ไปที่แท็บสงบเพื่อพยายามลดอารมณ์ของคุณลง",
+  "appGuideCalmItem1": "บันทึกช่วยเตือน: ทบทวนบันทึกที่คุณตั้งค่าสถานะไว้ใช้ในภายหลัง",
+  "appGuideCalmItem2": "การหายใจ: ตั้งสติด้วยเทคนิค 4-7-8",
+  "appGuideCalmItem3": "หมดเวลา: ชะลอปฏิกิริยาของคุณด้วยการจับเวลา 10 นาที",
+  "appGuideCalmItem4": "การทำสมาธิด้วยภาพ: เปลี่ยนอารมณ์ของคุณด้วยภาพธรรมชาติ",
+  "appGuideProfileTitle": "ชื่อเล่นและโปรไฟล์",
+  "appGuideProfileBody": "ไปที่เมนู > การตั้งค่า เพื่อเปลี่ยนชื่อเล่นและอวาตาร์ของคุณ",
+  "appGuideProfileItem1": "ชื่อเล่น: พิมพ์ของคุณเองหรือสร้างแบบสุ่ม",
+  "appGuideProfileItem2": "Avatar: นำเสนอตัวเองด้วยอิโมจิ",
+  "appGuideNotificationTitle": "การตั้งค่าการแจ้งเตือน",
+  "appGuideNotificationItem1": "การแจ้งเตือนการแจ้งเตือน: รับการแจ้งเตือนถึงบันทึกความโกรธในเวลาที่คุณตั้งไว้",
+  "appGuideNotificationItem2": "การแจ้งเตือนความคิดเห็น: รับการแจ้งเตือนเมื่อมีคนแสดงความคิดเห็นในโพสต์ของคุณ",
+  "appGuideNotificationHint": "สลับสิ่งเหล่านี้ในการตั้งค่า > การแจ้งเตือน",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

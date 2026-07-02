@@ -1,0 +1,549 @@
+{
+  "@@locale": "ar",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "سجل",
+  "feed": "الخلاصة",
+  "stats": "الإحصاءات",
+  "calm": "تهدئة",
+  "settings": "الإعدادات",
+  "drawerGuide": "دليل التطبيق",
+  "drawerCalmGuide": "دليل التهدئة",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "القائمة",
+  "drawerRecordCount": "🔥 {count} ملاحظات الغضب",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "اللقب · الإخطارات",
+  "drawerGuideSubtitle": "كيفية استخدام Fury Note",
+  "drawerCalmGuideSubtitle": "بطاقات تهدئة · نصائح اليوم",
+  "relativeTimeJustNow": "الآن فقط",
+  "relativeTimeMinutesAgo": "منذ {count} دقائق",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}قبل ساعات",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} منذ أيام",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "سجل الغضب",
+  "stepIntensity": "ما مدى غضبك الآن؟",
+  "stepIntensitySub": "اختر رمزًا تعبيريًا",
+  "stepCategory": "ما سبب ذلك؟",
+  "stepCategorySub": "اختر فئة واحدة",
+  "stepText": "ماذا حدث؟",
+  "stepTextSub": "يمكنك تخطي هذا",
+  "stepReminder": "هل تريد العودة لاحقا؟",
+  "stepReminderSub": "يمكنك تخطي هذا",
+  "stepSave": "هل تريد حفظ هذه الملاحظة؟",
+  "stepSaveSub": "يمكنك نشره بعد الحفظ",
+  "stepPost": "مشاركة هذا الشعور؟",
+  "stepPostSub": "سيكون مجهولا",
+  "voiceInput": "تسجيل صوتي",
+  "next": "التالي",
+  "previous": "السابق",
+  "skip": "تخطي",
+  "save": "حفظ",
+  "saveNote": "حفظ الملاحظة",
+  "postIt": "نشر",
+  "saveOnly": "حفظ فقط",
+  "feedPostedToast": "أرسلت للتغذية",
+  "recordPostedToast": "نشر",
+  "recordSavedToast": "تم الحفظ",
+  "commentPostedToast": "تم نشر التعليق",
+  "commentSendFailedToast": "لا يمكن إرسال التعليق. يرجى المحاولة مرة أخرى.",
+  "commentDeleteTitle": "حذف التعليق",
+  "commentDeleteContent": "هل تريد حذف هذا التعليق؟",
+  "commentsCount": "{count} تعليقات",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "لا توجد تعليقات حتى الآن\nكن أول من يترك واحدة 💬",
+  "commentInputHint": "أكتب تعليق...",
+  "apiErrorContentBlockedUrl": "لا يمكن تقديم المشاركات التي تحتوي على روابط.",
+  "apiErrorContentBlockedSpam": "لا يمكن تقديم النص الترويجي.",
+  "apiErrorContentBlockedProfanity": "لا يمكن تقديم المحتوى الذي يحتوي على لغة نابية.",
+  "apiErrorContentBlockedModeration": "لا يمكن تقديم هذا المحتوى.",
+  "apiErrorRateLimitExceeded": "الرجاء المحاولة مرة أخرى في لحظة.",
+  "apiErrorInternal": "حدث خطأ في الخادم. الرجاء المحاولة مرة أخرى في لحظة.",
+  "apiErrorInvalidRequest": "طلب غير صالح.",
+  "apiErrorForbidden": "ليس لديك إذن.",
+  "apiErrorPostNotFound": "لم يتم العثور على آخر.",
+  "apiErrorCommentNotFound": "لم يتم العثور على التعليق.",
+  "apiErrorSignatureRequired": "توقيع الطلب مطلوب.",
+  "apiErrorSignatureInvalid": "طلب غير صالح.",
+  "apiErrorSignatureExpired": "انتهت صلاحية الطلب. يرجى المحاولة مرة أخرى.",
+  "apiErrorSignatureReplay": "لقد تمت معالجة هذا الطلب بالفعل.",
+  "apiErrorUnknown": "حدث خطأ غير معروف.",
+  "reminderNotification": "إشعار تذكير",
+  "noReminder": "لم يتم ضبطه",
+  "summaryIntensity": "مستوى الغضب",
+  "summaryCategory": "الفئة",
+  "summaryText": "نص",
+  "summaryReminder": "تذكير",
+  "none": "لا شيء",
+  "other": "أخرى",
+  "family": "العائلة",
+  "romance": "الرومانسية",
+  "work": "العمل",
+  "people": "الناس",
+  "driving": "القيادة",
+  "custom": "مخصص",
+  "recordCustomCategoryHint": "أدخل فئة",
+  "recordTextHint": "اكتبها هنا",
+  "recordMicPermissionRequired": "مطلوب إذن الميكروفون.",
+  "recordVoiceStartFailed": "تعذر بدء {label}.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "توقف عن التسجيل",
+  "recordVoiceRecordAgain": "سجل مرة أخرى",
+  "recordVoiceSaved": "تم حفظ التسجيل الصوتي.",
+  "recordAudioSummaryLabel": "صوت",
+  "recordAudioIncluded": "التسجيل متضمن",
+  "recordSavingInProgress": "جارٍ الحفظ...",
+  "recordPostingInProgress": "جارٍ الإرسال...",
+  "recordSaveFailedToast": "تعذر حفظ الملاحظة. يرجى المحاولة مرة أخرى.",
+  "recordProgressSemantics": "سجل التقدم",
+  "hourSuffix": "ح",
+  "minuteSuffix": "م",
+  "reminderCustom": "مخصص",
+  "reminderIn30Minutes": "في 30 دقيقة",
+  "reminderIn1Hour": "في 1 ساعة",
+  "reminderIn2Hours": "في ساعتين",
+  "reminderIn6Hours": "في 6 ساعات",
+  "reminderTomorrow": "غدا",
+  "annoyed": "منزعج",
+  "angry": "غاضب",
+  "mad": "مجنون",
+  "furious": "غاضب",
+  "rage": "الغضب",
+  "calmed": "الهدوء",
+  "feedTitle": "الخلاصة",
+  "feedSubtitle": "تصفح أحدث قصص الغضب",
+  "feedAllTab": "كل الخلاصة",
+  "feedMineTab": "خلاصتي",
+  "feedLoadFailed": "تعذر تحميل الخلاصة.",
+  "feedEmptyMine": "لم تقم بالنشر في الخلاصة بعد.\nمشاركة مذكرة الغضب الأولى الخاصة بك!",
+  "feedEmptyAll": "لا توجد مشاركات موجزة حتى الآن.\nكن أول من يشارك غضبك!",
+  "feedPostFailedToast": "تعذر الإرسال إلى الخلاصة. يرجى المحاولة مرة أخرى.",
+  "like": "أتفهم",
+  "comment": "تعليق",
+  "retry": "إعادة المحاولة",
+  "statsTitle": "إحصاءات الغضب",
+  "statsSubtitle": "راجع نمط مشاعرك هذا الأسبوع",
+  "week": "1 أسبوع",
+  "month": "شهر واحد",
+  "all": "الكل",
+  "totalRecords": "السجلات",
+  "highestLevel": "الأعلى",
+  "dailyAverage": "المتوسط اليومي.",
+  "decreaseRate": "إنقاص",
+  "statsIntensityTrend": "اتجاه شدة الغضب",
+  "statsCategoryDistribution": "توزيع السبب",
+  "statsNoRecords": "لا توجد سجلات لإظهارها.",
+  "statsCalendarButtonTitle": "عرض السجلات حسب التقويم",
+  "statsCalendarButtonSubtitle": "التحقق من ملاحظات الغضب وإدارتها حسب التاريخ",
+  "statsCalendarTitle": "عرض السجلات حسب التقويم",
+  "statsOtherCategory": "أخرى",
+  "selectedDateRecordsTitle": "{date} سجلات",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "لم تتم كتابة أي سجلات في التاريخ المحدد.",
+  "reminderAction": "تذكير",
+  "play": "تشغيل",
+  "statsSummaryButtonTitle": "شاهد تقرير الغضب",
+  "statsSummaryButtonSubtitle": "اقلب أنماط غضبك حسب الفئة",
+  "statsSummaryTitle": "تقرير الغضب",
+  "statsSummaryClose": "إغلاق",
+  "statsSummaryEmptyTitle": "لا توجد سجلات لتلخيص حتى الآن",
+  "statsSummaryEmptyBody": "بمجرد إضافة ملاحظات الغضب، ستظهر أنماط الفئات هنا.",
+  "statsSummaryTopHeadline": "\"{category}\" جعلك غاضبًا في أغلب الأحيان",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "النظر إلى \"{category}\"",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "لا بأس. يمكن أن يحدث ذلك.",
+  "statsSummaryComfortFamily": "كلما كان الشخص أقرب، كلما كان من الصعب الهبوط.",
+  "statsSummaryComfortRomance": "العلاقة الثمينة يمكن أن تجعل اللحظات الصغيرة تبدو أكثر حدة.",
+  "statsSummaryComfortWork": "ربما يكون العمل قد دفع عقلك بشكل أسرع مما أراد.",
+  "statsSummaryComfortPeople": "الكلمات والتعبيرات من الآخرين يمكن أن تستمر لفترة أطول من المتوقع.",
+  "statsSummaryComfortDriving": "غالبًا ما يصل التوتر على الطريق إلى الجسم أولاً.",
+  "statsSummaryMetricCount": "عد",
+  "statsSummaryMetricCategory": "الفئة",
+  "statsSummaryMetricFeed": "منشورات الخلاصة",
+  "statsSummaryMetricCalm": "يحاول الهدوء",
+  "statsSummaryMetricAverage": "متوسط المستوى",
+  "statsSummaryMetricPeak": "مستوى الذروة",
+  "statsSummaryConclusion": "الاستنتاج",
+  "statsSummaryRecordsUnit": "{count} مرات",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "هذه هي إشارة الغضب الأكثر تكرارًا. في المرة القادمة، حاول التحقق من توتر الجسم قبل أن يرتفع الغضب بشكل كامل.",
+  "statsSummaryConclusionCategory": "إن كتابة هذه الفئة في حين أنها لا تزال صغيرة يمكن أن تساعدك على ملاحظة النمط في وقت أقرب.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "حصة الفئة",
+  "statsSummaryCalmRate": "معدل الهدوء",
+  "statsSummaryShareRate": "معدل المشاركة",
+  "noContent": "لا يوجد محتوى",
+  "voicePlayback": "تشغيل الصوت",
+  "deleteConfirm": "هل تريد الحذف؟",
+  "delete": "حذف",
+  "cancel": "إلغاء",
+  "calmTitle": "تهدئة",
+  "calmSubtitle": "خفف ما لا يزال عالقًا بهدوء",
+  "reminderNotes": "ملاحظات تذكيرية",
+  "breathing": "التنفس",
+  "timeout": "المهلة",
+  "meditation": "التأمل بالصورة",
+  "feedSupport": "دعم الأعلاف",
+  "calmReminderEmpty": "ستظهر التذكيرات هنا عند وصولها",
+  "calmReminderFallbackText": "كيف يشعر هذا الغضب الآن؟",
+  "calmCheckTitle": "ما مدى غضبك الآن؟",
+  "calmCheckSubtitle": "{emoji} {label} · ذلك الغضب المبكر",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "سعيد لأنك هدأت.",
+  "calmSavedUpdatedToast": "تم الحفظ",
+  "profileName": "النمر الغاضب",
+  "nicknameAdjectives": "غاضب، غاضب، هائج، متفجر، شرس، هدير، حاد، مقرن، ساخن، خشن، شرس، هائج، ناري، مدوي، منتفخ، مغلي، مستاء، ملتهب، عاصف، سام",
+  "nicknameAnimals": "النمر، الأسد، الذئب، الدب، النسر، القرش، النمر، الفهد، التمساح، الكوبرا، الثور، الخنزير، وحيد القرن، الضبع، أشيب، الغراب، الصقر، القنفذ، جاكوار، بوما",
+  "notificationSettings": "الإخطارات",
+  "commentNotification": "تنبيهات التعليق",
+  "settingsNotificationsSection": "الإخطارات",
+  "settingsReminderSubtitle": "تذكير مذكرة الغضب في الوقت الذي تحدده",
+  "settingsCommentSubtitle": "تنبيه عندما يقوم شخص ما بالتعليق على منشورك",
+  "settingsDataSection": "البيانات",
+  "settingsDataImportSubtitle": "استعادة السجلات من ملف النسخ الاحتياطي",
+  "settingsSupportSection": "الدعم",
+  "settingsPrivacySubtitle": "المعلومات التي تم جمعها والغرض من الاستخدام",
+  "settingsFeedbackTitle": "إرسال ردود الفعل",
+  "settingsFeedbackSubtitle": "مشاكل أو أفكار التحسين",
+  "settingsRecordCountUnit": "السجلات",
+  "settingsPostCountUnit": "المشاركات",
+  "proPlan": "تصدير البيانات للمحترفين",
+  "backupImport": "استيراد البيانات",
+  "settingsDataExportSubtitle": "ملف النسخ الاحتياطي · التاريخ · المشاركة",
+  "dataExportTitle": "تصدير البيانات",
+  "dataExportProTitle": "تصدير البيانات للمحترفين",
+  "dataExportDescription": "قم بإنشاء ملف نسخة احتياطية واحد يحتوي على جميع بيانات التطبيق المحلية وشاركه عبر البريد الإلكتروني أو برنامج المراسلة.",
+  "dataExportOneTimePurchase": "الشراء لمرة واحدة · الوصول مدى الحياة",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "تصدير",
+  "dataExportPaymentChecking": "التحقق من الدفع",
+  "dataExportCreateButton": "إنشاء التصدير",
+  "dataExportPayAndCreateButton": "الدفع والتصدير",
+  "dataExportRestorePurchase": "استعادة الشراء",
+  "dataExportCreatedToast": "تم إنشاء ملف التصدير.",
+  "dataExportFailedToast": "لا يمكن إنشاء ملف التصدير.",
+  "dataExportShareSubject": "Fury Note النسخ الاحتياطي للبيانات",
+  "dataExportShareText": "هذا هو ملف النسخ الاحتياطي لبيانات Fury Note.",
+  "dataExportShareFailedToast": "لا يمكن فتح ورقة المشاركة.",
+  "dataExportAllDataIncluded": "يتم تضمين جميع بيانات التطبيق المحلية في النسخة الاحتياطية",
+  "dataExportHistoryTitle": "تاريخ التصدير",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "شارك",
+  "dataExportEmptyHistory": "لا توجد ملفات تصدير حتى الآن.",
+  "purchaseUpdateFailed": "تعذرت معالجة تحديث الشراء.",
+  "purchaseStatusFailed": "لا يمكن التحقق من حالة الشراء.",
+  "purchaseProductNotFound": "لم يتم العثور على منتج المتجر.",
+  "purchaseStoreUnavailable": "لا يمكن الاتصال بالمتجر.",
+  "purchaseProductInfoFailed": "تعذر تحميل معلومات منتج المتجر.",
+  "purchaseProductUnavailable": "معلومات المنتج ليست جاهزة بعد.",
+  "purchaseStartFailed": "لا يمكن بدء عملية الشراء.",
+  "purchaseCanceled": "تم إلغاء الشراء.",
+  "purchaseReceiptInvalid": "لا يمكن التحقق من إيصال الشراء.",
+  "purchaseReceiptVerifyFailed": "فشل التحقق من إيصال الشراء.",
+  "dataImportTitle": "استيراد البيانات",
+  "dataImportPickTitle": "حدد ملف النسخ الاحتياطي",
+  "dataImportPickDescription": "حدد ملف .fnbackup\nتم تصديره من Fury Note",
+  "dataImportPickButton": "اختر الملف",
+  "dataImportInProgress": "استيراد",
+  "dataImportSuccessToast": "تم استبدال البيانات من النسخة الاحتياطية. ({count} سجلات)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "تم استبدال البيانات من النسخة الاحتياطية. (0 سجلات)",
+  "dataImportFailedToast": "لا يمكن استيراد ملف النسخة الاحتياطية.",
+  "dataImportInvalidFileToast": "يمكن استيراد ملفات .fnbackup فقط.",
+  "dataImportNoticeTitle": "قبل الاستيراد",
+  "dataImportNoticeBody": "سيتم حذف البيانات الموجودة واستبدالها بالبيانات الموجودة في ملف النسخة الاحتياطية.",
+  "dataImportTransferTitle": "الأجهزة المتحركة",
+  "dataImportTransferBody": "بعد تثبيت التطبيق على جهاز جديد، قم باستيراد ملف نسخة احتياطية لاستبدال البيانات المحلية الحالية بالبيانات الاحتياطية.",
+  "feedDeleteTitle": "حذف الخلاصة",
+  "feedDeleteContent": "هل تريد حذف هذه الخلاصة؟",
+  "calmBreathingTitle": "التنفس",
+  "breathPhaseInhale": "يستنشق",
+  "breathPhaseHold": "عقد",
+  "breathPhaseExhale": "الزفير",
+  "durationSeconds": "{count}ثواني",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "دورة {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "الجري",
+  "calmTimeoutPaused": "متوقف مؤقتًا",
+  "reset": "إعادة ضبط",
+  "start": "بدء",
+  "pause": "إيقاف مؤقت",
+  "stop": "إيقاف",
+  "calmMeditationSceneWave": "موجات",
+  "calmMeditationSceneForest": "غابة",
+  "calmMeditationSceneSunset": "غروب الشمس",
+  "calmMeditationSceneMountain": "الجبل",
+  "calmMeditationSceneCherryBlossom": "أزهار الكرز",
+  "calmMeditationSceneNightSky": "سماء الليل",
+  "calmMeditationPrompt": "خذ شهيقاً عميقاً ثم أخرجه",
+  "autoplay": "اللعب التلقائي",
+  "profileEditTitle": "تحرير الملف الشخصي",
+  "nicknameLabel": "اللقب",
+  "nicknameHint": "أدخل اللقب",
+  "nicknameRequiredError": "الرجاء إدخال اللقب",
+  "nicknameCodeAutomaticError": "تتم إضافة الرمز الخاص بك تلقائيًا",
+  "nicknameTooShortError": "استخدم حرفين على الأقل",
+  "profileSavedToast": "✅ تم التغيير إلى \"{name}\"!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "حدث خطأ أثناء الحفظ.",
+  "avatarPickGallery": "اختر من المكتبة",
+  "avatarPickCamera": "التقط صورة",
+  "avatarReset": "استخدم الصورة الرمزية الافتراضية",
+  "avatarResetToast": "تمت استعادة الصورة الرمزية الافتراضية.",
+  "avatarAppliedToast": "تم تطبيق صورة الملف الشخصي.",
+  "avatarTooLargeToast": "يمكن استخدام الصور التي يصل حجمها إلى 5 ميغابايت فقط.",
+  "avatarLoadFailedToast": "تعذر تحميل الصورة.",
+  "profileCodeLabel": "رمز الملف الشخصي (لا يمكن تغييره)",
+  "profileSaveButton": "حفظ التغييرات",
+  "avatarChangeLabel": "تغيير الصورة الشخصية",
+  "avatarChangeHint": "اضغط على الصورة لتغييرها",
+  "avatarSizeHint": "JPG، PNG، GIF · ما يصل إلى 5 ميغابايت",
+  "reminderNotificationFallbackBody": "كيف يشعر هذا الغضب الآن؟",
+  "calmGuideTitle": "وعندما يرتفع الغضب\nخفض جسمك بأمان أولا",
+  "calmGuideSubtitle": "لا يخبرك دليل Fury Note الهادئ بالتخلص من الغضب. إنه دليل قصير لمساعدة هذا الشعور على المرور دون أن يتأذى أحد.",
+  "calmGuideNotice": "**إذا كنت في خطر داهم**، فيرجى طلب المساعدة من الأشخاص من حولك أو الاتصال بخدمات الطوارئ أولاً، بدلاً من الاستمرار في استخدام هذا التطبيق.",
+  "calmGuideMomentTitle": "لحظة ارتفاع الغضب",
+  "calmGuideMomentBody1": "يمكن أن يكون الغضب إشارة إلى انتهاك شيء يهمك. لكن في حالة الغضب الشديد، يتسارع إصدار الأحكام، وقد تصبح الكلمات والأفعال أكثر قسوة من المعتاد.",
+  "calmGuideMomentBody2": "ما نحتاجه الآن ليس أن تكون **عقلانيًا تمامًا**، ولكن **تأخير رد فعلك ولو لمدة 30 ثانية**.",
+  "calmGuideRoutineTitle": "روتين هادئ لمدة 60 ثانية",
+  "calmGuideStep1Title": "توقف",
+  "calmGuideStep1Desc": "إيقاف الرد أو الاتصال أو التعليق أو التحرك مؤقتًا. أرخِ يديك وانظر بعيدًا عن الشاشة للحظة.",
+  "calmGuideStep2Title": "تنفس",
+  "calmGuideStep2Desc": "خذ شهيقًا لمدة 4 ثوانٍ، ثم احبسه لمدة 7 ثوانٍ، ثم قم بالزفير لمدة 8 ثوانٍ. لا بأس إذا لم يكن الأمر مثاليًا.",
+  "calmGuideStep3Title": "تحقق من جسمك",
+  "calmGuideStep3Desc": "تحقق مما إذا كان فكك أو كتفيك أو قبضتك أو معدتك متوترة، ثم حرر نقطة واحدة فقط.",
+  "calmGuideStep4Title": "اكتبها",
+  "calmGuideStep4Desc": "حتى جملة واحدة مثل \"الآن أنا غاضب لأن ___\" تكفي.",
+  "calmGuideBreathTitle": "4-7-8 التنفس",
+  "calmGuideBreathStep1": "تنفس من خلال أنفك لمدة 4 ثواني.",
+  "calmGuideBreathStep2": "احبس أنفاسك لمدة 7 ثواني.",
+  "calmGuideBreathStep3": "قم بالزفير ببطء من خلال فمك لمدة 8 ثواني.",
+  "calmGuideBreathStep4": "كرر 3 مرات إذا استطعت.",
+  "calmGuideBreathNote": "إذا كان حبس أنفاسك لفترة طويلة أمرًا صعبًا، فاختصره إلى عدد مريح مثل **3-3-5**. ما يهم أكثر هو الزفير البطيء والطويل.",
+  "calmGuideTimeoutTitle": "مهلة 10 دقائق",
+  "calmGuideTimeoutBody": "كلما كان الغضب أقوى، كانت الرغبة في حله على الفور أقوى. لكن التحدث الآن قد يخرج كلمات جارحة أولاً.",
+  "calmGuideTimeoutExamplesTitle": "أمثلة على عبارات المهلة",
+  "calmGuideTimeoutExample1": "\"أنا غاضب جدًا الآن، فلنتحدث مرة أخرى بعد 10 دقائق.\"",
+  "calmGuideTimeoutExample2": "\"أتوقف للحظة لأنني قد أقول شيئًا جارحًا.\"",
+  "calmGuideTimeoutExample3": "\"أنا لا أهرب، أريد فقط أن أهدأ قبل أن نتحدث مرة أخرى.\"",
+  "calmGuideSensoryTitle": "التأريض الحسي السريع",
+  "calmGuideSensory1Title": "الماء البارد",
+  "calmGuideSensory1Desc": "ضع الماء البارد على معصميك أو وجهك لمدة 10 ثوانٍ تقريبًا",
+  "calmGuideSensory2Title": "اشعر بقدميك",
+  "calmGuideSensory2Desc": "لاحظ ببطء الشعور بقدميك تلامس الأرض",
+  "calmGuideSensory3Title": "انظر حولك",
+  "calmGuideSensory3Desc": "قم بتسمية 5 أشياء يمكنك رؤيتها بهدوء",
+  "calmGuideSensory4Title": "إسقاط كتفيك",
+  "calmGuideSensory4Desc": "قم بالزفير واخفض كتفيك بمقدار 1 سم فقط",
+  "calmGuideQuestionsTitle": "الأسئلة التي تساعد أثناء الكتابة",
+  "calmGuideQuestion1": "ما الذي أغضبني بالضبط؟",
+  "calmGuideQuestion2": "ما الذي كنت أتوقعه ولكن لم أحصل عليه؟",
+  "calmGuideQuestion3": "ما هو الإجراء الذي سأندم عليه إذا قمت به الآن؟",
+  "calmGuideQuestion4": "ما هو الاختيار الذي سأكون ممتنًا له غدًا؟",
+  "calmGuideTag1": "سجل المشاعر",
+  "calmGuideTag2": "تباعد الغضب",
+  "calmGuideTag3": "فحص التذكير",
+  "calmGuideDangerTitle": "اطلب المساعدة أولاً في هذه الحالات",
+  "calmGuideDanger1": "عندما تكون الرغبة في إيذاء نفسك أو الآخرين قوية",
+  "calmGuideDanger2": "عندما لا تتوقف الرغبة في رمي الأشياء أو كسرها",
+  "calmGuideDanger3": "عندما تشعر بالرغبة في مواجهة أو تهديد الشخص الآخر",
+  "calmGuideDanger4": "عندما يجعل الكحول أو المخدرات أو الحرمان الشديد من النوم من الصعب السيطرة على الأمور",
+  "calmGuideDangerBody": "في هذه الحالات، لا تحاول تجاوز الأمر بالروتين الهادئ وحده — اطلب المساعدة من الأشخاص من حولك أو الخدمات المتخصصة أو خدمات الطوارئ.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "هذه الوثيقة لا تحل محل التشخيص الطبي أو العلاج.",
+  "privacyTitle": "سياسة الخصوصية",
+  "privacyLastUpdated": "تاريخ السريان: 16 يونيو 2026",
+  "privacySection1Title": "1. فئات المعلومات التي تم جمعها",
+  "privacySection1Body": "يمكن استخدام Fury Note دون أي تسجيل عضوية. تقوم الشركة بجمع المعلومات التالية فقط.\n· معرف الجهاز — قيمة يتم إصدارها عشوائيًا تُستخدم لتحديد هوية المستخدم دون تسجيل، بغرض منع الاستخدام الاحتيالي\n· بيانات تسجيل الغضب - الشدة والفئة والنص (المخزنة على الجهاز فقط)\n· منشورات موجزة مجهولة المصدر - اللقب، الصورة الرمزية، الكثافة، الفئة، والنص\n· التعليقات — اللقب ونص التعليق\n· تسجيلات الإعجاب — ما إذا كان المستخدم قد أعجب بمنشور معين\n· رمز إشعار الدفع - لغرض إرسال الإشعارات (اختياري)",
+  "privacySection2Title": "2. الغرض من المعالجة",
+  "privacySection2Body": "· توفير ميزات المجتمع، بما في ذلك الخلاصة المجهولة والتعليقات والإعجابات\n· الكشف عن الاستخدام الاحتيالي، بما في ذلك منع الإعجابات المكررة على نفس المنشور\n· إرسال إشعارات الدفع، بما في ذلك تنبيهات التعليق\n· تشغيل الخدمة وتحليل الأخطاء",
+  "privacySection3Title": "3. لا يوجد تسجيل للعضوية ولا يحتفظ بالمعلومات الشخصية",
+  "privacySection3Body": "لا يتطلب Fury Note تسجيل العضوية ولا يجمع معلومات شخصية يمكن التحقق من هويتها مثل الاسم أو عنوان البريد الإلكتروني أو رقم الهاتف.\nيتم إنشاء اللقب تلقائيًا أو إدخاله مباشرة من قبل المستخدم ولا يرتبط بالهوية الحقيقية للمستخدم. معرف الجهاز هو أيضًا قيمة تم إنشاؤها عشوائيًا ولا يمكن استخدامها لتحديد هوية فرد معين.",
+  "privacySection4Title": "4. توفير المعلومات لأطراف ثالثة",
+  "privacySection4Body": "لا تقوم الشركة بتوفير أو بيع المعلومات التي تم جمعها إلى أطراف ثالثة.",
+  "privacySection5Title": "5. فترة الاحتفاظ بالمعلومات واستخدامها",
+  "privacySection5Body": "· يتم الاحتفاظ بسجلات الغضب التي تم حفظها فقط على الجهاز فقط ويتم حذفها معًا عند حذف التطبيق.\n· يتم الاحتفاظ بالمشاركات والصور الرمزية والتعليقات التي تمت مشاركتها في الخلاصة المجهولة على الخادم حتى يقوم المستخدم بحذفها، ويتم حذفها فورًا بناءً على هذا الطلب.\n· يتم حذف سجلات الإعجاب معًا عند حذف المنشور ذي الصلة.",
+  "privacySection6Title": "6. الاتصال",
+  "privacySection6Body": "للاستفسارات المتعلقة بالمعلومات الشخصية، يرجى الاتصال على عنوان البريد الإلكتروني أدناه.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "كيفية استخدام مذكرة الغضب",
+  "appGuideSubtitle": "دليل لتسجيل الغضب وتتبع الأنماط والحصول على الدعم في الموجز.",
+  "appGuideRecordTitle": "سجل غضبك",
+  "appGuideRecordBody": "عندما تكون غاضبًا، اضغط على الزر 🔥 في الأسفل لبدء التسجيل.",
+  "appGuideRecordStep1": "اختر الشدة: اختر رمزًا تعبيريًا يتناسب مع مدى غضبك",
+  "appGuideRecordStep2": "اختر فئة: اختر سببًا واحدًا",
+  "appGuideRecordStep3": "اكتبها: صف ما حدث (يمكنك تخطي هذا)",
+  "appGuideRecordStep4": "تذكير: حدد وقتًا إذا كنت تريد العودة إلى هذا لاحقًا",
+  "appGuideRecordStep5": "حفظ أو نشر: احتفظ بالسجل خاصًا أو شاركه في الخلاصة",
+  "appGuideFeedTitle": "ابحث عن الدعم في الخلاصة",
+  "appGuideFeedBody": "مشاركة غضبك يمكن أن تربطك بالآخرين الذين يشعرون بنفس الشعور.",
+  "appGuideFeedItem1": "بعد الحفظ، يمكنك النشر **بشكل مجهول** في الموجز",
+  "appGuideFeedItem2": "قم بالإعجاب أو التعليق على منشورات الآخرين",
+  "appGuideFeedItem3": "يمكنك حذف مشاركتك في أي وقت",
+  "appGuideStatsTitle": "تتبع أنماطك العاطفية",
+  "appGuideStatsBody": "تساعدك علامة التبويب \"الإحصائيات\" على إلقاء نظرة على أنماط غضبك.",
+  "appGuideStatsItem1": "الرسم البياني لاتجاه شدة الغضب حسب الفترة",
+  "appGuideStatsItem2": "توزيع الأسباب حسب الفئة",
+  "appGuideStatsItem3": "عرض التقويم لتصفح السجلات حسب التاريخ",
+  "appGuideStatsItem4": "تقرير الغضب لتحليل الأنماط حسب الفئة",
+  "appGuideCalmTitle": "خفض غضبك",
+  "appGuideCalmBody": "بعد التسجيل، توجه إلى علامة التبويب \"الهدوء\" لمحاولة تخفيف مشاعرك.",
+  "appGuideCalmItem1": "ملاحظات تذكيرية: قم بإعادة زيارة السجلات التي قمت بوضع علامة عليها لوقت لاحق",
+  "appGuideCalmItem2": "التنفس: قم بتسوية عقلك بتقنية 4-7-8",
+  "appGuideCalmItem3": "المهلة: قم بإبطاء رد فعلك باستخدام مؤقت مدته 10 دقائق",
+  "appGuideCalmItem4": "التأمل بالصور: غيّر حالتك المزاجية باستخدام صور الطبيعة",
+  "appGuideProfileTitle": "اللقب والملف الشخصي",
+  "appGuideProfileBody": "انتقل إلى القائمة > الإعدادات لتغيير لقبك وصورتك الرمزية.",
+  "appGuideProfileItem1": "اللقب: اكتب اسمك الخاص أو أنشئ واحدًا بشكل عشوائي",
+  "appGuideProfileItem2": "الصورة الرمزية: قم بتمثيل نفسك باستخدام الرموز التعبيرية",
+  "appGuideNotificationTitle": "إعدادات الإخطار",
+  "appGuideNotificationItem1": "تنبيهات التذكير: احصل على تذكير بمذكرة الغضب في الوقت الذي تحدده",
+  "appGuideNotificationItem2": "تنبيهات التعليق: احصل على إشعار عندما يعلق شخص ما على منشورك",
+  "appGuideNotificationHint": "قم بتبديلها في الإعدادات> الإشعارات",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

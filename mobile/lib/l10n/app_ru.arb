@@ -1,0 +1,549 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "Запись",
+  "feed": "Лента",
+  "stats": "Статистика",
+  "calm": "Успокоение",
+  "settings": "Настройки",
+  "drawerGuide": "Гид по приложению",
+  "drawerCalmGuide": "Гид по успокоению",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Меню",
+  "drawerRecordCount": "🔥 {count} заметки о ярости",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Псевдоним · уведомления",
+  "drawerGuideSubtitle": "Как пользоваться Fury Note",
+  "drawerCalmGuideSubtitle": "Спокойные карты · советы дня",
+  "relativeTimeJustNow": "только что",
+  "relativeTimeMinutesAgo": "{count} минут назад",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}часов назад",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} дней назад",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "Запись гнева",
+  "stepIntensity": "Насколько ты зол сейчас?",
+  "stepIntensitySub": "Выберите смайлик",
+  "stepCategory": "Что стало причиной этого?",
+  "stepCategorySub": "Выберите одну категорию",
+  "stepText": "Что случилось?",
+  "stepTextSub": "Вы можете пропустить это",
+  "stepReminder": "Хотите вернуться позже?",
+  "stepReminderSub": "Вы можете пропустить это",
+  "stepSave": "Сохранить эту заметку?",
+  "stepSaveSub": "Вы можете опубликовать его после сохранения",
+  "stepPost": "Разделите это чувство?",
+  "stepPostSub": "Это будет анонимно",
+  "voiceInput": "Запись голоса",
+  "next": "Далее",
+  "previous": "Назад",
+  "skip": "Пропустить",
+  "save": "Сохранить",
+  "saveNote": "Сохранить заметку",
+  "postIt": "Опубликовать",
+  "saveOnly": "Только сохранить",
+  "feedPostedToast": "Отправлено на корм",
+  "recordPostedToast": "Опубликовано",
+  "recordSavedToast": "Сохранено",
+  "commentPostedToast": "Комментарий опубликован",
+  "commentSendFailedToast": "Не удалось отправить комментарий. Пожалуйста, попробуйте еще раз.",
+  "commentDeleteTitle": "Удалить комментарий",
+  "commentDeleteContent": "Удалить этот комментарий?",
+  "commentsCount": "{count} комментариев",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "Комментариев пока нет\nБудьте первым, кто оставит один 💬",
+  "commentInputHint": "Напишите комментарий...",
+  "apiErrorContentBlockedUrl": "Посты со ссылками не могут быть отправлены.",
+  "apiErrorContentBlockedSpam": "Рекламный текст не может быть отправлен.",
+  "apiErrorContentBlockedProfanity": "Контент, содержащий ненормативную лексику, не может быть отправлен.",
+  "apiErrorContentBlockedModeration": "Этот контент не может быть отправлен.",
+  "apiErrorRateLimitExceeded": "Пожалуйста, повторите попытку через минуту.",
+  "apiErrorInternal": "Произошла ошибка сервера. Пожалуйста, повторите попытку через минуту.",
+  "apiErrorInvalidRequest": "Неверный запрос.",
+  "apiErrorForbidden": "У вас нет разрешения.",
+  "apiErrorPostNotFound": "Пост не найден.",
+  "apiErrorCommentNotFound": "Комментарий не найден.",
+  "apiErrorSignatureRequired": "Требуется подпись запроса.",
+  "apiErrorSignatureInvalid": "Неверный запрос.",
+  "apiErrorSignatureExpired": "Срок действия запроса истек. Пожалуйста, попробуйте еще раз.",
+  "apiErrorSignatureReplay": "Этот запрос уже обработан.",
+  "apiErrorUnknown": "Произошла неизвестная ошибка.",
+  "reminderNotification": "Уведомление-напоминание",
+  "noReminder": "Не установлено",
+  "summaryIntensity": "Уровень ярости",
+  "summaryCategory": "Категория",
+  "summaryText": "Текст",
+  "summaryReminder": "Напоминание",
+  "none": "Нет",
+  "other": "Другое",
+  "family": "Семья",
+  "romance": "Романтика",
+  "work": "Работа",
+  "people": "Люди",
+  "driving": "Вождение",
+  "custom": "Пользовательский",
+  "recordCustomCategoryHint": "Введите категорию",
+  "recordTextHint": "Напишите это здесь",
+  "recordMicPermissionRequired": "Требуется разрешение на использование микрофона.",
+  "recordVoiceStartFailed": "Не удалось запустить {label}.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Остановить запись",
+  "recordVoiceRecordAgain": "Записать еще раз",
+  "recordVoiceSaved": "Запись голоса сохранена.",
+  "recordAudioSummaryLabel": "Голос",
+  "recordAudioIncluded": "Запись включена",
+  "recordSavingInProgress": "Сохранение...",
+  "recordPostingInProgress": "Отправка...",
+  "recordSaveFailedToast": "Не удалось сохранить заметку. Пожалуйста, попробуйте еще раз.",
+  "recordProgressSemantics": "Записывайте прогресс",
+  "hourSuffix": "ч",
+  "minuteSuffix": "м",
+  "reminderCustom": "Пользовательский",
+  "reminderIn30Minutes": "Через 30 минут",
+  "reminderIn1Hour": "Через 1 час",
+  "reminderIn2Hours": "Через 2 часа",
+  "reminderIn6Hours": "Через 6 часов",
+  "reminderTomorrow": "Завтра",
+  "annoyed": "Раздраженный",
+  "angry": "Злой",
+  "mad": "Безумный",
+  "furious": "Яростный",
+  "rage": "Ярость",
+  "calmed": "Спокойствие",
+  "feedTitle": "Лента",
+  "feedSubtitle": "Просмотрите недавние истории гнева",
+  "feedAllTab": "Вся лента",
+  "feedMineTab": "Моя лента",
+  "feedLoadFailed": "Не удалось загрузить канал.",
+  "feedEmptyMine": "Вы еще не публиковали сообщения в ленте.\nПоделитесь своей первой гневной заметкой!",
+  "feedEmptyAll": "Пока нет публикаций в ленте.\nБудьте первым, кто поделитесь своим гневом!",
+  "feedPostFailedToast": "Не удалось отправить на корм. Пожалуйста, попробуйте еще раз.",
+  "like": "Понимаю",
+  "comment": "Комментарий",
+  "retry": "Повторить",
+  "statsTitle": "Статистика гнева",
+  "statsSubtitle": "Посмотрите на эмоциональную картину этой недели",
+  "week": "1 неделя",
+  "month": "1 месяц",
+  "all": "Все",
+  "totalRecords": "Рекорды",
+  "highestLevel": "Самый высокий",
+  "dailyAverage": "В среднем за день",
+  "decreaseRate": "Уменьшение",
+  "statsIntensityTrend": "Тенденция интенсивности ярости",
+  "statsCategoryDistribution": "Распространение причин",
+  "statsNoRecords": "Нет записей для отображения.",
+  "statsCalendarButtonTitle": "Просмотр записей по календарю",
+  "statsCalendarButtonSubtitle": "Проверяйте и управляйте заметками о ярости по дате",
+  "statsCalendarTitle": "Просмотр записей по календарю",
+  "statsOtherCategory": "Другое",
+  "selectedDateRecordsTitle": "{date} записей",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "На выбранную дату не было записано ни одной записи.",
+  "reminderAction": "Напоминание",
+  "play": "Воспроизвести",
+  "statsSummaryButtonTitle": "Посмотреть отчет о гневе",
+  "statsSummaryButtonSubtitle": "Пролистайте свои модели гнева по категориям.",
+  "statsSummaryTitle": "Отчет о ярости",
+  "statsSummaryClose": "Закрыть",
+  "statsSummaryEmptyTitle": "Пока нет записей для подведения итогов",
+  "statsSummaryEmptyBody": "Как только вы добавите заметки о ярости, здесь появятся шаблоны категорий.",
+  "statsSummaryTopHeadline": "\"{category}\" чаще всего вас злил",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "Глядя на \"{category}\"",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "Все в порядке. Это может случиться.",
+  "statsSummaryComfortFamily": "Чем ближе кто-то находится, тем труднее ему приземлиться.",
+  "statsSummaryComfortRomance": "Драгоценные отношения могут сделать небольшие моменты еще более острыми.",
+  "statsSummaryComfortWork": "Возможно, работа заставляла ваш разум работать быстрее, чем ему хотелось.",
+  "statsSummaryComfortPeople": "Слова и выражения других людей могут задерживаться дольше, чем ожидалось.",
+  "statsSummaryComfortDriving": "Напряжение в дороге часто сначала достигает тела.",
+  "statsSummaryMetricCount": "Граф",
+  "statsSummaryMetricCategory": "Категория",
+  "statsSummaryMetricFeed": "Лента сообщений",
+  "statsSummaryMetricCalm": "Спокойствие пытается",
+  "statsSummaryMetricAverage": "Среднее уровень",
+  "statsSummaryMetricPeak": "Пиковый уровень",
+  "statsSummaryConclusion": "Заключение",
+  "statsSummaryRecordsUnit": "{count} раз",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "Это ваш наиболее повторяющийся сигнал гнева. В следующий раз попробуйте проверить напряжение тела до того, как гнев достигнет полной силы.",
+  "statsSummaryConclusionCategory": "Записав эту категорию, пока она еще маленькая, вы сможете быстрее заметить закономерность.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Доля категории",
+  "statsSummaryCalmRate": "Спокойный тариф",
+  "statsSummaryShareRate": "Курс акции",
+  "noContent": "Нет контента",
+  "voicePlayback": "Воспроизвести голос",
+  "deleteConfirm": "Удалить?",
+  "delete": "Удалить",
+  "cancel": "Отмена",
+  "calmTitle": "Успокоение",
+  "calmSubtitle": "Опустите то, что все еще задерживается",
+  "reminderNotes": "Напоминания",
+  "breathing": "Дыхание",
+  "timeout": "Тайм-аут",
+  "meditation": "Образная медитация",
+  "feedSupport": "Поддержка подачи",
+  "calmReminderEmpty": "Напоминания будут появляться здесь, когда они прибудут.",
+  "calmReminderFallbackText": "Как этот гнев ощущается сейчас?",
+  "calmCheckTitle": "Насколько ты зол сейчас?",
+  "calmCheckSubtitle": "{emoji} {label} · прежний гнев",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Рад, что ты успокоился.",
+  "calmSavedUpdatedToast": "Сохранено",
+  "profileName": "Злой Тигр",
+  "nicknameAdjectives": "злой, яростный, бушующий, взрывной, свирепый, рычащий, острый, рогатый, нагретый, грубый, свирепый, неистовый, огненный, громовой, пыхтящий, кипящий, обиженный, пылающий, бурный, ядовитый",
+  "nicknameAnimals": "тигр,лев,волк,медведь,орел,акула,леопард,гепард,крокодил,кобра,бык,кабан,носорог,гиена,гризли,ворон,ястреб,еж,ягуар,пума",
+  "notificationSettings": "Уведомления",
+  "commentNotification": "Оповещения о комментариях",
+  "settingsNotificationsSection": "Уведомления",
+  "settingsReminderSubtitle": "Напоминание о ярости в установленное вами время",
+  "settingsCommentSubtitle": "Оповещение, когда кто-то комментирует вашу публикацию",
+  "settingsDataSection": "Данные",
+  "settingsDataImportSubtitle": "Восстановление записей из файла резервной копии",
+  "settingsSupportSection": "Поддержка",
+  "settingsPrivacySubtitle": "Собираемая информация и цель использования",
+  "settingsFeedbackTitle": "Отправить отзыв",
+  "settingsFeedbackSubtitle": "Проблемы или идеи по улучшению",
+  "settingsRecordCountUnit": "записи",
+  "settingsPostCountUnit": "посты",
+  "proPlan": "Экспорт данных PRO",
+  "backupImport": "Импортировать данные",
+  "settingsDataExportSubtitle": "Файл резервной копии · история · обмен",
+  "dataExportTitle": "Экспортировать данные",
+  "dataExportProTitle": "Экспорт данных PRO",
+  "dataExportDescription": "Создайте один файл резервной копии со всеми локальными данными приложения и поделитесь им по электронной почте или через мессенджер.",
+  "dataExportOneTimePurchase": "Разовая покупка · пожизненный доступ",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "Экспорт",
+  "dataExportPaymentChecking": "Проверка оплаты",
+  "dataExportCreateButton": "Создать экспорт",
+  "dataExportPayAndCreateButton": "Оплатить и экспортировать",
+  "dataExportRestorePurchase": "Восстановить покупку",
+  "dataExportCreatedToast": "Файл экспорта создан.",
+  "dataExportFailedToast": "Не удалось создать файл экспорта.",
+  "dataExportShareSubject": "Резервное копирование данных Fury Note",
+  "dataExportShareText": "Это файл резервной копии данных Fury Note.",
+  "dataExportShareFailedToast": "Не удалось открыть общий лист.",
+  "dataExportAllDataIncluded": "Все локальные данные приложения включены в резервную копию.",
+  "dataExportHistoryTitle": "История экспорта",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Поделиться",
+  "dataExportEmptyHistory": "Файлов экспорта пока нет.",
+  "purchaseUpdateFailed": "Не удалось обработать обновление покупки.",
+  "purchaseStatusFailed": "Не удалось проверить статус покупки.",
+  "purchaseProductNotFound": "Товар в магазине не найден.",
+  "purchaseStoreUnavailable": "Не удалось подключиться к магазину.",
+  "purchaseProductInfoFailed": "Не удалось загрузить информацию о продукте магазина.",
+  "purchaseProductUnavailable": "Информация о продукте еще не готова.",
+  "purchaseStartFailed": "Не удалось начать покупку.",
+  "purchaseCanceled": "Покупка была отменена.",
+  "purchaseReceiptInvalid": "Не удалось проверить чек о покупке.",
+  "purchaseReceiptVerifyFailed": "Проверка чека о покупке не удалась.",
+  "dataImportTitle": "Импортировать данные",
+  "dataImportPickTitle": "Выберите файл резервной копии",
+  "dataImportPickDescription": "Выберите файл .fnbackup\nэкспортировано из Fury Note",
+  "dataImportPickButton": "Выбрать файл",
+  "dataImportInProgress": "Импорт",
+  "dataImportSuccessToast": "Заменил данные из бекапа. ({count} записей)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Заменил данные из бекапа. (0 записей)",
+  "dataImportFailedToast": "Не удалось импортировать файл резервной копии.",
+  "dataImportInvalidFileToast": "Импортировать можно только файлы .fnbackup.",
+  "dataImportNoticeTitle": "Перед импортом",
+  "dataImportNoticeBody": "Существующие данные будут удалены и заменены данными из файла резервной копии.",
+  "dataImportTransferTitle": "Перемещение устройств",
+  "dataImportTransferBody": "После установки приложения на новое устройство импортируйте файл резервной копии, чтобы заменить текущие локальные данные данными резервной копии.",
+  "feedDeleteTitle": "Удалить канал",
+  "feedDeleteContent": "Удалить этот канал?",
+  "calmBreathingTitle": "Дыхание",
+  "breathPhaseInhale": "Вдохните",
+  "breathPhaseHold": "Удерживать",
+  "breathPhaseExhale": "Выдохните",
+  "durationSeconds": "{count}секунд",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "Цикл {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Бег",
+  "calmTimeoutPaused": "Приостановлено",
+  "reset": "Сброс",
+  "start": "Старт",
+  "pause": "Пауза",
+  "stop": "Стоп",
+  "calmMeditationSceneWave": "Волны",
+  "calmMeditationSceneForest": "Лес",
+  "calmMeditationSceneSunset": "Закат",
+  "calmMeditationSceneMountain": "Гора",
+  "calmMeditationSceneCherryBlossom": "Цветущая вишня",
+  "calmMeditationSceneNightSky": "Ночное небо",
+  "calmMeditationPrompt": "Вдохните глубоко, затем выдохните",
+  "autoplay": "Автоматическое воспроизведение",
+  "profileEditTitle": "Редактировать профиль",
+  "nicknameLabel": "Псевдоним",
+  "nicknameHint": "Введите псевдоним",
+  "nicknameRequiredError": "Пожалуйста, введите псевдоним",
+  "nicknameCodeAutomaticError": "Ваш код добавляется автоматически",
+  "nicknameTooShortError": "Используйте не менее 2 символов",
+  "profileSavedToast": "✅ Изменено на «{name}»!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "При сохранении произошла ошибка.",
+  "avatarPickGallery": "Выбрать из библиотеки",
+  "avatarPickCamera": "Сфотографироваться",
+  "avatarReset": "Использовать аватар по умолчанию",
+  "avatarResetToast": "Аватар по умолчанию восстановлен.",
+  "avatarAppliedToast": "Фотография профиля применена.",
+  "avatarTooLargeToast": "Можно использовать только фотографии размером до 5 МБ.",
+  "avatarLoadFailedToast": "Не удалось загрузить фото.",
+  "profileCodeLabel": "Код профиля (не подлежит изменению)",
+  "profileSaveButton": "Сохранить изменения",
+  "avatarChangeLabel": "Изменить фотографию профиля",
+  "avatarChangeHint": "Нажмите на фотографию, чтобы изменить ее.",
+  "avatarSizeHint": "JPG, PNG, GIF · до 5 МБ",
+  "reminderNotificationFallbackBody": "Как этот гнев ощущается сейчас?",
+  "calmGuideTitle": "Когда гнев поднимается,\nсначала опустите тело безопасно",
+  "calmGuideSubtitle": "Спокойное руководство Fury Note не советует вам избавляться от гнева. Это краткое руководство, которое поможет этому чувству пройти, не причинив никому вреда.",
+  "calmGuideNotice": "**Если вам грозит непосредственная опасность**, попросите помощи у окружающих вас людей или сначала обратитесь в службу экстренной помощи, а не оставайтесь в этом приложении.",
+  "calmGuideMomentTitle": "В тот момент, когда гнев поднимается",
+  "calmGuideMomentBody1": "Гнев может быть сигналом о том, что что-то, что вам дорого, было нарушено. Но в состоянии сильного гнева суждения ускоряются, а слова и действия могут стать более грубыми, чем обычно.",
+  "calmGuideMomentBody2": "Сейчас нужно не быть **совершенно рациональным**, а **задержать свою реакцию хотя бы на 30 секунд**.",
+  "calmGuideRoutineTitle": "60-секундная спокойная программа",
+  "calmGuideStep1Title": "Стоп",
+  "calmGuideStep1Desc": "Приостановите ответ, звонок, комментарий или перемещение. Расслабьте руки и на мгновение отведите взгляд от экрана.",
+  "calmGuideStep2Title": "Дышите",
+  "calmGuideStep2Desc": "Вдохните 4 секунды, задержите 7, выдохните 8. Ничего страшного, если не идеально.",
+  "calmGuideStep3Title": "Проверьте свое тело",
+  "calmGuideStep3Desc": "Проверьте, напряжены ли ваши челюсти, плечи, кулаки или живот, и расслабьте только одну точку.",
+  "calmGuideStep4Title": "Запишите это",
+  "calmGuideStep4Desc": "Даже одного предложения типа «Сейчас я злюсь, потому что ___» достаточно.",
+  "calmGuideBreathTitle": "дыхание 4-7-8",
+  "calmGuideBreathStep1": "Вдохните через нос в течение 4 секунд.",
+  "calmGuideBreathStep2": "Задержите дыхание на 7 секунд.",
+  "calmGuideBreathStep3": "Медленно выдыхайте через рот в течение 8 секунд.",
+  "calmGuideBreathStep4": "Если можете, повторите 3 раза.",
+  "calmGuideBreathNote": "Если вам тяжело задерживать дыхание на столь долгий срок, сократите его до комфортного счета, например **3-3-5**. Самое главное – это медленный, длинный выдох.",
+  "calmGuideTimeoutTitle": "10-минутный тайм-аут",
+  "calmGuideTimeoutBody": "Чем сильнее гнев, тем сильнее желание немедленно решить эту проблему. Но разговор сейчас может сначала вызвать обидные слова.",
+  "calmGuideTimeoutExamplesTitle": "Примеры фраз тайм-аута",
+  "calmGuideTimeoutExample1": "«Я сейчас слишком зол, давай поговорим еще раз через 10 минут».",
+  "calmGuideTimeoutExample2": "«Я делаю паузу на мгновение, потому что могу сказать что-нибудь обидное».",
+  "calmGuideTimeoutExample3": "«Я не убегаю, мне просто нужно успокоиться, прежде чем мы снова поговорим».",
+  "calmGuideSensoryTitle": "Быстрое сенсорное заземление",
+  "calmGuideSensory1Title": "Холодная вода",
+  "calmGuideSensory1Desc": "Подержите холодную воду на запястьях или лице около 10 секунд.",
+  "calmGuideSensory2Title": "Почувствуй свои ноги",
+  "calmGuideSensory2Desc": "Медленно обратите внимание на ощущение прикосновения ног к полу.",
+  "calmGuideSensory3Title": "Посмотрите вокруг",
+  "calmGuideSensory3Desc": "Тихо назовите 5 предметов, которые вы видите.",
+  "calmGuideSensory4Title": "Опусти плечи",
+  "calmGuideSensory4Desc": "Выдохните и опустите плечи всего на 1 см.",
+  "calmGuideQuestionsTitle": "Вопросы, которые помогают при написании",
+  "calmGuideQuestion1": "Что именно меня разозлило?",
+  "calmGuideQuestion2": "Чего я ожидал, но не получил?",
+  "calmGuideQuestion3": "О каком поступке я бы пожалел, если бы сделал это прямо сейчас?",
+  "calmGuideQuestion4": "За какой выбор буду благодарен я завтра?",
+  "calmGuideTag1": "Журнал эмоций",
+  "calmGuideTag2": "Гнев дистанцируется",
+  "calmGuideTag3": "Проверка напоминаний",
+  "calmGuideDangerTitle": "В таких случаях сначала обратитесь за помощью",
+  "calmGuideDanger1": "Когда желание причинить вред себе или другим становится сильным",
+  "calmGuideDanger2": "Когда непреодолимое желание бросить или сломать вещи",
+  "calmGuideDanger3": "Когда вам хочется противостоять или угрожать другому человеку",
+  "calmGuideDanger4": "Когда алкоголь, наркотики или серьезное недосыпание мешают контролировать ситуацию",
+  "calmGuideDangerBody": "В этих случаях не пытайтесь справиться с этим, используя только спокойную рутину — обратитесь за помощью к людям вокруг вас, к профессиональным службам или службам экстренной помощи.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "Этот документ не заменяет медицинскую диагностику или лечение.",
+  "privacyTitle": "Политика конфиденциальности",
+  "privacyLastUpdated": "Дата вступления в силу: 16 июня 2026 г.",
+  "privacySection1Title": "1. Категории собираемой информации",
+  "privacySection1Body": "Fury Note можно использовать без регистрации членства. Компания собирает только следующую информацию.\n· Идентификатор устройства — случайно выдаваемое значение, используемое для идентификации пользователя без регистрации с целью предотвращения мошеннического использования.\n· Данные записи ярости — интенсивность, категория и текст (хранятся только на устройстве)\n· Анонимные сообщения в ленте — псевдоним, изображение аватара, интенсивность, категория и текст.\n· Комментарии — никнейм и текст комментария.\n· Записи лайков — понравилась ли пользователю данная публикация.\n· Токен push-уведомлений — для отправки уведомлений (необязательно)",
+  "privacySection2Title": "2. Цель обработки",
+  "privacySection2Body": "· Предоставление функций сообщества, включая анонимную ленту, комментарии и лайки.\n· Обнаружение мошеннического использования, включая предотвращение дублирования лайков на одну и ту же публикацию.\n· Отправка push-уведомлений, включая оповещения о комментариях\n· Работа сервиса и анализ ошибок",
+  "privacySection3Title": "3. Отсутствие регистрации членства и отсутствие хранения личной информации.",
+  "privacySection3Body": "Fury Note не требует регистрации членства и не собирает личную информацию, позволяющую проверить личность, такую как имя, адрес электронной почты или номер телефона.\nПсевдоним либо генерируется автоматически, либо вводится непосредственно пользователем и не связан с реальной личностью пользователя. Идентификатор устройства также представляет собой случайно сгенерированное значение, которое нельзя использовать для идентификации конкретного человека.",
+  "privacySection4Title": "4. Предоставление информации третьим лицам",
+  "privacySection4Body": "Компания не предоставляет и не продает собранную информацию третьим лицам.",
+  "privacySection5Title": "5. Срок хранения и использования информации",
+  "privacySection5Body": "· Только сохраненные записи ярости сохраняются только на устройстве и удаляются вместе при удалении приложения.\n· Сообщения, аватары и комментарии, опубликованные в анонимном канале, сохраняются на сервере до тех пор, пока не будут удалены пользователем, и удаляются немедленно по такому запросу.\n· Записи лайков удаляются вместе с удалением соответствующего поста.",
+  "privacySection6Title": "6. Контакт",
+  "privacySection6Body": "По вопросам, касающимся личной информации, обращайтесь по адресу электронной почты, указанному ниже.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "Как использовать записку ярости",
+  "appGuideSubtitle": "Руководство по регистрации гнева, отслеживанию закономерностей и получению поддержки в ленте.",
+  "appGuideRecordTitle": "Запишите свой гнев",
+  "appGuideRecordBody": "Когда вы злитесь, нажмите кнопку 🔥 внизу, чтобы начать запись.",
+  "appGuideRecordStep1": "Выберите интенсивность: выберите смайлик, который соответствует тому, насколько вы злы.",
+  "appGuideRecordStep2": "Выберите категорию: выберите одну причину",
+  "appGuideRecordStep3": "Запишите это: опишите, что произошло (это можно пропустить)",
+  "appGuideRecordStep4": "Напоминание: установите время, если захотите вернуться к этому позже.",
+  "appGuideRecordStep5": "Сохранить или опубликовать: сохраните запись приватной или поделитесь ею в ленте.",
+  "appGuideFeedTitle": "Найдите поддержку в ленте",
+  "appGuideFeedBody": "Если вы поделитесь своим гневом, это поможет вам сблизиться с другими, которые чувствуют то же самое.",
+  "appGuideFeedItem1": "После сохранения вы можете публиковать сообщения **анонимно** в ленте.",
+  "appGuideFeedItem2": "Ставьте лайк или комментируйте публикации других людей",
+  "appGuideFeedItem3": "Вы можете удалить свою публикацию в любое время",
+  "appGuideStatsTitle": "Отслеживайте свои эмоциональные шаблоны",
+  "appGuideStatsBody": "Вкладка статистики поможет вам взглянуть на свои модели гнева.",
+  "appGuideStatsItem1": "График тенденции интенсивности ярости по периодам",
+  "appGuideStatsItem2": "Распределение причин по категориям",
+  "appGuideStatsItem3": "Представление календаря для просмотра записей по дате",
+  "appGuideStatsItem4": "Отчет Rage для анализа закономерностей по категориям",
+  "appGuideCalmTitle": "Уменьшите свой гнев",
+  "appGuideCalmBody": "После входа перейдите на вкладку «Спокойствие», чтобы попытаться снизить свои эмоции.",
+  "appGuideCalmItem1": "Примечания для напоминаний: повторно посетите отмеченные вами записи для последующего просмотра.",
+  "appGuideCalmItem2": "Дыхание: успокойте свой разум с помощью техники 4-7-8.",
+  "appGuideCalmItem3": "Тайм-аут: замедлите свою реакцию с помощью 10-минутного таймера.",
+  "appGuideCalmItem4": "Образная медитация: измените свое настроение с помощью образов природы",
+  "appGuideProfileTitle": "Никнейм и профиль",
+  "appGuideProfileBody": "Перейдите в меню > Настройки, чтобы изменить свой никнейм и аватар.",
+  "appGuideProfileItem1": "Псевдоним: введите свой собственный или сгенерируйте его случайным образом.",
+  "appGuideProfileItem2": "Аватар: представьте себя смайликом",
+  "appGuideNotificationTitle": "Настройки уведомлений",
+  "appGuideNotificationItem1": "Напоминания: получайте напоминания о заметках о ярости в установленное вами время.",
+  "appGuideNotificationItem2": "Оповещения о комментариях: получайте уведомления, когда кто-то комментирует вашу публикацию.",
+  "appGuideNotificationHint": "Переключите их в «Настройки» > «Уведомления».",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

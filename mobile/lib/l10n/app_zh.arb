@@ -1,0 +1,549 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "记录",
+  "feed": "动态",
+  "stats": "统计",
+  "calm": "平静",
+  "settings": "设置",
+  "drawerGuide": "应用指南",
+  "drawerCalmGuide": "平静指南",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "菜单",
+  "drawerRecordCount": "🔥 {count} 愤怒笔记",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "昵称·通知",
+  "drawerGuideSubtitle": "如何使用愤怒笔记",
+  "drawerCalmGuideSubtitle": "冷静卡·今日小贴士",
+  "relativeTimeJustNow": "刚才",
+  "relativeTimeMinutesAgo": "{count} 分钟前",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}小时前",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} 天前",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "愤怒记录",
+  "stepIntensity": "你现在有多生气？",
+  "stepIntensitySub": "选择一个表情符号",
+  "stepCategory": "是什么原因造成的呢？",
+  "stepCategorySub": "选择一个类别",
+  "stepText": "发生了什么事？",
+  "stepTextSub": "你可以跳过这个",
+  "stepReminder": "想稍后再去吗？",
+  "stepReminderSub": "你可以跳过这个",
+  "stepSave": "保存此注释吗？",
+  "stepSaveSub": "保存后即可发布",
+  "stepPost": "分享这种感受吗？",
+  "stepPostSub": "它将是匿名的",
+  "voiceInput": "录音",
+  "next": "下一步",
+  "previous": "上一步",
+  "skip": "跳过",
+  "save": "保存",
+  "saveNote": "保存记录",
+  "postIt": "发布",
+  "saveOnly": "仅保存",
+  "feedPostedToast": "发送到饲料",
+  "recordPostedToast": "已发布",
+  "recordSavedToast": "已保存",
+  "commentPostedToast": "发表评论",
+  "commentSendFailedToast": "无法发送评论。请再试一次。",
+  "commentDeleteTitle": "删除评论",
+  "commentDeleteContent": "删除这条评论？",
+  "commentsCount": "{count} 评论",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "还没有评论\n成为第一个离开的人💬",
+  "commentInputHint": "写评论...",
+  "apiErrorContentBlockedUrl": "无法提交带有链接的帖子。",
+  "apiErrorContentBlockedSpam": "无法提交促销文字。",
+  "apiErrorContentBlockedProfanity": "不能提交包含脏话的内容。",
+  "apiErrorContentBlockedModeration": "该内容无法提交。",
+  "apiErrorRateLimitExceeded": "请稍后重试。",
+  "apiErrorInternal": "服务器发生错误。请稍后重试。",
+  "apiErrorInvalidRequest": "无效请求。",
+  "apiErrorForbidden": "您没有权限。",
+  "apiErrorPostNotFound": "找不到帖子。",
+  "apiErrorCommentNotFound": "未找到评论。",
+  "apiErrorSignatureRequired": "需要请求签名。",
+  "apiErrorSignatureInvalid": "无效请求。",
+  "apiErrorSignatureExpired": "请求已过期。请再试一次。",
+  "apiErrorSignatureReplay": "该请求已被处理。",
+  "apiErrorUnknown": "发生未知错误。",
+  "reminderNotification": "提醒通知",
+  "noReminder": "未设置",
+  "summaryIntensity": "愤怒等级",
+  "summaryCategory": "类别",
+  "summaryText": "文字",
+  "summaryReminder": "提醒",
+  "none": "无",
+  "other": "其他",
+  "family": "家庭",
+  "romance": "浪漫",
+  "work": "工作",
+  "people": "人",
+  "driving": "驾驶",
+  "custom": "定制",
+  "recordCustomCategoryHint": "输入类别",
+  "recordTextHint": "写在这里",
+  "recordMicPermissionRequired": "需要麦克风许可。",
+  "recordVoiceStartFailed": "无法启动 {label}。",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "停止录音",
+  "recordVoiceRecordAgain": "再次录制",
+  "recordVoiceSaved": "录音已保存。",
+  "recordAudioSummaryLabel": "语音",
+  "recordAudioIncluded": "包括录音",
+  "recordSavingInProgress": "正在保存...",
+  "recordPostingInProgress": "正在发送...",
+  "recordSaveFailedToast": "无法保存笔记。请再试一次。",
+  "recordProgressSemantics": "记录进度",
+  "hourSuffix": "小时",
+  "minuteSuffix": "米",
+  "reminderCustom": "定制",
+  "reminderIn30Minutes": "30分钟后",
+  "reminderIn1Hour": "1小时内",
+  "reminderIn2Hours": "2小时内",
+  "reminderIn6Hours": "6小时内",
+  "reminderTomorrow": "明天",
+  "annoyed": "生气",
+  "angry": "生气",
+  "mad": "疯狂",
+  "furious": "愤怒的",
+  "rage": "愤怒",
+  "calmed": "冷静",
+  "feedTitle": "动态",
+  "feedSubtitle": "浏览最新的愤怒故事",
+  "feedAllTab": "全部动态",
+  "feedMineTab": "我的动态",
+  "feedLoadFailed": "无法加载提要。",
+  "feedEmptyMine": "您还没有发布到提要。\n分享你的第一个愤怒笔记！",
+  "feedEmptyAll": "还没有提要帖子。\n成为第一个分享你愤怒的人！",
+  "feedPostFailedToast": "无法发送至 Feed。请再试一次。",
+  "like": "共鸣",
+  "comment": "评论",
+  "retry": "重试",
+  "statsTitle": "愤怒统计",
+  "statsSubtitle": "查看本周的情绪变化",
+  "week": "1周",
+  "month": "1个月",
+  "all": "全部",
+  "totalRecords": "记录",
+  "highestLevel": "最高",
+  "dailyAverage": "每日平均",
+  "decreaseRate": "减少",
+  "statsIntensityTrend": "愤怒强度趋势",
+  "statsCategoryDistribution": "原因分布",
+  "statsNoRecords": "没有记录可显示。",
+  "statsCalendarButtonTitle": "按日历查看记录",
+  "statsCalendarButtonSubtitle": "按日期检查和管理愤怒笔记",
+  "statsCalendarTitle": "按日历查看记录",
+  "statsOtherCategory": "其他",
+  "selectedDateRecordsTitle": "{date} 条记录",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "所选日期没有写入任何记录。",
+  "reminderAction": "提醒",
+  "play": "播放",
+  "statsSummaryButtonTitle": "查看愤怒报告",
+  "statsSummaryButtonSubtitle": "按类别浏览你的愤怒模式",
+  "statsSummaryTitle": "愤怒报告",
+  "statsSummaryClose": "关闭",
+  "statsSummaryEmptyTitle": "尚无记录可汇总",
+  "statsSummaryEmptyBody": "添加愤怒注释后，类别模式将出现在此处。",
+  "statsSummaryTopHeadline": "“{category}”最常让你生气",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "正在查看“{category}”",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "没关系。这可能会发生。",
+  "statsSummaryComfortFamily": "距离越近的人，就越难落地。",
+  "statsSummaryComfortRomance": "一段珍贵的关系可以让微小的时刻变得更加清晰。",
+  "statsSummaryComfortWork": "工作可能让你的思维速度超出了你的预期。",
+  "statsSummaryComfortPeople": "他人的言语和表达可能比预期的持续时间更长。",
+  "statsSummaryComfortDriving": "路上的紧张往往首先影响到身体。",
+  "statsSummaryMetricCount": "计数",
+  "statsSummaryMetricCategory": "类别",
+  "statsSummaryMetricFeed": "提要帖子",
+  "statsSummaryMetricCalm": "冷静尝试",
+  "statsSummaryMetricAverage": "平均。水平",
+  "statsSummaryMetricPeak": "峰值水平",
+  "statsSummaryConclusion": "结论",
+  "statsSummaryRecordsUnit": "{count}次",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "这是你最重复的愤怒信号。下次，尝试在愤怒完全升起之前检查身体的紧张程度。",
+  "statsSummaryConclusionCategory": "在这个类别还很小的时候把它写下来可以帮助您更快地注意到这种模式。",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "品类份额",
+  "statsSummaryCalmRate": "平静率",
+  "statsSummaryShareRate": "分享率",
+  "noContent": "没有内容",
+  "voicePlayback": "播放语音",
+  "deleteConfirm": "删除？",
+  "delete": "删除",
+  "cancel": "取消",
+  "calmTitle": "平静",
+  "calmSubtitle": "慢慢放下仍然残留的情绪",
+  "reminderNotes": "提醒注意事项",
+  "breathing": "呼吸",
+  "timeout": "超时",
+  "meditation": "意象冥想",
+  "feedSupport": "饲料支持",
+  "calmReminderEmpty": "提醒到达后将出现在此处",
+  "calmReminderFallbackText": "那种愤怒现在感觉如何？",
+  "calmCheckTitle": "你现在有多生气？",
+  "calmCheckSubtitle": "{emoji} {label} · 之前的愤怒",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "很高兴你冷静下来。",
+  "calmSavedUpdatedToast": "已保存",
+  "profileName": "愤怒的老虎",
+  "nicknameAdjectives": "愤怒、愤怒、愤怒、爆炸、凶猛、咆哮、尖锐、有角、加热、粗糙、激烈、横冲直撞、火热、雷鸣般、气喘吁吁、沸腾、怨恨、炽热、暴风雨、有毒",
+  "nicknameAnimals": "老虎、狮子、狼、熊、鹰、鲨鱼、豹子、猎豹、鳄鱼、眼镜蛇、公牛、野猪、犀牛、鬣狗、灰熊、乌鸦、鹰、刺猬、捷豹、美洲狮",
+  "notificationSettings": "通知",
+  "commentNotification": "评论提醒",
+  "settingsNotificationsSection": "通知",
+  "settingsReminderSubtitle": "在您设定的时间发出愤怒音符提醒",
+  "settingsCommentSubtitle": "当有人评论您的帖子时发出警报",
+  "settingsDataSection": "数据",
+  "settingsDataImportSubtitle": "从备份文件中恢复记录",
+  "settingsSupportSection": "支持",
+  "settingsPrivacySubtitle": "收集的信息和使用目的",
+  "settingsFeedbackTitle": "发送反馈",
+  "settingsFeedbackSubtitle": "问题或改进想法",
+  "settingsRecordCountUnit": "记录",
+  "settingsPostCountUnit": "帖子",
+  "proPlan": "PRO数据导出",
+  "backupImport": "导入数据",
+  "settingsDataExportSubtitle": "备份文件·历史记录·共享",
+  "dataExportTitle": "导出数据",
+  "dataExportProTitle": "PRO数据导出",
+  "dataExportDescription": "使用所有本地应用程序数据创建一个备份文件，并通过电子邮件或信使共享。",
+  "dataExportOneTimePurchase": "一次性购买·终生使用",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "出口",
+  "dataExportPaymentChecking": "检查付款",
+  "dataExportCreateButton": "创建导出",
+  "dataExportPayAndCreateButton": "支付及导出",
+  "dataExportRestorePurchase": "恢复购买",
+  "dataExportCreatedToast": "创建的导出文件。",
+  "dataExportFailedToast": "无法创建导出文件。",
+  "dataExportShareSubject": "狂怒笔记数据备份",
+  "dataExportShareText": "这是Fury Note 数据备份文件。",
+  "dataExportShareFailedToast": "无法打开共享表。",
+  "dataExportAllDataIncluded": "所有本地应用程序数据都包含在备份中",
+  "dataExportHistoryTitle": "导出历史记录",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "分享",
+  "dataExportEmptyHistory": "还没有导出文件。",
+  "purchaseUpdateFailed": "无法处理购买更新。",
+  "purchaseStatusFailed": "无法检查购买状态。",
+  "purchaseProductNotFound": "未找到商店产品。",
+  "purchaseStoreUnavailable": "无法连接到商店。",
+  "purchaseProductInfoFailed": "无法加载商店产品信息。",
+  "purchaseProductUnavailable": "产品信息尚未准备好。",
+  "purchaseStartFailed": "无法开始购买。",
+  "purchaseCanceled": "购买被取消。",
+  "purchaseReceiptInvalid": "无法验证购买收据。",
+  "purchaseReceiptVerifyFailed": "购买收据验证失败。",
+  "dataImportTitle": "导入数据",
+  "dataImportPickTitle": "选择备份文件",
+  "dataImportPickDescription": "选择 .fnbackup 文件\n从《愤怒笔记》导出",
+  "dataImportPickButton": "选择文件",
+  "dataImportInProgress": "导入",
+  "dataImportSuccessToast": "替换了备份中的数据。 ({count}记录)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "替换了备份中的数据。 (0 条记录)",
+  "dataImportFailedToast": "无法导入备份文件。",
+  "dataImportInvalidFileToast": "只能导入 .fnbackup 文件。",
+  "dataImportNoticeTitle": "导入前",
+  "dataImportNoticeBody": "现有数据将被删除并替换为备份文件中的数据。",
+  "dataImportTransferTitle": "移动设备",
+  "dataImportTransferBody": "在新设备上安装应用程序后，导入备份文件以用备份数据替换当前本地数据。",
+  "feedDeleteTitle": "删除提要",
+  "feedDeleteContent": "删除此供稿吗？",
+  "calmBreathingTitle": "呼吸",
+  "breathPhaseInhale": "吸气",
+  "breathPhaseHold": "保持",
+  "breathPhaseExhale": "呼气",
+  "durationSeconds": "{count}秒",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "循环{count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "跑步",
+  "calmTimeoutPaused": "已暂停",
+  "reset": "重置",
+  "start": "开始",
+  "pause": "暂停",
+  "stop": "停止",
+  "calmMeditationSceneWave": "波浪",
+  "calmMeditationSceneForest": "森林",
+  "calmMeditationSceneSunset": "日落",
+  "calmMeditationSceneMountain": "山",
+  "calmMeditationSceneCherryBlossom": "樱花",
+  "calmMeditationSceneNightSky": "夜空",
+  "calmMeditationPrompt": "深吸气，然后呼气",
+  "autoplay": "自动播放",
+  "profileEditTitle": "编辑个人资料",
+  "nicknameLabel": "昵称",
+  "nicknameHint": "输入昵称",
+  "nicknameRequiredError": "请输入昵称",
+  "nicknameCodeAutomaticError": "您的代码会自动添加",
+  "nicknameTooShortError": "至少使用 2 个字符",
+  "profileSavedToast": "✅ 更改为“{name}”！",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "保存时发生错误。",
+  "avatarPickGallery": "从库中选择",
+  "avatarPickCamera": "拍张照片",
+  "avatarReset": "使用默认头像",
+  "avatarResetToast": "恢复默认头像。",
+  "avatarAppliedToast": "已应用个人资料照片。",
+  "avatarTooLargeToast": "只能使用最大 5 MB 的照片。",
+  "avatarLoadFailedToast": "无法加载照片。",
+  "profileCodeLabel": "个人资料代码（无法更改）",
+  "profileSaveButton": "保存更改",
+  "avatarChangeLabel": "更改个人资料照片",
+  "avatarChangeHint": "点按照片即可更改它",
+  "avatarSizeHint": "JPG、PNG、GIF · 最大 5 MB",
+  "reminderNotificationFallbackBody": "那种愤怒现在感觉如何？",
+  "calmGuideTitle": "当愤怒上升时，\n首先安全地降低身体",
+  "calmGuideSubtitle": "《愤怒笔记》的冷静指南并不告诉你要摆脱愤怒。这是一个简短的指南，可以帮助您在不伤害任何人的情况下缓解这种感觉。",
+  "calmGuideNotice": "**如果您面临紧急危险**，请先向周围的人寻求帮助或联系紧急服务部门，而不是继续使用此应用程序。",
+  "calmGuideMomentTitle": "愤怒升腾的那一刻",
+  "calmGuideMomentBody1": "愤怒可能是一个信号，表明你关心的事情被侵犯了。但在强烈的愤怒状态下，判断力会加快，言语和行为会变得比平常更粗暴。",
+  "calmGuideMomentBody2": "现在需要的不是**完全理性**，而是**反应延迟30秒**。",
+  "calmGuideRoutineTitle": "60秒平静例程",
+  "calmGuideStep1Title": "停止",
+  "calmGuideStep1Desc": "暂停回复、打电话、评论或移动。放松双手，暂时将目光从屏幕上移开。",
+  "calmGuideStep2Title": "呼吸",
+  "calmGuideStep2Desc": "吸气4秒，屏住7秒，呼气8秒。如果不完美也没关系。",
+  "calmGuideStep3Title": "检查你的身体",
+  "calmGuideStep3Desc": "检查你的下巴、肩膀、拳头或腹部是否紧张，只放松其中一个部位。",
+  "calmGuideStep4Title": "写下来",
+  "calmGuideStep4Desc": "即使是“现在我很生气，因为___”这样的一句话就足够了。",
+  "calmGuideBreathTitle": "4-7-8呼吸",
+  "calmGuideBreathStep1": "通过鼻子吸气 4 秒钟。",
+  "calmGuideBreathStep2": "屏住呼吸 7 秒钟。",
+  "calmGuideBreathStep3": "通过嘴慢慢呼气，持续 8 秒。",
+  "calmGuideBreathStep4": "如果可以的话重复3次。",
+  "calmGuideBreathNote": "如果长时间屏住呼吸很困难，请将其缩短为舒适的数数，例如 **3-3-5**。最重要的是缓慢而长的呼气。",
+  "calmGuideTimeoutTitle": "10分钟暂停",
+  "calmGuideTimeoutBody": "愤怒越强烈，想要立即解决的冲动就越强烈。但现在说话可能首先会带来伤人的话。",
+  "calmGuideTimeoutExamplesTitle": "超时短语示例",
+  "calmGuideTimeoutExample1": "“我现在太生气了，十分钟后再聊吧。”",
+  "calmGuideTimeoutExample2": "“我暂停一下，因为我可能会说一些伤人的话。”",
+  "calmGuideTimeoutExample3": "“我没有逃跑，我只是需要冷静一下，然后再说话。”",
+  "calmGuideSensoryTitle": "快速感官接地",
+  "calmGuideSensory1Title": "冷水",
+  "calmGuideSensory1Desc": "将冷水敷在手腕或脸上约 10 秒钟",
+  "calmGuideSensory2Title": "感觉你的脚",
+  "calmGuideSensory2Desc": "慢慢注意脚接触地板的感觉",
+  "calmGuideSensory3Title": "环顾四周",
+  "calmGuideSensory3Desc": "安静地说出 5 个你能看到的物体的名字",
+  "calmGuideSensory4Title": "放下你的肩膀",
+  "calmGuideSensory4Desc": "呼气并将肩膀降低1厘米",
+  "calmGuideQuestionsTitle": "对写作有帮助的问题",
+  "calmGuideQuestion1": "究竟是什么让我生气？",
+  "calmGuideQuestion2": "我期待但没有收到什么？",
+  "calmGuideQuestion3": "如果我现在就采取什么行动，我会后悔吗？",
+  "calmGuideQuestion4": "明天的我会庆幸什么样的选择？",
+  "calmGuideTag1": "情感日志",
+  "calmGuideTag2": "愤怒疏远",
+  "calmGuideTag3": "提醒检查",
+  "calmGuideDangerTitle": "在这些情况下首先寻求帮助",
+  "calmGuideDanger1": "当想要伤害自己或他人的冲动强烈时",
+  "calmGuideDanger2": "当扔东西或摔东西的冲动无法停止时",
+  "calmGuideDanger3": "当您想要对抗或威胁对方时",
+  "calmGuideDanger4": "当酒精、毒品或严重睡眠不足导致难以控制时",
+  "calmGuideDangerBody": "在这些情况下，不要试图仅靠平静的方式来度过难关——向周围的人、专业服务人员或紧急服务人员寻求帮助。",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "本文件不能代替医疗诊断或治疗。",
+  "privacyTitle": "隐私政策",
+  "privacyLastUpdated": "生效日期：2026 年 6 月 16 日",
+  "privacySection1Title": "1. 收集信息的类别",
+  "privacySection1Body": "Fury Note无需任何会员注册即可使用。公司仅收集以下信息。\n· 设备标识符——随机发布的值，用于在未注册的情况下识别用户身份，以防止欺诈使用\n· 愤怒记录数据——强度、类别和文本（仅存储在设备上）\n· 匿名提要帖子 — 昵称、头像图像、强度、类别和文本\n· 评论——昵称和评论文本\n· 点赞记录——用户是否点赞某个帖子\n· 推送通知令牌 — 用于发送通知（可选）",
+  "privacySection2Title": "2. 处理目的",
+  "privacySection2Body": "· 提供社区功能，包括匿名提要、评论和点赞\n· 检测欺诈性使用，包括防止同一帖子重复点赞\n· 发送推送通知，包括评论提醒\n· 服务的运行及错误分析",
+  "privacySection3Title": "3. 无需注册会员，不保留个人信息",
+  "privacySection3Body": "Fury Note 不需要会员注册，也不会收集可验证身份的个人信息，例如姓名、电子邮件地址或电话号码。\n昵称由用户自动生成或直接输入，与用户的真实身份无关。设备标识符同样是随机生成的值，不能用于识别特定的个人。",
+  "privacySection4Title": "4. 向第三方提供信息",
+  "privacySection4Body": "公司不会向第三方提供或出售收集到的信息。",
+  "privacySection5Title": "5.信息的保留和使用期限",
+  "privacySection5Body": "· 仅保存的愤怒记录仅保留在设备上，并在删除应用程序时一起删除。\n· 共享到匿名源的帖子、头像和评论将保留在服务器上，直到被用户删除，并根据此类请求立即删除。\n· 删除相关帖子后，点赞记录也会一起删除。",
+  "privacySection6Title": "6. 联系方式",
+  "privacySection6Body": "有关个人信息的咨询，请联系以下电子邮件地址。\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "如何使用愤怒笔记",
+  "appGuideSubtitle": "记录愤怒、跟踪模式以及获取动态支持的指南。",
+  "appGuideRecordTitle": "记录你的愤怒",
+  "appGuideRecordBody": "当你生气时，点击底部的🔥按钮开始记录。",
+  "appGuideRecordStep1": "选择强度：选择与您的愤怒程度相匹配的表情符号",
+  "appGuideRecordStep2": "选择类别：选择一个原因",
+  "appGuideRecordStep3": "把它写出来：描述发生了什么（你可以跳过这个）",
+  "appGuideRecordStep4": "提醒：如果您想稍后再看，请设置时间",
+  "appGuideRecordStep5": "保存或发布：将记录保密或分享到提要",
+  "appGuideFeedTitle": "在 Feed 上寻找支持",
+  "appGuideFeedBody": "分享你的愤怒可以让你与其他有同样感受的人建立联系。",
+  "appGuideFeedItem1": "保存后，您可以**匿名**发布到提要",
+  "appGuideFeedItem2": "点赞或评论其他人的帖子",
+  "appGuideFeedItem3": "您可以随时删除自己的帖子",
+  "appGuideStatsTitle": "追踪您的情绪模式",
+  "appGuideStatsBody": "统计选项卡可帮助您回顾您的愤怒模式。",
+  "appGuideStatsItem1": "按时期划分的愤怒强度趋势图",
+  "appGuideStatsItem2": "原因按类别分布",
+  "appGuideStatsItem3": "日历视图可按日期浏览记录",
+  "appGuideStatsItem4": "愤怒报告可按类别分析模式",
+  "appGuideCalmTitle": "降低你的愤怒",
+  "appGuideCalmBody": "登录后，前往“平静”选项卡，尝试降低情绪。",
+  "appGuideCalmItem1": "提醒说明：重新访问您标记为稍后查看的记录",
+  "appGuideCalmItem2": "呼吸：用 4-7-8 技巧让自己平静下来",
+  "appGuideCalmItem3": "超时：用 10 分钟计时器减慢你的反应",
+  "appGuideCalmItem4": "意象冥想：用自然意象改变你的心情",
+  "appGuideProfileTitle": "昵称和个人资料",
+  "appGuideProfileBody": "进入菜单 > 设置来更改您的昵称和头像。",
+  "appGuideProfileItem1": "昵称：输入您自己的昵称或随机生成一个",
+  "appGuideProfileItem2": "头像：用表情符号代表你自己",
+  "appGuideNotificationTitle": "通知设置",
+  "appGuideNotificationItem1": "提醒警报：在您设置的时间收到愤怒通知提醒",
+  "appGuideNotificationItem2": "评论提醒：当有人评论您的帖子时收到通知",
+  "appGuideNotificationHint": "在“设置”>“通知”中切换这些",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

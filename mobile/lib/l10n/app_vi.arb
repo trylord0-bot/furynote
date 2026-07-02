@@ -1,0 +1,549 @@
+{
+  "@@locale": "vi",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "Ghi lại",
+  "feed": "Bảng tin",
+  "stats": "Thống kê",
+  "calm": "Bình tâm",
+  "settings": "Cài đặt",
+  "drawerGuide": "Hướng dẫn app",
+  "drawerCalmGuide": "Hướng dẫn bình tâm",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Menu",
+  "drawerRecordCount": "🔥 {count} ghi chú giận dữ",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Biệt danh · thông báo",
+  "drawerGuideSubtitle": "Cách dùng Fury Note",
+  "drawerCalmGuideSubtitle": "Thẻ bình tĩnh · mẹo ngày nay",
+  "relativeTimeJustNow": "Vừa rồi",
+  "relativeTimeMinutesAgo": "{count} phút trước",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count} giờ trước",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} ngày trước",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "Ghi lại cơn giận",
+  "stepIntensity": "Bây giờ bạn tức giận đến mức nào?",
+  "stepIntensitySub": "Chọn một biểu tượng cảm xúc",
+  "stepCategory": "Điều gì đã gây ra nó?",
+  "stepCategorySub": "Chọn một danh mục",
+  "stepText": "Chuyện gì đã xảy ra vậy?",
+  "stepTextSub": "Bạn có thể bỏ qua điều này",
+  "stepReminder": "Bạn muốn xem lại sau?",
+  "stepReminderSub": "Bạn có thể bỏ qua điều này",
+  "stepSave": "Lưu ghi chú này?",
+  "stepSaveSub": "Bạn có thể đăng nó sau khi lưu",
+  "stepPost": "Chia sẻ cảm giác này?",
+  "stepPostSub": "Nó sẽ ẩn danh",
+  "voiceInput": "Ghi âm giọng nói",
+  "next": "Tiếp",
+  "previous": "Trước",
+  "skip": "Bỏ qua",
+  "save": "Lưu",
+  "saveNote": "Lưu ghi chú",
+  "postIt": "Đăng",
+  "saveOnly": "Chỉ lưu",
+  "feedPostedToast": "Đã gửi tới nguồn cấp dữ liệu",
+  "recordPostedToast": "Đã đăng",
+  "recordSavedToast": "Đã lưu",
+  "commentPostedToast": "Bình luận đã đăng",
+  "commentSendFailedToast": "Không thể gửi bình luận. Vui lòng thử lại.",
+  "commentDeleteTitle": "Xóa bình luận",
+  "commentDeleteContent": "Xóa nhận xét này?",
+  "commentsCount": "{count} nhận xét",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "Chưa có bình luận nào\nHãy là người đầu tiên rời đi 💬",
+  "commentInputHint": "Viết bình luận...",
+  "apiErrorContentBlockedUrl": "Bài viết có liên kết không thể được gửi.",
+  "apiErrorContentBlockedSpam": "Không thể gửi văn bản quảng cáo.",
+  "apiErrorContentBlockedProfanity": "Nội dung có chứa ngôn từ tục tĩu không thể được gửi.",
+  "apiErrorContentBlockedModeration": "Nội dung này không thể được gửi.",
+  "apiErrorRateLimitExceeded": "Vui lòng thử lại sau giây lát.",
+  "apiErrorInternal": "Đã xảy ra lỗi máy chủ. Vui lòng thử lại sau giây lát.",
+  "apiErrorInvalidRequest": "Yêu cầu không hợp lệ.",
+  "apiErrorForbidden": "Bạn không có quyền.",
+  "apiErrorPostNotFound": "Không tìm thấy bài đăng.",
+  "apiErrorCommentNotFound": "Không tìm thấy bình luận.",
+  "apiErrorSignatureRequired": "Yêu cầu chữ ký là bắt buộc.",
+  "apiErrorSignatureInvalid": "Yêu cầu không hợp lệ.",
+  "apiErrorSignatureExpired": "Yêu cầu đã hết hạn. Vui lòng thử lại.",
+  "apiErrorSignatureReplay": "Yêu cầu này đã được xử lý.",
+  "apiErrorUnknown": "Đã xảy ra lỗi không xác định.",
+  "reminderNotification": "Thông báo nhắc nhở",
+  "noReminder": "Chưa đặt",
+  "summaryIntensity": "Mức độ thịnh nộ",
+  "summaryCategory": "Danh mục",
+  "summaryText": "văn bản",
+  "summaryReminder": "Lời nhắc",
+  "none": "không có",
+  "other": "Khác",
+  "family": "gia đình",
+  "romance": "lãng mạn",
+  "work": "công việc",
+  "people": "mọi người",
+  "driving": "Lái xe",
+  "custom": "tùy chỉnh",
+  "recordCustomCategoryHint": "Nhập một danh mục",
+  "recordTextHint": "Viết nó ở đây",
+  "recordMicPermissionRequired": "Cần có sự cho phép của micrô.",
+  "recordVoiceStartFailed": "Không thể bắt đầu {label}.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Dừng ghi",
+  "recordVoiceRecordAgain": "Ghi lại",
+  "recordVoiceSaved": "Đã lưu bản ghi âm giọng nói.",
+  "recordAudioSummaryLabel": "Giọng nói",
+  "recordAudioIncluded": "Đã bao gồm ghi âm",
+  "recordSavingInProgress": "Đang lưu...",
+  "recordPostingInProgress": "Đang gửi...",
+  "recordSaveFailedToast": "Không thể lưu ghi chú. Vui lòng thử lại.",
+  "recordProgressSemantics": "Ghi lại tiến độ",
+  "hourSuffix": "h",
+  "minuteSuffix": "tôi",
+  "reminderCustom": "tùy chỉnh",
+  "reminderIn30Minutes": "trong 30 phút nữa",
+  "reminderIn1Hour": "trong 1 giờ",
+  "reminderIn2Hours": "trong 2 giờ nữa",
+  "reminderIn6Hours": "trong 6 giờ",
+  "reminderTomorrow": "Ngày mai",
+  "annoyed": "Bực mình",
+  "angry": "tức giận",
+  "mad": "điên",
+  "furious": "tức giận",
+  "rage": "cơn thịnh nộ",
+  "calmed": "Bình tĩnh",
+  "feedTitle": "Bảng tin",
+  "feedSubtitle": "Duyệt những câu chuyện tức giận gần đây",
+  "feedAllTab": "Tất cả bảng tin",
+  "feedMineTab": "Bảng tin của tôi",
+  "feedLoadFailed": "Không thể tải nguồn cấp dữ liệu.",
+  "feedEmptyMine": "Bạn chưa đăng lên nguồn cấp dữ liệu.\nChia sẻ ghi chú giận dữ đầu tiên của bạn!",
+  "feedEmptyAll": "Chưa có bài viết nguồn cấp dữ liệu nào.\nHãy là người đầu tiên chia sẻ sự tức giận của bạn!",
+  "feedPostFailedToast": "Không thể gửi tới nguồn cấp dữ liệu. Vui lòng thử lại.",
+  "like": "Đồng cảm",
+  "comment": "Bình luận",
+  "retry": "Thử lại",
+  "statsTitle": "Thống kê cơn giận",
+  "statsSubtitle": "Xem mô hình cảm xúc của tuần này",
+  "week": "1 tuần",
+  "month": "1 tháng",
+  "all": "Tất cả",
+  "totalRecords": "Hồ sơ",
+  "highestLevel": "Cao nhất",
+  "dailyAverage": "Trung bình hàng ngày",
+  "decreaseRate": "Giảm",
+  "statsIntensityTrend": "Xu hướng cường độ thịnh nộ",
+  "statsCategoryDistribution": "Nguyên nhân phân bố",
+  "statsNoRecords": "Không có bản ghi nào để hiển thị.",
+  "statsCalendarButtonTitle": "Xem bản ghi theo lịch",
+  "statsCalendarButtonSubtitle": "Kiểm tra và quản lý ghi chú cơn thịnh nộ theo ngày",
+  "statsCalendarTitle": "Xem bản ghi theo lịch",
+  "statsOtherCategory": "Khác",
+  "selectedDateRecordsTitle": "bản ghi {date}",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "Không có hồ sơ nào được viết vào ngày đã chọn.",
+  "reminderAction": "Lời nhắc",
+  "play": "Phát",
+  "statsSummaryButtonTitle": "Xem báo cáo cơn thịnh nộ",
+  "statsSummaryButtonSubtitle": "Lướt qua các kiểu tức giận của bạn theo danh mục",
+  "statsSummaryTitle": "Báo cáo cơn thịnh nộ",
+  "statsSummaryClose": "Đóng",
+  "statsSummaryEmptyTitle": "Chưa có hồ sơ nào để tóm tắt",
+  "statsSummaryEmptyBody": "Khi bạn thêm ghi chú giận dữ, các mẫu danh mục sẽ xuất hiện ở đây.",
+  "statsSummaryTopHeadline": "\"{category}\" khiến bạn tức giận thường xuyên nhất",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "Đang xem \"{category}\"",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "Không sao đâu. Điều đó có thể xảy ra.",
+  "statsSummaryComfortFamily": "Ai đó càng ở gần thì càng khó hạ cánh.",
+  "statsSummaryComfortRomance": "Một mối quan hệ quý giá có thể khiến những khoảnh khắc nhỏ trở nên sắc nét hơn.",
+  "statsSummaryComfortWork": "Công việc có thể đã thúc đẩy tâm trí bạn nhanh hơn mức nó muốn.",
+  "statsSummaryComfortPeople": "Lời nói và cách diễn đạt của người khác có thể kéo dài hơn dự kiến.",
+  "statsSummaryComfortDriving": "Căng thẳng trên đường thường đến cơ thể trước.",
+  "statsSummaryMetricCount": "Đếm",
+  "statsSummaryMetricCategory": "Danh mục",
+  "statsSummaryMetricFeed": "bài đăng nguồn cấp dữ liệu",
+  "statsSummaryMetricCalm": "Bình tĩnh cố gắng",
+  "statsSummaryMetricAverage": "Trung bình cấp độ",
+  "statsSummaryMetricPeak": "Mức cao nhất",
+  "statsSummaryConclusion": "Kết luận",
+  "statsSummaryRecordsUnit": "{count} lần",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "Đây là tín hiệu tức giận được lặp đi lặp lại nhiều nhất của bạn. Lần tới, hãy thử kiểm tra độ căng của cơ thể trước khi cơn giận bùng lên hoàn toàn.",
+  "statsSummaryConclusionCategory": "Viết danh mục này ra khi nó vẫn còn nhỏ có thể giúp bạn nhận ra mô hình sớm hơn.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Chia sẻ danh mục",
+  "statsSummaryCalmRate": "Tỷ lệ bình tĩnh",
+  "statsSummaryShareRate": "Tỷ lệ chia sẻ",
+  "noContent": "Không có nội dung",
+  "voicePlayback": "Phát giọng nói",
+  "deleteConfirm": "Xóa?",
+  "delete": "Xóa",
+  "cancel": "Hủy",
+  "calmTitle": "Bình tâm",
+  "calmSubtitle": "Hạ thấp những gì còn đọng lại",
+  "reminderNotes": "Ghi chú nhắc nhở",
+  "breathing": "Hơi thở",
+  "timeout": "Hết giờ",
+  "meditation": "thiền hình ảnh",
+  "feedSupport": "Hỗ trợ nguồn cấp dữ liệu",
+  "calmReminderEmpty": "Lời nhắc sẽ xuất hiện ở đây khi họ đến",
+  "calmReminderFallbackText": "Bây giờ cảm giác tức giận đó thế nào?",
+  "calmCheckTitle": "Bây giờ bạn tức giận đến mức nào?",
+  "calmCheckSubtitle": "{emoji} {label} · cơn tức giận trước đó",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Mừng vì bạn đã bình tĩnh lại.",
+  "calmSavedUpdatedToast": "Đã lưu",
+  "profileName": "Hổ giận dữ",
+  "nicknameAdjectives": "tức giận, dữ dội, cuồng nộ, bùng nổ, hung dữ, gầm gừ, sắc bén, có sừng, nóng nảy, thô bạo, dữ dội, hung hãn, bốc lửa, sấm sét, giận dữ, sôi sục, bực bội, rực cháy, giông bão, độc ác",
+  "nicknameAnimals": "hổ, sư tử, chó sói, gấu, đại bàng, cá mập, báo, báo gêpa, cá sấu, rắn hổ mang, bò đực, lợn rừng, tê giác, linh cẩu, hoa râm, quạ, diều hâu, nhím, báo đốm, puma",
+  "notificationSettings": "Thông báo",
+  "commentNotification": "Thông báo bình luận",
+  "settingsNotificationsSection": "Thông báo",
+  "settingsReminderSubtitle": "Lời nhắc ghi chú cơn thịnh nộ vào thời điểm bạn đặt",
+  "settingsCommentSubtitle": "Cảnh báo khi có người bình luận về bài viết của bạn",
+  "settingsDataSection": "dữ liệu",
+  "settingsDataImportSubtitle": "Khôi phục bản ghi từ tập tin sao lưu",
+  "settingsSupportSection": "Hỗ trợ",
+  "settingsPrivacySubtitle": "Thông tin được thu thập và mục đích sử dụng",
+  "settingsFeedbackTitle": "Gửi phản hồi",
+  "settingsFeedbackSubtitle": "Vấn đề hoặc ý tưởng cải tiến",
+  "settingsRecordCountUnit": "hồ sơ",
+  "settingsPostCountUnit": "bài viết",
+  "proPlan": "Xuất dữ liệu PRO",
+  "backupImport": "Nhập dữ liệu",
+  "settingsDataExportSubtitle": "Sao lưu tập tin · lịch sử · chia sẻ",
+  "dataExportTitle": "Xuất dữ liệu",
+  "dataExportProTitle": "Xuất dữ liệu PRO",
+  "dataExportDescription": "Tạo một tệp sao lưu với tất cả dữ liệu ứng dụng cục bộ và chia sẻ nó qua email hoặc tin nhắn.",
+  "dataExportOneTimePurchase": "Mua một lần · truy cập trọn đời",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "Xuất khẩu",
+  "dataExportPaymentChecking": "Kiểm tra thanh toán",
+  "dataExportCreateButton": "Tạo xuất",
+  "dataExportPayAndCreateButton": "Thanh toán và xuất khẩu",
+  "dataExportRestorePurchase": "Khôi phục mua hàng",
+  "dataExportCreatedToast": "Đã tạo tệp xuất.",
+  "dataExportFailedToast": "Không thể tạo tệp xuất.",
+  "dataExportShareSubject": "Sao lưu dữ liệu Fury Note",
+  "dataExportShareText": "Đây là tệp sao lưu dữ liệu Fury Note.",
+  "dataExportShareFailedToast": "Không thể mở bảng chia sẻ.",
+  "dataExportAllDataIncluded": "Tất cả dữ liệu ứng dụng cục bộ được bao gồm trong bản sao lưu",
+  "dataExportHistoryTitle": "Lịch sử xuất khẩu",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Chia sẻ",
+  "dataExportEmptyHistory": "Chưa có tập tin xuất nào.",
+  "purchaseUpdateFailed": "Không thể xử lý bản cập nhật mua hàng.",
+  "purchaseStatusFailed": "Không thể kiểm tra trạng thái mua hàng.",
+  "purchaseProductNotFound": "Cửa hàng không tìm thấy sản phẩm.",
+  "purchaseStoreUnavailable": "Không thể kết nối với cửa hàng.",
+  "purchaseProductInfoFailed": "Không thể tải thông tin sản phẩm của cửa hàng.",
+  "purchaseProductUnavailable": "Thông tin sản phẩm vẫn chưa sẵn sàng.",
+  "purchaseStartFailed": "Không thể bắt đầu mua hàng.",
+  "purchaseCanceled": "Giao dịch mua đã bị hủy.",
+  "purchaseReceiptInvalid": "Không thể xác minh biên lai mua hàng.",
+  "purchaseReceiptVerifyFailed": "Xác minh biên nhận mua hàng không thành công.",
+  "dataImportTitle": "Nhập dữ liệu",
+  "dataImportPickTitle": "Chọn tập tin sao lưu",
+  "dataImportPickDescription": "Chọn tệp .fnbackup\nđược xuất từ Fury Note",
+  "dataImportPickButton": "Chọn tập tin",
+  "dataImportInProgress": "Nhập khẩu",
+  "dataImportSuccessToast": "Đã thay thế dữ liệu từ bản sao lưu. (bản ghi {count})",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Đã thay thế dữ liệu từ bản sao lưu. (0 hồ sơ)",
+  "dataImportFailedToast": "Không thể nhập tập tin sao lưu.",
+  "dataImportInvalidFileToast": "Chỉ có thể nhập tệp .fnbackup.",
+  "dataImportNoticeTitle": "Trước khi nhập khẩu",
+  "dataImportNoticeBody": "Dữ liệu hiện có sẽ bị xóa và thay thế bằng dữ liệu trong file sao lưu.",
+  "dataImportTransferTitle": "Thiết bị di chuyển",
+  "dataImportTransferBody": "Sau khi cài đặt ứng dụng trên thiết bị mới, hãy nhập tệp sao lưu để thay thế dữ liệu cục bộ hiện tại bằng dữ liệu sao lưu.",
+  "feedDeleteTitle": "Xóa nguồn cấp dữ liệu",
+  "feedDeleteContent": "Xóa nguồn cấp dữ liệu này?",
+  "calmBreathingTitle": "Hơi thở",
+  "breathPhaseInhale": "hít vào",
+  "breathPhaseHold": "Giữ",
+  "breathPhaseExhale": "thở ra",
+  "durationSeconds": "{count} giây",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "Chu kỳ {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Đang chạy",
+  "calmTimeoutPaused": "Đã tạm dừng",
+  "reset": "Đặt lại",
+  "start": "Bắt đầu",
+  "pause": "Tạm dừng",
+  "stop": "Dừng",
+  "calmMeditationSceneWave": "Sóng",
+  "calmMeditationSceneForest": "rừng",
+  "calmMeditationSceneSunset": "Hoàng hôn",
+  "calmMeditationSceneMountain": "Núi",
+  "calmMeditationSceneCherryBlossom": "Hoa anh đào",
+  "calmMeditationSceneNightSky": "Bầu trời đêm",
+  "calmMeditationPrompt": "Hít vào thật sâu rồi thở ra",
+  "autoplay": "Tự động phát",
+  "profileEditTitle": "Chỉnh sửa hồ sơ",
+  "nicknameLabel": "Biệt hiệu",
+  "nicknameHint": "Nhập biệt hiệu",
+  "nicknameRequiredError": "Vui lòng nhập biệt hiệu",
+  "nicknameCodeAutomaticError": "Mã của bạn được thêm tự động",
+  "nicknameTooShortError": "Sử dụng ít nhất 2 ký tự",
+  "profileSavedToast": "✅ Đã đổi thành \"{name}\"!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "Đã xảy ra lỗi khi lưu.",
+  "avatarPickGallery": "Chọn từ thư viện",
+  "avatarPickCamera": "Chụp ảnh",
+  "avatarReset": "Sử dụng hình đại diện mặc định",
+  "avatarResetToast": "Đã khôi phục hình đại diện mặc định.",
+  "avatarAppliedToast": "Đã áp dụng ảnh hồ sơ.",
+  "avatarTooLargeToast": "Chỉ có thể sử dụng ảnh có dung lượng tối đa 5 MB.",
+  "avatarLoadFailedToast": "Không thể tải ảnh.",
+  "profileCodeLabel": "Mã hồ sơ (không thể thay đổi)",
+  "profileSaveButton": "Lưu thay đổi",
+  "avatarChangeLabel": "Thay đổi ảnh hồ sơ",
+  "avatarChangeHint": "Nhấn vào ảnh để thay đổi nó",
+  "avatarSizeHint": "JPG, PNG, GIF · tối đa 5 MB",
+  "reminderNotificationFallbackBody": "Bây giờ cảm giác tức giận đó thế nào?",
+  "calmGuideTitle": "Khi cơn giận nổi lên,\nhạ thấp cơ thể của bạn một cách an toàn trước tiên",
+  "calmGuideSubtitle": "Hướng dẫn bình tĩnh của Fury Note không bảo bạn phải thoát khỏi cơn tức giận. Đó là một hướng dẫn ngắn gọn để giúp cảm giác trôi qua mà không ai bị tổn thương.",
+  "calmGuideNotice": "**Nếu bạn đang gặp nguy hiểm trước mắt**, vui lòng nhờ những người xung quanh giúp đỡ hoặc liên hệ với các dịch vụ khẩn cấp trước, thay vì ở lại ứng dụng này.",
+  "calmGuideMomentTitle": "Khoảnh khắc cơn giận nổi lên",
+  "calmGuideMomentBody1": "Sự tức giận có thể là dấu hiệu cho thấy điều gì đó bạn quan tâm đã bị xâm phạm. Nhưng trong trạng thái giận dữ mạnh mẽ, khả năng phán xét tăng tốc, lời nói và hành động có thể trở nên thô bạo hơn bình thường.",
+  "calmGuideMomentBody2": "Điều cần thiết lúc này không phải là **hoàn toàn lý trí** mà là **trì hoãn phản ứng của bạn thậm chí 30 giây**.",
+  "calmGuideRoutineTitle": "Thói quen bình tĩnh 60 giây",
+  "calmGuideStep1Title": "Dừng lại",
+  "calmGuideStep1Desc": "Tạm dừng trả lời, gọi điện, bình luận hoặc di chuyển. Hãy thả lỏng tay và rời mắt khỏi màn hình trong giây lát.",
+  "calmGuideStep2Title": "thở",
+  "calmGuideStep2Desc": "Hít vào trong 4 giây, giữ trong 7 giây, thở ra trong 8 giây. Không hoàn hảo cũng không sao.",
+  "calmGuideStep3Title": "Kiểm tra cơ thể của bạn",
+  "calmGuideStep3Desc": "Kiểm tra xem hàm, vai, nắm tay hoặc bụng của bạn có bị căng hay không và chỉ thả lỏng một chỗ.",
+  "calmGuideStep4Title": "Viết nó ra",
+  "calmGuideStep4Desc": "Ngay cả một câu như “Ngay bây giờ tôi đang tức giận vì ___” là đủ.",
+  "calmGuideBreathTitle": "thở 4-7-8",
+  "calmGuideBreathStep1": "Hít vào bằng mũi trong 4 giây.",
+  "calmGuideBreathStep2": "Nín thở trong 7 giây.",
+  "calmGuideBreathStep3": "Từ từ thở ra bằng miệng trong 8 giây.",
+  "calmGuideBreathStep4": "Lặp lại 3 lần nếu có thể.",
+  "calmGuideBreathNote": "Nếu việc nín thở lâu như vậy thật khó khăn, hãy rút ngắn thời gian đếm cho thoải mái như **3-3-5**. Điều quan trọng nhất là thở ra chậm và dài.",
+  "calmGuideTimeoutTitle": "thời gian chờ 10 phút",
+  "calmGuideTimeoutBody": "Cơn giận càng mạnh thì sự thôi thúc phải giải quyết nó ngay lập tức càng mạnh. Nhưng nói chuyện bây giờ có thể sẽ đưa ra những lời nói gây tổn thương trước.",
+  "calmGuideTimeoutExamplesTitle": "Ví dụ về cụm từ hết thời gian chờ",
+  "calmGuideTimeoutExample1": "\"Bây giờ tôi đang rất tức giận, chúng ta hãy nói chuyện lại sau 10 phút nữa.\"",
+  "calmGuideTimeoutExample2": "\"Tôi tạm dừng một chút vì tôi có thể nói điều gì đó gây tổn thương.\"",
+  "calmGuideTimeoutExample3": "\"Tôi không chạy trốn, tôi chỉ cần bình tĩnh lại trước khi chúng ta nói chuyện lần nữa.\"",
+  "calmGuideSensoryTitle": "Tiếp đất cảm giác nhanh chóng",
+  "calmGuideSensory1Title": "Nước lạnh",
+  "calmGuideSensory1Desc": "Giữ nước lạnh trên cổ tay hoặc mặt trong khoảng 10 giây",
+  "calmGuideSensory2Title": "Cảm nhận đôi chân của bạn",
+  "calmGuideSensory2Desc": "Từ từ nhận thấy cảm giác bàn chân chạm sàn",
+  "calmGuideSensory3Title": "Nhìn xung quanh",
+  "calmGuideSensory3Desc": "Hãy kể tên 5 đồ vật bạn có thể nhìn thấy",
+  "calmGuideSensory4Title": "Thả vai của bạn",
+  "calmGuideSensory4Desc": "Thở ra và hạ vai xuống chỉ 1cm",
+  "calmGuideQuestionsTitle": "Các câu hỏi hỗ trợ khi viết",
+  "calmGuideQuestion1": "Chính xác thì điều gì đã khiến tôi tức giận?",
+  "calmGuideQuestion2": "Tôi đã mong đợi điều gì nhưng không nhận được?",
+  "calmGuideQuestion3": "Tôi sẽ hối hận về hành động nào nếu làm điều đó ngay bây giờ?",
+  "calmGuideQuestion4": "Sự lựa chọn nào của ngày mai tôi sẽ biết ơn?",
+  "calmGuideTag1": "Nhật ký cảm xúc",
+  "calmGuideTag2": "Giận dữ xa cách",
+  "calmGuideTag3": "Kiểm tra lời nhắc",
+  "calmGuideDangerTitle": "Yêu cầu giúp đỡ trước tiên trong những trường hợp này",
+  "calmGuideDanger1": "Khi sự thôi thúc làm tổn thương bản thân hoặc người khác trở nên mạnh mẽ",
+  "calmGuideDanger2": "Khi cảm giác muốn ném hoặc đập vỡ đồ đạc không ngừng nghỉ",
+  "calmGuideDanger3": "Khi bạn cảm thấy muốn đối đầu hoặc đe dọa người khác",
+  "calmGuideDanger4": "Khi rượu, ma túy hoặc tình trạng thiếu ngủ trầm trọng khiến bạn khó kiểm soát",
+  "calmGuideDangerBody": "Trong những trường hợp này, đừng cố gắng vượt qua nó chỉ bằng thói quen bình tĩnh - hãy nhờ những người xung quanh bạn, các dịch vụ chuyên nghiệp hoặc dịch vụ khẩn cấp giúp đỡ.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "Tài liệu này không thay thế chẩn đoán hoặc điều trị y tế.",
+  "privacyTitle": "Chính sách bảo mật",
+  "privacyLastUpdated": "Ngày có hiệu lực: 16 tháng 6 năm 2026",
+  "privacySection1Title": "1. Danh mục thông tin được thu thập",
+  "privacySection1Body": "Fury Note có thể được sử dụng mà không cần đăng ký thành viên. Công ty chỉ thu thập những thông tin sau.\n· Mã định danh thiết bị - giá trị được phát hành ngẫu nhiên được sử dụng để nhận dạng người dùng mà không cần đăng ký, nhằm mục đích ngăn chặn việc sử dụng gian lận\n· Dữ liệu ghi lại cơn thịnh nộ - cường độ, danh mục và văn bản (chỉ được lưu trữ trên thiết bị)\n· Bài đăng nguồn cấp dữ liệu ẩn danh - biệt hiệu, hình đại diện, cường độ, danh mục và văn bản\n· Bình luận - biệt danh và nội dung bình luận\n· Bản ghi lượt thích — liệu người dùng có thích một bài đăng nhất định hay không\n· Mã thông báo đẩy - nhằm mục đích gửi thông báo (tùy chọn)",
+  "privacySection2Title": "2. Mục đích xử lý",
+  "privacySection2Body": "· Cung cấp các tính năng cộng đồng, bao gồm nguồn cấp dữ liệu ẩn danh, nhận xét và lượt thích\n· Phát hiện hành vi sử dụng gian lận, bao gồm ngăn chặn lượt thích trùng lặp trên cùng một bài đăng\n· Gửi thông báo đẩy, bao gồm cả thông báo bình luận\n· Vận hành dịch vụ và phân tích lỗi",
+  "privacySection3Title": "3. Không đăng ký thành viên và không lưu giữ thông tin cá nhân",
+  "privacySection3Body": "Fury Note không yêu cầu đăng ký thành viên và không thu thập thông tin cá nhân có thể xác minh danh tính như tên, địa chỉ email hoặc số điện thoại.\nBiệt hiệu được người dùng tự động tạo hoặc nhập trực tiếp và không được liên kết với danh tính thực của người dùng. Mã nhận dạng thiết bị cũng là một giá trị được tạo ngẫu nhiên và không thể sử dụng để nhận dạng một cá nhân cụ thể.",
+  "privacySection4Title": "4. Cung cấp thông tin cho bên thứ ba",
+  "privacySection4Body": "Công ty không cung cấp hoặc bán thông tin thu thập được cho bên thứ ba.",
+  "privacySection5Title": "5. Thời gian lưu giữ và sử dụng thông tin",
+  "privacySection5Body": "· Các bản ghi cơn thịnh nộ chỉ được lưu sẽ chỉ được giữ lại trên thiết bị và sẽ bị xóa cùng nhau khi xóa ứng dụng.\n· Các bài đăng, hình đại diện và nhận xét được chia sẻ trên nguồn cấp dữ liệu ẩn danh sẽ được giữ lại trên máy chủ cho đến khi bị người dùng xóa và sẽ bị xóa ngay lập tức theo yêu cầu đó.\n· Các bản ghi Like sẽ bị xóa cùng lúc khi xóa bài viết liên quan.",
+  "privacySection6Title": "6. Liên hệ",
+  "privacySection6Body": "Mọi thắc mắc liên quan đến thông tin cá nhân, vui lòng liên hệ theo địa chỉ email bên dưới.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "Cách sử dụng Fury Note",
+  "appGuideSubtitle": "Hướng dẫn ghi lại sự tức giận, theo dõi các mẫu và nhận hỗ trợ trên nguồn cấp dữ liệu.",
+  "appGuideRecordTitle": "Ghi lại sự tức giận của bạn",
+  "appGuideRecordBody": "Khi bạn tức giận, hãy nhấn vào nút 🔥 ở phía dưới để bắt đầu ghi âm.",
+  "appGuideRecordStep1": "Chọn cường độ: chọn biểu tượng cảm xúc phù hợp với mức độ tức giận của bạn",
+  "appGuideRecordStep2": "Chọn một danh mục: chọn một nguyên nhân",
+  "appGuideRecordStep3": "Viết nó ra: mô tả những gì đã xảy ra (bạn có thể bỏ qua phần này)",
+  "appGuideRecordStep4": "Lời nhắc: đặt thời gian nếu bạn muốn xem lại sau",
+  "appGuideRecordStep5": "Lưu hoặc đăng: giữ bản ghi ở chế độ riêng tư hoặc chia sẻ nó lên nguồn cấp dữ liệu",
+  "appGuideFeedTitle": "Tìm hỗ trợ trên nguồn cấp dữ liệu",
+  "appGuideFeedBody": "Chia sẻ sự tức giận của bạn có thể kết nối bạn với những người khác cũng có cảm giác tương tự.",
+  "appGuideFeedItem1": "Sau khi lưu, bạn có thể đăng **ẩn danh** lên nguồn cấp dữ liệu",
+  "appGuideFeedItem2": "Thích hoặc bình luận về bài viết của người khác",
+  "appGuideFeedItem3": "Bạn có thể xóa bài đăng của chính mình bất cứ lúc nào",
+  "appGuideStatsTitle": "Theo dõi các mẫu cảm xúc của bạn",
+  "appGuideStatsBody": "Tab thống kê giúp bạn nhìn lại các kiểu tức giận của mình.",
+  "appGuideStatsItem1": "Biểu đồ xu hướng cường độ thịnh nộ theo thời kỳ",
+  "appGuideStatsItem2": "Nguyên nhân phân bố theo danh mục",
+  "appGuideStatsItem3": "Xem lịch để duyệt hồ sơ theo ngày",
+  "appGuideStatsItem4": "Báo cáo cơn thịnh nộ để phân tích các mẫu theo danh mục",
+  "appGuideCalmTitle": "Giảm bớt sự tức giận của bạn",
+  "appGuideCalmBody": "Sau khi đăng nhập, hãy chuyển đến tab bình tĩnh để thử giảm bớt cảm xúc của bạn.",
+  "appGuideCalmItem1": "Ghi chú nhắc nhở: xem lại các bản ghi bạn đã gắn cờ để sử dụng sau",
+  "appGuideCalmItem2": "Hít thở: ổn định tâm trí bằng kỹ thuật 4-7-8",
+  "appGuideCalmItem3": "Hết thời gian chờ: làm chậm phản ứng của bạn với bộ hẹn giờ 10 phút",
+  "appGuideCalmItem4": "Thiền hình ảnh: thay đổi tâm trạng của bạn với hình ảnh thiên nhiên",
+  "appGuideProfileTitle": "Biệt danh và hồ sơ",
+  "appGuideProfileBody": "Vào menu > Cài đặt để thay đổi biệt hiệu và hình đại diện của bạn.",
+  "appGuideProfileItem1": "Biệt danh: nhập tên riêng của bạn hoặc tạo ngẫu nhiên",
+  "appGuideProfileItem2": "Hình đại diện: thể hiện bản thân bằng biểu tượng cảm xúc",
+  "appGuideNotificationTitle": "Cài đặt thông báo",
+  "appGuideNotificationItem1": "Cảnh báo nhắc nhở: được nhắc về ghi chú giận dữ vào thời điểm bạn đặt",
+  "appGuideNotificationItem2": "Cảnh báo nhận xét: nhận thông báo khi ai đó nhận xét về bài đăng của bạn",
+  "appGuideNotificationHint": "Chuyển đổi những điều này trong Cài đặt > Thông báo",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

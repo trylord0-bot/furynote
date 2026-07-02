@@ -1,0 +1,549 @@
+{
+  "@@locale": "id",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "Catat",
+  "feed": "Feed",
+  "stats": "Statistik",
+  "calm": "Tenang",
+  "settings": "Pengaturan",
+  "drawerGuide": "Panduan app",
+  "drawerCalmGuide": "Panduan tenang",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Menu",
+  "drawerRecordCount": "🔥 {count} catatan kemarahan",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Nama panggilan · pemberitahuan",
+  "drawerGuideSubtitle": "Cara menggunakan Fury Note",
+  "drawerCalmGuideSubtitle": "Kartu tenang · tips hari ini",
+  "relativeTimeJustNow": "Baru saja",
+  "relativeTimeMinutesAgo": "{count} menit yang lalu",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}jam yang lalu",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} hari yang lalu",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "Catatan marah",
+  "stepIntensity": "Seberapa marah kamu sekarang?",
+  "stepIntensitySub": "Pilih emoji",
+  "stepCategory": "Apa penyebabnya?",
+  "stepCategorySub": "Pilih satu kategori",
+  "stepText": "Apa yang terjadi?",
+  "stepTextSub": "Anda dapat melewati ini",
+  "stepReminder": "Ingin mengunjunginya lagi nanti?",
+  "stepReminderSub": "Anda dapat melewati ini",
+  "stepSave": "Simpan catatan ini?",
+  "stepSaveSub": "Anda dapat mempostingnya setelah menyimpannya",
+  "stepPost": "Bagikan perasaan ini?",
+  "stepPostSub": "Ini akan menjadi anonim",
+  "voiceInput": "Rekaman suara",
+  "next": "Berikutnya",
+  "previous": "Sebelumnya",
+  "skip": "Lewati",
+  "save": "Simpan",
+  "saveNote": "Simpan catatan",
+  "postIt": "Posting",
+  "saveOnly": "Simpan saja",
+  "feedPostedToast": "Dikirim untuk memberi makan",
+  "recordPostedToast": "Diposting",
+  "recordSavedToast": "Disimpan",
+  "commentPostedToast": "Komentar diposting",
+  "commentSendFailedToast": "Tidak dapat mengirimkan komentar. Silakan coba lagi.",
+  "commentDeleteTitle": "Hapus komentar",
+  "commentDeleteContent": "Hapus komentar ini?",
+  "commentsCount": "{count} komentar",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "Belum ada komentar\nJadilah orang pertama yang meninggalkannya 💬",
+  "commentInputHint": "Tulis komentar...",
+  "apiErrorContentBlockedUrl": "Postingan dengan tautan tidak dapat dikirimkan.",
+  "apiErrorContentBlockedSpam": "Teks promosi tidak dapat dikirimkan.",
+  "apiErrorContentBlockedProfanity": "Konten yang mengandung kata-kata kotor tidak dapat dikirimkan.",
+  "apiErrorContentBlockedModeration": "Konten ini tidak dapat dikirimkan.",
+  "apiErrorRateLimitExceeded": "Silakan coba lagi sebentar lagi.",
+  "apiErrorInternal": "Terjadi kesalahan server. Silakan coba lagi sebentar lagi.",
+  "apiErrorInvalidRequest": "Permintaan tidak valid.",
+  "apiErrorForbidden": "Anda tidak memiliki izin.",
+  "apiErrorPostNotFound": "Postingan tidak ditemukan.",
+  "apiErrorCommentNotFound": "Komentar tidak ditemukan.",
+  "apiErrorSignatureRequired": "Tanda tangan permintaan diperlukan.",
+  "apiErrorSignatureInvalid": "Permintaan tidak valid.",
+  "apiErrorSignatureExpired": "Permintaan sudah habis masa berlakunya. Silakan coba lagi.",
+  "apiErrorSignatureReplay": "Permintaan ini telah diproses.",
+  "apiErrorUnknown": "Terjadi kesalahan yang tidak diketahui.",
+  "reminderNotification": "Pemberitahuan pengingat",
+  "noReminder": "Tidak disetel",
+  "summaryIntensity": "Tingkat kemarahan",
+  "summaryCategory": "Kategori",
+  "summaryText": "Teks",
+  "summaryReminder": "Pengingat",
+  "none": "Tidak ada",
+  "other": "Lainnya",
+  "family": "Keluarga",
+  "romance": "Percintaan",
+  "work": "Bekerja",
+  "people": "Orang-orang",
+  "driving": "Mengemudi",
+  "custom": "Adat",
+  "recordCustomCategoryHint": "Masukkan kategori",
+  "recordTextHint": "Tulis di sini",
+  "recordMicPermissionRequired": "Izin mikrofon diperlukan.",
+  "recordVoiceStartFailed": "Tidak dapat memulai {label}.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Berhenti merekam",
+  "recordVoiceRecordAgain": "Rekam lagi",
+  "recordVoiceSaved": "Rekaman suara disimpan.",
+  "recordAudioSummaryLabel": "Suara",
+  "recordAudioIncluded": "Rekaman disertakan",
+  "recordSavingInProgress": "Menyimpan...",
+  "recordPostingInProgress": "Mengirim...",
+  "recordSaveFailedToast": "Tidak dapat menyimpan catatan. Silakan coba lagi.",
+  "recordProgressSemantics": "Catat kemajuan",
+  "hourSuffix": "h",
+  "minuteSuffix": "m",
+  "reminderCustom": "Adat",
+  "reminderIn30Minutes": "Dalam 30 menit",
+  "reminderIn1Hour": "Dalam 1 jam",
+  "reminderIn2Hours": "Dalam 2 jam",
+  "reminderIn6Hours": "Dalam 6 jam",
+  "reminderTomorrow": "Besok",
+  "annoyed": "Kesal",
+  "angry": "Marah",
+  "mad": "Gila",
+  "furious": "Marah",
+  "rage": "Kemarahan",
+  "calmed": "Tenang",
+  "feedTitle": "Feed",
+  "feedSubtitle": "Jelajahi kisah kemarahan terkini",
+  "feedAllTab": "Semua feed",
+  "feedMineTab": "Feed saya",
+  "feedLoadFailed": "Tidak dapat memuat feed.",
+  "feedEmptyMine": "Anda belum memposting ke feed.\nBagikan catatan kemarahan pertama Anda!",
+  "feedEmptyAll": "Belum ada postingan feed.\nJadilah orang pertama yang mengungkapkan kemarahan Anda!",
+  "feedPostFailedToast": "Tidak dapat mengirim ke feed. Silakan coba lagi.",
+  "like": "Paham",
+  "comment": "Komentar",
+  "retry": "Coba lagi",
+  "statsTitle": "Statistik marah",
+  "statsSubtitle": "Lihat pola emosional minggu ini",
+  "week": "1 minggu",
+  "month": "1 bulan",
+  "all": "Semua",
+  "totalRecords": "Catatan",
+  "highestLevel": "Tertinggi",
+  "dailyAverage": "Rata-rata harian",
+  "decreaseRate": "Mengurangi",
+  "statsIntensityTrend": "Tren intensitas kemarahan",
+  "statsCategoryDistribution": "Menyebabkan distribusi",
+  "statsNoRecords": "Tidak ada catatan untuk ditampilkan.",
+  "statsCalendarButtonTitle": "Lihat catatan berdasarkan kalender",
+  "statsCalendarButtonSubtitle": "Periksa dan kelola catatan kemarahan berdasarkan tanggal",
+  "statsCalendarTitle": "Lihat catatan berdasarkan kalender",
+  "statsOtherCategory": "Lainnya",
+  "selectedDateRecordsTitle": "{date} catatan",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "Tidak ada catatan yang ditulis pada tanggal yang dipilih.",
+  "reminderAction": "Pengingat",
+  "play": "Putar",
+  "statsSummaryButtonTitle": "Lihat laporan kemarahan",
+  "statsSummaryButtonSubtitle": "Telusuri pola kemarahan Anda berdasarkan kategori",
+  "statsSummaryTitle": "Laporan Kemarahan",
+  "statsSummaryClose": "Tutup",
+  "statsSummaryEmptyTitle": "Belum ada catatan untuk diringkas",
+  "statsSummaryEmptyBody": "Setelah Anda menambahkan catatan kemarahan, pola kategori akan muncul di sini.",
+  "statsSummaryTopHeadline": "\"{category}\" paling sering membuat Anda marah",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "Melihat \"{category}\"",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "Tidak apa-apa. Itu bisa terjadi.",
+  "statsSummaryComfortFamily": "Semakin dekat seseorang, semakin sulit ia mendarat.",
+  "statsSummaryComfortRomance": "Hubungan yang berharga bisa membuat momen kecil terasa lebih tajam.",
+  "statsSummaryComfortWork": "Pekerjaan mungkin telah mendorong pikiran Anda lebih cepat dari yang diharapkan.",
+  "statsSummaryComfortPeople": "Kata-kata dan ungkapan dari orang lain bisa bertahan lebih lama dari yang diharapkan.",
+  "statsSummaryComfortDriving": "Ketegangan di jalan seringkali mencapai tubuh terlebih dahulu.",
+  "statsSummaryMetricCount": "Hitung",
+  "statsSummaryMetricCategory": "Kategori",
+  "statsSummaryMetricFeed": "Postingan umpan",
+  "statsSummaryMetricCalm": "Tenang mencoba",
+  "statsSummaryMetricAverage": "Rata-rata tingkat",
+  "statsSummaryMetricPeak": "Tingkat puncak",
+  "statsSummaryConclusion": "Kesimpulan",
+  "statsSummaryRecordsUnit": "{count} kali",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "Ini adalah sinyal kemarahan Anda yang paling sering diulang. Lain kali, cobalah periksa ketegangan tubuh sebelum amarahnya memuncak sepenuhnya.",
+  "statsSummaryConclusionCategory": "Menuliskan kategori ini selagi masih kecil dapat membantu Anda melihat polanya lebih cepat.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Pembagian kategori",
+  "statsSummaryCalmRate": "Tingkat tenang",
+  "statsSummaryShareRate": "Tingkat pembagian",
+  "noContent": "Tidak ada konten",
+  "voicePlayback": "Putar suara",
+  "deleteConfirm": "Hapus?",
+  "delete": "Hapus",
+  "cancel": "Batal",
+  "calmTitle": "Tenang",
+  "calmSubtitle": "Turunkan apa yang masih tersisa",
+  "reminderNotes": "Catatan pengingat",
+  "breathing": "Pernapasan",
+  "timeout": "Batas waktu",
+  "meditation": "Meditasi gambar",
+  "feedSupport": "Dukungan pakan",
+  "calmReminderEmpty": "Pengingat akan muncul di sini ketika mereka tiba",
+  "calmReminderFallbackText": "Bagaimana perasaan kemarahan itu sekarang?",
+  "calmCheckTitle": "Seberapa marah kamu sekarang?",
+  "calmCheckSubtitle": "{emoji} {label} · kemarahan yang tadi",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Senang kamu bisa tenang.",
+  "calmSavedUpdatedToast": "Disimpan",
+  "profileName": "Harimau Marah",
+  "nicknameAdjectives": "marah, berang, mengamuk, meledak-ledak, ganas, menggeram, tajam, bertanduk, panas, kasar, ganas, mengamuk, berapi-api, menggelegar, terengah-engah, mendidih, sebal, menyala-nyala, penuh badai, berbisa",
+  "nicknameAnimals": "harimau, singa, serigala, beruang, elang, hiu, macan tutul, cheetah, buaya, kobra, banteng, babi hutan, badak, hyena, grizzly, gagak, elang, landak, jaguar, puma",
+  "notificationSettings": "Pemberitahuan",
+  "commentNotification": "Peringatan komentar",
+  "settingsNotificationsSection": "Pemberitahuan",
+  "settingsReminderSubtitle": "Pengingat catatan kemarahan pada waktu yang Anda atur",
+  "settingsCommentSubtitle": "Waspada ketika seseorang mengomentari kiriman Anda",
+  "settingsDataSection": "Data",
+  "settingsDataImportSubtitle": "Pulihkan catatan dari file cadangan",
+  "settingsSupportSection": "Dukungan",
+  "settingsPrivacySubtitle": "Informasi yang dikumpulkan dan tujuan penggunaan",
+  "settingsFeedbackTitle": "Kirim masukan",
+  "settingsFeedbackSubtitle": "Masalah atau ide perbaikan",
+  "settingsRecordCountUnit": "catatan",
+  "settingsPostCountUnit": "posting",
+  "proPlan": "Ekspor data PRO",
+  "backupImport": "Impor data",
+  "settingsDataExportSubtitle": "File cadangan · riwayat · berbagi",
+  "dataExportTitle": "Ekspor data",
+  "dataExportProTitle": "Ekspor data PRO",
+  "dataExportDescription": "Buat satu file cadangan dengan semua data aplikasi lokal dan bagikan melalui email atau messenger.",
+  "dataExportOneTimePurchase": "Pembelian satu kali · akses seumur hidup",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "Mengekspor",
+  "dataExportPaymentChecking": "Memeriksa pembayaran",
+  "dataExportCreateButton": "Buat ekspor",
+  "dataExportPayAndCreateButton": "Bayar dan ekspor",
+  "dataExportRestorePurchase": "Pulihkan pembelian",
+  "dataExportCreatedToast": "Ekspor file dibuat.",
+  "dataExportFailedToast": "Tidak dapat membuat file ekspor.",
+  "dataExportShareSubject": "Cadangan data Fury Note",
+  "dataExportShareText": "Ini adalah file cadangan data Fury Note.",
+  "dataExportShareFailedToast": "Tidak dapat membuka lembar berbagi.",
+  "dataExportAllDataIncluded": "Semua data aplikasi lokal disertakan dalam cadangan",
+  "dataExportHistoryTitle": "Ekspor riwayat",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Bagikan",
+  "dataExportEmptyHistory": "Belum ada file ekspor.",
+  "purchaseUpdateFailed": "Tidak dapat memproses pembaruan pembelian.",
+  "purchaseStatusFailed": "Tidak dapat memeriksa status pembelian.",
+  "purchaseProductNotFound": "Produk toko tidak ditemukan.",
+  "purchaseStoreUnavailable": "Tidak dapat terhubung ke toko.",
+  "purchaseProductInfoFailed": "Tidak dapat memuat informasi produk toko.",
+  "purchaseProductUnavailable": "Informasi produk belum siap.",
+  "purchaseStartFailed": "Tidak dapat memulai pembelian.",
+  "purchaseCanceled": "Pembelian dibatalkan.",
+  "purchaseReceiptInvalid": "Tidak dapat memverifikasi tanda terima pembelian.",
+  "purchaseReceiptVerifyFailed": "Verifikasi tanda terima pembelian gagal.",
+  "dataImportTitle": "Impor data",
+  "dataImportPickTitle": "Pilih file cadangan",
+  "dataImportPickDescription": "Pilih file .fnbackup\ndiekspor dari Fury Note",
+  "dataImportPickButton": "Pilih berkas",
+  "dataImportInProgress": "Mengimpor",
+  "dataImportSuccessToast": "Mengganti data dari cadangan. ({count} catatan)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Mengganti data dari cadangan. (0 catatan)",
+  "dataImportFailedToast": "Tidak dapat mengimpor file cadangan.",
+  "dataImportInvalidFileToast": "Hanya file .fnbackup yang dapat diimpor.",
+  "dataImportNoticeTitle": "Sebelum mengimpor",
+  "dataImportNoticeBody": "Data yang ada akan dihapus dan diganti dengan data yang ada di file cadangan.",
+  "dataImportTransferTitle": "Perangkat bergerak",
+  "dataImportTransferBody": "Setelah menginstal aplikasi pada perangkat baru, impor file cadangan untuk mengganti data lokal saat ini dengan data cadangan.",
+  "feedDeleteTitle": "Hapus Umpan",
+  "feedDeleteContent": "Hapus umpan ini?",
+  "calmBreathingTitle": "Pernapasan",
+  "breathPhaseInhale": "Tarik napas",
+  "breathPhaseHold": "Tahan",
+  "breathPhaseExhale": "Buang napas",
+  "durationSeconds": "{count}detik",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "Siklus {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Berlari",
+  "calmTimeoutPaused": "Dijeda",
+  "reset": "Reset",
+  "start": "Mulai",
+  "pause": "Jeda",
+  "stop": "Berhenti",
+  "calmMeditationSceneWave": "Gelombang",
+  "calmMeditationSceneForest": "Hutan",
+  "calmMeditationSceneSunset": "Matahari terbenam",
+  "calmMeditationSceneMountain": "Gunung",
+  "calmMeditationSceneCherryBlossom": "Bunga sakura",
+  "calmMeditationSceneNightSky": "Langit malam",
+  "calmMeditationPrompt": "Tarik napas dalam-dalam, lalu hembuskan",
+  "autoplay": "Putar otomatis",
+  "profileEditTitle": "Sunting profil",
+  "nicknameLabel": "Nama panggilan",
+  "nicknameHint": "Masukkan nama panggilan",
+  "nicknameRequiredError": "Silakan masukkan nama panggilan",
+  "nicknameCodeAutomaticError": "Kode Anda ditambahkan secara otomatis",
+  "nicknameTooShortError": "Gunakan minimal 2 karakter",
+  "profileSavedToast": "✅ Berubah menjadi \"{name}\"!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "Terjadi kesalahan saat menyimpan.",
+  "avatarPickGallery": "Pilih dari perpustakaan",
+  "avatarPickCamera": "Ambil foto",
+  "avatarReset": "Gunakan avatar bawaan",
+  "avatarResetToast": "Avatar default dipulihkan.",
+  "avatarAppliedToast": "Foto profil diterapkan.",
+  "avatarTooLargeToast": "Hanya foto berukuran maksimal 5 MB yang dapat digunakan.",
+  "avatarLoadFailedToast": "Tidak dapat memuat foto.",
+  "profileCodeLabel": "Kode profil (tidak dapat diubah)",
+  "profileSaveButton": "Simpan perubahan",
+  "avatarChangeLabel": "Ganti foto profil",
+  "avatarChangeHint": "Ketuk foto untuk mengubahnya",
+  "avatarSizeHint": "JPG, PNG, GIF · hingga 5 MB",
+  "reminderNotificationFallbackBody": "Bagaimana perasaan kemarahan itu sekarang?",
+  "calmGuideTitle": "Ketika kemarahan meningkat,\nturunkan tubuhmu dengan aman terlebih dahulu",
+  "calmGuideSubtitle": "Panduan tenang Fury Note tidak menyuruh Anda menghilangkan amarah. Ini adalah panduan singkat untuk membantu perasaan itu berlalu tanpa ada yang terluka.",
+  "calmGuideNotice": "**Jika Anda berada dalam bahaya**, mintalah bantuan orang-orang di sekitar Anda atau hubungi layanan darurat terlebih dahulu, daripada terus menggunakan aplikasi ini.",
+  "calmGuideMomentTitle": "Saat kemarahan meningkat",
+  "calmGuideMomentBody1": "Kemarahan bisa menjadi sinyal bahwa sesuatu yang Anda sayangi telah dilanggar. Namun dalam keadaan marah yang kuat, penilaian menjadi lebih cepat, dan perkataan serta tindakan bisa menjadi lebih kasar dari biasanya.",
+  "calmGuideMomentBody2": "Apa yang dibutuhkan saat ini bukanlah menjadi **rasional sepenuhnya**, namun **menunda reaksi Anda bahkan selama 30 detik**.",
+  "calmGuideRoutineTitle": "Rutinitas tenang 60 detik",
+  "calmGuideStep1Title": "Berhenti",
+  "calmGuideStep1Desc": "Jeda membalas, menelepon, berkomentar, atau memindahkan. Relakskan tangan Anda dan alihkan pandangan dari layar sejenak.",
+  "calmGuideStep2Title": "Bernafas",
+  "calmGuideStep2Desc": "Tarik napas selama 4 detik, tahan selama 7, buang napas selama 8. Tidak apa-apa jika belum sempurna.",
+  "calmGuideStep3Title": "Periksa tubuh Anda",
+  "calmGuideStep3Desc": "Periksa apakah rahang, bahu, kepalan tangan, atau perut Anda tegang, dan lepaskan satu titik saja.",
+  "calmGuideStep4Title": "Tuliskan",
+  "calmGuideStep4Desc": "Bahkan satu kalimat seperti \"Saat ini aku sedang marah karena ___\" sudah cukup.",
+  "calmGuideBreathTitle": "4-7-8 pernapasan",
+  "calmGuideBreathStep1": "Tarik napas melalui hidung selama 4 detik.",
+  "calmGuideBreathStep2": "Tahan napas Anda selama 7 detik.",
+  "calmGuideBreathStep3": "Buang napas perlahan melalui mulut selama 8 detik.",
+  "calmGuideBreathStep4": "Ulangi 3 kali jika Anda bisa.",
+  "calmGuideBreathNote": "Jika sulit menahan napas selama itu, persingkat menjadi hitungan yang nyaman seperti **3-3-5**. Yang paling penting adalah hembusan napas yang perlahan dan panjang.",
+  "calmGuideTimeoutTitle": "Batas waktu 10 menit",
+  "calmGuideTimeoutBody": "Semakin kuat amarahnya, semakin kuat pula dorongan untuk segera menyelesaikannya. Namun berbicara sekarang mungkin akan memunculkan kata-kata yang menyakitkan terlebih dahulu.",
+  "calmGuideTimeoutExamplesTitle": "Contoh frasa batas waktu",
+  "calmGuideTimeoutExample1": "“Aku terlalu marah sekarang, ayo kita bicara lagi 10 menit lagi.”",
+  "calmGuideTimeoutExample2": "“Saya berhenti sejenak karena saya mungkin mengatakan sesuatu yang menyakitkan.”",
+  "calmGuideTimeoutExample3": "\"Aku tidak akan melarikan diri, aku hanya perlu menenangkan diri sebelum kita bicara lagi.\"",
+  "calmGuideSensoryTitle": "Landasan sensorik yang cepat",
+  "calmGuideSensory1Title": "Air dingin",
+  "calmGuideSensory1Desc": "Tahan air dingin di pergelangan tangan atau wajah Anda selama sekitar 10 detik",
+  "calmGuideSensory2Title": "Rasakan kakimu",
+  "calmGuideSensory2Desc": "Perlahan perhatikan perasaan kaki Anda menyentuh lantai",
+  "calmGuideSensory3Title": "Lihatlah sekeliling",
+  "calmGuideSensory3Desc": "Sebutkan dengan tenang 5 benda yang dapat kamu lihat",
+  "calmGuideSensory4Title": "Jatuhkan bahu Anda",
+  "calmGuideSensory4Desc": "Buang napas dan turunkan bahu Anda hanya 1 cm",
+  "calmGuideQuestionsTitle": "Pertanyaan yang membantu saat menulis",
+  "calmGuideQuestion1": "Apa sebenarnya yang membuatku marah?",
+  "calmGuideQuestion2": "Apa yang saya harapkan tetapi tidak saya terima?",
+  "calmGuideQuestion3": "Tindakan apa yang akan saya sesali jika saya melakukannya sekarang?",
+  "calmGuideQuestion4": "Pilihan apa yang akan saya syukuri besok?",
+  "calmGuideTag1": "Catatan emosi",
+  "calmGuideTag2": "Jarak kemarahan",
+  "calmGuideTag3": "Pemeriksaan pengingat",
+  "calmGuideDangerTitle": "Mintalah bantuan terlebih dahulu dalam kasus ini",
+  "calmGuideDanger1": "Ketika keinginan untuk menyakiti diri sendiri atau orang lain terasa kuat",
+  "calmGuideDanger2": "Ketika keinginan untuk melempar atau menghancurkan barang tidak kunjung berhenti",
+  "calmGuideDanger3": "Saat Anda merasa ingin berkonfrontasi atau mengancam orang lain",
+  "calmGuideDanger4": "Ketika alkohol, obat-obatan, atau kurang tidur membuat Anda sulit mengendalikan diri",
+  "calmGuideDangerBody": "Dalam kasus ini, jangan mencoba menjalaninya hanya dengan rutinitas yang tenang — mintalah bantuan orang-orang di sekitar Anda, layanan profesional, atau layanan darurat.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "Dokumen ini tidak menggantikan diagnosis atau pengobatan medis.",
+  "privacyTitle": "Kebijakan Privasi",
+  "privacyLastUpdated": "Tanggal Efektif: 16 Juni 2026",
+  "privacySection1Title": "1. Kategori Informasi yang Dikumpulkan",
+  "privacySection1Body": "Fury Note dapat digunakan tanpa registrasi keanggotaan apa pun. Perusahaan hanya mengumpulkan informasi berikut.\n· Pengidentifikasi perangkat — nilai yang dikeluarkan secara acak yang digunakan untuk mengidentifikasi pengguna tanpa registrasi, untuk tujuan mencegah penggunaan yang curang\n· Data rekaman kemarahan — intensitas, kategori, dan teks (disimpan di perangkat saja)\n· Postingan feed anonim — nama panggilan, gambar avatar, intensitas, kategori, dan teks\n· Komentar — nama panggilan dan teks komentar\n· Catatan suka — apakah pengguna menyukai kiriman tertentu\n· Token pemberitahuan push — untuk tujuan pengiriman pemberitahuan (opsional)",
+  "privacySection2Title": "2. Tujuan Pengolahan",
+  "privacySection2Body": "· Penyediaan fitur komunitas, termasuk feed anonim, komentar, dan suka\n· Deteksi penggunaan penipuan, termasuk pencegahan duplikat suka pada postingan yang sama\n· Mengirim pemberitahuan push, termasuk peringatan komentar\n· Pengoperasian layanan dan analisis kesalahan",
+  "privacySection3Title": "3. Tidak Ada Pendaftaran Keanggotaan dan Tidak Ada Penyimpanan Informasi Pribadi",
+  "privacySection3Body": "Fury Note tidak memerlukan pendaftaran keanggotaan dan tidak mengumpulkan informasi pribadi yang dapat diverifikasi identitas seperti nama, alamat email, atau nomor telepon.\nNama panggilan dibuat secara otomatis atau dimasukkan langsung oleh pengguna dan tidak terkait dengan identitas asli pengguna. Pengidentifikasi perangkat juga merupakan nilai yang dihasilkan secara acak yang tidak dapat digunakan untuk mengidentifikasi individu tertentu.",
+  "privacySection4Title": "4. Pemberian Informasi kepada Pihak Ketiga",
+  "privacySection4Body": "Perusahaan tidak menyediakan atau menjual informasi yang dikumpulkan kepada pihak ketiga.",
+  "privacySection5Title": "5. Periode Penyimpanan dan Penggunaan Informasi",
+  "privacySection5Body": "· Catatan kemarahan yang hanya disimpan disimpan di perangkat saja dan dihapus bersamaan setelah aplikasi dihapus.\n· Postingan, avatar, dan komentar yang dibagikan ke feed anonim disimpan di server hingga dihapus oleh pengguna, dan segera dihapus setelah permintaan tersebut.\n· Catatan suka dihapus bersamaan setelah penghapusan postingan terkait.",
+  "privacySection6Title": "6. Kontak",
+  "privacySection6Body": "Untuk pertanyaan mengenai informasi pribadi, silakan hubungi alamat email di bawah ini.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "Cara menggunakan Catatan Kemarahan",
+  "appGuideSubtitle": "Panduan untuk mencatat kemarahan, melacak pola, dan mendapatkan dukungan melalui feed.",
+  "appGuideRecordTitle": "Catat kemarahan Anda",
+  "appGuideRecordBody": "Saat Anda marah, ketuk tombol 🔥 di bagian bawah untuk mulai merekam.",
+  "appGuideRecordStep1": "Pilih intensitas: pilih emoji yang sesuai dengan tingkat kemarahan Anda",
+  "appGuideRecordStep2": "Pilih kategori: pilih satu penyebab",
+  "appGuideRecordStep3": "Tuliskan: jelaskan apa yang terjadi (Anda dapat melewati ini)",
+  "appGuideRecordStep4": "Pengingat: tetapkan waktu jika Anda ingin mengulanginya lagi nanti",
+  "appGuideRecordStep5": "Simpan atau poskan: simpan catatan pribadi atau bagikan ke umpan",
+  "appGuideFeedTitle": "Temukan dukungan di feed",
+  "appGuideFeedBody": "Berbagi kemarahan dapat menghubungkan Anda dengan orang lain yang merasakan hal yang sama.",
+  "appGuideFeedItem1": "Setelah menyimpan, Anda dapat memposting **secara anonim** ke feed",
+  "appGuideFeedItem2": "Sukai atau komentari postingan orang lain",
+  "appGuideFeedItem3": "Anda dapat menghapus postingan Anda sendiri kapan saja",
+  "appGuideStatsTitle": "Lacak pola emosional Anda",
+  "appGuideStatsBody": "Tab statistik membantu Anda melihat kembali pola kemarahan Anda.",
+  "appGuideStatsItem1": "Grafik tren intensitas kemarahan berdasarkan periode",
+  "appGuideStatsItem2": "Menyebabkan distribusi berdasarkan kategori",
+  "appGuideStatsItem3": "Tampilan kalender untuk menelusuri catatan berdasarkan tanggal",
+  "appGuideStatsItem4": "Laporan kemarahan untuk menganalisis pola berdasarkan kategori",
+  "appGuideCalmTitle": "Turunkan amarahmu",
+  "appGuideCalmBody": "Setelah masuk, buka tab tenang untuk mencoba menurunkan emosi Anda.",
+  "appGuideCalmItem1": "Catatan pengingat: kunjungi kembali catatan yang Anda tandai untuk nanti",
+  "appGuideCalmItem2": "Pernafasan: tenangkan pikiran Anda dengan teknik 4-7-8",
+  "appGuideCalmItem3": "Batas waktu: memperlambat reaksi Anda dengan pengatur waktu 10 menit",
+  "appGuideCalmItem4": "Meditasi gambar: ubah suasana hati Anda dengan gambaran alam",
+  "appGuideProfileTitle": "Nama panggilan dan profil",
+  "appGuideProfileBody": "Buka menu > Pengaturan untuk mengubah nama panggilan dan avatar Anda.",
+  "appGuideProfileItem1": "Nama panggilan: ketik sendiri atau buat nama panggilan secara acak",
+  "appGuideProfileItem2": "Avatar: mewakili diri Anda dengan emoji",
+  "appGuideNotificationTitle": "Pengaturan notifikasi",
+  "appGuideNotificationItem1": "Peringatan pengingat: dapatkan pengingat akan catatan kemarahan pada waktu yang Anda tentukan",
+  "appGuideNotificationItem2": "Peringatan komentar: dapatkan pemberitahuan ketika seseorang mengomentari kiriman Anda",
+  "appGuideNotificationHint": "Alihkan ini di Pengaturan > Pemberitahuan",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

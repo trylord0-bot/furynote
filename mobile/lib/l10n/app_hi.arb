@@ -1,0 +1,549 @@
+{
+  "@@locale": "hi",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "रिकॉर्ड",
+  "feed": "फ़ीड",
+  "stats": "आँकड़े",
+  "calm": "शांत",
+  "settings": "सेटिंग्स",
+  "drawerGuide": "ऐप गाइड",
+  "drawerCalmGuide": "शांत गाइड",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "मेन्यू",
+  "drawerRecordCount": "🔥 {count} क्रोध नोट",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "उपनाम · सूचनाएं",
+  "drawerGuideSubtitle": "Fury Note का उपयोग कैसे करें",
+  "drawerCalmGuideSubtitle": "शांत कार्ड · आज की युक्तियाँ",
+  "relativeTimeJustNow": "अभी अभी",
+  "relativeTimeMinutesAgo": "{count} मिनट पहले",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}घंटे पहले",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} दिन पहले",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "गुस्से का रिकॉर्ड",
+  "stepIntensity": "अब आप कितने गुस्से में हैं?",
+  "stepIntensitySub": "एक इमोजी चुनें",
+  "stepCategory": "इसका क्या कारण है?",
+  "stepCategorySub": "एक श्रेणी चुनें",
+  "stepText": "क्या हुआ?",
+  "stepTextSub": "आप इसे छोड़ सकते हैं",
+  "stepReminder": "क्या आप बाद में दोबारा आना चाहेंगे?",
+  "stepReminderSub": "आप इसे छोड़ सकते हैं",
+  "stepSave": "यह नोट सहेजें?",
+  "stepSaveSub": "सेव करने के बाद आप इसे पोस्ट कर सकते हैं",
+  "stepPost": "इस भावना को साझा करें?",
+  "stepPostSub": "यह गुमनाम होगा",
+  "voiceInput": "आवाज रिकार्डिंग",
+  "next": "अगला",
+  "previous": "पिछला",
+  "skip": "छोड़ें",
+  "save": "सहेजें",
+  "saveNote": "नोट सहेजें",
+  "postIt": "पोस्ट करें",
+  "saveOnly": "केवल सहेजें",
+  "feedPostedToast": "खिलाने के लिए भेजा",
+  "recordPostedToast": "पोस्ट किया गया",
+  "recordSavedToast": "सहेजा गया",
+  "commentPostedToast": "टिप्पणी पोस्ट की गई",
+  "commentSendFailedToast": "टिप्पणी नहीं भेज सका. कृपया पुन: प्रयास करें।",
+  "commentDeleteTitle": "टिप्पणी हटाएँ",
+  "commentDeleteContent": "यह टिप्पणी हटाएं?",
+  "commentsCount": "{count} टिप्पणियाँ",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "अभी तक कोई टिप्पणी नहीं\nकिसी को छोड़ने वाले पहले व्यक्ति बनें 💬",
+  "commentInputHint": "एक टिप्पणी लिखें...",
+  "apiErrorContentBlockedUrl": "लिंक वाले पोस्ट सबमिट नहीं किए जा सकते.",
+  "apiErrorContentBlockedSpam": "प्रचार पाठ सबमिट नहीं किया जा सकता.",
+  "apiErrorContentBlockedProfanity": "अपवित्रता वाली सामग्री प्रस्तुत नहीं की जा सकती।",
+  "apiErrorContentBlockedModeration": "यह सामग्री सबमिट नहीं की जा सकती.",
+  "apiErrorRateLimitExceeded": "कृपया एक क्षण में पुनः प्रयास करें.",
+  "apiErrorInternal": "एक सर्वर त्रुटि उत्पन्न हुई. कृपया एक क्षण में पुनः प्रयास करें.",
+  "apiErrorInvalidRequest": "अमान्य अनुरोध.",
+  "apiErrorForbidden": "आपके पास अनुमति नहीं है.",
+  "apiErrorPostNotFound": "पोस्ट नहीं मिली.",
+  "apiErrorCommentNotFound": "टिप्पणी नहीं मिली.",
+  "apiErrorSignatureRequired": "अनुरोध पर हस्ताक्षर आवश्यक है.",
+  "apiErrorSignatureInvalid": "अमान्य अनुरोध.",
+  "apiErrorSignatureExpired": "अनुरोध समाप्त हो गया. कृपया पुन: प्रयास करें।",
+  "apiErrorSignatureReplay": "यह अनुरोध पहले ही संसाधित किया जा चुका है.",
+  "apiErrorUnknown": "एक अज्ञात त्रुटि उत्पन्न हुई.",
+  "reminderNotification": "अनुस्मारक अधिसूचना",
+  "noReminder": "सेट नहीं",
+  "summaryIntensity": "क्रोध का स्तर",
+  "summaryCategory": "श्रेणी",
+  "summaryText": "पाठ",
+  "summaryReminder": "अनुस्मारक",
+  "none": "कोई नहीं",
+  "other": "अन्य",
+  "family": "परिवार",
+  "romance": "रोमांस",
+  "work": "काम",
+  "people": "लोग",
+  "driving": "ड्राइविंग",
+  "custom": "कस्टम",
+  "recordCustomCategoryHint": "एक श्रेणी दर्ज करें",
+  "recordTextHint": "इसे यहां लिखें",
+  "recordMicPermissionRequired": "माइक्रोफ़ोन अनुमति आवश्यक है.",
+  "recordVoiceStartFailed": "{label} प्रारंभ नहीं हो सका.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "रिकॉर्डिंग बंद करो",
+  "recordVoiceRecordAgain": "फिर से रिकॉर्ड करें",
+  "recordVoiceSaved": "ध्वनि रिकॉर्डिंग सहेजी गई.",
+  "recordAudioSummaryLabel": "आवाज",
+  "recordAudioIncluded": "रिकॉर्डिंग शामिल है",
+  "recordSavingInProgress": "सहेजा जा रहा है...",
+  "recordPostingInProgress": "भेजा जा रहा है...",
+  "recordSaveFailedToast": "नोट सहेजा नहीं जा सका. कृपया पुन: प्रयास करें।",
+  "recordProgressSemantics": "प्रगति रिकॉर्ड करें",
+  "hourSuffix": "ज",
+  "minuteSuffix": "एम",
+  "reminderCustom": "कस्टम",
+  "reminderIn30Minutes": "30 मिनट में",
+  "reminderIn1Hour": "1 घंटे में",
+  "reminderIn2Hours": "2 घंटे में",
+  "reminderIn6Hours": "6 घंटे में",
+  "reminderTomorrow": "कल",
+  "annoyed": "नाराज़",
+  "angry": "क्रोधित",
+  "mad": "पागल",
+  "furious": "उग्र",
+  "rage": "क्रोध",
+  "calmed": "शांत",
+  "feedTitle": "फ़ीड",
+  "feedSubtitle": "हाल की गुस्से वाली कहानियाँ देखें",
+  "feedAllTab": "सभी फ़ीड",
+  "feedMineTab": "मेरी फ़ीड",
+  "feedLoadFailed": "फ़ीड लोड नहीं किया जा सका.",
+  "feedEmptyMine": "आपने अभी तक फ़ीड पर पोस्ट नहीं किया है.\nअपना पहला क्रोध नोट साझा करें!",
+  "feedEmptyAll": "अभी तक कोई फ़ीड पोस्ट नहीं.\nअपना गुस्सा साझा करने वाले पहले व्यक्ति बनें!",
+  "feedPostFailedToast": "फ़ीड के लिए नहीं भेजा जा सका. कृपया पुन: प्रयास करें।",
+  "like": "सहमति",
+  "comment": "टिप्पणी",
+  "retry": "फिर कोशिश करें",
+  "statsTitle": "गुस्से के आँकड़े",
+  "statsSubtitle": "देखिए इस हफ्ते का भावनात्मक पैटर्न",
+  "week": "1 सप्ताह",
+  "month": "1 महीना",
+  "all": "सब",
+  "totalRecords": "अभिलेख",
+  "highestLevel": "उच्चतम",
+  "dailyAverage": "दैनिक औसत.",
+  "decreaseRate": "कमी",
+  "statsIntensityTrend": "क्रोध की तीव्रता की प्रवृत्ति",
+  "statsCategoryDistribution": "कारण वितरण",
+  "statsNoRecords": "दिखाने के लिए कोई रिकॉर्ड नहीं.",
+  "statsCalendarButtonTitle": "कैलेंडर के अनुसार रिकॉर्ड देखें",
+  "statsCalendarButtonSubtitle": "दिनांक के अनुसार क्रोध नोट्स की जाँच करें और प्रबंधित करें",
+  "statsCalendarTitle": "कैलेंडर के अनुसार रिकॉर्ड देखें",
+  "statsOtherCategory": "अन्य",
+  "selectedDateRecordsTitle": "{date} रिकॉर्ड",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "चयनित तिथि पर कोई रिकार्ड नहीं लिखा गया।",
+  "reminderAction": "अनुस्मारक",
+  "play": "चलाएँ",
+  "statsSummaryButtonTitle": "रोष रिपोर्ट देखें",
+  "statsSummaryButtonSubtitle": "श्रेणी के अनुसार अपने गुस्से के पैटर्न को पलटें",
+  "statsSummaryTitle": "रोष रिपोर्ट",
+  "statsSummaryClose": "बंद करें",
+  "statsSummaryEmptyTitle": "सारांशित करने के लिए अभी तक कोई रिकॉर्ड नहीं है",
+  "statsSummaryEmptyBody": "एक बार जब आप क्रोध नोट्स जोड़ देंगे, तो श्रेणी पैटर्न यहां दिखाई देंगे।",
+  "statsSummaryTopHeadline": "\"{category}\" ने आपको सबसे अधिक बार क्रोधित किया",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "\"{category}\" देख रहे हैं",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "यह ठीक है. ऐसा हो सकता है.",
+  "statsSummaryComfortFamily": "कोई व्यक्ति जितना करीब होगा, वह उतनी ही मजबूती से जमीन पर उतर सकता है।",
+  "statsSummaryComfortRomance": "एक अनमोल रिश्ता छोटे-छोटे पलों को और भी मधुर बना सकता है।",
+  "statsSummaryComfortWork": "हो सकता है कि काम ने आपके दिमाग को उसकी इच्छा से कहीं अधिक तेज़ कर दिया हो।",
+  "statsSummaryComfortPeople": "दूसरों के शब्द और अभिव्यक्तियाँ अपेक्षा से अधिक समय तक टिक सकती हैं।",
+  "statsSummaryComfortDriving": "सड़क पर तनाव अक्सर सबसे पहले शरीर तक पहुंचता है।",
+  "statsSummaryMetricCount": "गिनती",
+  "statsSummaryMetricCategory": "श्रेणी",
+  "statsSummaryMetricFeed": "फ़ीड पोस्ट",
+  "statsSummaryMetricCalm": "शांत प्रयास करता है",
+  "statsSummaryMetricAverage": "औसत स्तर",
+  "statsSummaryMetricPeak": "चरम स्तर",
+  "statsSummaryConclusion": "निष्कर्ष",
+  "statsSummaryRecordsUnit": "{count} बार",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "यह आपका सबसे अधिक बार दोहराया जाने वाला क्रोध संकेत है। अगली बार, गुस्सा पूरी तरह बढ़ने से पहले शरीर का तनाव जाँचने का प्रयास करें।",
+  "statsSummaryConclusionCategory": "इस श्रेणी को तब लिखने से जब यह अभी भी छोटी है, आपको पैटर्न पर जल्द ध्यान देने में मदद मिल सकती है।",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "श्रेणी शेयर",
+  "statsSummaryCalmRate": "शांत गति",
+  "statsSummaryShareRate": "शेयर दर",
+  "noContent": "कोई सामग्री नहीं",
+  "voicePlayback": "आवाज बजाओ",
+  "deleteConfirm": "हटाएं?",
+  "delete": "हटाएँ",
+  "cancel": "रद्द करें",
+  "calmTitle": "शांत",
+  "calmSubtitle": "जो अभी भी बाकी है उसे कम करो",
+  "reminderNotes": "अनुस्मारक नोट्स",
+  "breathing": "साँस लेना",
+  "timeout": "समयबाह्य",
+  "meditation": "छवि ध्यान",
+  "feedSupport": "फ़ीड समर्थन",
+  "calmReminderEmpty": "उनके आने पर अनुस्मारक यहां दिखाई देंगे",
+  "calmReminderFallbackText": "अब वह गुस्सा कैसा लगता है?",
+  "calmCheckTitle": "अब आप कितने गुस्से में हैं?",
+  "calmCheckSubtitle": "{emoji} {label} · वो पहले वाला गुस्सा",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "ख़ुशी है कि आप शांत हो गये।",
+  "calmSavedUpdatedToast": "सहेजा गया",
+  "profileName": "गुस्से में टाइगर",
+  "nicknameAdjectives": "क्रोधित, क्रुद्ध, प्रचंड, विस्फोटक, क्रूर, गुर्राता हुआ, तीखा, सींग वाला, गर्म, खुरदुरा, प्रचंड, प्रचंड, प्रचंड, गरजनेवाला, आवेशपूर्ण, उबलता हुआ, क्रोधित, धधकता हुआ, तूफ़ानी, विषैला",
+  "nicknameAnimals": "बाघ, शेर, भेड़िया, भालू, ईगल, शार्क, तेंदुआ, चीता, मगरमच्छ, कोबरा, बैल, सूअर, गैंडा, लकड़बग्घा, ग्रिजली, रेवेन, बाज़, हेजहोग, जगुआर, प्यूमा",
+  "notificationSettings": "सूचनाएं",
+  "commentNotification": "टिप्पणी अलर्ट",
+  "settingsNotificationsSection": "सूचनाएं",
+  "settingsReminderSubtitle": "आपके द्वारा निर्धारित समय पर क्रोध नोट अनुस्मारक",
+  "settingsCommentSubtitle": "जब कोई आपकी पोस्ट पर टिप्पणी करे तो अलर्ट करें",
+  "settingsDataSection": "डेटा",
+  "settingsDataImportSubtitle": "बैकअप फ़ाइल से रिकॉर्ड पुनर्स्थापित करें",
+  "settingsSupportSection": "समर्थन",
+  "settingsPrivacySubtitle": "एकत्रित जानकारी और उपयोग का उद्देश्य",
+  "settingsFeedbackTitle": "प्रतिक्रिया भेजें",
+  "settingsFeedbackSubtitle": "समस्याएँ या सुधार के विचार",
+  "settingsRecordCountUnit": "अभिलेख",
+  "settingsPostCountUnit": "पोस्ट",
+  "proPlan": "प्रो डेटा निर्यात",
+  "backupImport": "डेटा आयात करें",
+  "settingsDataExportSubtitle": "बैकअप फ़ाइल · इतिहास · साझाकरण",
+  "dataExportTitle": "डेटा निर्यात करें",
+  "dataExportProTitle": "प्रो डेटा निर्यात",
+  "dataExportDescription": "सभी स्थानीय ऐप डेटा के साथ एक बैकअप फ़ाइल बनाएं और इसे ईमेल या मैसेंजर द्वारा साझा करें।",
+  "dataExportOneTimePurchase": "एक बार की खरीदारी · आजीवन पहुंच",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "निर्यात करना",
+  "dataExportPaymentChecking": "भुगतान की जाँच की जा रही है",
+  "dataExportCreateButton": "निर्यात बनाएं",
+  "dataExportPayAndCreateButton": "भुगतान करें और निर्यात करें",
+  "dataExportRestorePurchase": "खरीदारी बहाल करें",
+  "dataExportCreatedToast": "निर्यात फ़ाइल बनाई गई.",
+  "dataExportFailedToast": "निर्यात फ़ाइल नहीं बनाई जा सकी.",
+  "dataExportShareSubject": "फ्यूरी नोट डेटा बैकअप",
+  "dataExportShareText": "यह एक फ़्यूरी नोट डेटा बैकअप फ़ाइल है।",
+  "dataExportShareFailedToast": "शेयर शीट नहीं खुल सकी.",
+  "dataExportAllDataIncluded": "सभी स्थानीय ऐप डेटा बैकअप में शामिल है",
+  "dataExportHistoryTitle": "निर्यात इतिहास",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "साझा करें",
+  "dataExportEmptyHistory": "अभी तक कोई निर्यात फ़ाइल नहीं.",
+  "purchaseUpdateFailed": "खरीदारी अद्यतन संसाधित नहीं किया जा सका.",
+  "purchaseStatusFailed": "खरीद स्थिति की जांच नहीं की जा सकी.",
+  "purchaseProductNotFound": "स्टोर उत्पाद नहीं मिला.",
+  "purchaseStoreUnavailable": "स्टोर से कनेक्ट नहीं हो सका.",
+  "purchaseProductInfoFailed": "स्टोर उत्पाद जानकारी लोड नहीं की जा सकी.",
+  "purchaseProductUnavailable": "उत्पाद जानकारी अभी तैयार नहीं है.",
+  "purchaseStartFailed": "खरीदारी प्रारंभ नहीं हो सकी.",
+  "purchaseCanceled": "खरीद रद्द कर दी गई.",
+  "purchaseReceiptInvalid": "खरीद रसीद का सत्यापन नहीं किया जा सका.",
+  "purchaseReceiptVerifyFailed": "खरीद रसीद सत्यापन विफल रहा.",
+  "dataImportTitle": "डेटा आयात करें",
+  "dataImportPickTitle": "बैकअप फ़ाइल का चयन करें",
+  "dataImportPickDescription": "एक .fnbackup फ़ाइल चुनें\nफ्यूरी नोट से निर्यात किया गया",
+  "dataImportPickButton": "फ़ाइल चुनें",
+  "dataImportInProgress": "आयात करना",
+  "dataImportSuccessToast": "बैकअप से बदला गया डेटा. ({count} रिकॉर्ड)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "बैकअप से बदला गया डेटा. (0 रिकॉर्ड)",
+  "dataImportFailedToast": "बैकअप फ़ाइल आयात नहीं किया जा सका.",
+  "dataImportInvalidFileToast": "केवल .fnbackup फ़ाइलें आयात की जा सकती हैं।",
+  "dataImportNoticeTitle": "आयात करने से पहले",
+  "dataImportNoticeBody": "मौजूदा डेटा हटा दिया जाएगा और बैकअप फ़ाइल में डेटा से बदल दिया जाएगा।",
+  "dataImportTransferTitle": "चलती डिवाइस",
+  "dataImportTransferBody": "किसी नए डिवाइस पर ऐप इंस्टॉल करने के बाद, वर्तमान स्थानीय डेटा को बैकअप डेटा से बदलने के लिए एक बैकअप फ़ाइल आयात करें।",
+  "feedDeleteTitle": "फ़ीड हटाएँ",
+  "feedDeleteContent": "यह फ़ीड हटाएं?",
+  "calmBreathingTitle": "साँस लेना",
+  "breathPhaseInhale": "श्वास लें",
+  "breathPhaseHold": "पकड़ो",
+  "breathPhaseExhale": "साँस छोड़ें",
+  "durationSeconds": "{count}सेकंड",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "साइकिल {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "चल रहा है",
+  "calmTimeoutPaused": "रुका हुआ",
+  "reset": "रीसेट",
+  "start": "शुरू करें",
+  "pause": "रोकें",
+  "stop": "बंद करें",
+  "calmMeditationSceneWave": "लहरें",
+  "calmMeditationSceneForest": "वन",
+  "calmMeditationSceneSunset": "सूर्यास्त",
+  "calmMeditationSceneMountain": "पहाड़",
+  "calmMeditationSceneCherryBlossom": "चेरी फूल",
+  "calmMeditationSceneNightSky": "रात का आसमान",
+  "calmMeditationPrompt": "गहरी सांस लें, फिर सांस छोड़ें",
+  "autoplay": "ऑटो प्ले",
+  "profileEditTitle": "प्रोफ़ाइल संपादित करें",
+  "nicknameLabel": "उपनाम",
+  "nicknameHint": "एक उपनाम दर्ज करें",
+  "nicknameRequiredError": "कृपया एक उपनाम दर्ज करें",
+  "nicknameCodeAutomaticError": "आपका कोड स्वचालित रूप से जुड़ जाता है",
+  "nicknameTooShortError": "कम से कम 2 अक्षर का प्रयोग करें",
+  "profileSavedToast": "✅ \"{name}\" में बदला गया!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "सहेजते समय कोई त्रुटि उत्पन्न हुई.",
+  "avatarPickGallery": "लाइब्रेरी से चुनें",
+  "avatarPickCamera": "एक फोटो लें",
+  "avatarReset": "डिफ़ॉल्ट अवतार का प्रयोग करें",
+  "avatarResetToast": "डिफ़ॉल्ट अवतार पुनर्स्थापित किया गया.",
+  "avatarAppliedToast": "प्रोफ़ाइल फ़ोटो लगाई गई.",
+  "avatarTooLargeToast": "केवल 5 एमबी तक के फोटो का उपयोग किया जा सकता है।",
+  "avatarLoadFailedToast": "फ़ोटो लोड नहीं हो सका.",
+  "profileCodeLabel": "प्रोफ़ाइल कोड (बदला नहीं जा सकता)",
+  "profileSaveButton": "परिवर्तन सहेजें",
+  "avatarChangeLabel": "प्रोफ़ाइल फ़ोटो बदलें",
+  "avatarChangeHint": "फ़ोटो को बदलने के लिए उस पर टैप करें",
+  "avatarSizeHint": "जेपीजी, पीएनजी, जीआईएफ · 5 एमबी तक",
+  "reminderNotificationFallbackBody": "अब वह गुस्सा कैसा लगता है?",
+  "calmGuideTitle": "जब क्रोध बढ़ता है,\nपहले अपने शरीर को सुरक्षित रूप से नीचे लाएँ",
+  "calmGuideSubtitle": "फ़्यूरी नोट का शांत मार्गदर्शक आपको क्रोध से छुटकारा पाने के लिए नहीं कहता है। यह किसी को चोट पहुंचाए बिना भावनाओं को दूर करने में मदद करने के लिए एक संक्षिप्त मार्गदर्शिका है।",
+  "calmGuideNotice": "**यदि आप तत्काल खतरे में हैं**, तो कृपया इस ऐप पर बने रहने के बजाय, अपने आस-पास के लोगों से मदद मांगें या पहले आपातकालीन सेवाओं से संपर्क करें।",
+  "calmGuideMomentTitle": "जिस क्षण क्रोध बढ़ता है",
+  "calmGuideMomentBody1": "गुस्सा इस बात का संकेत हो सकता है कि जिस चीज़ की आप परवाह करते हैं उसका उल्लंघन किया गया है। लेकिन तीव्र क्रोध की स्थिति में, निर्णय की गति तेज हो जाती है, और शब्द और कार्य सामान्य से अधिक कठोर हो सकते हैं।",
+  "calmGuideMomentBody2": "अभी जिस चीज़ की आवश्यकता है वह **पूरी तरह से तर्कसंगत** होने की नहीं है, बल्कि **अपनी प्रतिक्रिया को 30 सेकंड तक विलंबित करने की** है।",
+  "calmGuideRoutineTitle": "60 सेकंड की शांत दिनचर्या",
+  "calmGuideStep1Title": "रुकें",
+  "calmGuideStep1Desc": "उत्तर देना, कॉल करना, टिप्पणी करना या आगे बढ़ना रोकें। अपने हाथों को आराम दें और एक पल के लिए स्क्रीन से दूर देखें।",
+  "calmGuideStep2Title": "साँस लें",
+  "calmGuideStep2Desc": "4 सेकंड के लिए सांस लें, 7 सेकंड के लिए रोकें, 8 सेकंड के लिए सांस छोड़ें। अगर यह सही नहीं है तो कोई बात नहीं।",
+  "calmGuideStep3Title": "अपने शरीर की जांच करें",
+  "calmGuideStep3Desc": "जाँचें कि क्या आपके जबड़े, कंधे, मुट्ठियाँ या पेट तनावग्रस्त हैं, और केवल एक स्थान छोड़ें।",
+  "calmGuideStep4Title": "इसे लिख लें",
+  "calmGuideStep4Desc": "यहाँ तक कि \"अभी मैं क्रोधित हूँ क्योंकि ___\" जैसा एक वाक्य भी पर्याप्त है।",
+  "calmGuideBreathTitle": "4-7-8 श्वास",
+  "calmGuideBreathStep1": "4 सेकंड के लिए अपनी नाक से सांस लें।",
+  "calmGuideBreathStep2": "7 सेकंड के लिए अपनी सांस रोकें।",
+  "calmGuideBreathStep3": "8 सेकंड के लिए धीरे-धीरे अपने मुंह से सांस छोड़ें।",
+  "calmGuideBreathStep4": "यदि आप कर सकते हैं तो 3 बार दोहराएं।",
+  "calmGuideBreathNote": "यदि अपनी सांस को इतनी देर तक रोके रखना कठिन है, तो इसे **3-3-5** जैसी आरामदायक गिनती तक छोटा करें। जो चीज सबसे ज्यादा मायने रखती है वह है धीमी, लंबी सांस छोड़ना।",
+  "calmGuideTimeoutTitle": "10 मिनट का टाइमआउट",
+  "calmGuideTimeoutBody": "क्रोध जितना प्रबल होगा, उसे तुरंत हल करने की इच्छा भी उतनी ही प्रबल होगी। लेकिन अभी बात करने से पहले आहत करने वाले शब्द निकल सकते हैं।",
+  "calmGuideTimeoutExamplesTitle": "उदाहरण टाइमआउट वाक्यांश",
+  "calmGuideTimeoutExample1": "\"मैं अभी बहुत गुस्से में हूं, 10 मिनट में फिर बात करते हैं।\"",
+  "calmGuideTimeoutExample2": "\"मैं एक पल के लिए रुक रहा हूं क्योंकि हो सकता है कि मैं कुछ दुख पहुंचाने वाली बात कहूं।\"",
+  "calmGuideTimeoutExample3": "\"मैं भाग नहीं रहा हूं, दोबारा बात करने से पहले मुझे बस शांत होने की जरूरत है।\"",
+  "calmGuideSensoryTitle": "त्वरित संवेदी ग्राउंडिंग",
+  "calmGuideSensory1Title": "ठंडा पानी",
+  "calmGuideSensory1Desc": "अपनी कलाइयों या चेहरे पर लगभग 10 सेकंड तक ठंडा पानी रखें",
+  "calmGuideSensory2Title": "अपने पैरों को महसूस करो",
+  "calmGuideSensory2Desc": "धीरे-धीरे अपने पैरों के फर्श को छूने के अहसास पर ध्यान दें",
+  "calmGuideSensory3Title": "चारों ओर देखो",
+  "calmGuideSensory3Desc": "चुपचाप उन 5 वस्तुओं के नाम बताएं जिन्हें आप देख सकते हैं",
+  "calmGuideSensory4Title": "अपने कंधे नीचे करो",
+  "calmGuideSensory4Desc": "सांस छोड़ें और अपने कंधों को सिर्फ 1 सेमी नीचे करें",
+  "calmGuideQuestionsTitle": "प्रश्न जो लिखते समय मदद करते हैं",
+  "calmGuideQuestion1": "वास्तव में किस बात ने मुझे क्रोधित किया?",
+  "calmGuideQuestion2": "मैंने क्या अपेक्षा की थी लेकिन प्राप्त नहीं हुआ?",
+  "calmGuideQuestion3": "यदि मैंने इसे अभी किया तो मुझे किस कार्य पर पछतावा होगा?",
+  "calmGuideQuestion4": "कल का मैं किस विकल्प के लिए आभारी रहूँगा?",
+  "calmGuideTag1": "भावना लॉग",
+  "calmGuideTag2": "क्रोध दूर करना",
+  "calmGuideTag3": "अनुस्मारक जांचें",
+  "calmGuideDangerTitle": "इन मामलों में पहले मदद मांगें",
+  "calmGuideDanger1": "जब खुद को या दूसरों को चोट पहुंचाने की इच्छा प्रबल हो",
+  "calmGuideDanger2": "जब चीजों को फेंकने या तोड़ने की इच्छा होती है तो वह रुकती नहीं है",
+  "calmGuideDanger3": "जब आपका दूसरे व्यक्ति से मुकाबला करने या उसे धमकाने का मन हो",
+  "calmGuideDanger4": "जब शराब, नशीली दवाएं, या गंभीर नींद की कमी से नियंत्रण में रहना कठिन हो जाता है",
+  "calmGuideDangerBody": "इन मामलों में, अकेले शांत दिनचर्या से इससे निपटने की कोशिश न करें - मदद के लिए अपने आस-पास के लोगों, पेशेवर सेवाओं या आपातकालीन सेवाओं से पूछें।",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "यह दस्तावेज़ चिकित्सा निदान या उपचार को प्रतिस्थापित नहीं करता है।",
+  "privacyTitle": "गोपनीयता नीति",
+  "privacyLastUpdated": "प्रभावी तिथि: 16 जून, 2026",
+  "privacySection1Title": "1. एकत्रित सूचना की श्रेणियाँ",
+  "privacySection1Body": "फ़्यूरी नोट का उपयोग बिना किसी सदस्यता पंजीकरण के किया जा सकता है। कंपनी केवल निम्नलिखित जानकारी एकत्र करती है।\n· डिवाइस पहचानकर्ता - धोखाधड़ी वाले उपयोग को रोकने के उद्देश्य से पंजीकरण के बिना उपयोगकर्ता की पहचान करने के लिए उपयोग किया जाने वाला एक यादृच्छिक रूप से जारी किया गया मूल्य\n· क्रोध रिकॉर्ड डेटा - तीव्रता, श्रेणी, और पाठ (केवल डिवाइस पर संग्रहीत)\n· अनाम फ़ीड पोस्ट - उपनाम, अवतार छवि, तीव्रता, श्रेणी और पाठ\n· टिप्पणियाँ - उपनाम और टिप्पणी पाठ\n· रिकॉर्ड पसंद करें - क्या उपयोगकर्ता को कोई पोस्ट पसंद आया है\n· पुश अधिसूचना टोकन - सूचनाएं भेजने के उद्देश्य से (वैकल्पिक)",
+  "privacySection2Title": "2. प्रसंस्करण का उद्देश्य",
+  "privacySection2Body": "· अनाम फ़ीड, टिप्पणियाँ और पसंद सहित सामुदायिक सुविधाओं का प्रावधान\n· एक ही पोस्ट पर डुप्लिकेट लाइक की रोकथाम सहित धोखाधड़ी वाले उपयोग का पता लगाना\n· टिप्पणी अलर्ट सहित पुश सूचनाएं भेजना\n· सेवा का संचालन और त्रुटियों का विश्लेषण",
+  "privacySection3Title": "3. कोई सदस्यता पंजीकरण नहीं और कोई व्यक्तिगत जानकारी नहीं रखी जाएगी",
+  "privacySection3Body": "फ्यूरी नोट को सदस्यता पंजीकरण की आवश्यकता नहीं है और यह नाम, ईमेल पता या फोन नंबर जैसी पहचान-सत्यापन योग्य व्यक्तिगत जानकारी एकत्र नहीं करता है।\nउपनाम या तो स्वचालित रूप से उत्पन्न होता है या सीधे उपयोगकर्ता द्वारा दर्ज किया जाता है और यह उपयोगकर्ता की वास्तविक पहचान से जुड़ा नहीं होता है। डिवाइस पहचानकर्ता भी एक यादृच्छिक रूप से उत्पन्न मूल्य है जिसका उपयोग किसी विशिष्ट व्यक्ति की पहचान करने के लिए नहीं किया जा सकता है।",
+  "privacySection4Title": "4. तीसरे पक्ष को सूचना का प्रावधान",
+  "privacySection4Body": "कंपनी एकत्रित जानकारी तीसरे पक्ष को उपलब्ध नहीं कराती या बेचती नहीं है।",
+  "privacySection5Title": "5. सूचना को बनाए रखने और उपयोग करने की अवधि",
+  "privacySection5Body": "· रेज रिकॉर्ड जो केवल सहेजे गए हैं वे केवल डिवाइस पर ही रखे जाते हैं और ऐप को हटाने पर एक साथ हटा दिए जाते हैं।\n· अनाम फ़ीड पर साझा किए गए पोस्ट, अवतार और टिप्पणियाँ उपयोगकर्ता द्वारा हटाए जाने तक सर्वर पर रखी जाती हैं, और ऐसे अनुरोध पर तुरंत हटा दी जाती हैं।\n· संबंधित पोस्ट को हटाने पर समान रिकॉर्ड एक साथ हटा दिए जाते हैं।",
+  "privacySection6Title": "6. संपर्क करें",
+  "privacySection6Body": "व्यक्तिगत जानकारी के संबंध में पूछताछ के लिए कृपया नीचे दिए गए ईमेल पते पर संपर्क करें।\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "फ़्यूरी नोट का उपयोग कैसे करें",
+  "appGuideSubtitle": "क्रोध को लॉग करने, पैटर्न पर नज़र रखने और फ़ीड पर समर्थन प्राप्त करने के लिए एक मार्गदर्शिका।",
+  "appGuideRecordTitle": "अपना गुस्सा लॉग करें",
+  "appGuideRecordBody": "जब आप क्रोधित हों, तो रिकॉर्ड शुरू करने के लिए नीचे 🔥 बटन पर टैप करें।",
+  "appGuideRecordStep1": "तीव्रता चुनें: ऐसा इमोजी चुनें जो आपके गुस्से से मेल खाता हो",
+  "appGuideRecordStep2": "एक श्रेणी चुनें: एक कारण चुनें",
+  "appGuideRecordStep3": "इसे लिखें: जो हुआ उसका वर्णन करें (आप इसे छोड़ सकते हैं)",
+  "appGuideRecordStep4": "अनुस्मारक: यदि आप इसे बाद में दोबारा देखना चाहते हैं तो एक समय निर्धारित करें",
+  "appGuideRecordStep5": "सहेजें या पोस्ट करें: रिकॉर्ड को निजी रखें या फ़ीड पर साझा करें",
+  "appGuideFeedTitle": "फ़ीड पर समर्थन ढूंढें",
+  "appGuideFeedBody": "अपना गुस्सा साझा करने से आप दूसरों के साथ भी वैसी ही भावना जोड़ सकते हैं।",
+  "appGuideFeedItem1": "सहेजने के बाद, आप फ़ीड पर **अनाम रूप से** पोस्ट कर सकते हैं",
+  "appGuideFeedItem2": "अन्य लोगों की पोस्ट को लाइक करें या उस पर टिप्पणी करें",
+  "appGuideFeedItem3": "आप कभी भी अपना पोस्ट डिलीट कर सकते हैं",
+  "appGuideStatsTitle": "अपने भावनात्मक पैटर्न को ट्रैक करें",
+  "appGuideStatsBody": "आँकड़े टैब आपको अपने गुस्से के पैटर्न को देखने में मदद करता है।",
+  "appGuideStatsItem1": "अवधि के अनुसार क्रोध की तीव्रता की प्रवृत्ति का ग्राफ",
+  "appGuideStatsItem2": "श्रेणी के अनुसार वितरण का कारण",
+  "appGuideStatsItem3": "दिनांक के अनुसार रिकॉर्ड ब्राउज़ करने के लिए कैलेंडर दृश्य",
+  "appGuideStatsItem4": "श्रेणी के आधार पर पैटर्न का विश्लेषण करने के लिए रेज रिपोर्ट",
+  "appGuideCalmTitle": "अपना गुस्सा कम करें",
+  "appGuideCalmBody": "लॉग इन करने के बाद, अपनी भावनाओं को कम करने का प्रयास करने के लिए शांत टैब पर जाएं।",
+  "appGuideCalmItem1": "अनुस्मारक नोट: आपके द्वारा बाद के लिए चिह्नित किए गए रिकॉर्ड को दोबारा देखें",
+  "appGuideCalmItem2": "श्वास: 4-7-8 तकनीक से अपने मन को स्थिर करें",
+  "appGuideCalmItem3": "टाइमआउट: 10 मिनट के टाइमर के साथ अपनी प्रतिक्रिया धीमी करें",
+  "appGuideCalmItem4": "छवि ध्यान: प्रकृति चित्रण के साथ अपना मूड बदलें",
+  "appGuideProfileTitle": "उपनाम और प्रोफ़ाइल",
+  "appGuideProfileBody": "अपना उपनाम और अवतार बदलने के लिए मेनू > सेटिंग्स पर जाएँ।",
+  "appGuideProfileItem1": "उपनाम: अपना खुद का टाइप करें या यादृच्छिक रूप से एक उत्पन्न करें",
+  "appGuideProfileItem2": "अवतार: इमोजी के साथ स्वयं का प्रतिनिधित्व करें",
+  "appGuideNotificationTitle": "अधिसूचना सेटिंग्स",
+  "appGuideNotificationItem1": "अनुस्मारक अलर्ट: आपके द्वारा निर्धारित समय पर एक क्रोध नोट की याद दिलाएँ",
+  "appGuideNotificationItem2": "टिप्पणी अलर्ट: जब कोई आपकी पोस्ट पर टिप्पणी करे तो सूचना प्राप्त करें",
+  "appGuideNotificationHint": "इन्हें सेटिंग्स > नोटिफिकेशन में टॉगल करें",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

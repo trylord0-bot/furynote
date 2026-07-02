@@ -1,0 +1,549 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "Wpis",
+  "feed": "Feed",
+  "stats": "Statystyki",
+  "calm": "Uspokój",
+  "settings": "Ustawienia",
+  "drawerGuide": "Przewodnik po aplikacji",
+  "drawerCalmGuide": "Przewodnik wyciszenia",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Menu",
+  "drawerRecordCount": "🔥 {count} notatki wściekłości",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Pseudonim · powiadomienia",
+  "drawerGuideSubtitle": "Jak korzystać z Fury Note",
+  "drawerCalmGuideSubtitle": "Spokojne karty · dzisiejsze wskazówki",
+  "relativeTimeJustNow": "Właśnie teraz",
+  "relativeTimeMinutesAgo": "{count} minut temu",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}godzin temu",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} dni temu",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "Wpis złości",
+  "stepIntensity": "Jak bardzo jesteś teraz zły?",
+  "stepIntensitySub": "Wybierz emoji",
+  "stepCategory": "Co to spowodowało?",
+  "stepCategorySub": "Wybierz jedną kategorię",
+  "stepText": "Co się stało?",
+  "stepTextSub": "Możesz to pominąć",
+  "stepReminder": "Chcesz wrócić później?",
+  "stepReminderSub": "Możesz to pominąć",
+  "stepSave": "Zapisać tę notatkę?",
+  "stepSaveSub": "Możesz opublikować go po zapisaniu",
+  "stepPost": "Podzielasz to uczucie?",
+  "stepPostSub": "Będzie anonimowo",
+  "voiceInput": "Nagrywanie głosu",
+  "next": "Dalej",
+  "previous": "Wstecz",
+  "skip": "Pomiń",
+  "save": "Zapisz",
+  "saveNote": "Zapisz notatkę",
+  "postIt": "Opublikuj",
+  "saveOnly": "Tylko zapisz",
+  "feedPostedToast": "Wysłano do karmienia",
+  "recordPostedToast": "Wysłano",
+  "recordSavedToast": "Zapisano",
+  "commentPostedToast": "Komentarz opublikowany",
+  "commentSendFailedToast": "Nie udało się wysłać komentarza. Spróbuj ponownie.",
+  "commentDeleteTitle": "Usuń komentarz",
+  "commentDeleteContent": "Usunąć ten komentarz?",
+  "commentsCount": "{count} komentarzy",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "Nie ma jeszcze żadnych komentarzy\nBądź pierwszą osobą, która go zostawi 💬",
+  "commentInputHint": "Napisz komentarz...",
+  "apiErrorContentBlockedUrl": "Nie można przesyłać postów zawierających linki.",
+  "apiErrorContentBlockedSpam": "Nie można przesłać tekstu promocyjnego.",
+  "apiErrorContentBlockedProfanity": "Nie można przesyłać treści zawierających wulgaryzmy.",
+  "apiErrorContentBlockedModeration": "Nie można przesłać tej treści.",
+  "apiErrorRateLimitExceeded": "Spróbuj ponownie za chwilę.",
+  "apiErrorInternal": "Wystąpił błąd serwera. Spróbuj ponownie za chwilę.",
+  "apiErrorInvalidRequest": "Nieprawidłowe żądanie.",
+  "apiErrorForbidden": "Nie masz pozwolenia.",
+  "apiErrorPostNotFound": "Nie znaleziono wpisu.",
+  "apiErrorCommentNotFound": "Nie znaleziono komentarza.",
+  "apiErrorSignatureRequired": "Wymagany jest podpis żądania.",
+  "apiErrorSignatureInvalid": "Nieprawidłowe żądanie.",
+  "apiErrorSignatureExpired": "Żądanie wygasło. Spróbuj ponownie.",
+  "apiErrorSignatureReplay": "To żądanie zostało już przetworzone.",
+  "apiErrorUnknown": "Wystąpił nieznany błąd.",
+  "reminderNotification": "Powiadomienie przypominające",
+  "noReminder": "Nie ustawiono",
+  "summaryIntensity": "Poziom wściekłości",
+  "summaryCategory": "Kategoria",
+  "summaryText": "Tekst",
+  "summaryReminder": "Przypomnienie",
+  "none": "Żadne",
+  "other": "Inne",
+  "family": "Rodzina",
+  "romance": "Romans",
+  "work": "Praca",
+  "people": "Ludzie",
+  "driving": "Jazda",
+  "custom": "Niestandardowe",
+  "recordCustomCategoryHint": "Wprowadź kategorię",
+  "recordTextHint": "Napisz to tutaj",
+  "recordMicPermissionRequired": "Wymagane jest pozwolenie na korzystanie z mikrofonu.",
+  "recordVoiceStartFailed": "Nie można uruchomić {label}.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Zatrzymaj nagrywanie",
+  "recordVoiceRecordAgain": "Nagraj ponownie",
+  "recordVoiceSaved": "Nagranie głosowe zostało zapisane.",
+  "recordAudioSummaryLabel": "Głos",
+  "recordAudioIncluded": "Nagranie w cenie",
+  "recordSavingInProgress": "Zapisywanie...",
+  "recordPostingInProgress": "Wysyłanie...",
+  "recordSaveFailedToast": "Nie udało się zapisać notatki. Spróbuj ponownie.",
+  "recordProgressSemantics": "Rekordowy postęp",
+  "hourSuffix": "godz",
+  "minuteSuffix": "m",
+  "reminderCustom": "Niestandardowe",
+  "reminderIn30Minutes": "Za 30 minut",
+  "reminderIn1Hour": "Za 1 godzinę",
+  "reminderIn2Hours": "Za 2 godziny",
+  "reminderIn6Hours": "Za 6 godzin",
+  "reminderTomorrow": "Jutro",
+  "annoyed": "Zirytowany",
+  "angry": "Zły",
+  "mad": "Szalony",
+  "furious": "Wściekły",
+  "rage": "Wściekłość",
+  "calmed": "Spokojny",
+  "feedTitle": "Feed",
+  "feedSubtitle": "Przeglądaj najnowsze historie dotyczące gniewu",
+  "feedAllTab": "Cały feed",
+  "feedMineTab": "Mój feed",
+  "feedLoadFailed": "Nie udało się wczytać kanału.",
+  "feedEmptyMine": "Nie opublikowałeś jeszcze posta w kanale.\nPodziel się swoją pierwszą wściekłą notatką!",
+  "feedEmptyAll": "Nie ma jeszcze żadnych postów w kanale.\nBądź pierwszą osobą, która podzieli się swoją złością!",
+  "feedPostFailedToast": "Nie udało się wysłać do kanału. Spróbuj ponownie.",
+  "like": "Rozumiem",
+  "comment": "Komentarz",
+  "retry": "Spróbuj ponownie",
+  "statsTitle": "Statystyki złości",
+  "statsSubtitle": "Zobacz wzorzec emocjonalny w tym tygodniu",
+  "week": "1 tydzień",
+  "month": "1 miesiąc",
+  "all": "Wszystko",
+  "totalRecords": "Rekordy",
+  "highestLevel": "Najwyższy",
+  "dailyAverage": "Średnia dzienna",
+  "decreaseRate": "Zmniejsz",
+  "statsIntensityTrend": "Trend intensywności wściekłości",
+  "statsCategoryDistribution": "Dystrybucja przyczyn",
+  "statsNoRecords": "Brak rekordów do pokazania.",
+  "statsCalendarButtonTitle": "Przeglądaj rekordy według kalendarza",
+  "statsCalendarButtonSubtitle": "Sprawdzaj i zarządzaj notatkami wściekłości według daty",
+  "statsCalendarTitle": "Przeglądaj rekordy według kalendarza",
+  "statsOtherCategory": "Inne",
+  "selectedDateRecordsTitle": "Rekordy {date}",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "W wybranym dniu nie zapisano żadnych zapisów.",
+  "reminderAction": "Przypomnienie",
+  "play": "Odtwórz",
+  "statsSummaryButtonTitle": "Zobacz raport wściekłości",
+  "statsSummaryButtonSubtitle": "Przeglądaj swoje wzorce złości według kategorii",
+  "statsSummaryTitle": "Raport wściekłości",
+  "statsSummaryClose": "Zamknij",
+  "statsSummaryEmptyTitle": "Brak rekordów do podsumowania",
+  "statsSummaryEmptyBody": "Po dodaniu notatek dotyczących wściekłości pojawią się tutaj wzorce kategorii.",
+  "statsSummaryTopHeadline": "„{category}” najczęściej Cię złościło",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "Patrząc na „{category}”",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "Jest w porządku. To może się zdarzyć.",
+  "statsSummaryComfortFamily": "Im ktoś jest bliżej, tym trudniej może wylądować.",
+  "statsSummaryComfortRomance": "Cenny związek może sprawić, że małe chwile staną się ostrzejsze.",
+  "statsSummaryComfortWork": "Praca mogła popchnąć Twój umysł szybciej, niż chciał.",
+  "statsSummaryComfortPeople": "Słowa i wyrażenia innych osób mogą pozostać dłużej, niż się spodziewano.",
+  "statsSummaryComfortDriving": "Napięcie na drodze często najpierw dociera do ciała.",
+  "statsSummaryMetricCount": "Policz",
+  "statsSummaryMetricCategory": "Kategoria",
+  "statsSummaryMetricFeed": "Posty z kanałami",
+  "statsSummaryMetricCalm": "Spokojnie próbuje",
+  "statsSummaryMetricAverage": "Śr. poziom",
+  "statsSummaryMetricPeak": "Poziom szczytowy",
+  "statsSummaryConclusion": "Wniosek",
+  "statsSummaryRecordsUnit": "{count} razy",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "To najczęściej powtarzany sygnał złości. Następnym razem spróbuj sprawdzić napięcie ciała, zanim złość w pełni wzrośnie.",
+  "statsSummaryConclusionCategory": "Zapisanie tej kategorii, gdy jest jeszcze mała, może pomóc Ci szybciej zauważyć wzór.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Udział kategorii",
+  "statsSummaryCalmRate": "Spokojne tempo",
+  "statsSummaryShareRate": "Kurs akcji",
+  "noContent": "Brak treści",
+  "voicePlayback": "Odtwórz głos",
+  "deleteConfirm": "Usunąć?",
+  "delete": "Usuń",
+  "cancel": "Anuluj",
+  "calmTitle": "Uspokój",
+  "calmSubtitle": "Obniż to, co wciąż pozostaje",
+  "reminderNotes": "Notatki przypomnienia",
+  "breathing": "Oddychanie",
+  "timeout": "Limit czasu",
+  "meditation": "Medytacja obrazowa",
+  "feedSupport": "Wsparcie paszowe",
+  "calmReminderEmpty": "Przypomnienia pojawią się tutaj, gdy nadejdą",
+  "calmReminderFallbackText": "Jak teraz odczuwasz tę złość?",
+  "calmCheckTitle": "Jak bardzo jesteś teraz zły?",
+  "calmCheckSubtitle": "{emoji} {label} · ten wcześniejszy gniew",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Cieszę się, że się uspokoiłeś.",
+  "calmSavedUpdatedToast": "Zapisano",
+  "profileName": "Wściekły Tygrys",
+  "nicknameAdjectives": "zły, wściekły, wściekły, wybuchowy, dziki, warczący, ostry, rogaty, podgrzewany, szorstki, gwałtowny, szalejący, ognisty, grzmiący, sapiąc, wrzący, urażony, płonący, burzliwy, jadowity",
+  "nicknameAnimals": "tygrys, lew, wilk, niedźwiedź, orzeł, rekin, lampart, gepard, krokodyl, kobra, byk, dzik, nosorożec, hiena, grizzly, kruk, jastrząb, jeż, jaguar, puma",
+  "notificationSettings": "Powiadomienia",
+  "commentNotification": "Alerty w komentarzach",
+  "settingsNotificationsSection": "Powiadomienia",
+  "settingsReminderSubtitle": "Przypomnienie o wściekłości w ustawionym czasie",
+  "settingsCommentSubtitle": "Ostrzegaj, gdy ktoś skomentuje Twój post",
+  "settingsDataSection": "Dane",
+  "settingsDataImportSubtitle": "Przywróć zapisy z pliku kopii zapasowej",
+  "settingsSupportSection": "Wsparcie",
+  "settingsPrivacySubtitle": "Zebrane informacje i cel ich wykorzystania",
+  "settingsFeedbackTitle": "Wyślij opinię",
+  "settingsFeedbackSubtitle": "Problemy lub pomysły na ulepszenia",
+  "settingsRecordCountUnit": "zapisy",
+  "settingsPostCountUnit": "posty",
+  "proPlan": "Eksport danych PRO",
+  "backupImport": "Importuj dane",
+  "settingsDataExportSubtitle": "Plik kopii zapasowej · historia · udostępnianie",
+  "dataExportTitle": "Eksportuj dane",
+  "dataExportProTitle": "Eksport danych PRO",
+  "dataExportDescription": "Utwórz jeden plik kopii zapasowej ze wszystkimi lokalnymi danymi aplikacji i udostępnij go e-mailem lub komunikatorem.",
+  "dataExportOneTimePurchase": "Jednorazowy zakup · Dostęp dożywotni",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "Eksportowanie",
+  "dataExportPaymentChecking": "Sprawdzanie płatności",
+  "dataExportCreateButton": "Utwórz eksport",
+  "dataExportPayAndCreateButton": "Zapłać i eksportuj",
+  "dataExportRestorePurchase": "Przywróć zakup",
+  "dataExportCreatedToast": "Utworzono plik eksportu.",
+  "dataExportFailedToast": "Nie można utworzyć pliku eksportu.",
+  "dataExportShareSubject": "Kopia zapasowa danych Fury Note",
+  "dataExportShareText": "To jest plik kopii zapasowej danych Fury Note.",
+  "dataExportShareFailedToast": "Nie można otworzyć arkusza udostępniania.",
+  "dataExportAllDataIncluded": "Kopia zapasowa obejmuje wszystkie dane aplikacji lokalnych",
+  "dataExportHistoryTitle": "Eksportuj historię",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Udostępnij",
+  "dataExportEmptyHistory": "Nie ma jeszcze plików eksportu.",
+  "purchaseUpdateFailed": "Nie można przetworzyć aktualizacji zakupu.",
+  "purchaseStatusFailed": "Nie można sprawdzić statusu zakupu.",
+  "purchaseProductNotFound": "Nie znaleziono produktu w sklepie.",
+  "purchaseStoreUnavailable": "Nie można połączyć się ze sklepem.",
+  "purchaseProductInfoFailed": "Nie można załadować informacji o produkcie w sklepie.",
+  "purchaseProductUnavailable": "Informacje o produkcie nie są jeszcze gotowe.",
+  "purchaseStartFailed": "Nie można rozpocząć zakupu.",
+  "purchaseCanceled": "Zakup został anulowany.",
+  "purchaseReceiptInvalid": "Nie udało się zweryfikować dowodu zakupu.",
+  "purchaseReceiptVerifyFailed": "Weryfikacja dowodu zakupu nie powiodła się.",
+  "dataImportTitle": "Importuj dane",
+  "dataImportPickTitle": "Wybierz plik kopii zapasowej",
+  "dataImportPickDescription": "Wybierz plik .fnbackup\nwyeksportowane z Fury Note",
+  "dataImportPickButton": "Wybierz plik",
+  "dataImportInProgress": "Importowanie",
+  "dataImportSuccessToast": "Zastąpiono dane z kopii zapasowej. ({count} rekordów)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Zastąpiono dane z kopii zapasowej. (0 rekordów)",
+  "dataImportFailedToast": "Nie można zaimportować pliku kopii zapasowej.",
+  "dataImportInvalidFileToast": "Można importować tylko pliki .fnbackup.",
+  "dataImportNoticeTitle": "Przed importem",
+  "dataImportNoticeBody": "Istniejące dane zostaną usunięte i zastąpione danymi z pliku kopii zapasowej.",
+  "dataImportTransferTitle": "Przenoszenie urządzeń",
+  "dataImportTransferBody": "Po zainstalowaniu aplikacji na nowym urządzeniu zaimportuj plik kopii zapasowej, aby zastąpić bieżące dane lokalne danymi kopii zapasowej.",
+  "feedDeleteTitle": "Usuń kanał",
+  "feedDeleteContent": "Usunąć ten kanał?",
+  "calmBreathingTitle": "Oddychanie",
+  "breathPhaseInhale": "Wdech",
+  "breathPhaseHold": "Trzymaj",
+  "breathPhaseExhale": "Wydech",
+  "durationSeconds": "{count}sekund",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "Cykl {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Bieganie",
+  "calmTimeoutPaused": "Wstrzymano",
+  "reset": "Resetuj",
+  "start": "Start",
+  "pause": "Pauza",
+  "stop": "Stop",
+  "calmMeditationSceneWave": "Fale",
+  "calmMeditationSceneForest": "Las",
+  "calmMeditationSceneSunset": "Zachód słońca",
+  "calmMeditationSceneMountain": "Góra",
+  "calmMeditationSceneCherryBlossom": "Kwiaty wiśni",
+  "calmMeditationSceneNightSky": "Nocne niebo",
+  "calmMeditationPrompt": "Oddychaj głęboko, a następnie zrób wydech",
+  "autoplay": "Automatyczne odtwarzanie",
+  "profileEditTitle": "Edytuj profil",
+  "nicknameLabel": "Pseudonim",
+  "nicknameHint": "Wpisz pseudonim",
+  "nicknameRequiredError": "Proszę wpisać pseudonim",
+  "nicknameCodeAutomaticError": "Twój kod zostanie dodany automatycznie",
+  "nicknameTooShortError": "Użyj co najmniej 2 znaków",
+  "profileSavedToast": "✅ Zmieniono na „{name}”!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "Wystąpił błąd podczas zapisywania.",
+  "avatarPickGallery": "Wybierz z biblioteki",
+  "avatarPickCamera": "Zrób zdjęcie",
+  "avatarReset": "Użyj domyślnego awatara",
+  "avatarResetToast": "Przywrócono domyślny awatar.",
+  "avatarAppliedToast": "Zastosowano zdjęcie profilowe.",
+  "avatarTooLargeToast": "Można używać wyłącznie zdjęć o rozmiarze do 5 MB.",
+  "avatarLoadFailedToast": "Nie udało się załadować zdjęcia.",
+  "profileCodeLabel": "Kod profilu (nie można zmienić)",
+  "profileSaveButton": "Zapisz zmiany",
+  "avatarChangeLabel": "Zmień zdjęcie profilowe",
+  "avatarChangeHint": "Kliknij zdjęcie, aby je zmienić",
+  "avatarSizeHint": "JPG, PNG, GIF · do 5 MB",
+  "reminderNotificationFallbackBody": "Jak teraz odczuwasz tę złość?",
+  "calmGuideTitle": "Gdy narasta złość,\nnajpierw bezpiecznie opuść ciało",
+  "calmGuideSubtitle": "Poradnik dotyczący spokoju w Fury Note nie mówi ci, żebyś pozbył się gniewu. To krótki przewodnik, który pomoże Ci przejść przez to uczucie bez krzywdzenia kogokolwiek.",
+  "calmGuideNotice": "**Jeśli jesteś w bezpośrednim niebezpieczeństwie**, zamiast pozostawać w tej aplikacji, poproś o pomoc osoby w swoim otoczeniu lub skontaktuj się ze służbami ratunkowymi.",
+  "calmGuideMomentTitle": "Moment, w którym narasta złość",
+  "calmGuideMomentBody1": "Złość może być sygnałem, że coś, na czym Ci zależy, zostało naruszone. Jednak w stanie silnego gniewu osądy stają się szybsze, a słowa i czyny mogą stać się ostrzejsze niż zwykle.",
+  "calmGuideMomentBody2": "To, czego teraz potrzeba, to nie być **idealnie racjonalnym**, ale **opóźnić reakcję nawet o 30 sekund**.",
+  "calmGuideRoutineTitle": "60-sekundowa spokojna rutyna",
+  "calmGuideStep1Title": "Zatrzymaj się",
+  "calmGuideStep1Desc": "Wstrzymaj odpowiadanie, dzwonienie, komentowanie lub przenoszenie się. Rozluźnij ręce i odwróć na chwilę wzrok od ekranu.",
+  "calmGuideStep2Title": "Oddychaj",
+  "calmGuideStep2Desc": "Wdech przez 4 sekundy, wstrzymaj przez 7, wydech przez 8. Nie ma problemu, jeśli nie jest idealnie.",
+  "calmGuideStep3Title": "Sprawdź swoje ciało",
+  "calmGuideStep3Desc": "Sprawdź, czy Twoja szczęka, ramiona, pięści lub brzuch są napięte i rozluźnij tylko jedno miejsce.",
+  "calmGuideStep4Title": "Zapisz to",
+  "calmGuideStep4Desc": "Wystarczy jedno zdanie typu „W tej chwili jestem zły, ponieważ ___”.",
+  "calmGuideBreathTitle": "Oddychanie 4-7-8",
+  "calmGuideBreathStep1": "Wdychaj przez nos przez 4 sekundy.",
+  "calmGuideBreathStep2": "Wstrzymaj oddech na 7 sekund.",
+  "calmGuideBreathStep3": "Powoli wydychaj powietrze ustami przez 8 sekund.",
+  "calmGuideBreathStep4": "Jeśli możesz, powtórz 3 razy.",
+  "calmGuideBreathNote": "Jeśli wstrzymywanie oddechu na tak długo jest trudne, skróć je do wygodnej liczby, np. **3-3-5**. Najważniejszy jest powolny, długi wydech.",
+  "calmGuideTimeoutTitle": "10-minutowa przerwa",
+  "calmGuideTimeoutBody": "Im silniejszy jest gniew, tym silniejsza jest potrzeba natychmiastowego rozwiązania go. Ale rozmowa teraz może najpierw wywołać bolesne słowa.",
+  "calmGuideTimeoutExamplesTitle": "Przykładowe wyrażenia dotyczące limitu czasu",
+  "calmGuideTimeoutExample1": "„Jestem teraz zbyt zły, porozmawiajmy ponownie za 10 minut”.",
+  "calmGuideTimeoutExample2": "– Przerywam na chwilę, bo mógłbym powiedzieć coś bolesnego.",
+  "calmGuideTimeoutExample3": "„Nie uciekam, muszę się tylko uspokoić, zanim znowu porozmawiamy”.",
+  "calmGuideSensoryTitle": "Szybkie uziemienie sensoryczne",
+  "calmGuideSensory1Title": "Zimna woda",
+  "calmGuideSensory1Desc": "Trzymaj zimną wodę na nadgarstkach lub twarzy przez około 10 sekund",
+  "calmGuideSensory2Title": "Poczuj swoje stopy",
+  "calmGuideSensory2Desc": "Powoli zauważ uczucie, że Twoje stopy dotykają podłogi",
+  "calmGuideSensory3Title": "Rozejrzyj się",
+  "calmGuideSensory3Desc": "Nazwij po cichu 5 obiektów, które widzisz",
+  "calmGuideSensory4Title": "Opuść ramiona",
+  "calmGuideSensory4Desc": "Wykonaj wydech i opuść ramiona zaledwie o 1 cm",
+  "calmGuideQuestionsTitle": "Pytania pomocne podczas pisania",
+  "calmGuideQuestion1": "Co dokładnie mnie złościło?",
+  "calmGuideQuestion2": "Czego się spodziewałem, ale nie otrzymałem?",
+  "calmGuideQuestion3": "Jakiego działania żałowałbym, gdybym zrobił to teraz?",
+  "calmGuideQuestion4": "Za jaki wybór jutro będę wdzięczny?",
+  "calmGuideTag1": "Dziennik emocji",
+  "calmGuideTag2": "Dystansowanie gniewu",
+  "calmGuideTag3": "Kontrola przypomnienia",
+  "calmGuideDangerTitle": "W takich przypadkach najpierw poproś o pomoc",
+  "calmGuideDanger1": "Kiedy potrzeba wyrządzenia krzywdy sobie lub innym jest silna",
+  "calmGuideDanger2": "Kiedy chęć rzucenia lub rozbicia rzeczy nie ustanie",
+  "calmGuideDanger3": "Kiedy masz ochotę skonfrontować się lub zagrozić drugiej osobie",
+  "calmGuideDanger4": "Kiedy alkohol, narkotyki lub poważny brak snu utrudniają utrzymanie kontroli",
+  "calmGuideDangerBody": "W takich przypadkach nie próbuj sobie z tym poradzić, stosując jedynie spokojną rutynę – poproś o pomoc osoby w swoim otoczeniu, profesjonalne służby lub służby ratunkowe.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "Niniejszy dokument nie zastępuje diagnozy lekarskiej ani leczenia.",
+  "privacyTitle": "Polityka prywatności",
+  "privacyLastUpdated": "Data wejścia w życie: 16 czerwca 2026 r",
+  "privacySection1Title": "1. Kategorie gromadzonych informacji",
+  "privacySection1Body": "Z Fury Note można korzystać bez konieczności rejestracji członkostwa. Spółka gromadzi wyłącznie następujące informacje.\n· Identyfikator urządzenia — losowo nadawana wartość służąca do identyfikacji użytkownika bez rejestracji, w celu zapobiegania nieuprawnionemu użyciu\n· Dane rekordu wściekłości — intensywność, kategoria i tekst (przechowywane tylko na urządzeniu)\n· Anonimowe posty w kanałach — pseudonim, obraz awatara, intensywność, kategoria i tekst\n· Komentarze — pseudonim i tekst komentarza\n· Zapisy polubień – czy użytkownik polubił dany post\n· Token powiadomień push – w celu wysyłania powiadomień (opcjonalnie)",
+  "privacySection2Title": "2. Cel przetwarzania",
+  "privacySection2Body": "· Udostępnianie funkcji społecznościowych, w tym anonimowych kanałów, komentarzy i polubień\n· Wykrywanie oszukańczego użycia, w tym zapobieganie duplikowaniu polubień tego samego postu\n· Wysyłanie powiadomień push, w tym powiadomień o komentarzach\n· Obsługa serwisu i analiza błędów",
+  "privacySection3Title": "3. Zakaz rejestracji członkostwa i zakaz przechowywania danych osobowych",
+  "privacySection3Body": "Fury Note nie wymaga rejestracji członkostwa i nie zbiera danych osobowych umożliwiających weryfikację tożsamości, takich jak imię i nazwisko, adres e-mail czy numer telefonu.\nPseudonim jest generowany automatycznie lub wprowadzany bezpośrednio przez użytkownika i nie jest powiązany z prawdziwą tożsamością użytkownika. Identyfikator urządzenia jest również wartością generowaną losowo, która nie pozwala na identyfikację konkretnej osoby.",
+  "privacySection4Title": "4. Przekazywanie informacji stronom trzecim",
+  "privacySection4Body": "Spółka nie udostępnia ani nie sprzedaje zebranych informacji osobom trzecim.",
+  "privacySection5Title": "5. Okres przechowywania i wykorzystywania informacji",
+  "privacySection5Body": "· Zapisy wściekłości, które zostały zapisane, są zachowywane tylko na urządzeniu i usuwane razem po usunięciu aplikacji.\n· Posty, awatary i komentarze udostępnione w anonimowym kanale są przechowywane na serwerze do czasu ich usunięcia przez użytkownika i są natychmiast usuwane na takie żądanie.\n· Podobne wpisy są usuwane razem po usunięciu powiązanego wpisu.",
+  "privacySection6Title": "6. Kontakt",
+  "privacySection6Body": "W przypadku pytań dotyczących danych osobowych prosimy o kontakt na adres e-mail podany poniżej.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "Jak korzystać z notatki Furii",
+  "appGuideSubtitle": "Przewodnik po rejestrowaniu gniewu, śledzeniu wzorców i uzyskiwaniu wsparcia w kanale.",
+  "appGuideRecordTitle": "Zapisz swoją złość",
+  "appGuideRecordBody": "Kiedy jesteś zły, dotknij przycisku 🔥 na dole, aby rozpocząć nagrywanie.",
+  "appGuideRecordStep1": "Wybierz intensywność: wybierz emoji pasujący do tego, jak bardzo jesteś zły",
+  "appGuideRecordStep2": "Wybierz kategorię: wybierz jedną przyczynę",
+  "appGuideRecordStep3": "Zapisz to: opisz, co się stało (możesz to pominąć)",
+  "appGuideRecordStep4": "Przypomnienie: ustaw godzinę, jeśli chcesz wrócić do tego później",
+  "appGuideRecordStep5": "Zapisz lub opublikuj: zachowaj rekord jako prywatny lub udostępnij go w kanale",
+  "appGuideFeedTitle": "Znajdź wsparcie w kanale",
+  "appGuideFeedBody": "Dzielenie się swoją złością może połączyć Cię z innymi, którzy czują to samo.",
+  "appGuideFeedItem1": "Po zapisaniu możesz publikować **anonimowo** w kanale",
+  "appGuideFeedItem2": "Polub lub skomentuj posty innych osób",
+  "appGuideFeedItem3": "W każdej chwili możesz usunąć swój post",
+  "appGuideStatsTitle": "Śledź swoje wzorce emocjonalne",
+  "appGuideStatsBody": "Zakładka statystyk pomaga spojrzeć wstecz na wzorce gniewu.",
+  "appGuideStatsItem1": "Wykres trendu intensywności wściekłości według okresu",
+  "appGuideStatsItem2": "Podział przyczyn według kategorii",
+  "appGuideStatsItem3": "Widok kalendarza umożliwiający przeglądanie zapisów według daty",
+  "appGuideStatsItem4": "Raport wściekłości umożliwiający analizę wzorców według kategorii",
+  "appGuideCalmTitle": "Obniż swój gniew",
+  "appGuideCalmBody": "Po zalogowaniu przejdź do zakładki spokoju, aby spróbować uspokoić emocje.",
+  "appGuideCalmItem1": "Notatki przypomnienia: wróć do oznaczonych rekordów na później",
+  "appGuideCalmItem2": "Oddychanie: uspokój umysł za pomocą techniki 4-7-8",
+  "appGuideCalmItem3": "Limit czasu: spowolnij reakcję za pomocą 10-minutowego timera",
+  "appGuideCalmItem4": "Medytacja obrazowa: zmień swój nastrój dzięki obrazom natury",
+  "appGuideProfileTitle": "Pseudonim i profil",
+  "appGuideProfileBody": "Przejdź do menu > Ustawienia, aby zmienić swój pseudonim i awatar.",
+  "appGuideProfileItem1": "Pseudonim: wpisz własny lub wygeneruj go losowo",
+  "appGuideProfileItem2": "Awatar: reprezentuj siebie za pomocą emoji",
+  "appGuideNotificationTitle": "Ustawienia powiadomień",
+  "appGuideNotificationItem1": "Alerty przypomnienia: otrzymuj przypomnienie o notatce wściekłości w ustawionym czasie",
+  "appGuideNotificationItem2": "Alerty dotyczące komentarzy: otrzymuj powiadomienia, gdy ktoś skomentuje Twój post",
+  "appGuideNotificationHint": "Przełącz je w Ustawieniach > Powiadomienia",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}

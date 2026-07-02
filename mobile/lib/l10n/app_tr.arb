@@ -1,0 +1,549 @@
+{
+  "@@locale": "tr",
+  "appTitle": "Fury Note",
+  "appKoreanName": "Fury Note",
+  "record": "Kayıt",
+  "feed": "Akış",
+  "stats": "İstatistik",
+  "calm": "Sakinleş",
+  "settings": "Ayarlar",
+  "drawerGuide": "Uygulama rehberi",
+  "drawerCalmGuide": "Sakinleşme rehberi",
+  "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Menü",
+  "drawerRecordCount": "🔥 {count} öfke notları",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Takma ad · bildirimler",
+  "drawerGuideSubtitle": "Fury Note nasıl kullanılır",
+  "drawerCalmGuideSubtitle": "Sakin kartlar · bugünün ipuçları",
+  "relativeTimeJustNow": "Az önce",
+  "relativeTimeMinutesAgo": "{count} dakika önce",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}saat önce",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count} gün önce",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "recordTitle": "Öfke kaydı",
+  "stepIntensity": "Şimdi ne kadar kızgınsın?",
+  "stepIntensitySub": "Bir emoji seç",
+  "stepCategory": "Buna ne sebep oldu?",
+  "stepCategorySub": "Bir kategori seçin",
+  "stepText": "Ne oldu?",
+  "stepTextSub": "Bunu atlayabilirsiniz",
+  "stepReminder": "Daha sonra tekrar ziyaret etmek ister misiniz?",
+  "stepReminderSub": "Bunu atlayabilirsiniz",
+  "stepSave": "Bu not kaydedilsin mi?",
+  "stepSaveSub": "Kaydettikten sonra yayınlayabilirsiniz",
+  "stepPost": "Bu duyguyu paylaşıyor musunuz?",
+  "stepPostSub": "Anonim olacak",
+  "voiceInput": "Ses kaydı",
+  "next": "İleri",
+  "previous": "Geri",
+  "skip": "Atla",
+  "save": "Kaydet",
+  "saveNote": "Notu kaydet",
+  "postIt": "Paylaş",
+  "saveOnly": "Sadece kaydet",
+  "feedPostedToast": "Beslemeye gönderildi",
+  "recordPostedToast": "Gönderildi",
+  "recordSavedToast": "Kaydedildi",
+  "commentPostedToast": "Yorum gönderildi",
+  "commentSendFailedToast": "Yorum gönderilemedi. Lütfen tekrar deneyin.",
+  "commentDeleteTitle": "Yorumu sil",
+  "commentDeleteContent": "Bu yorum silinsin mi?",
+  "commentsCount": "{count} yorum",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "Henüz yorum yok\nİlk bırakan siz olun 💬",
+  "commentInputHint": "Bir yorum yazın...",
+  "apiErrorContentBlockedUrl": "Bağlantı içeren gönderiler gönderilemez.",
+  "apiErrorContentBlockedSpam": "Tanıtım metni gönderilemiyor.",
+  "apiErrorContentBlockedProfanity": "Küfür içeren içerik gönderilemez.",
+  "apiErrorContentBlockedModeration": "Bu içerik gönderilemiyor.",
+  "apiErrorRateLimitExceeded": "Lütfen kısa bir süre sonra tekrar deneyin.",
+  "apiErrorInternal": "Bir sunucu hatası oluştu. Lütfen kısa bir süre sonra tekrar deneyin.",
+  "apiErrorInvalidRequest": "Geçersiz istek.",
+  "apiErrorForbidden": "İzniniz yok.",
+  "apiErrorPostNotFound": "Gönderi bulunamadı.",
+  "apiErrorCommentNotFound": "Yorum bulunamadı.",
+  "apiErrorSignatureRequired": "İstek imzası gerekli.",
+  "apiErrorSignatureInvalid": "Geçersiz istek.",
+  "apiErrorSignatureExpired": "Talebin süresi doldu. Lütfen tekrar deneyin.",
+  "apiErrorSignatureReplay": "Bu istek zaten işleme alındı.",
+  "apiErrorUnknown": "Bilinmeyen bir hata oluştu.",
+  "reminderNotification": "Hatırlatma bildirimi",
+  "noReminder": "Ayarlanmadı",
+  "summaryIntensity": "Öfke seviyesi",
+  "summaryCategory": "Kategori",
+  "summaryText": "Metin",
+  "summaryReminder": "Hatırlatma",
+  "none": "Yok",
+  "other": "Diğer",
+  "family": "Aile",
+  "romance": "romantik",
+  "work": "iş",
+  "people": "İnsanlar",
+  "driving": "Araba kullanmak",
+  "custom": "Özel",
+  "recordCustomCategoryHint": "Bir kategori girin",
+  "recordTextHint": "buraya yaz",
+  "recordMicPermissionRequired": "Mikrofon izni gereklidir.",
+  "recordVoiceStartFailed": "{label} başlatılamadı.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Kaydı durdur",
+  "recordVoiceRecordAgain": "Tekrar kaydet",
+  "recordVoiceSaved": "Ses kaydı kaydedildi.",
+  "recordAudioSummaryLabel": "Ses",
+  "recordAudioIncluded": "Kayıt dahil",
+  "recordSavingInProgress": "Kaydediliyor...",
+  "recordPostingInProgress": "Gönderiliyor...",
+  "recordSaveFailedToast": "Not kaydedilemedi. Lütfen tekrar deneyin.",
+  "recordProgressSemantics": "İlerlemeyi kaydedin",
+  "hourSuffix": "sa",
+  "minuteSuffix": "m",
+  "reminderCustom": "Özel",
+  "reminderIn30Minutes": "30 dakika içinde",
+  "reminderIn1Hour": "1 saat içinde",
+  "reminderIn2Hours": "2 saat içinde",
+  "reminderIn6Hours": "6 saat içinde",
+  "reminderTomorrow": "Yarın",
+  "annoyed": "sinirlendim",
+  "angry": "kızgın",
+  "mad": "deli",
+  "furious": "Öfkeli",
+  "rage": "Öfke",
+  "calmed": "Sakin",
+  "feedTitle": "Akış",
+  "feedSubtitle": "En son öfke hikayelerine göz atın",
+  "feedAllTab": "Tüm akış",
+  "feedMineTab": "Benim akışım",
+  "feedLoadFailed": "Özet akışı yüklenemedi.",
+  "feedEmptyMine": "Henüz feed'e gönderi göndermediniz.\nİlk öfke notunuzu paylaşın!",
+  "feedEmptyAll": "Henüz yayın gönderisi yok.\nÖfkenizi ilk paylaşan siz olun!",
+  "feedPostFailedToast": "Feed'e gönderilemedi. Lütfen tekrar deneyin.",
+  "like": "Anlıyorum",
+  "comment": "Yorum",
+  "retry": "Tekrar dene",
+  "statsTitle": "Öfke istatistikleri",
+  "statsSubtitle": "Bu haftanın duygusal modelini görün",
+  "week": "1 hafta",
+  "month": "1 ay",
+  "all": "Hepsi",
+  "totalRecords": "Kayıtlar",
+  "highestLevel": "En yüksek",
+  "dailyAverage": "Günlük ortalama",
+  "decreaseRate": "Azalt",
+  "statsIntensityTrend": "Öfke yoğunluğu eğilimi",
+  "statsCategoryDistribution": "Neden dağıtımı",
+  "statsNoRecords": "Gösterilecek kayıt yok.",
+  "statsCalendarButtonTitle": "Kayıtları takvime göre görüntüleme",
+  "statsCalendarButtonSubtitle": "Öfke notlarını tarihe göre kontrol edin ve yönetin",
+  "statsCalendarTitle": "Kayıtları takvime göre görüntüleme",
+  "statsOtherCategory": "Diğer",
+  "selectedDateRecordsTitle": "{date} kayıtları",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "Seçilen tarihte herhangi bir kayıt yazılmadı.",
+  "reminderAction": "Hatırlatma",
+  "play": "Oynat",
+  "statsSummaryButtonTitle": "Öfke raporunu görüntüle",
+  "statsSummaryButtonSubtitle": "Öfke kalıplarınızı kategoriye göre inceleyin",
+  "statsSummaryTitle": "Öfke Raporu",
+  "statsSummaryClose": "Kapat",
+  "statsSummaryEmptyTitle": "Henüz özetlenecek kayıt yok",
+  "statsSummaryEmptyBody": "Öfke notlarını ekledikten sonra kategori desenleri burada görünecektir.",
+  "statsSummaryTopHeadline": "Sizi en sık \"{category}\" kızdırdı",
+  "@statsSummaryTopHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryCategoryHeadline": "\"{category}\" öğesine bakılıyor",
+  "@statsSummaryCategoryHeadline": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryComfortGeneric": "Sorun değil. Bu olabilir.",
+  "statsSummaryComfortFamily": "Birisi ne kadar yakınsa yere inmesi o kadar zor olur.",
+  "statsSummaryComfortRomance": "Değerli bir ilişki, küçük anların daha keskin hissetmesini sağlayabilir.",
+  "statsSummaryComfortWork": "İş, zihninizi gitmek istediğinden daha hızlı zorlamış olabilir.",
+  "statsSummaryComfortPeople": "Başkalarının sözleri ve ifadeleri beklenenden daha uzun süre akılda kalabilir.",
+  "statsSummaryComfortDriving": "Yoldaki gerilim çoğu zaman önce vücuda ulaşır.",
+  "statsSummaryMetricCount": "Sayım",
+  "statsSummaryMetricCategory": "Kategori",
+  "statsSummaryMetricFeed": "Yayın gönderileri",
+  "statsSummaryMetricCalm": "Sakinleşme çabaları",
+  "statsSummaryMetricAverage": "Ortalama seviye",
+  "statsSummaryMetricPeak": "Tepe seviyesi",
+  "statsSummaryConclusion": "Sonuç",
+  "statsSummaryRecordsUnit": "{count} kez",
+  "@statsSummaryRecordsUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryAverageValue": "{value}/5",
+  "@statsSummaryAverageValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "statsSummaryConclusionTop": "Bu en çok tekrarlanan öfke sinyalinizdir. Bir dahaki sefere öfkeniz tamamen yükselmeden vücut gerginliğinizi kontrol etmeyi deneyin.",
+  "statsSummaryConclusionCategory": "Bu kategoriyi henüz küçükken not etmek, modeli daha erken fark etmenize yardımcı olabilir.",
+  "statsSummaryPageIndicator": "{current}/{total}",
+  "@statsSummaryPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsSummaryCategoryShare": "Kategori payı",
+  "statsSummaryCalmRate": "Sakin oran",
+  "statsSummaryShareRate": "Hisse oranı",
+  "noContent": "İçerik yok",
+  "voicePlayback": "Sesi çal",
+  "deleteConfirm": "Silinsin mi?",
+  "delete": "Sil",
+  "cancel": "İptal",
+  "calmTitle": "Sakinleş",
+  "calmSubtitle": "Hala devam edeni azaltın",
+  "reminderNotes": "Hatırlatma notları",
+  "breathing": "Nefes alma",
+  "timeout": "Zaman aşımı",
+  "meditation": "Görüntü meditasyonu",
+  "feedSupport": "Besleme desteği",
+  "calmReminderEmpty": "Hatırlatıcılar geldiğinde burada görünecek",
+  "calmReminderFallbackText": "Bu öfke şimdi nasıl hissettiriyor?",
+  "calmCheckTitle": "Şimdi ne kadar kızgınsın?",
+  "calmCheckSubtitle": "{emoji} {label} · o önceki öfke",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Sakinleştiğine sevindim.",
+  "calmSavedUpdatedToast": "Kaydedildi",
+  "profileName": "Kızgın Kaplan",
+  "nicknameAdjectives": "kızgın,öfkeli,öfkeli,patlayıcı,vahşi,hırıltılı,keskin,boynuzlu,ısıtmalı,kaba,şiddetli,kızgın,ateşli,gürültülü,öffing,kaynayan,kırgın,ateşli,fırtınalı,zehirli",
+  "nicknameAnimals": "kaplan, aslan, kurt, ayı, kartal, köpekbalığı, leopar, çita, timsah, kobra, boğa, domuzu, gergedan, sırtlan, boz ayı, kuzgun, şahin, kirpi, jaguar, puma",
+  "notificationSettings": "Bildirimler",
+  "commentNotification": "Yorum uyarıları",
+  "settingsNotificationsSection": "Bildirimler",
+  "settingsReminderSubtitle": "Ayarladığınız saatte öfke notu hatırlatıcısı",
+  "settingsCommentSubtitle": "Birisi gönderinize yorum yaptığında uyarı alın",
+  "settingsDataSection": "Veri",
+  "settingsDataImportSubtitle": "Kayıtları bir yedekleme dosyasından geri yükleme",
+  "settingsSupportSection": "Destek",
+  "settingsPrivacySubtitle": "Toplanan bilgiler ve kullanım amacı",
+  "settingsFeedbackTitle": "Geri bildirim gönder",
+  "settingsFeedbackSubtitle": "Sorunlar veya iyileştirme fikirleri",
+  "settingsRecordCountUnit": "kayıtlar",
+  "settingsPostCountUnit": "gönderiler",
+  "proPlan": "PRO veri aktarımı",
+  "backupImport": "Verileri içe aktar",
+  "settingsDataExportSubtitle": "Yedekleme dosyası · geçmiş · paylaşım",
+  "dataExportTitle": "Verileri dışa aktar",
+  "dataExportProTitle": "PRO veri aktarımı",
+  "dataExportDescription": "Tüm yerel uygulama verilerini içeren bir yedekleme dosyası oluşturun ve bunu e-posta veya mesajlaşma yoluyla paylaşın.",
+  "dataExportOneTimePurchase": "Tek seferlik satın alma · ömür boyu erişim",
+  "dataExportDebugPrice": "DEBUG",
+  "dataExportInProgress": "Dışa aktarma",
+  "dataExportPaymentChecking": "Ödeme kontrol ediliyor",
+  "dataExportCreateButton": "Dışa aktarma oluştur",
+  "dataExportPayAndCreateButton": "Ödeme ve ihracat",
+  "dataExportRestorePurchase": "Satın alma işlemini geri yükle",
+  "dataExportCreatedToast": "Dışa aktarma dosyası oluşturuldu.",
+  "dataExportFailedToast": "Dışa aktarma dosyası oluşturulamadı.",
+  "dataExportShareSubject": "Fury Note veri yedekleme",
+  "dataExportShareText": "Bu bir Fury Note veri yedekleme dosyasıdır.",
+  "dataExportShareFailedToast": "Paylaşım sayfası açılamadı.",
+  "dataExportAllDataIncluded": "Tüm yerel uygulama verileri yedeklemeye dahil edilir",
+  "dataExportHistoryTitle": "Dışa aktarma geçmişi",
+  "dataExportHistoryCount": "{count}",
+  "@dataExportHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportShareTooltip": "Paylaş",
+  "dataExportEmptyHistory": "Henüz dışa aktarma dosyası yok.",
+  "purchaseUpdateFailed": "Satın alma güncellemesi işlenemedi.",
+  "purchaseStatusFailed": "Satın alma durumu kontrol edilemedi.",
+  "purchaseProductNotFound": "Mağaza ürünü bulunamadı.",
+  "purchaseStoreUnavailable": "Mağazaya bağlanılamadı.",
+  "purchaseProductInfoFailed": "Mağaza ürün bilgileri yüklenemedi.",
+  "purchaseProductUnavailable": "Ürün bilgileri henüz hazır değil.",
+  "purchaseStartFailed": "Satın alma işlemi başlatılamadı.",
+  "purchaseCanceled": "Satın alma iptal edildi.",
+  "purchaseReceiptInvalid": "Satın alma makbuzu doğrulanamadı.",
+  "purchaseReceiptVerifyFailed": "Satın alma makbuzu doğrulaması başarısız oldu.",
+  "dataImportTitle": "Verileri içe aktar",
+  "dataImportPickTitle": "Yedekleme dosyasını seçin",
+  "dataImportPickDescription": "Bir .fnbackup dosyası seçin\nFury Note'dan dışa aktarıldı",
+  "dataImportPickButton": "Dosya seç",
+  "dataImportInProgress": "İthalat",
+  "dataImportSuccessToast": "Yedeklemedeki veriler değiştirildi. ({count} kayıtlar)",
+  "@dataImportSuccessToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataImportNoNewDataToast": "Yedeklemedeki veriler değiştirildi. (0 kayıt)",
+  "dataImportFailedToast": "Yedekleme dosyası içe aktarılamadı.",
+  "dataImportInvalidFileToast": "Yalnızca .fnbackup dosyaları içe aktarılabilir.",
+  "dataImportNoticeTitle": "İçe aktarmadan önce",
+  "dataImportNoticeBody": "Mevcut veriler silinecek ve yedekleme dosyasındaki verilerle değiştirilecektir.",
+  "dataImportTransferTitle": "Cihazları taşıma",
+  "dataImportTransferBody": "Uygulamayı yeni bir cihaza yükledikten sonra, mevcut yerel verileri yedek verilerle değiştirmek için bir yedekleme dosyasını içe aktarın.",
+  "feedDeleteTitle": "Özet Akışını Sil",
+  "feedDeleteContent": "Bu yayın silinsin mi?",
+  "calmBreathingTitle": "Nefes alma",
+  "breathPhaseInhale": "Nefes al",
+  "breathPhaseHold": "Basılı tutun",
+  "breathPhaseExhale": "Nefes ver",
+  "durationSeconds": "{count}saniye",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "{count} döngüsü",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Koşu",
+  "calmTimeoutPaused": "Duraklatıldı",
+  "reset": "Sıfırla",
+  "start": "Başlat",
+  "pause": "Duraklat",
+  "stop": "Durdur",
+  "calmMeditationSceneWave": "Dalgalar",
+  "calmMeditationSceneForest": "Orman",
+  "calmMeditationSceneSunset": "Gün batımı",
+  "calmMeditationSceneMountain": "Dağ",
+  "calmMeditationSceneCherryBlossom": "Kiraz çiçekleri",
+  "calmMeditationSceneNightSky": "Gece gökyüzü",
+  "calmMeditationPrompt": "Derin nefes alın, sonra nefes verin",
+  "autoplay": "Otomatik oynatma",
+  "profileEditTitle": "Profili düzenle",
+  "nicknameLabel": "Takma ad",
+  "nicknameHint": "Bir takma ad girin",
+  "nicknameRequiredError": "Lütfen bir takma ad girin",
+  "nicknameCodeAutomaticError": "Kodunuz otomatik olarak eklenir",
+  "nicknameTooShortError": "En az 2 karakter kullanın",
+  "profileSavedToast": "✅ \"{name}\" olarak değiştirildi!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "Kaydedilirken bir hata oluştu.",
+  "avatarPickGallery": "Kütüphaneden seç",
+  "avatarPickCamera": "Fotoğraf çek",
+  "avatarReset": "Varsayılan avatarı kullan",
+  "avatarResetToast": "Varsayılan avatar geri yüklendi.",
+  "avatarAppliedToast": "Profil fotoğrafı uygulandı.",
+  "avatarTooLargeToast": "Yalnızca 5 MB'a kadar olan fotoğraflar kullanılabilir.",
+  "avatarLoadFailedToast": "Fotoğraf yüklenemedi.",
+  "profileCodeLabel": "Profil kodu (değiştirilemez)",
+  "profileSaveButton": "Değişiklikleri kaydet",
+  "avatarChangeLabel": "Profil fotoğrafını değiştir",
+  "avatarChangeHint": "Değiştirmek için fotoğrafa dokunun",
+  "avatarSizeHint": "JPG, PNG, GIF · 5 MB'a kadar",
+  "reminderNotificationFallbackBody": "Bu öfke şimdi nasıl hissettiriyor?",
+  "calmGuideTitle": "Öfke yükseldiğinde\nönce vücudunuzu güvenli bir şekilde indirin",
+  "calmGuideSubtitle": "Fury Note'un sakin rehberi size öfkeden kurtulmanızı söylemiyor. Kimsenin canı yanmadan bu duygunun geçmesine yardımcı olacak kısa bir rehber.",
+  "calmGuideNotice": "**Eğer acil bir tehlikeyle karşı karşıyaysanız**, lütfen bu uygulamada kalmak yerine etrafınızdaki insanlardan yardım isteyin veya önce acil servislerle iletişime geçin.",
+  "calmGuideMomentTitle": "Öfkenin arttığı an",
+  "calmGuideMomentBody1": "Öfke, önemsediğiniz bir şeyin ihlal edildiğinin bir işareti olabilir. Ancak güçlü bir öfke durumunda yargılama hızlanır ve sözler ve eylemler normalden daha sert hale gelebilir.",
+  "calmGuideMomentBody2": "Şu anda ihtiyaç duyulan şey **tamamen rasyonel** olmak değil, **tepkinizi 30 saniye bile geciktirmek**.",
+  "calmGuideRoutineTitle": "60 saniyelik sakin rutin",
+  "calmGuideStep1Title": "Durdur",
+  "calmGuideStep1Desc": "Yanıtlamayı, aramayı, yorum yapmayı veya taşımayı duraklatın. Ellerinizi gevşetin ve bir anlığına ekrandan uzaklaşın.",
+  "calmGuideStep2Title": "Nefes al",
+  "calmGuideStep2Desc": "4 saniye nefes alın, 7 saniye tutun, 8 saniye nefes verin. Mükemmel değilse sorun değil.",
+  "calmGuideStep3Title": "Vücudunuzu kontrol edin",
+  "calmGuideStep3Desc": "Çenenizin, omuzlarınızın, yumruklarınızın veya karnınızın gergin olup olmadığını kontrol edin ve yalnızca bir noktayı serbest bırakın.",
+  "calmGuideStep4Title": "Bunu yaz",
+  "calmGuideStep4Desc": "\"Şu anda kızgınım çünkü ___\" gibi bir cümle bile yeterli.",
+  "calmGuideBreathTitle": "4-7-8 nefes alma",
+  "calmGuideBreathStep1": "4 saniye boyunca burnunuzdan nefes alın.",
+  "calmGuideBreathStep2": "Nefesinizi 7 saniye boyunca tutun.",
+  "calmGuideBreathStep3": "8 saniye boyunca ağzınızdan yavaşça nefes verin.",
+  "calmGuideBreathStep4": "Mümkünse 3 kez tekrarlayın.",
+  "calmGuideBreathNote": "Nefesinizi bu kadar uzun süre tutmak zorsa, nefesinizi **3-3-5** gibi rahat bir sayıya kadar kısaltın. En önemli şey yavaş, uzun bir nefes vermedir.",
+  "calmGuideTimeoutTitle": "10 dakikalık zaman aşımı",
+  "calmGuideTimeoutBody": "Öfke ne kadar güçlü olursa, onu hemen çözme dürtüsü de o kadar güçlü olur. Ancak şimdi konuşmak, önce incitici kelimelerin ortaya çıkmasına neden olabilir.",
+  "calmGuideTimeoutExamplesTitle": "Örnek zaman aşımı ifadeleri",
+  "calmGuideTimeoutExample1": "\"Şu anda çok kızgınım, 10 dakika sonra tekrar konuşalım.\"",
+  "calmGuideTimeoutExample2": "\"Bir anlığına duruyorum çünkü incitici bir şey söyleyebilirim.\"",
+  "calmGuideTimeoutExample3": "\"Kaçmıyorum, sadece tekrar konuşmadan önce sakinleşmem gerekiyor.\"",
+  "calmGuideSensoryTitle": "Hızlı duyusal topraklama",
+  "calmGuideSensory1Title": "Soğuk su",
+  "calmGuideSensory1Desc": "Bileklerinize veya yüzünüze yaklaşık 10 saniye boyunca soğuk su tutun",
+  "calmGuideSensory2Title": "Ayaklarını hisset",
+  "calmGuideSensory2Desc": "Ayaklarınızın yere değdiğini yavaşça fark edin",
+  "calmGuideSensory3Title": "Etrafına bak",
+  "calmGuideSensory3Desc": "Gördüğünüz 5 nesneyi sessizce adlandırın",
+  "calmGuideSensory4Title": "Omuzlarını düşür",
+  "calmGuideSensory4Desc": "Nefes verin ve omuzlarınızı sadece 1 cm indirin",
+  "calmGuideQuestionsTitle": "Yazarken yardımcı olacak sorular",
+  "calmGuideQuestion1": "Beni tam olarak ne kızdırdı?",
+  "calmGuideQuestion2": "Ne bekliyordum ama alamadım?",
+  "calmGuideQuestion3": "Şu anda hangi eylemi yapsaydım pişman olurdum?",
+  "calmGuideQuestion4": "Yarın hangi seçim için minnettar olacağım?",
+  "calmGuideTag1": "Duygu günlüğü",
+  "calmGuideTag2": "Öfke uzaklaştırma",
+  "calmGuideTag3": "Hatırlatma kontrolü",
+  "calmGuideDangerTitle": "Bu durumlarda ilk önce yardım isteyin",
+  "calmGuideDanger1": "Kendinize veya başkalarına zarar verme dürtüsü güçlü hissettiğinde",
+  "calmGuideDanger2": "Bir şeyleri fırlatma ya da kırma dürtüsü durmayınca",
+  "calmGuideDanger3": "Diğer kişiyle yüzleşmek veya onu tehdit etmek istediğinizde",
+  "calmGuideDanger4": "Alkol, uyuşturucu veya şiddetli uyku yoksunluğu kontrolü sürdürmeyi zorlaştırdığında",
+  "calmGuideDangerBody": "Bu durumlarda, tek başına sakin rutinle bu durumu atlatmaya çalışmayın; etrafınızdaki insanlardan, profesyonel hizmetlerden veya acil servislerden yardım isteyin.",
+  "calmGuideFooterTitle": "Fury Note Calm Guide",
+  "calmGuideFooterDisclaimer": "Bu belge tıbbi teşhis veya tedavinin yerine geçmez.",
+  "privacyTitle": "Gizlilik Politikası",
+  "privacyLastUpdated": "Yürürlük Tarihi: 16 Haziran 2026",
+  "privacySection1Title": "1. Toplanan Bilgilerin Kategorileri",
+  "privacySection1Body": "Fury Note herhangi bir üyelik kaydı gerektirmeden kullanılabilir. Şirket yalnızca aşağıdaki bilgileri toplar.\n· Cihaz tanımlayıcı — dolandırıcılık amaçlı kullanımı önlemek amacıyla kullanıcıyı kayıt olmadan tanımlamak için kullanılan, rastgele verilen bir değer\n· Öfke kaydı verileri — yoğunluk, kategori ve metin (yalnızca cihazda saklanır)\n· Anonim yayın gönderileri — takma ad, avatar resmi, yoğunluk, kategori ve metin\n· Yorumlar — takma ad ve yorum metni\n· Kayıtları beğen - kullanıcının belirli bir gönderiyi beğenip beğenmediği\n· Anlık bildirim belirteci — bildirim göndermek amacıyla (isteğe bağlı)",
+  "privacySection2Title": "2. İşleme Amacı",
+  "privacySection2Body": "· Anonim yayın, yorumlar ve beğeniler dahil olmak üzere topluluk özelliklerinin sağlanması\n· Aynı gönderide yinelenen beğenilerin önlenmesi de dahil olmak üzere hileli kullanımın tespiti\n· Yorum uyarıları da dahil olmak üzere anlık bildirimlerin gönderilmesi\n· Hizmetin işleyişi ve hataların analizi",
+  "privacySection3Title": "3. Üyelik Kaydı Yapılmaz ve Kişisel Bilgiler Saklanmaz",
+  "privacySection3Body": "Fury Note üyelik kaydı gerektirmez ve isim, e-posta adresi veya telefon numarası gibi kimliği doğrulanabilen kişisel bilgileri toplamaz.\nTakma ad ya otomatik olarak oluşturulur ya da doğrudan kullanıcı tarafından girilir ve kullanıcının gerçek kimliğiyle bağlantılı değildir. Cihaz tanımlayıcı da aynı şekilde rastgele oluşturulmuş bir değerdir ve belirli bir kişiyi tanımlamak için kullanılamaz.",
+  "privacySection4Title": "4. Üçüncü Taraflara Bilgi Verilmesi",
+  "privacySection4Body": "Şirket, toplanan bilgileri üçüncü taraflara sağlamaz veya satmaz.",
+  "privacySection5Title": "5. Bilgilerin Saklanma ve Kullanım Süresi",
+  "privacySection5Body": "· Yalnızca kaydedilen öfke kayıtları yalnızca cihazda tutulur ve uygulamanın silinmesiyle birlikte silinir.\n· Anonim akışta paylaşılan gönderiler, avatarlar ve yorumlar, kullanıcı tarafından silinene kadar sunucuda tutulur ve talep üzerine derhal silinir.\n· İlgili gönderinin silinmesiyle beğeni kayıtları birlikte silinir.",
+  "privacySection6Title": "6. İletişim",
+  "privacySection6Body": "Kişisel bilgilerle ilgili sorularınız için lütfen aşağıdaki e-posta adresiyle iletişime geçin.\nlunlu.co.kr@gmail.com",
+  "appGuideTitle": "Fury Note nasıl kullanılır?",
+  "appGuideSubtitle": "Öfkeyi günlüğe kaydetme, kalıpları izleme ve akışta destek alma kılavuzu.",
+  "appGuideRecordTitle": "Öfkenizi kaydedin",
+  "appGuideRecordBody": "Kızgın olduğunuzda kayıt başlatmak için alttaki 🔥 düğmesine dokunun.",
+  "appGuideRecordStep1": "Yoğunluğu seçin: ne kadar kızgın olduğunuza uygun bir emoji seçin",
+  "appGuideRecordStep2": "Bir kategori seçin: bir neden seçin",
+  "appGuideRecordStep3": "Yazın: ne olduğunu anlatın (bunu atlayabilirsiniz)",
+  "appGuideRecordStep4": "Hatırlatma: Bunu daha sonra tekrar ziyaret etmek istiyorsanız bir zaman belirleyin",
+  "appGuideRecordStep5": "Kaydet veya yayınla: kaydı gizli tutun veya akışta paylaşın",
+  "appGuideFeedTitle": "Akışta destek bulun",
+  "appGuideFeedBody": "Öfkenizi paylaşmak, sizi aynı şekilde hisseden başkalarıyla buluşturabilir.",
+  "appGuideFeedItem1": "Kaydettikten sonra özet akışına **anonim olarak** paylaşımda bulunabilirsiniz",
+  "appGuideFeedItem2": "Başkalarının gönderilerini beğenin veya yorum yapın",
+  "appGuideFeedItem3": "Kendi yayınınızı istediğiniz zaman silebilirsiniz",
+  "appGuideStatsTitle": "Duygusal kalıplarınızı takip edin",
+  "appGuideStatsBody": "İstatistikler sekmesi öfke kalıplarınıza geriye dönüp bakmanıza yardımcı olur.",
+  "appGuideStatsItem1": "Dönemlere göre öfke yoğunluğu trend grafiği",
+  "appGuideStatsItem2": "Kategoriye göre neden dağılımı",
+  "appGuideStatsItem3": "Kayıtlara tarihe göre göz atmak için takvim görünümü",
+  "appGuideStatsItem4": "Kalıpları kategoriye göre analiz etmek için öfke raporu",
+  "appGuideCalmTitle": "Öfkeni azalt",
+  "appGuideCalmBody": "Giriş yaptıktan sonra duygularınızı azaltmayı denemek için sakin sekmesine gidin.",
+  "appGuideCalmItem1": "Hatırlatma notları: işaretlediğiniz kayıtları daha sonra yeniden ziyaret edin",
+  "appGuideCalmItem2": "Nefes alma: 4-7-8 tekniğiyle zihninizi sakinleştirin",
+  "appGuideCalmItem3": "Zaman aşımı: 10 dakikalık bir zamanlayıcıyla reaksiyonunuzu yavaşlatın",
+  "appGuideCalmItem4": "İmge meditasyonu: doğa görüntüleriyle ruh halinizi değiştirin",
+  "appGuideProfileTitle": "Takma ad ve profil",
+  "appGuideProfileBody": "Takma adınızı ve avatarınızı değiştirmek için menü > Ayarlar'a gidin.",
+  "appGuideProfileItem1": "Takma ad: kendinizinkini yazın veya rastgele bir tane oluşturun",
+  "appGuideProfileItem2": "Avatar: Kendinizi bir emojiyle temsil edin",
+  "appGuideNotificationTitle": "Bildirim ayarları",
+  "appGuideNotificationItem1": "Hatırlatma uyarıları: Belirlediğiniz saatte bir öfke notu hatırlatılır",
+  "appGuideNotificationItem2": "Yorum uyarıları: Birisi gönderinize yorum yaptığında bildirim alın",
+  "appGuideNotificationHint": "Bunları Ayarlar > Bildirimler'de değiştirin",
+  "appGuideFooterTitle": "Fury Note App Guide"
+}
