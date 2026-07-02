@@ -70,7 +70,7 @@ def create_post(
         logger.info("포스팅 거절 — code=%s device_id=%s", mod_result.code, x_device_id)
         raise _policy_error(mod_result)
 
-    rate_result = check_rate_limit([*store.recent_post_attempts(x_device_id), datetime.utcnow()])
+    rate_result = check_rate_limit([*store.recent_post_attempts(x_device_id), datetime.now()])
     if not rate_result.allowed:
         logger.info("포스팅 거절 — code=%s device_id=%s", rate_result.code, x_device_id)
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))
@@ -151,7 +151,7 @@ def create_comment(
         logger.info("댓글 거절 — code=%s device_id=%s", mod_result.code, x_device_id)
         raise _policy_error(mod_result)
 
-    rate_result = check_rate_limit([*store.recent_comment_attempts(x_device_id), datetime.utcnow()])
+    rate_result = check_rate_limit([*store.recent_comment_attempts(x_device_id), datetime.now()])
     if not rate_result.allowed:
         logger.info("댓글 거절 — code=%s device_id=%s", rate_result.code, x_device_id)
         raise HTTPException(status_code=429, detail=error(rate_result.code or "RATE_LIMIT_EXCEEDED", rate_result.message or "Blocked"))

@@ -112,7 +112,7 @@ def check_moderation(text: str | None, api_key: str | None) -> PolicyResult:
 
 
 def check_rate_limit(attempt_times: list[datetime], now: datetime | None = None) -> PolicyResult:
-    current = now or datetime.utcnow()
+    current = now or datetime.now()
     window_start = current - timedelta(seconds=60)
     recent_count = sum(1 for attempted_at in attempt_times if attempted_at >= window_start)
     logger.info("[Step 4] 최근 60초 포스팅 횟수: %d/5", recent_count)

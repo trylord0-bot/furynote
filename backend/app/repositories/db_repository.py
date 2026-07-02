@@ -106,7 +106,7 @@ class DbStore:
     # ── Posts ─────────────────────────────────────────────────────────────────
 
     def recent_post_attempts(self, device_id: str) -> list[datetime]:
-        since = datetime.utcnow() - timedelta(seconds=60)
+        since = datetime.now() - timedelta(seconds=60)
         rows = self.session.execute(
             select(Post.created_at)
             .where(Post.device_id == device_id)
@@ -241,7 +241,7 @@ class DbStore:
     # ── Comments ──────────────────────────────────────────────────────────────
 
     def recent_comment_attempts(self, device_id: str) -> list[datetime]:
-        since = datetime.utcnow() - timedelta(seconds=60)
+        since = datetime.now() - timedelta(seconds=60)
         rows = self.session.execute(
             select(Comment.created_at)
             .where(Comment.device_id == device_id)
