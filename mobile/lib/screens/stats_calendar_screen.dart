@@ -8,6 +8,11 @@ import 'package:fury_note/widgets/shared_widgets.dart';
 import 'package:intl/intl.dart';
 import '../main.dart';
 
+@visibleForTesting
+IconData statsCalendarPlaybackIcon({required bool isPlaying}) {
+  return isPlaying ? Icons.stop : Icons.play_arrow;
+}
+
 class StatsCalendarScreen extends StatefulWidget {
   const StatsCalendarScreen({this.noteRepository, super.key});
 
@@ -464,27 +469,59 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
         ),
         if (_hasReminder || _hasAudio)
           Padding(
-            padding: const EdgeInsets.only(bottom: 18),
+            padding: const EdgeInsets.fromLTRB(4, 6, 4, 18),
             child: Wrap(
               spacing: 8,
               runSpacing: 4,
               children: [
+                if (_hasAudio)
+                  _StatsPlaybackAction(
+                    icon: statsCalendarPlaybackIcon(isPlaying: _isPlaying),
+                    label: _isPlaying ? l10n.stop : l10n.play,
+                    isActive: _isPlaying,
+                    onPressed: _togglePlayback,
+                  ),
                 if (_hasReminder)
                   FuryPostAction(
                     icon: Icons.calendar_today,
                     label: l10n.reminderAction,
                   ),
-                if (_hasAudio)
-                  FuryPostAction(
-                    icon: _isPlaying ? Icons.pause : Icons.play_arrow,
-                    label: _isPlaying ? l10n.pause : l10n.play,
-                    isActive: _isPlaying,
-                    onPressed: _togglePlayback,
-                  ),
               ],
             ),
           ),
       ],
+    );
+  }
+}
+
+class _StatsPlaybackAction extends StatelessWidget {
+  const _StatsPlaybackAction({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+    this.isActive = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 16),
+      label: Text(label),
+      style: FilledButton.styleFrom(
+        backgroundColor: isActive ? FuryColors.red : FuryColors.panelAlt,
+        foregroundColor: FuryColors.text,
+        minimumSize: const Size(0, 32),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        side: BorderSide(color: isActive ? FuryColors.red : FuryColors.border),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
     );
   }
 }

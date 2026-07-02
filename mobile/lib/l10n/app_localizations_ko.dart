@@ -842,6 +842,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get pause => '일시정지';
 
   @override
+  String get stop => '중지';
+
+  @override
   String get calmMeditationSceneWave => '파도';
 
   @override

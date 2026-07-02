@@ -903,6 +903,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pause => 'Pause';
 
   @override
+  String get stop => 'Stop';
+
+  @override
   String get calmMeditationSceneWave => 'Waves';
 
   @override

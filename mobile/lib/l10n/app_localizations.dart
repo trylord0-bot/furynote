@@ -1670,6 +1670,12 @@ abstract class AppLocalizations {
   /// **'일시정지'**
   String get pause;
 
+  /// No description provided for @stop.
+  ///
+  /// In ko, this message translates to:
+  /// **'중지'**
+  String get stop;
+
   /// No description provided for @calmMeditationSceneWave.
   ///
   /// In ko, this message translates to:

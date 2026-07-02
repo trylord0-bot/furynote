@@ -408,6 +408,7 @@
   "reset": "Reset",
   "start": "Start",
   "pause": "Pause",
+  "stop": "Stop",
   "calmMeditationSceneWave": "Waves",
   "calmMeditationSceneForest": "Forest",
   "calmMeditationSceneSunset": "Sunset",

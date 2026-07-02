@@ -408,6 +408,7 @@
   "reset": "초기화",
   "start": "시작",
   "pause": "일시정지",
+  "stop": "중지",
   "calmMeditationSceneWave": "파도",
   "calmMeditationSceneForest": "숲",
   "calmMeditationSceneSunset": "일몰",
