@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}ชั่วโมงที่ผ่านมา",
+  "relativeTimeHoursAgo": "{count} ชั่วโมงที่ผ่านมา",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "หายใจเข้า",
   "breathPhaseHold": "กดค้างไว้",
   "breathPhaseExhale": "หายใจออก",
-  "durationSeconds": "{count}วินาที",
+  "durationSeconds": "{count} วินาที",
   "@durationSeconds": {
     "placeholders": {
       "count": {

@@ -87,8 +87,6 @@ class ProExportPurchaseController extends ChangeNotifier {
   bool get canExport => isPro;
   String? get errorMessage => _errorMessage;
   ProductDetails? get product => _product;
-  String get displayPrice =>
-      isDebugMode ? 'DEBUG' : _product?.price ?? '₩2,900';
 
   Future<void> initialize() async {
     if (_initialized) return;

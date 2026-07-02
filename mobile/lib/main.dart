@@ -109,33 +109,6 @@ class FuryToastController extends ChangeNotifier {
   }
 }
 
-String formatDottedLocaleDateTime(Locale locale, DateTime value) {
-  final dateParts = _datePartsForLocale(locale, value);
-  final hour = value.hour.toString().padLeft(2, '0');
-  final minute = value.minute.toString().padLeft(2, '0');
-  return '${dateParts.join('.')} $hour:$minute';
-}
-
-List<String> _datePartsForLocale(Locale locale, DateTime value) {
-  final language = locale.languageCode.toLowerCase();
-  final country = locale.countryCode?.toUpperCase();
-  final year = value.year.toString().padLeft(4, '0');
-  final month = value.month.toString();
-  final day = value.day.toString();
-
-  if ({'ko', 'ja', 'zh', 'hu'}.contains(language) ||
-      {'KR', 'JP', 'CN', 'TW', 'HK', 'MO', 'HU'}.contains(country)) {
-    return [year, month, day];
-  }
-
-  if (language == 'en' &&
-      !{'GB', 'AU', 'NZ', 'IE', 'IN', 'ZA', 'SG', 'MY'}.contains(country)) {
-    return [month, day, year];
-  }
-
-  return [day, month, year];
-}
-
 class FuryNoteApp extends StatelessWidget {
   const FuryNoteApp({
     this.initialLocale,

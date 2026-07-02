@@ -23,7 +23,7 @@
   "drawerGuideSubtitle": "Comment utiliser Fury Note",
   "drawerCalmGuideSubtitle": "Cartes calmes · conseils du jour",
   "relativeTimeJustNow": "Juste maintenant",
-  "relativeTimeMinutesAgo": "{count} il y a quelques minutes",
+  "relativeTimeMinutesAgo": "{count, plural, =1{Il y a 1 minute} other{Il y a {count} minutes}}",
   "@relativeTimeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "Il y a {count}heures",
+  "relativeTimeHoursAgo": "{count, plural, =1{Il y a 1 heure} other{Il y a {count} heures}}",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -39,7 +39,7 @@
       }
     }
   },
-  "relativeTimeDaysAgo": "Il y a {count} jours",
+  "relativeTimeDaysAgo": "{count, plural, =1{Il y a 1 jour} other{Il y a {count} jours}}",
   "@relativeTimeDaysAgo": {
     "placeholders": {
       "count": {
@@ -99,7 +99,7 @@
   "commentSendFailedToast": "Impossible d'envoyer le commentaire. Veuillez réessayer.",
   "commentDeleteTitle": "Supprimer le commentaire",
   "commentDeleteContent": "Supprimer ce commentaire ?",
-  "commentsCount": "{count} commentaires",
+  "commentsCount": "{count, plural, =1{1 commentaire} other{{count} commentaires}}",
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "Inspirez",
   "breathPhaseHold": "Tenir",
   "breathPhaseExhale": "Expirez",
-  "durationSeconds": "{count}secondes",
+  "durationSeconds": "{count, plural, =1{1 seconde} other{{count} secondes}}",
   "@durationSeconds": {
     "placeholders": {
       "count": {

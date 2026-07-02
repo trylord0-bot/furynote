@@ -60,17 +60,35 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String relativeTimeMinutesAgo(int count) {
-    return '$count hace minutos';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hace $count minutos',
+      one: 'Hace 1 minuto',
+    );
+    return '$_temp0';
   }
 
   @override
   String relativeTimeHoursAgo(int count) {
-    return '${count}hace horas';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hace $count horas',
+      one: 'Hace 1 hora',
+    );
+    return '$_temp0';
   }
 
   @override
   String relativeTimeDaysAgo(int count) {
-    return '$count hace días';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hace $count días',
+      one: 'Hace 1 día',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -175,7 +193,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comentarios';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comentarios',
+      one: '1 comentario',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -862,7 +886,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String durationSeconds(int count) {
-    return '${count}segundos';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count segundos',
+      one: '1 segundo',
+    );
+    return '$_temp0';
   }
 
   @override

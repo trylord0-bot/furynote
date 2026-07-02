@@ -65,7 +65,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String relativeTimeHoursAgo(int count) {
-    return '${count}saat önce';
+    return '$count saat önce';
   }
 
   @override
@@ -848,7 +848,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String durationSeconds(int count) {
-    return '${count}saniye';
+    return '$count saniye';
   }
 
   @override

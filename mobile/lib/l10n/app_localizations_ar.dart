@@ -60,17 +60,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String relativeTimeMinutesAgo(int count) {
-    return 'منذ $count دقائق';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'منذ $count دقيقة',
+      many: 'منذ $count دقيقة',
+      few: 'منذ $count دقائق',
+      two: 'منذ دقيقتين',
+      one: 'منذ دقيقة',
+      zero: 'الآن',
+    );
+    return '$_temp0';
   }
 
   @override
   String relativeTimeHoursAgo(int count) {
-    return '$countقبل ساعات';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'منذ $count ساعة',
+      many: 'منذ $count ساعة',
+      few: 'منذ $count ساعات',
+      two: 'منذ ساعتين',
+      one: 'منذ ساعة',
+      zero: 'الآن',
+    );
+    return '$_temp0';
   }
 
   @override
   String relativeTimeDaysAgo(int count) {
-    return '$count منذ أيام';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'منذ $count يوم',
+      many: 'منذ $count يومًا',
+      few: 'منذ $count أيام',
+      two: 'منذ يومين',
+      one: 'منذ يوم',
+      zero: 'اليوم',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -175,7 +205,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count تعليقات';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تعليق',
+      many: '$count تعليقًا',
+      few: '$count تعليقات',
+      two: 'تعليقان',
+      one: 'تعليق واحد',
+      zero: 'لا تعليقات',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -846,7 +886,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String durationSeconds(int count) {
-    return '$countثواني';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ثانية',
+      many: '$count ثانية',
+      few: '$count ثوانٍ',
+      two: 'ثانيتان',
+      one: 'ثانية واحدة',
+      zero: 'الآن',
+    );
+    return '$_temp0';
   }
 
   @override

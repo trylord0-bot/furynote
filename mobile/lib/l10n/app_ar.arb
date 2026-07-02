@@ -23,7 +23,7 @@
   "drawerGuideSubtitle": "كيفية استخدام Fury Note",
   "drawerCalmGuideSubtitle": "بطاقات تهدئة · نصائح اليوم",
   "relativeTimeJustNow": "الآن فقط",
-  "relativeTimeMinutesAgo": "منذ {count} دقائق",
+  "relativeTimeMinutesAgo": "{count, plural, zero{الآن} one{منذ دقيقة} two{منذ دقيقتين} few{منذ {count} دقائق} many{منذ {count} دقيقة} other{منذ {count} دقيقة}}",
   "@relativeTimeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}قبل ساعات",
+  "relativeTimeHoursAgo": "{count, plural, zero{الآن} one{منذ ساعة} two{منذ ساعتين} few{منذ {count} ساعات} many{منذ {count} ساعة} other{منذ {count} ساعة}}",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -39,7 +39,7 @@
       }
     }
   },
-  "relativeTimeDaysAgo": "{count} منذ أيام",
+  "relativeTimeDaysAgo": "{count, plural, zero{اليوم} one{منذ يوم} two{منذ يومين} few{منذ {count} أيام} many{منذ {count} يومًا} other{منذ {count} يوم}}",
   "@relativeTimeDaysAgo": {
     "placeholders": {
       "count": {
@@ -99,7 +99,7 @@
   "commentSendFailedToast": "لا يمكن إرسال التعليق. يرجى المحاولة مرة أخرى.",
   "commentDeleteTitle": "حذف التعليق",
   "commentDeleteContent": "هل تريد حذف هذا التعليق؟",
-  "commentsCount": "{count} تعليقات",
+  "commentsCount": "{count, plural, zero{لا تعليقات} one{تعليق واحد} two{تعليقان} few{{count} تعليقات} many{{count} تعليقًا} other{{count} تعليق}}",
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "يستنشق",
   "breathPhaseHold": "عقد",
   "breathPhaseExhale": "الزفير",
-  "durationSeconds": "{count}ثواني",
+  "durationSeconds": "{count, plural, zero{الآن} one{ثانية واحدة} two{ثانيتان} few{{count} ثوانٍ} many{{count} ثانية} other{{count} ثانية}}",
   "@durationSeconds": {
     "placeholders": {
       "count": {

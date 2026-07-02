@@ -23,7 +23,7 @@
   "drawerGuideSubtitle": "Jak korzystać z Fury Note",
   "drawerCalmGuideSubtitle": "Spokojne karty · dzisiejsze wskazówki",
   "relativeTimeJustNow": "Właśnie teraz",
-  "relativeTimeMinutesAgo": "{count} minut temu",
+  "relativeTimeMinutesAgo": "{count, plural, one{{count} minutę temu} few{{count} minuty temu} many{{count} minut temu} other{{count} minuty temu}}",
   "@relativeTimeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}godzin temu",
+  "relativeTimeHoursAgo": "{count, plural, one{{count} godzinę temu} few{{count} godziny temu} many{{count} godzin temu} other{{count} godziny temu}}",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -39,7 +39,7 @@
       }
     }
   },
-  "relativeTimeDaysAgo": "{count} dni temu",
+  "relativeTimeDaysAgo": "{count, plural, one{{count} dzień temu} few{{count} dni temu} many{{count} dni temu} other{{count} dnia temu}}",
   "@relativeTimeDaysAgo": {
     "placeholders": {
       "count": {
@@ -99,7 +99,7 @@
   "commentSendFailedToast": "Nie udało się wysłać komentarza. Spróbuj ponownie.",
   "commentDeleteTitle": "Usuń komentarz",
   "commentDeleteContent": "Usunąć ten komentarz?",
-  "commentsCount": "{count} komentarzy",
+  "commentsCount": "{count, plural, one{{count} komentarz} few{{count} komentarze} many{{count} komentarzy} other{{count} komentarza}}",
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "Wdech",
   "breathPhaseHold": "Trzymaj",
   "breathPhaseExhale": "Wydech",
-  "durationSeconds": "{count}sekund",
+  "durationSeconds": "{count, plural, one{{count} sekunda} few{{count} sekundy} many{{count} sekund} other{{count} sekundy}}",
   "@durationSeconds": {
     "placeholders": {
       "count": {

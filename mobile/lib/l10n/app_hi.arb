@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}घंटे पहले",
+  "relativeTimeHoursAgo": "{count} घंटे पहले",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "श्वास लें",
   "breathPhaseHold": "पकड़ो",
   "breathPhaseExhale": "साँस छोड़ें",
-  "durationSeconds": "{count}सेकंड",
+  "durationSeconds": "{count} सेकंड",
   "@durationSeconds": {
     "placeholders": {
       "count": {

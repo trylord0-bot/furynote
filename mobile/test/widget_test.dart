@@ -1192,23 +1192,6 @@ void main() {
     },
   );
 
-  test('dotted reminder date follows locale order', () {
-    final value = DateTime(2027, 3, 14, 9, 5);
-
-    expect(
-      formatDottedLocaleDateTime(const Locale('ko'), value),
-      '2027.3.14 09:05',
-    );
-    expect(
-      formatDottedLocaleDateTime(const Locale('en', 'US'), value),
-      '3.14.2027 09:05',
-    );
-    expect(
-      formatDottedLocaleDateTime(const Locale('en', 'GB'), value),
-      '14.3.2027 09:05',
-    );
-  });
-
   testWidgets('custom category can be typed and appears in summary', (
     WidgetTester tester,
   ) async {

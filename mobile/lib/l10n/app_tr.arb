@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}saat önce",
+  "relativeTimeHoursAgo": "{count} saat önce",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "Nefes al",
   "breathPhaseHold": "Basılı tutun",
   "breathPhaseExhale": "Nefes ver",
-  "durationSeconds": "{count}saniye",
+  "durationSeconds": "{count} saniye",
   "@durationSeconds": {
     "placeholders": {
       "count": {

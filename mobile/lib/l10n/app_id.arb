@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}jam yang lalu",
+  "relativeTimeHoursAgo": "{count} jam yang lalu",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "Tarik napas",
   "breathPhaseHold": "Tahan",
   "breathPhaseExhale": "Buang napas",
-  "durationSeconds": "{count}detik",
+  "durationSeconds": "{count} detik",
   "@durationSeconds": {
     "placeholders": {
       "count": {

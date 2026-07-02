@@ -23,7 +23,7 @@
   "drawerGuideSubtitle": "Как пользоваться Fury Note",
   "drawerCalmGuideSubtitle": "Спокойные карты · советы дня",
   "relativeTimeJustNow": "только что",
-  "relativeTimeMinutesAgo": "{count} минут назад",
+  "relativeTimeMinutesAgo": "{count, plural, one{{count} минуту назад} few{{count} минуты назад} many{{count} минут назад} other{{count} минуты назад}}",
   "@relativeTimeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -31,7 +31,7 @@
       }
     }
   },
-  "relativeTimeHoursAgo": "{count}часов назад",
+  "relativeTimeHoursAgo": "{count, plural, one{{count} час назад} few{{count} часа назад} many{{count} часов назад} other{{count} часа назад}}",
   "@relativeTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -39,7 +39,7 @@
       }
     }
   },
-  "relativeTimeDaysAgo": "{count} дней назад",
+  "relativeTimeDaysAgo": "{count, plural, one{{count} день назад} few{{count} дня назад} many{{count} дней назад} other{{count} дня назад}}",
   "@relativeTimeDaysAgo": {
     "placeholders": {
       "count": {
@@ -99,7 +99,7 @@
   "commentSendFailedToast": "Не удалось отправить комментарий. Пожалуйста, попробуйте еще раз.",
   "commentDeleteTitle": "Удалить комментарий",
   "commentDeleteContent": "Удалить этот комментарий?",
-  "commentsCount": "{count} комментариев",
+  "commentsCount": "{count, plural, one{{count} комментарий} few{{count} комментария} many{{count} комментариев} other{{count} комментария}}",
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -387,7 +387,7 @@
   "breathPhaseInhale": "Вдохните",
   "breathPhaseHold": "Удерживать",
   "breathPhaseExhale": "Выдохните",
-  "durationSeconds": "{count}секунд",
+  "durationSeconds": "{count, plural, one{{count} секунда} few{{count} секунды} many{{count} секунд} other{{count} секунды}}",
   "@durationSeconds": {
     "placeholders": {
       "count": {

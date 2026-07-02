@@ -60,17 +60,41 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String relativeTimeMinutesAgo(int count) {
-    return '$count минут назад';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count минуты назад',
+      many: '$count минут назад',
+      few: '$count минуты назад',
+      one: '$count минуту назад',
+    );
+    return '$_temp0';
   }
 
   @override
   String relativeTimeHoursAgo(int count) {
-    return '$countчасов назад';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count часа назад',
+      many: '$count часов назад',
+      few: '$count часа назад',
+      one: '$count час назад',
+    );
+    return '$_temp0';
   }
 
   @override
   String relativeTimeDaysAgo(int count) {
-    return '$count дней назад';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дня назад',
+      many: '$count дней назад',
+      few: '$count дня назад',
+      one: '$count день назад',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -175,7 +199,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count комментариев';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count комментария',
+      many: '$count комментариев',
+      few: '$count комментария',
+      one: '$count комментарий',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -859,7 +891,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String durationSeconds(int count) {
-    return '$countсекунд';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count секунды',
+      many: '$count секунд',
+      few: '$count секунды',
+      one: '$count секунда',
+    );
+    return '$_temp0';
   }
 
   @override

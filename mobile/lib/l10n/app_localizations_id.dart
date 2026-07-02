@@ -65,7 +65,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String relativeTimeHoursAgo(int count) {
-    return '${count}jam yang lalu';
+    return '$count jam yang lalu';
   }
 
   @override
@@ -855,7 +855,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String durationSeconds(int count) {
-    return '${count}detik';
+    return '$count detik';
   }
 
   @override
