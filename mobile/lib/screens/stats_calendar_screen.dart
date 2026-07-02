@@ -1,9 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import 'package:fury_note/widgets/shared_widgets.dart';
+import 'package:intl/intl.dart';
 import '../main.dart';
 
 class StatsCalendarScreen extends StatefulWidget {
@@ -97,6 +99,7 @@ class _StatsCalendarScreenState extends State<StatsCalendarScreen> {
   @override
   Widget build(BuildContext context) {
     final selectedRecords = _recordsForDate(_selectedDate);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: FuryColors.phone,
@@ -106,7 +109,7 @@ class _StatsCalendarScreenState extends State<StatsCalendarScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('달력으로 기록 보기'),
+        title: Text(l10n.statsCalendarTitle),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -155,10 +158,13 @@ class _StatsCalendarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekLabels = Localizations.localeOf(context).languageCode == 'en'
-        ? const ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-        : const ['일', '월', '화', '수', '목', '금', '토'];
-    final monthLabel = '${month.year}. ${month.month}';
+    final l10n = AppLocalizations.of(context);
+    final weekdayFormatter = DateFormat.E(l10n.localeName);
+    final weekLabels = [
+      for (var i = 0; i < 7; i++)
+        weekdayFormatter.format(DateTime.utc(2020, 1, 5 + i)),
+    ];
+    final monthLabel = l10n.formatMonth(month);
     final firstDay = DateTime(month.year, month.month, 1);
     final leadingDays = firstDay.weekday % 7;
     final totalDays = DateUtils.getDaysInMonth(month.year, month.month);
@@ -294,7 +300,7 @@ class _StatsCalendarDayCell extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '${date.day}',
+              AppLocalizations.of(context).formatInteger(date.day),
               style: TextStyle(
                 color: isSelected ? FuryColors.text : FuryColors.muted,
                 fontSize: 13,
@@ -342,8 +348,8 @@ class _SelectedDayRecordList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateLabel =
-        '${selectedDate.year}. ${selectedDate.month}. ${selectedDate.day}';
+    final l10n = AppLocalizations.of(context);
+    final dateLabel = l10n.formatShortDate(selectedDate);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -356,7 +362,7 @@ class _SelectedDayRecordList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '$dateLabel 기록',
+            l10n.selectedDateRecordsTitle(dateLabel),
             style: const TextStyle(
               color: FuryColors.text,
               fontSize: 16,
@@ -365,9 +371,9 @@ class _SelectedDayRecordList extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           if (records.isEmpty)
-            const Text(
-              '선택한 날짜에 작성된 기록이 없습니다.',
-              style: TextStyle(color: FuryColors.faint),
+            Text(
+              l10n.noRecordsOnSelectedDate,
+              style: const TextStyle(color: FuryColors.faint),
             )
           else
             for (final record in records) ...[
@@ -436,8 +442,10 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final timeLabel =
-        '${widget.record.createdAt.hour.toString().padLeft(2, '0')}:${widget.record.createdAt.minute.toString().padLeft(2, '0')}';
+    final timeLabel = l10n.formatTime(widget.record.createdAt);
+    final categoryLabel = widget.record.categoryKey == 'custom'
+        ? widget.record.categoryLabel
+        : l10n.categoryName(widget.record.categoryKey);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -445,8 +453,7 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
         FuryPostCard(
           emoji: widget.record.rageEmoji,
           nickname: '',
-          category:
-              '${widget.record.categoryEmoji} ${widget.record.categoryLabel}',
+          category: '${widget.record.categoryEmoji} $categoryLabel',
           text: widget.record.body,
           showAuthor: false,
           createdTimeLabel: timeLabel,
@@ -463,11 +470,14 @@ class _StatsRecordTileState extends State<_StatsRecordTile> {
               runSpacing: 4,
               children: [
                 if (_hasReminder)
-                  FuryPostAction(icon: Icons.calendar_today, label: '리마인더'),
+                  FuryPostAction(
+                    icon: Icons.calendar_today,
+                    label: l10n.reminderAction,
+                  ),
                 if (_hasAudio)
                   FuryPostAction(
                     icon: _isPlaying ? Icons.pause : Icons.play_arrow,
-                    label: _isPlaying ? '일시정지' : '재생',
+                    label: _isPlaying ? l10n.pause : l10n.play,
                     isActive: _isPlaying,
                     onPressed: _togglePlayback,
                   ),

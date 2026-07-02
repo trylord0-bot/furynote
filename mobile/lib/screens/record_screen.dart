@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/api_error_messages.dart';
@@ -98,6 +99,13 @@ class _RecordScreenState extends State<RecordScreen> {
   bool _isSaving = false;
   bool _isPosting = false;
 
+  static const _reminder30m = '30m';
+  static const _reminder1h = '1h';
+  static const _reminder2h = '2h';
+  static const _reminder6h = '6h';
+  static const _reminderTomorrow = 'tomorrow';
+  static const _reminderCustom = 'custom';
+
   static const _funnelSteps = [
     'intensity',
     'category',
@@ -133,15 +141,26 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void _trackFunnelStep(int step) {
+    _logAnalyticsEvent(
+      'record_funnel_step',
+      parameters: {'step': _funnelSteps[step], 'step_index': step},
+    );
+  }
+
+  void _logAnalyticsEvent(String name, {Map<String, Object>? parameters}) {
     unawaited(
-      widget.analytics.logEvent(
-        'record_funnel_step',
-        parameters: {'step': _funnelSteps[step], 'step_index': step},
-      ),
+      Future<void>(() async {
+        try {
+          await widget.analytics.logEvent(name, parameters: parameters);
+        } catch (_) {
+          return;
+        }
+      }),
     );
   }
 
   Future<void> _showCustomReminderSheet(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final initial =
         _customReminderDateTime ?? now.add(const Duration(hours: 1));
@@ -192,7 +211,7 @@ class _RecordScreenState extends State<RecordScreen> {
                               ),
                               controller: hourController,
                               itemCount: 24,
-                              suffix: '시',
+                              suffix: l10n.hourSuffix,
                               onSelectedItemChanged: (value) =>
                                   selectedHour = value,
                             ),
@@ -204,7 +223,7 @@ class _RecordScreenState extends State<RecordScreen> {
                               ),
                               controller: minuteController,
                               itemCount: 60,
-                              suffix: '분',
+                              suffix: l10n.minuteSuffix,
                               onSelectedItemChanged: (value) =>
                                   selectedMinute = value,
                             ),
@@ -218,7 +237,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () => Navigator.of(sheetContext).pop(),
-                            child: const Text('취소'),
+                            child: Text(l10n.cancel),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -234,11 +253,11 @@ class _RecordScreenState extends State<RecordScreen> {
                               );
                               setState(() {
                                 _customReminderDateTime = selected;
-                                _reminder = '직접 설정';
+                                _reminder = _reminderCustom;
                               });
                               Navigator.of(sheetContext).pop();
                             },
-                            child: const Text('저장'),
+                            child: Text(l10n.save),
                           ),
                         ),
                       ],
@@ -259,12 +278,24 @@ class _RecordScreenState extends State<RecordScreen> {
   DateTime? _selectedReminderDateTime() {
     final now = DateTime.now();
     return switch (_reminder) {
-      '30분 후' => now.add(const Duration(minutes: 30)),
-      '1시간 후' => now.add(const Duration(hours: 1)),
-      '2시간 후' => now.add(const Duration(hours: 2)),
-      '6시간 후' => now.add(const Duration(hours: 6)),
-      '내일' => now.add(const Duration(days: 1)),
-      '직접 설정' => _customReminderDateTime,
+      _reminder30m => now.add(const Duration(minutes: 30)),
+      _reminder1h => now.add(const Duration(hours: 1)),
+      _reminder2h => now.add(const Duration(hours: 2)),
+      _reminder6h => now.add(const Duration(hours: 6)),
+      _reminderTomorrow => now.add(const Duration(days: 1)),
+      _reminderCustom => _customReminderDateTime,
+      _ => null,
+    };
+  }
+
+  String? _reminderLabel(AppLocalizations l10n, String? reminder) {
+    return switch (reminder) {
+      _reminder30m => l10n.reminderIn30Minutes,
+      _reminder1h => l10n.reminderIn1Hour,
+      _reminder2h => l10n.reminderIn2Hours,
+      _reminder6h => l10n.reminderIn6Hours,
+      _reminderTomorrow => l10n.reminderTomorrow,
+      _reminderCustom => l10n.reminderCustom,
       _ => null,
     };
   }
@@ -288,7 +319,11 @@ class _RecordScreenState extends State<RecordScreen> {
         if (!mounted) {
           return;
         }
-        FurySnackBar.show(context, '마이크 권한이 필요합니다.', isError: true);
+        FurySnackBar.show(
+          context,
+          l10n.recordMicPermissionRequired,
+          isError: true,
+        );
         return;
       }
 
@@ -307,7 +342,7 @@ class _RecordScreenState extends State<RecordScreen> {
       setState(() => _isRecording = false);
       FurySnackBar.show(
         context,
-        '${l10n.voiceInput}을 시작할 수 없습니다.',
+        l10n.recordVoiceStartFailed(l10n.voiceInput),
         isError: true,
       );
     }
@@ -342,16 +377,14 @@ class _RecordScreenState extends State<RecordScreen> {
           savedNoteId,
         );
       }
-      unawaited(
-        widget.analytics.logEvent(
-          'feed_post_created',
-          parameters: {
-            'source': 'record_funnel',
-            'rage_level': rage.level,
-            'category': categoryValue,
-            'has_text': text.isNotEmpty,
-          },
-        ),
+      _logAnalyticsEvent(
+        'feed_post_created',
+        parameters: {
+          'source': 'record_funnel',
+          'rage_level': rage.level,
+          'category': categoryValue,
+          'has_text': text.isNotEmpty,
+        },
       );
       widget.onPost?.call();
     } on ApiException catch (e) {
@@ -363,7 +396,7 @@ class _RecordScreenState extends State<RecordScreen> {
       );
     } catch (_) {
       if (!mounted) return;
-      FurySnackBar.show(context, '피드 전송에 실패했어요. 다시 시도해주세요.', isError: true);
+      FurySnackBar.show(context, l10n.feedPostFailedToast, isError: true);
     } finally {
       if (mounted) setState(() => _isPosting = false);
     }
@@ -379,9 +412,22 @@ class _RecordScreenState extends State<RecordScreen> {
     }
 
     setState(() => _isSaving = true);
+    final l10n = AppLocalizations.of(context);
     final body = _textController.text.trim();
     final reminderAt = _selectedReminderDateTime();
+    var audioPath = _recordedAudioPath;
     try {
+      if (_isRecording) {
+        audioPath = await _voiceRecorder.stop();
+        if (!mounted) {
+          return;
+        }
+        setState(() {
+          _isRecording = false;
+          _recordedAudioPath = audioPath;
+        });
+      }
+
       final id = await (widget.noteRepository ?? RageNoteRepository.instance)
           .insert(
             RageNote(
@@ -393,44 +439,64 @@ class _RecordScreenState extends State<RecordScreen> {
               categoryEmoji: category.emoji,
               categoryLabel: category.label,
               body: body,
-              audioPath: _recordedAudioPath,
+              audioPath: audioPath,
               reminderAt: reminderAt,
             ),
           );
-      final reminderNotificationsEnabled =
-          await (widget.notificationSettingsStore ??
-                  NotificationSettingsStore.instance)
-              .isReminderEnabled();
-      if (reminderAt != null && reminderNotificationsEnabled) {
-        await (widget.reminderScheduler ?? LocalReminderScheduler.instance)
-            .scheduleRageReminder(id: id, scheduledAt: reminderAt, body: body);
-      }
+      final reminderSchedule = reminderAt != null
+          ? _scheduleReminderAfterSave(
+              id: id,
+              scheduledAt: reminderAt,
+              body: body.isEmpty ? l10n.reminderNotificationFallbackBody : body,
+            )
+          : null;
       if (!mounted) {
         return;
       }
-      unawaited(
-        widget.analytics.logEvent(
-          'record_saved',
-          parameters: {
-            'rage_level': rage.level,
-            'category': category.key,
-            'has_text': body.isNotEmpty,
-            'has_audio': _recordedAudioPath != null,
-            'has_reminder': reminderAt != null,
-          },
-        ),
+      _logAnalyticsEvent(
+        'record_saved',
+        parameters: {
+          'rage_level': rage.level,
+          'category': category.key,
+          'has_text': body.isNotEmpty,
+          'has_audio': audioPath != null,
+          'has_reminder': reminderAt != null,
+        },
       );
       setState(() => _savedNoteId = id);
       _goTo(5);
+      if (reminderSchedule != null) {
+        unawaited(reminderSchedule);
+      }
     } catch (_) {
       if (!mounted) {
         return;
       }
-      FurySnackBar.show(context, '기록을 저장하지 못했습니다. 다시 시도해주세요.', isError: true);
+      FurySnackBar.show(context, l10n.recordSaveFailedToast, isError: true);
     } finally {
       if (mounted) {
         setState(() => _isSaving = false);
       }
+    }
+  }
+
+  Future<void> _scheduleReminderAfterSave({
+    required int id,
+    required DateTime scheduledAt,
+    required String body,
+  }) async {
+    try {
+      final reminderNotificationsEnabled =
+          await (widget.notificationSettingsStore ??
+                  NotificationSettingsStore.instance)
+              .isReminderEnabled();
+      if (!reminderNotificationsEnabled) {
+        return;
+      }
+      await (widget.reminderScheduler ?? LocalReminderScheduler.instance)
+          .scheduleRageReminder(id: id, scheduledAt: scheduledAt, body: body);
+    } catch (_) {
+      return;
     }
   }
 
@@ -447,16 +513,14 @@ class _RecordScreenState extends State<RecordScreen> {
           )
         : selectedCategory;
     final canContinueText =
-        _textController.text.trim().isNotEmpty || _recordedAudioPath != null;
+        !_isRecording &&
+        (_textController.text.trim().isNotEmpty || _recordedAudioPath != null);
     final canContinueReminder = _reminder != null;
 
     final reminderSubtitle =
-        _reminder == '직접 설정' && _customReminderDateTime != null
-        ? formatDottedLocaleDateTime(
-            Localizations.localeOf(context),
-            _customReminderDateTime!,
-          )
-        : _reminder ?? l10n.noReminder;
+        _reminder == _reminderCustom && _customReminderDateTime != null
+        ? l10n.formatDateTime(_customReminderDateTime!)
+        : _reminderLabel(l10n, _reminder) ?? l10n.noReminder;
 
     return Container(
       decoration: BoxDecoration(
@@ -526,7 +590,9 @@ class _RecordScreenState extends State<RecordScreen> {
                         TextField(
                           key: const ValueKey('custom-category-field'),
                           controller: _customCategoryController,
-                          decoration: InputDecoration(labelText: '카테고리를 입력하세요'),
+                          decoration: InputDecoration(
+                            labelText: l10n.recordCustomCategoryHint,
+                          ),
                           style: const TextStyle(color: FuryColors.text),
                         ),
                         const SizedBox(height: 12),
@@ -556,8 +622,8 @@ class _RecordScreenState extends State<RecordScreen> {
                         maxLength: 300,
                         maxLines: 5,
                         onChanged: (_) => setState(() {}),
-                        decoration: const InputDecoration(
-                          hintText: '여기에 적어보세요',
+                        decoration: InputDecoration(
+                          hintText: l10n.recordTextHint,
                         ),
                         style: const TextStyle(
                           color: FuryColors.text,
@@ -577,18 +643,18 @@ class _RecordScreenState extends State<RecordScreen> {
                           ),
                           label: Text(
                             _isRecording
-                                ? '녹음 중지'
+                                ? l10n.recordVoiceStopRecording
                                 : _recordedAudioPath == null
                                 ? l10n.voiceInput
-                                : '다시 녹음',
+                                : l10n.recordVoiceRecordAgain,
                           ),
                         ),
                       ),
                       if (_recordedAudioPath != null && !_isRecording) ...[
                         const SizedBox(height: 8),
-                        const Text(
-                          '음성 녹음이 저장됐어요.',
-                          style: TextStyle(
+                        Text(
+                          l10n.recordVoiceSaved,
+                          style: const TextStyle(
                             color: FuryColors.faint,
                             fontSize: 12,
                           ),
@@ -607,7 +673,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         width: double.infinity,
                         child: TextButton(
                           key: const ValueKey('text-step-skip'),
-                          onPressed: () => _goTo(3),
+                          onPressed: _isRecording ? null : () => _goTo(3),
                           child: Text(l10n.skip),
                         ),
                       ),
@@ -622,8 +688,9 @@ class _RecordScreenState extends State<RecordScreen> {
                     children: [
                       SwitchListTile(
                         value: _reminder != null,
-                        onChanged: (value) =>
-                            setState(() => _reminder = value ? '30분 후' : null),
+                        onChanged: (value) => setState(
+                          () => _reminder = value ? _reminder30m : null,
+                        ),
                         title: Text(l10n.reminderNotification),
                         subtitle: Text(reminderSubtitle),
                       ),
@@ -637,22 +704,22 @@ class _RecordScreenState extends State<RecordScreen> {
                             runSpacing: 8,
                             children: [
                               for (final option in [
-                                '30분 후',
-                                '1시간 후',
-                                '2시간 후',
-                                '6시간 후',
-                                '내일',
+                                (_reminder30m, l10n.reminderIn30Minutes),
+                                (_reminder1h, l10n.reminderIn1Hour),
+                                (_reminder2h, l10n.reminderIn2Hours),
+                                (_reminder6h, l10n.reminderIn6Hours),
+                                (_reminderTomorrow, l10n.reminderTomorrow),
                               ])
                                 FilterChip(
-                                  label: Text(option),
-                                  selected: _reminder == option,
+                                  label: Text(option.$2),
+                                  selected: _reminder == option.$1,
                                   onSelected: (_) =>
-                                      setState(() => _reminder = option),
+                                      setState(() => _reminder = option.$1),
                                 ),
                               FilterChip(
                                 key: const ValueKey('custom-reminder-chip'),
-                                label: const Text('직접 설정'),
-                                selected: _reminder == '직접 설정',
+                                label: Text(l10n.reminderCustom),
+                                selected: _reminder == _reminderCustom,
                                 onSelected: (_) =>
                                     _showCustomReminderSheet(context),
                               ),
@@ -694,8 +761,11 @@ class _RecordScreenState extends State<RecordScreen> {
                       l10n.summaryText: _textController.text.isEmpty
                           ? l10n.noContent
                           : _textController.text,
-                      '음성': _recordedAudioPath == null ? l10n.none : '녹음 포함',
-                      l10n.summaryReminder: _reminder ?? l10n.none,
+                      l10n.recordAudioSummaryLabel: _recordedAudioPath == null
+                          ? l10n.none
+                          : l10n.recordAudioIncluded,
+                      l10n.summaryReminder:
+                          _reminderLabel(l10n, _reminder) ?? l10n.none,
                     },
                     action: SizedBox(
                       width: double.infinity,
@@ -704,7 +774,11 @@ class _RecordScreenState extends State<RecordScreen> {
                             ? null
                             : () => _saveNoteAndContinue(rage, category),
                         icon: const Icon(Icons.local_fire_department),
-                        label: Text(_isSaving ? '저장 중...' : l10n.saveNote),
+                        label: Text(
+                          _isSaving
+                              ? l10n.recordSavingInProgress
+                              : l10n.saveNote,
+                        ),
                       ),
                     ),
                   ),
@@ -739,7 +813,11 @@ class _RecordScreenState extends State<RecordScreen> {
                               ? null
                               : () => _postToFeed(l10n, rage, category),
                           icon: const Icon(Icons.send_outlined),
-                          label: Text(_isPosting ? '전송 중...' : l10n.postIt),
+                          label: Text(
+                            _isPosting
+                                ? l10n.recordPostingInProgress
+                                : l10n.postIt,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 4),

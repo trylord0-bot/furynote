@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fury_note/firebase_options.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/screens/app_guide_screen.dart';
 import 'package:fury_note/screens/calm_guide_screen.dart';
 import 'package:fury_note/screens/splash_screen.dart';
@@ -805,7 +806,7 @@ class FuryHeader extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                tooltip: 'menu',
+                tooltip: AppLocalizations.of(context).menuTooltip,
                 onPressed: onMenu,
                 icon: const Icon(Icons.menu, color: FuryColors.text),
                 style: IconButton.styleFrom(
@@ -1006,7 +1007,7 @@ class FuryDrawer extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        '🔥 분노 기록 $count회',
+                        l10n.drawerRecordCount(l10n.formatInteger(count)),
                         style: const TextStyle(
                           color: FuryColors.red,
                           fontSize: 11,
@@ -1022,7 +1023,7 @@ class FuryDrawer extends StatelessWidget {
           FuryDrawerTile(
             icon: Icons.settings_outlined,
             title: l10n.settings,
-            subtitle: '닉네임 변경 · 알림 설정',
+            subtitle: l10n.drawerSettingsSubtitle,
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
@@ -1036,7 +1037,7 @@ class FuryDrawer extends StatelessWidget {
           FuryDrawerTile(
             icon: Icons.menu_book_outlined,
             title: l10n.drawerGuide,
-            subtitle: 'Fury Note 사용 방법',
+            subtitle: l10n.drawerGuideSubtitle,
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
@@ -1050,7 +1051,7 @@ class FuryDrawer extends StatelessWidget {
           FuryDrawerTile(
             icon: Icons.spa_outlined,
             title: l10n.drawerCalmGuide,
-            subtitle: '감정 조절 카드 · 오늘의 팁',
+            subtitle: l10n.drawerCalmGuideSubtitle,
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(

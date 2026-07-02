@@ -41,17 +41,25 @@ class FirebaseAppAnalytics implements AppAnalytics {
     String screenName, {
     String? screenClass,
     Map<String, Object>? parameters,
-  }) {
-    return _analytics.logScreenView(
-      screenName: screenName,
-      screenClass: screenClass,
-      parameters: parameters,
-    );
+  }) async {
+    try {
+      await _analytics.logScreenView(
+        screenName: screenName,
+        screenClass: screenClass,
+        parameters: parameters,
+      );
+    } catch (_) {
+      return;
+    }
   }
 
   @override
-  Future<void> logEvent(String name, {Map<String, Object>? parameters}) {
-    return _analytics.logEvent(name: name, parameters: parameters);
+  Future<void> logEvent(String name, {Map<String, Object>? parameters}) async {
+    try {
+      await _analytics.logEvent(name: name, parameters: parameters);
+    } catch (_) {
+      return;
+    }
   }
 }
 

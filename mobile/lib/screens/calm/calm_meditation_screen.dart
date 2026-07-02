@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
 import '../../main.dart';
 
 class CalmMeditationScreen extends StatefulWidget {
@@ -19,14 +20,7 @@ class _CalmMeditationScreenState extends State<CalmMeditationScreen> {
   static const _intervalSeconds = 60;
   static const _tickMs = 100;
 
-  static const _images = [
-    ('🌊', '파도'),
-    ('🌲', '숲'),
-    ('🌅', '일몰'),
-    ('🏔️', '산'),
-    ('🌸', '벚꽃'),
-    ('🌌', '밤하늘'),
-  ];
+  static const _imageEmojis = ['🌊', '🌲', '🌅', '🏔️', '🌸', '🌌'];
 
   @override
   void dispose() {
@@ -44,51 +38,54 @@ class _CalmMeditationScreenState extends State<CalmMeditationScreen> {
         _elapsed = 0;
       });
     } else {
-      _tickTimer = Timer.periodic(
-        const Duration(milliseconds: _tickMs),
-        (_) {
-          final tickFraction = _tickMs / (_intervalSeconds * 1000);
-          setState(() {
-            _elapsed = (_elapsed + tickFraction).clamp(0.0, 1.0);
-          });
-        },
-      );
-      _timer = Timer.periodic(
-        const Duration(seconds: _intervalSeconds),
-        (_) {
-          setState(() {
-            _imageIndex = (_imageIndex + 1) % _images.length;
-            _elapsed = 0;
-          });
-        },
-      );
+      _tickTimer = Timer.periodic(const Duration(milliseconds: _tickMs), (_) {
+        final tickFraction = _tickMs / (_intervalSeconds * 1000);
+        setState(() {
+          _elapsed = (_elapsed + tickFraction).clamp(0.0, 1.0);
+        });
+      });
+      _timer = Timer.periodic(const Duration(seconds: _intervalSeconds), (_) {
+        setState(() {
+          _imageIndex = (_imageIndex + 1) % _imageEmojis.length;
+          _elapsed = 0;
+        });
+      });
       setState(() => _running = true);
     }
   }
 
   void _previous() {
     setState(() {
-      _imageIndex = (_imageIndex - 1 + _images.length) % _images.length;
+      _imageIndex =
+          (_imageIndex - 1 + _imageEmojis.length) % _imageEmojis.length;
       _elapsed = 0;
     });
   }
 
   void _next() {
     setState(() {
-      _imageIndex = (_imageIndex + 1) % _images.length;
+      _imageIndex = (_imageIndex + 1) % _imageEmojis.length;
       _elapsed = 0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final image = _images[_imageIndex];
+    final l10n = AppLocalizations.of(context);
+    final imageLabels = [
+      l10n.calmMeditationSceneWave,
+      l10n.calmMeditationSceneForest,
+      l10n.calmMeditationSceneSunset,
+      l10n.calmMeditationSceneMountain,
+      l10n.calmMeditationSceneCherryBlossom,
+      l10n.calmMeditationSceneNightSky,
+    ];
 
     return Scaffold(
       backgroundColor: FuryColors.phone,
       appBar: AppBar(
         backgroundColor: FuryColors.chrome,
-        title: const Text('이미지 명상'),
+        title: Text(l10n.meditation),
       ),
       body: Column(
         children: [
@@ -109,12 +106,12 @@ class _CalmMeditationScreenState extends State<CalmMeditationScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        image.$1,
+                        _imageEmojis[_imageIndex],
                         style: const TextStyle(fontSize: 80),
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        image.$2,
+                        imageLabels[_imageIndex],
                         style: const TextStyle(
                           color: FuryColors.text,
                           fontSize: 22,
@@ -122,9 +119,9 @@ class _CalmMeditationScreenState extends State<CalmMeditationScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        '깊게 숨을 들이마시고 내쉬세요',
-                        style: TextStyle(
+                      Text(
+                        l10n.calmMeditationPrompt,
+                        style: const TextStyle(
                           color: FuryColors.faint,
                           fontSize: 13,
                         ),
@@ -166,7 +163,7 @@ class _CalmMeditationScreenState extends State<CalmMeditationScreen> {
                 FilledButton.icon(
                   onPressed: _toggleSlideshow,
                   icon: Icon(_running ? Icons.pause : Icons.play_arrow),
-                  label: Text(_running ? '일시정지' : '자동 재생'),
+                  label: Text(_running ? l10n.pause : l10n.autoplay),
                 ),
                 const SizedBox(width: 24),
                 IconButton(

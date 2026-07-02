@@ -10,6 +10,67 @@
   "drawerGuide": "앱 가이드",
   "drawerCalmGuide": "진정 가이드",
   "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "메뉴",
+  "drawerRecordCount": "🔥 분노 기록 {count}회",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "닉네임 변경 · 알림 설정",
+  "drawerGuideSubtitle": "Fury Note 사용 방법",
+  "drawerCalmGuideSubtitle": "감정 조절 카드 · 오늘의 팁",
+  "relativeTimeJustNow": "방금 전",
+  "relativeTimeMinutesAgo": "{count}분 전",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count}시간 전",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count}일 전",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "recordTitle": "분노 기록",
   "stepIntensity": "지금 얼마나 화났나요?",
   "stepIntensitySub": "이모지를 선택해주세요",
@@ -27,6 +88,7 @@
   "next": "다음",
   "previous": "이전",
   "skip": "건너뛰기",
+  "save": "저장",
   "saveNote": "기록하기",
   "postIt": "포스팅하기",
   "saveOnly": "그냥 저장만 할게요",
@@ -34,6 +96,19 @@
   "recordPostedToast": "포스팅했어요",
   "recordSavedToast": "기록됐어요",
   "commentPostedToast": "댓글이 등록되었어요",
+  "commentSendFailedToast": "댓글 전송에 실패했어요. 다시 시도해주세요.",
+  "commentDeleteTitle": "댓글 삭제",
+  "commentDeleteContent": "이 댓글을 삭제할까요?",
+  "commentsCount": "댓글 {count}개",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "아직 댓글이 없어요\n첫 번째 댓글을 남겨보세요 💬",
+  "commentInputHint": "댓글을 입력하세요...",
   "apiErrorContentBlockedUrl": "링크가 포함된 글은 등록할 수 없어요.",
   "apiErrorContentBlockedSpam": "광고성 문구가 포함되어 있어요.",
   "apiErrorContentBlockedProfanity": "비속어가 포함되어 있어 등록할 수 없어요.",
@@ -56,12 +131,41 @@
   "summaryText": "내용",
   "summaryReminder": "리마인드",
   "none": "없음",
+  "other": "기타",
   "family": "가족",
   "romance": "연애",
   "work": "직장",
   "people": "사람",
   "driving": "운전",
   "custom": "직접 입력",
+  "recordCustomCategoryHint": "카테고리를 입력하세요",
+  "recordTextHint": "여기에 적어보세요",
+  "recordMicPermissionRequired": "마이크 권한이 필요합니다.",
+  "recordVoiceStartFailed": "{label}을 시작할 수 없습니다.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "녹음 중지",
+  "recordVoiceRecordAgain": "다시 녹음",
+  "recordVoiceSaved": "음성 녹음이 저장됐어요.",
+  "recordAudioSummaryLabel": "음성",
+  "recordAudioIncluded": "녹음 포함",
+  "recordSavingInProgress": "저장 중...",
+  "recordPostingInProgress": "전송 중...",
+  "recordSaveFailedToast": "기록을 저장하지 못했습니다. 다시 시도해주세요.",
+  "recordProgressSemantics": "기록 진행 상황",
+  "hourSuffix": "시",
+  "minuteSuffix": "분",
+  "reminderCustom": "직접 설정",
+  "reminderIn30Minutes": "30분 후",
+  "reminderIn1Hour": "1시간 후",
+  "reminderIn2Hours": "2시간 후",
+  "reminderIn6Hours": "6시간 후",
+  "reminderTomorrow": "내일",
   "annoyed": "살짝 짜증",
   "angry": "화가 남",
   "mad": "꽤 화남",
@@ -70,8 +174,15 @@
   "calmed": "진정됨",
   "feedTitle": "피드",
   "feedSubtitle": "최신순으로 비슷한 분노를 둘러봐요",
+  "feedAllTab": "전체 피드",
+  "feedMineTab": "내가 쓴 피드",
+  "feedLoadFailed": "피드를 불러오지 못했어요.",
+  "feedEmptyMine": "아직 작성한 피드가 없어요.\n첫 번째 분노를 공유해보세요!",
+  "feedEmptyAll": "아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!",
+  "feedPostFailedToast": "피드 전송에 실패했어요. 다시 시도해주세요.",
   "like": "공감",
   "comment": "댓글",
+  "retry": "다시 시도",
   "statsTitle": "분노 통계",
   "statsSubtitle": "이번 주 감정 흐름을 살펴봐요",
   "week": "1주일",
@@ -86,6 +197,19 @@
   "statsNoRecords": "표시할 기록이 없습니다.",
   "statsCalendarButtonTitle": "달력으로 기록 보기",
   "statsCalendarButtonSubtitle": "날짜별 분노 기록을 확인하고 관리해요",
+  "statsCalendarTitle": "달력으로 기록 보기",
+  "statsOtherCategory": "기타",
+  "selectedDateRecordsTitle": "{date} 기록",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "선택한 날짜에 작성된 기록이 없습니다.",
+  "reminderAction": "리마인더",
+  "play": "재생",
   "statsSummaryButtonTitle": "분노 보고서 보기",
   "statsSummaryButtonSubtitle": "카테고리별로 내 분노 패턴을 넘겨봐요",
   "statsSummaryTitle": "분노 보고서",
@@ -165,11 +289,38 @@
   "timeout": "타임아웃",
   "meditation": "이미지 명상",
   "feedSupport": "포스팅으로 위로받기",
+  "calmReminderEmpty": "리마인드가 도착하면 여기 표시돼요",
+  "calmReminderFallbackText": "아까 그 분노, 지금은 어때요?",
+  "calmCheckTitle": "지금 분노는 어때요?",
+  "calmCheckSubtitle": "{emoji} {label} · 아까의 그 분노",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "잘 진정됐네요!",
+  "calmSavedUpdatedToast": "기록됐어요",
   "profileName": "화난 호랑이",
   "nicknameAdjectives": "화난,격분한,분노한,폭발하는,사나운,으르렁대는,날카로운,뿔난,열받은,거친,맹렬한,폭주하는,불같은,천둥같은,씩씩대는,부글부글한,울분한,불꽃같은,폭풍같은,독기품은",
   "nicknameAnimals": "호랑이,사자,늑대,곰,독수리,상어,표범,치타,악어,코브라,황소,멧돼지,코뿔소,하이에나,불곰,까마귀,매,고슴도치,재규어,퓨마",
   "notificationSettings": "알림",
   "commentNotification": "댓글 알림",
+  "settingsNotificationsSection": "알림",
+  "settingsReminderSubtitle": "설정한 시간에 분노 노트 알림",
+  "settingsCommentSubtitle": "내 포스팅에 댓글이 달리면 알림",
+  "settingsDataSection": "데이터",
+  "settingsDataImportSubtitle": "백업 파일로 기록 복원",
+  "settingsSupportSection": "지원",
+  "settingsPrivacySubtitle": "수집 정보 및 이용 목적 안내",
+  "settingsFeedbackTitle": "피드백 보내기",
+  "settingsFeedbackSubtitle": "불편한 점이나 개선 아이디어",
+  "settingsRecordCountUnit": "기록",
+  "settingsPostCountUnit": "포스팅",
   "proPlan": "PRO 데이터 내보내기",
   "backupImport": "데이터 가져오기",
   "settingsDataExportSubtitle": "백업 파일 생성 · 히스토리 · 공유",
@@ -177,6 +328,7 @@
   "dataExportProTitle": "PRO 데이터 내보내기",
   "dataExportDescription": "앱의 모든 로컬 데이터를 하나의 백업 파일로 만들고 메일이나 메신저로 공유할 수 있어요.",
   "dataExportOneTimePurchase": "1회 결제 · 영구 사용",
+  "dataExportDebugPrice": "DEBUG",
   "dataExportInProgress": "내보내는 중",
   "dataExportPaymentChecking": "결제 확인 중",
   "dataExportCreateButton": "내보내기 생성",
@@ -199,6 +351,16 @@
   },
   "dataExportShareTooltip": "공유",
   "dataExportEmptyHistory": "아직 만든 내보내기 파일이 없어요.",
+  "purchaseUpdateFailed": "결제 업데이트를 처리하지 못했어요.",
+  "purchaseStatusFailed": "구매 상태를 확인하지 못했어요.",
+  "purchaseProductNotFound": "스토어 상품을 찾지 못했어요.",
+  "purchaseStoreUnavailable": "스토어에 연결할 수 없어요.",
+  "purchaseProductInfoFailed": "스토어 상품 정보를 불러오지 못했어요.",
+  "purchaseProductUnavailable": "구매할 상품 정보가 아직 없어요.",
+  "purchaseStartFailed": "결제를 시작하지 못했어요.",
+  "purchaseCanceled": "결제가 취소되었어요.",
+  "purchaseReceiptInvalid": "구매 영수증을 확인하지 못했어요.",
+  "purchaseReceiptVerifyFailed": "구매 영수증 검증에 실패했어요.",
   "dataImportTitle": "데이터 가져오기",
   "dataImportPickTitle": "백업 파일 선택",
   "dataImportPickDescription": "Fury Note에서 내보낸\n.fnbackup 파일을 선택하세요",
@@ -221,6 +383,67 @@
   "dataImportTransferBody": "새 기기에서 앱 설치 후 백업 파일을 가져오면 현재 로컬 데이터를 백업 데이터로 교체해요.",
   "feedDeleteTitle": "피드 삭제",
   "feedDeleteContent": "이 피드를 삭제할까요?",
+  "calmBreathingTitle": "호흡 운동",
+  "breathPhaseInhale": "들이마시기",
+  "breathPhaseHold": "참기",
+  "breathPhaseExhale": "내쉬기",
+  "durationSeconds": "{count}초",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "{count}회차",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "진행 중",
+  "calmTimeoutPaused": "일시정지",
+  "reset": "초기화",
+  "start": "시작",
+  "pause": "일시정지",
+  "calmMeditationSceneWave": "파도",
+  "calmMeditationSceneForest": "숲",
+  "calmMeditationSceneSunset": "일몰",
+  "calmMeditationSceneMountain": "산",
+  "calmMeditationSceneCherryBlossom": "벚꽃",
+  "calmMeditationSceneNightSky": "밤하늘",
+  "calmMeditationPrompt": "깊게 숨을 들이마시고 내쉬세요",
+  "autoplay": "자동 재생",
+  "profileEditTitle": "프로필 수정",
+  "nicknameLabel": "닉네임",
+  "nicknameHint": "닉네임을 입력하세요",
+  "nicknameRequiredError": "닉네임을 입력해주세요",
+  "nicknameCodeAutomaticError": "고유번호는 자동으로 붙어요",
+  "nicknameTooShortError": "2자 이상 입력해주세요",
+  "profileSavedToast": "✅ \"{name}\"으로 변경됐어요!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "저장 중 오류가 발생했어요.",
+  "avatarPickGallery": "앨범에서 선택",
+  "avatarPickCamera": "카메라로 촬영",
+  "avatarReset": "기본 아바타로 변경",
+  "avatarResetToast": "기본 아바타로 변경됐어요.",
+  "avatarAppliedToast": "프로필 사진이 적용됐어요.",
+  "avatarTooLargeToast": "5MB 이하의 사진만 사용할 수 있어요.",
+  "avatarLoadFailedToast": "사진을 불러오지 못했어요.",
+  "profileCodeLabel": "고유번호 (변경 불가)",
+  "profileSaveButton": "변경 저장",
+  "avatarChangeLabel": "프로필 사진 변경",
+  "avatarChangeHint": "사진을 탭해서 변경",
+  "avatarSizeHint": "JPG, PNG, GIF · 최대 5MB",
+  "reminderNotificationFallbackBody": "아까 그 분노, 지금은 어떤가요?",
   "calmGuideTitle": "화가 올라올 때,\n먼저 몸을 안전하게 낮춰요",
   "calmGuideSubtitle": "Fury Note의 진정 가이드는 분노를 없애라고 말하지 않습니다. 지금의 감정을 다치지 않게 지나가도록 돕는 짧은 안내입니다.",
   "calmGuideNotice": "**지금 당장 위험하다면** 앱을 계속 보기보다 주변 사람에게 도움을 요청하거나 긴급 신고를 먼저 해주세요.",

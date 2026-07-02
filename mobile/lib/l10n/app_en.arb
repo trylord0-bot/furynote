@@ -10,6 +10,67 @@
   "drawerGuide": "App guide",
   "drawerCalmGuide": "Calm guide",
   "drawerVersion": "Fury Note v1.0.0",
+  "menuTooltip": "Menu",
+  "drawerRecordCount": "🔥 {count} rage notes",
+  "@drawerRecordCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSettingsSubtitle": "Nickname · notifications",
+  "drawerGuideSubtitle": "How to use Fury Note",
+  "drawerCalmGuideSubtitle": "Calm cards · today's tips",
+  "relativeTimeJustNow": "Just now",
+  "relativeTimeMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@relativeTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+  "@relativeTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@relativeTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataSizeBytes": "{value} B",
+  "@dataSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeKilobytes": "{value} KB",
+  "@dataSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dataSizeMegabytes": "{value} MB",
+  "@dataSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "recordTitle": "Rage Record",
   "stepIntensity": "How angry are you now?",
   "stepIntensitySub": "Pick an emoji",
@@ -27,6 +88,7 @@
   "next": "Next",
   "previous": "Previous",
   "skip": "Skip",
+  "save": "Save",
   "saveNote": "Save note",
   "postIt": "Post",
   "saveOnly": "Just save it",
@@ -34,6 +96,19 @@
   "recordPostedToast": "Posted",
   "recordSavedToast": "Saved",
   "commentPostedToast": "Comment posted",
+  "commentSendFailedToast": "Could not send the comment. Please try again.",
+  "commentDeleteTitle": "Delete comment",
+  "commentDeleteContent": "Delete this comment?",
+  "commentsCount": "{count, plural, =1{1 comment} other{{count} comments}}",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsEmpty": "No comments yet\nBe the first to leave one 💬",
+  "commentInputHint": "Write a comment...",
   "apiErrorContentBlockedUrl": "Posts with links cannot be submitted.",
   "apiErrorContentBlockedSpam": "Promotional text cannot be submitted.",
   "apiErrorContentBlockedProfanity": "Content containing profanity cannot be submitted.",
@@ -56,12 +131,41 @@
   "summaryText": "Text",
   "summaryReminder": "Reminder",
   "none": "None",
+  "other": "Other",
   "family": "Family",
   "romance": "Romance",
   "work": "Work",
   "people": "People",
   "driving": "Driving",
   "custom": "Custom",
+  "recordCustomCategoryHint": "Enter a category",
+  "recordTextHint": "Write it here",
+  "recordMicPermissionRequired": "Microphone permission is required.",
+  "recordVoiceStartFailed": "Could not start {label}.",
+  "@recordVoiceStartFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "recordVoiceStopRecording": "Stop recording",
+  "recordVoiceRecordAgain": "Record again",
+  "recordVoiceSaved": "Voice recording saved.",
+  "recordAudioSummaryLabel": "Voice",
+  "recordAudioIncluded": "Recording included",
+  "recordSavingInProgress": "Saving...",
+  "recordPostingInProgress": "Sending...",
+  "recordSaveFailedToast": "Could not save the note. Please try again.",
+  "recordProgressSemantics": "Record progress",
+  "hourSuffix": "h",
+  "minuteSuffix": "m",
+  "reminderCustom": "Custom",
+  "reminderIn30Minutes": "In 30 minutes",
+  "reminderIn1Hour": "In 1 hour",
+  "reminderIn2Hours": "In 2 hours",
+  "reminderIn6Hours": "In 6 hours",
+  "reminderTomorrow": "Tomorrow",
   "annoyed": "Annoyed",
   "angry": "Angry",
   "mad": "Mad",
@@ -70,8 +174,15 @@
   "calmed": "Calm",
   "feedTitle": "Feed",
   "feedSubtitle": "Browse recent anger stories",
+  "feedAllTab": "All feed",
+  "feedMineTab": "My feed",
+  "feedLoadFailed": "Could not load the feed.",
+  "feedEmptyMine": "You have not posted to the feed yet.\nShare your first rage note!",
+  "feedEmptyAll": "No feed posts yet.\nBe the first to share your anger!",
+  "feedPostFailedToast": "Could not send to feed. Please try again.",
   "like": "Like",
   "comment": "Comment",
+  "retry": "Try again",
   "statsTitle": "Rage Stats",
   "statsSubtitle": "See this week's emotional pattern",
   "week": "1 week",
@@ -86,6 +197,19 @@
   "statsNoRecords": "No records to show.",
   "statsCalendarButtonTitle": "View records by calendar",
   "statsCalendarButtonSubtitle": "Check and manage rage notes by date",
+  "statsCalendarTitle": "View records by calendar",
+  "statsOtherCategory": "Other",
+  "selectedDateRecordsTitle": "{date} records",
+  "@selectedDateRecordsTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecordsOnSelectedDate": "No records were written on the selected date.",
+  "reminderAction": "Reminder",
+  "play": "Play",
   "statsSummaryButtonTitle": "View rage report",
   "statsSummaryButtonSubtitle": "Flip through your anger patterns by category",
   "statsSummaryTitle": "Rage Report",
@@ -165,11 +289,38 @@
   "timeout": "Timeout",
   "meditation": "Image meditation",
   "feedSupport": "Feed support",
+  "calmReminderEmpty": "Reminders will appear here when they arrive",
+  "calmReminderFallbackText": "How does that anger feel now?",
+  "calmCheckTitle": "How angry are you now?",
+  "calmCheckSubtitle": "{emoji} {label} · that earlier anger",
+  "@calmCheckSubtitle": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "calmSavedCalmedToast": "Glad you calmed down.",
+  "calmSavedUpdatedToast": "Saved",
   "profileName": "Angry Tiger",
   "nicknameAdjectives": "angry,furious,raging,explosive,ferocious,growling,sharp,horned,heated,rough,fierce,rampaging,fiery,thunderous,huffing,boiling,resentful,blazing,stormy,venomous",
   "nicknameAnimals": "tiger,lion,wolf,bear,eagle,shark,leopard,cheetah,crocodile,cobra,bull,boar,rhino,hyena,grizzly,raven,hawk,hedgehog,jaguar,puma",
   "notificationSettings": "Notifications",
   "commentNotification": "Comment alerts",
+  "settingsNotificationsSection": "Notifications",
+  "settingsReminderSubtitle": "Rage note reminder at the time you set",
+  "settingsCommentSubtitle": "Alert when someone comments on your post",
+  "settingsDataSection": "Data",
+  "settingsDataImportSubtitle": "Restore records from a backup file",
+  "settingsSupportSection": "Support",
+  "settingsPrivacySubtitle": "Collected information and purpose of use",
+  "settingsFeedbackTitle": "Send feedback",
+  "settingsFeedbackSubtitle": "Problems or improvement ideas",
+  "settingsRecordCountUnit": "records",
+  "settingsPostCountUnit": "posts",
   "proPlan": "PRO data export",
   "backupImport": "Import data",
   "settingsDataExportSubtitle": "Backup file · history · sharing",
@@ -177,6 +328,7 @@
   "dataExportProTitle": "PRO data export",
   "dataExportDescription": "Create one backup file with all local app data and share it by email or messenger.",
   "dataExportOneTimePurchase": "One-time purchase · lifetime access",
+  "dataExportDebugPrice": "DEBUG",
   "dataExportInProgress": "Exporting",
   "dataExportPaymentChecking": "Checking payment",
   "dataExportCreateButton": "Create export",
@@ -199,6 +351,16 @@
   },
   "dataExportShareTooltip": "Share",
   "dataExportEmptyHistory": "No export files yet.",
+  "purchaseUpdateFailed": "Could not process the purchase update.",
+  "purchaseStatusFailed": "Could not check purchase status.",
+  "purchaseProductNotFound": "Store product not found.",
+  "purchaseStoreUnavailable": "Could not connect to the store.",
+  "purchaseProductInfoFailed": "Could not load store product information.",
+  "purchaseProductUnavailable": "Product information is not ready yet.",
+  "purchaseStartFailed": "Could not start the purchase.",
+  "purchaseCanceled": "Purchase was canceled.",
+  "purchaseReceiptInvalid": "Could not verify the purchase receipt.",
+  "purchaseReceiptVerifyFailed": "Purchase receipt verification failed.",
   "dataImportTitle": "Import data",
   "dataImportPickTitle": "Select backup file",
   "dataImportPickDescription": "Select a .fnbackup file\nexported from Fury Note",
@@ -221,6 +383,67 @@
   "dataImportTransferBody": "After installing the app on a new device, import a backup file to replace current local data with the backup data.",
   "feedDeleteTitle": "Delete Feed",
   "feedDeleteContent": "Delete this feed?",
+  "calmBreathingTitle": "Breathing",
+  "breathPhaseInhale": "Inhale",
+  "breathPhaseHold": "Hold",
+  "breathPhaseExhale": "Exhale",
+  "durationSeconds": "{count, plural, =1{1 second} other{{count} seconds}}",
+  "@durationSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cycleCount": "Cycle {count}",
+  "@cycleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calmTimeoutRunning": "Running",
+  "calmTimeoutPaused": "Paused",
+  "reset": "Reset",
+  "start": "Start",
+  "pause": "Pause",
+  "calmMeditationSceneWave": "Waves",
+  "calmMeditationSceneForest": "Forest",
+  "calmMeditationSceneSunset": "Sunset",
+  "calmMeditationSceneMountain": "Mountain",
+  "calmMeditationSceneCherryBlossom": "Cherry blossoms",
+  "calmMeditationSceneNightSky": "Night sky",
+  "calmMeditationPrompt": "Breathe in deeply, then breathe out",
+  "autoplay": "Auto play",
+  "profileEditTitle": "Edit profile",
+  "nicknameLabel": "Nickname",
+  "nicknameHint": "Enter a nickname",
+  "nicknameRequiredError": "Please enter a nickname",
+  "nicknameCodeAutomaticError": "Your code is added automatically",
+  "nicknameTooShortError": "Use at least 2 characters",
+  "profileSavedToast": "✅ Changed to \"{name}\"!",
+  "@profileSavedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSaveFailedToast": "An error occurred while saving.",
+  "avatarPickGallery": "Choose from library",
+  "avatarPickCamera": "Take a photo",
+  "avatarReset": "Use default avatar",
+  "avatarResetToast": "Default avatar restored.",
+  "avatarAppliedToast": "Profile photo applied.",
+  "avatarTooLargeToast": "Only photos up to 5 MB can be used.",
+  "avatarLoadFailedToast": "Could not load the photo.",
+  "profileCodeLabel": "Profile code (cannot be changed)",
+  "profileSaveButton": "Save changes",
+  "avatarChangeLabel": "Change profile photo",
+  "avatarChangeHint": "Tap the photo to change it",
+  "avatarSizeHint": "JPG, PNG, GIF · up to 5 MB",
+  "reminderNotificationFallbackBody": "How does that anger feel now?",
   "calmGuideTitle": "When anger rises,\nlower your body safely first",
   "calmGuideSubtitle": "Fury Note's calm guide doesn't tell you to get rid of anger. It's a short guide to help the feeling pass without anyone getting hurt.",
   "calmGuideNotice": "**If you're in immediate danger**, please ask people around you for help or contact emergency services first, instead of staying on this app.",

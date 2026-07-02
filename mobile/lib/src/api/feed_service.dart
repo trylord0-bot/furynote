@@ -219,15 +219,3 @@ String rageEmoji(int level) {
     _ => '😡',
   };
 }
-
-String categoryDisplay(String key) {
-  return switch (key) {
-    'family' => '👨‍👩‍👧 가족',
-    'romance' => '💕 연애',
-    'work' => '💼 직장',
-    'people' => '🧑 사람',
-    'driving' => '🚗 운전',
-    'custom' => '➕ 기타',
-    _ => '➕ $key',
-  };
-}

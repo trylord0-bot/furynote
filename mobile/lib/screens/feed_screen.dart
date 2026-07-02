@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/api_error_messages.dart';
@@ -55,6 +56,8 @@ class _FeedScreenState extends State<FeedScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       children: [
         Container(
@@ -74,9 +77,9 @@ class _FeedScreenState extends State<FeedScreen>
               fontSize: 14,
               fontWeight: FontWeight.w400,
             ),
-            tabs: const [
-              Tab(text: '전체 피드'),
-              Tab(text: '내가 쓴 피드'),
+            tabs: [
+              Tab(text: l10n.feedAllTab),
+              Tab(text: l10n.feedMineTab),
             ],
           ),
         ),
@@ -384,12 +387,12 @@ class _FeedTabViewState extends State<_FeedTabView>
           children: [
             const Icon(Icons.wifi_off, color: FuryColors.muted, size: 40),
             const SizedBox(height: 12),
-            const Text(
-              '피드를 불러오지 못했어요.',
-              style: TextStyle(color: FuryColors.muted),
+            Text(
+              l10n.feedLoadFailed,
+              style: const TextStyle(color: FuryColors.muted),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(onPressed: _loadInitial, child: const Text('다시 시도')),
+            OutlinedButton(onPressed: _loadInitial, child: Text(l10n.retry)),
           ],
         ),
       );
@@ -403,9 +406,7 @@ class _FeedTabViewState extends State<_FeedTabView>
             const Text('📮', style: TextStyle(fontSize: 40)),
             const SizedBox(height: 12),
             Text(
-              widget.mineOnly
-                  ? '아직 작성한 피드가 없어요.\n첫 번째 분노를 공유해보세요!'
-                  : '아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!',
+              widget.mineOnly ? l10n.feedEmptyMine : l10n.feedEmptyAll,
               textAlign: TextAlign.center,
               style: const TextStyle(color: FuryColors.muted, height: 1.6),
             ),
@@ -471,6 +472,8 @@ class _FeedPostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -478,10 +481,10 @@ class _FeedPostItem extends StatelessWidget {
           emoji: rageEmoji(post.rageLevel),
           nickname: post.nickname,
           profileCode: post.profileCode,
-          category: categoryDisplay(post.category),
+          category: l10n.categoryDisplay(post.category),
           text: post.text ?? '',
           avatarBytes: post.avatarBytes,
-          createdTimeLabel: relativeTime(post.createdAt),
+          createdTimeLabel: relativeTime(context, post.createdAt),
           isMine: post.isMine,
           onDelete: onDelete,
         ),

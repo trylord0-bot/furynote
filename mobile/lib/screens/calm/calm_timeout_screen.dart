@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
 import '../../main.dart';
 
 class CalmTimeoutScreen extends StatefulWidget {
@@ -59,11 +60,13 @@ class _CalmTimeoutScreenState extends State<CalmTimeoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: FuryColors.phone,
       appBar: AppBar(
         backgroundColor: FuryColors.chrome,
-        title: const Text('타임아웃'),
+        title: Text(l10n.timeout),
       ),
       body: Center(
         child: Column(
@@ -100,10 +103,13 @@ class _CalmTimeoutScreenState extends State<CalmTimeoutScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        _running ? '진행 중' : '일시정지',
+                        _running
+                            ? l10n.calmTimeoutRunning
+                            : l10n.calmTimeoutPaused,
                         style: TextStyle(
-                          color:
-                              _running ? FuryColors.orange : FuryColors.faint,
+                          color: _running
+                              ? FuryColors.orange
+                              : FuryColors.faint,
                           fontSize: 12,
                         ),
                       ),
@@ -116,15 +122,12 @@ class _CalmTimeoutScreenState extends State<CalmTimeoutScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                OutlinedButton(
-                  onPressed: _resetTimer,
-                  child: const Text('초기화'),
-                ),
+                OutlinedButton(onPressed: _resetTimer, child: Text(l10n.reset)),
                 const SizedBox(width: 16),
                 FilledButton.icon(
                   onPressed: _toggleTimer,
                   icon: Icon(_running ? Icons.pause : Icons.play_arrow),
-                  label: Text(_running ? '일시정지' : '시작'),
+                  label: Text(_running ? l10n.pause : l10n.start),
                 ),
               ],
             ),

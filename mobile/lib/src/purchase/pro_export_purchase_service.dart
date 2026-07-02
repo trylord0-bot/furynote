@@ -109,7 +109,7 @@ class ProExportPurchaseController extends ChangeNotifier {
       _handlePurchaseUpdates,
       onError: (Object error) {
         _purchasing = false;
-        _errorMessage = '결제 업데이트를 처리하지 못했어요.';
+        _errorMessage = 'purchaseUpdateFailed';
         notifyListeners();
       },
     );
@@ -117,7 +117,7 @@ class ProExportPurchaseController extends ChangeNotifier {
     try {
       _isPro = await _verifier.status();
     } catch (_) {
-      _errorMessage = '구매 상태를 확인하지 못했어요.';
+      _errorMessage = 'purchaseStatusFailed';
     }
 
     try {
@@ -127,15 +127,15 @@ class ProExportPurchaseController extends ChangeNotifier {
         if (response.productDetails.isNotEmpty) {
           _product = response.productDetails.first;
         } else if (response.notFoundIDs.contains(productId)) {
-          _errorMessage = '스토어 상품을 찾지 못했어요.';
+          _errorMessage = 'purchaseProductNotFound';
         } else if (response.error != null) {
           _errorMessage = response.error!.message;
         }
       } else {
-        _errorMessage = '스토어에 연결할 수 없어요.';
+        _errorMessage = 'purchaseStoreUnavailable';
       }
     } catch (_) {
-      _errorMessage = '스토어 상품 정보를 불러오지 못했어요.';
+      _errorMessage = 'purchaseProductInfoFailed';
     } finally {
       _loading = false;
       notifyListeners();
@@ -151,7 +151,7 @@ class ProExportPurchaseController extends ChangeNotifier {
 
     final product = _product;
     if (product == null) {
-      _errorMessage = '구매할 상품 정보가 아직 없어요.';
+      _errorMessage = 'purchaseProductUnavailable';
       notifyListeners();
       return;
     }
@@ -166,7 +166,7 @@ class ProExportPurchaseController extends ChangeNotifier {
     );
     if (!started) {
       _purchasing = false;
-      _errorMessage = '결제를 시작하지 못했어요.';
+      _errorMessage = 'purchaseStartFailed';
       notifyListeners();
     }
   }
@@ -198,7 +198,7 @@ class ProExportPurchaseController extends ChangeNotifier {
 
       if (purchaseDetails.status == PurchaseStatus.error) {
         _purchasing = false;
-        _errorMessage = purchaseDetails.error?.message ?? '결제가 취소되었어요.';
+        _errorMessage = purchaseDetails.error?.message ?? 'purchaseCanceled';
       } else if (purchaseDetails.status == PurchaseStatus.purchased ||
           purchaseDetails.status == PurchaseStatus.restored) {
         await _verifyAndActivate(purchaseDetails);
@@ -224,11 +224,11 @@ class ProExportPurchaseController extends ChangeNotifier {
       _isPro = verified;
       _purchasing = false;
       if (!verified) {
-        _errorMessage = '구매 영수증을 확인하지 못했어요.';
+        _errorMessage = 'purchaseReceiptInvalid';
       }
     } catch (_) {
       _purchasing = false;
-      _errorMessage = '구매 영수증 검증에 실패했어요.';
+      _errorMessage = 'purchaseReceiptVerifyFailed';
     }
   }
 

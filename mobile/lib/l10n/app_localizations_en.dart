@@ -39,6 +39,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drawerVersion => 'Fury Note v1.0.0';
 
   @override
+  String get menuTooltip => 'Menu';
+
+  @override
+  String drawerRecordCount(String count) {
+    return '🔥 $count rage notes';
+  }
+
+  @override
+  String get drawerSettingsSubtitle => 'Nickname · notifications';
+
+  @override
+  String get drawerGuideSubtitle => 'How to use Fury Note';
+
+  @override
+  String get drawerCalmGuideSubtitle => 'Calm cards · today\'s tips';
+
+  @override
+  String get relativeTimeJustNow => 'Just now';
+
+  @override
+  String relativeTimeMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes ago',
+      one: '1 minute ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String relativeTimeHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours ago',
+      one: '1 hour ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String relativeTimeDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dataSizeBytes(String value) {
+    return '$value B';
+  }
+
+  @override
+  String dataSizeKilobytes(String value) {
+    return '$value KB';
+  }
+
+  @override
+  String dataSizeMegabytes(String value) {
+    return '$value MB';
+  }
+
+  @override
   String get recordTitle => 'Rage Record';
 
   @override
@@ -90,6 +158,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skip => 'Skip';
 
   @override
+  String get save => 'Save';
+
+  @override
   String get saveNote => 'Save note';
 
   @override
@@ -109,6 +180,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commentPostedToast => 'Comment posted';
+
+  @override
+  String get commentSendFailedToast =>
+      'Could not send the comment. Please try again.';
+
+  @override
+  String get commentDeleteTitle => 'Delete comment';
+
+  @override
+  String get commentDeleteContent => 'Delete this comment?';
+
+  @override
+  String commentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comments',
+      one: '1 comment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get commentsEmpty => 'No comments yet\nBe the first to leave one 💬';
+
+  @override
+  String get commentInputHint => 'Write a comment...';
 
   @override
   String get apiErrorContentBlockedUrl =>
@@ -184,6 +282,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get none => 'None';
 
   @override
+  String get other => 'Other';
+
+  @override
   String get family => 'Family';
 
   @override
@@ -200,6 +301,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get custom => 'Custom';
+
+  @override
+  String get recordCustomCategoryHint => 'Enter a category';
+
+  @override
+  String get recordTextHint => 'Write it here';
+
+  @override
+  String get recordMicPermissionRequired =>
+      'Microphone permission is required.';
+
+  @override
+  String recordVoiceStartFailed(String label) {
+    return 'Could not start $label.';
+  }
+
+  @override
+  String get recordVoiceStopRecording => 'Stop recording';
+
+  @override
+  String get recordVoiceRecordAgain => 'Record again';
+
+  @override
+  String get recordVoiceSaved => 'Voice recording saved.';
+
+  @override
+  String get recordAudioSummaryLabel => 'Voice';
+
+  @override
+  String get recordAudioIncluded => 'Recording included';
+
+  @override
+  String get recordSavingInProgress => 'Saving...';
+
+  @override
+  String get recordPostingInProgress => 'Sending...';
+
+  @override
+  String get recordSaveFailedToast =>
+      'Could not save the note. Please try again.';
+
+  @override
+  String get recordProgressSemantics => 'Record progress';
+
+  @override
+  String get hourSuffix => 'h';
+
+  @override
+  String get minuteSuffix => 'm';
+
+  @override
+  String get reminderCustom => 'Custom';
+
+  @override
+  String get reminderIn30Minutes => 'In 30 minutes';
+
+  @override
+  String get reminderIn1Hour => 'In 1 hour';
+
+  @override
+  String get reminderIn2Hours => 'In 2 hours';
+
+  @override
+  String get reminderIn6Hours => 'In 6 hours';
+
+  @override
+  String get reminderTomorrow => 'Tomorrow';
 
   @override
   String get annoyed => 'Annoyed';
@@ -226,10 +394,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedSubtitle => 'Browse recent anger stories';
 
   @override
+  String get feedAllTab => 'All feed';
+
+  @override
+  String get feedMineTab => 'My feed';
+
+  @override
+  String get feedLoadFailed => 'Could not load the feed.';
+
+  @override
+  String get feedEmptyMine =>
+      'You have not posted to the feed yet.\nShare your first rage note!';
+
+  @override
+  String get feedEmptyAll =>
+      'No feed posts yet.\nBe the first to share your anger!';
+
+  @override
+  String get feedPostFailedToast => 'Could not send to feed. Please try again.';
+
+  @override
   String get like => 'Like';
 
   @override
   String get comment => 'Comment';
+
+  @override
+  String get retry => 'Try again';
 
   @override
   String get statsTitle => 'Rage Stats';
@@ -273,6 +464,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get statsCalendarButtonSubtitle =>
       'Check and manage rage notes by date';
+
+  @override
+  String get statsCalendarTitle => 'View records by calendar';
+
+  @override
+  String get statsOtherCategory => 'Other';
+
+  @override
+  String selectedDateRecordsTitle(String date) {
+    return '$date records';
+  }
+
+  @override
+  String get noRecordsOnSelectedDate =>
+      'No records were written on the selected date.';
+
+  @override
+  String get reminderAction => 'Reminder';
+
+  @override
+  String get play => 'Play';
 
   @override
   String get statsSummaryButtonTitle => 'View rage report';
@@ -417,6 +629,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedSupport => 'Feed support';
 
   @override
+  String get calmReminderEmpty => 'Reminders will appear here when they arrive';
+
+  @override
+  String get calmReminderFallbackText => 'How does that anger feel now?';
+
+  @override
+  String get calmCheckTitle => 'How angry are you now?';
+
+  @override
+  String calmCheckSubtitle(String emoji, String label) {
+    return '$emoji $label · that earlier anger';
+  }
+
+  @override
+  String get calmSavedCalmedToast => 'Glad you calmed down.';
+
+  @override
+  String get calmSavedUpdatedToast => 'Saved';
+
+  @override
   String get profileName => 'Angry Tiger';
 
   @override
@@ -432,6 +664,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commentNotification => 'Comment alerts';
+
+  @override
+  String get settingsNotificationsSection => 'Notifications';
+
+  @override
+  String get settingsReminderSubtitle =>
+      'Rage note reminder at the time you set';
+
+  @override
+  String get settingsCommentSubtitle =>
+      'Alert when someone comments on your post';
+
+  @override
+  String get settingsDataSection => 'Data';
+
+  @override
+  String get settingsDataImportSubtitle => 'Restore records from a backup file';
+
+  @override
+  String get settingsSupportSection => 'Support';
+
+  @override
+  String get settingsPrivacySubtitle =>
+      'Collected information and purpose of use';
+
+  @override
+  String get settingsFeedbackTitle => 'Send feedback';
+
+  @override
+  String get settingsFeedbackSubtitle => 'Problems or improvement ideas';
+
+  @override
+  String get settingsRecordCountUnit => 'records';
+
+  @override
+  String get settingsPostCountUnit => 'posts';
 
   @override
   String get proPlan => 'PRO data export';
@@ -454,6 +722,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataExportOneTimePurchase => 'One-time purchase · lifetime access';
+
+  @override
+  String get dataExportDebugPrice => 'DEBUG';
 
   @override
   String get dataExportInProgress => 'Exporting';
@@ -502,6 +773,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataExportEmptyHistory => 'No export files yet.';
+
+  @override
+  String get purchaseUpdateFailed => 'Could not process the purchase update.';
+
+  @override
+  String get purchaseStatusFailed => 'Could not check purchase status.';
+
+  @override
+  String get purchaseProductNotFound => 'Store product not found.';
+
+  @override
+  String get purchaseStoreUnavailable => 'Could not connect to the store.';
+
+  @override
+  String get purchaseProductInfoFailed =>
+      'Could not load store product information.';
+
+  @override
+  String get purchaseProductUnavailable =>
+      'Product information is not ready yet.';
+
+  @override
+  String get purchaseStartFailed => 'Could not start the purchase.';
+
+  @override
+  String get purchaseCanceled => 'Purchase was canceled.';
+
+  @override
+  String get purchaseReceiptInvalid => 'Could not verify the purchase receipt.';
+
+  @override
+  String get purchaseReceiptVerifyFailed =>
+      'Purchase receipt verification failed.';
 
   @override
   String get dataImportTitle => 'Import data';
@@ -554,6 +858,139 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedDeleteContent => 'Delete this feed?';
+
+  @override
+  String get calmBreathingTitle => 'Breathing';
+
+  @override
+  String get breathPhaseInhale => 'Inhale';
+
+  @override
+  String get breathPhaseHold => 'Hold';
+
+  @override
+  String get breathPhaseExhale => 'Exhale';
+
+  @override
+  String durationSeconds(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count seconds',
+      one: '1 second',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cycleCount(int count) {
+    return 'Cycle $count';
+  }
+
+  @override
+  String get calmTimeoutRunning => 'Running';
+
+  @override
+  String get calmTimeoutPaused => 'Paused';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get calmMeditationSceneWave => 'Waves';
+
+  @override
+  String get calmMeditationSceneForest => 'Forest';
+
+  @override
+  String get calmMeditationSceneSunset => 'Sunset';
+
+  @override
+  String get calmMeditationSceneMountain => 'Mountain';
+
+  @override
+  String get calmMeditationSceneCherryBlossom => 'Cherry blossoms';
+
+  @override
+  String get calmMeditationSceneNightSky => 'Night sky';
+
+  @override
+  String get calmMeditationPrompt => 'Breathe in deeply, then breathe out';
+
+  @override
+  String get autoplay => 'Auto play';
+
+  @override
+  String get profileEditTitle => 'Edit profile';
+
+  @override
+  String get nicknameLabel => 'Nickname';
+
+  @override
+  String get nicknameHint => 'Enter a nickname';
+
+  @override
+  String get nicknameRequiredError => 'Please enter a nickname';
+
+  @override
+  String get nicknameCodeAutomaticError => 'Your code is added automatically';
+
+  @override
+  String get nicknameTooShortError => 'Use at least 2 characters';
+
+  @override
+  String profileSavedToast(String name) {
+    return '✅ Changed to \"$name\"!';
+  }
+
+  @override
+  String get profileSaveFailedToast => 'An error occurred while saving.';
+
+  @override
+  String get avatarPickGallery => 'Choose from library';
+
+  @override
+  String get avatarPickCamera => 'Take a photo';
+
+  @override
+  String get avatarReset => 'Use default avatar';
+
+  @override
+  String get avatarResetToast => 'Default avatar restored.';
+
+  @override
+  String get avatarAppliedToast => 'Profile photo applied.';
+
+  @override
+  String get avatarTooLargeToast => 'Only photos up to 5 MB can be used.';
+
+  @override
+  String get avatarLoadFailedToast => 'Could not load the photo.';
+
+  @override
+  String get profileCodeLabel => 'Profile code (cannot be changed)';
+
+  @override
+  String get profileSaveButton => 'Save changes';
+
+  @override
+  String get avatarChangeLabel => 'Change profile photo';
+
+  @override
+  String get avatarChangeHint => 'Tap the photo to change it';
+
+  @override
+  String get avatarSizeHint => 'JPG, PNG, GIF · up to 5 MB';
+
+  @override
+  String get reminderNotificationFallbackBody =>
+      'How does that anger feel now?';
 
   @override
   String get calmGuideTitle =>

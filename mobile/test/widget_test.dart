@@ -15,6 +15,7 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:fury_note/main.dart';
+import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/audio/voice_recorder.dart';
 import 'package:fury_note/src/api/api_client.dart';
 import 'package:fury_note/src/api/feed_service.dart';
@@ -809,6 +810,7 @@ void main() {
   testWidgets('voice recording button records, stops, and starts over', (
     WidgetTester tester,
   ) async {
+    SharedPreferences.setMockInitialValues({});
     final recorder = _FakeVoiceRecorder();
 
     await tester.pumpWidget(
@@ -841,6 +843,106 @@ void main() {
     await tester.pumpAndSettle();
     expect(recorder.startCount, 2);
     expect(find.text('녹음 중지'), findsOneWidget);
+  });
+
+  testWidgets('text step cannot continue while voice recording is active', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final recorder = _FakeVoiceRecorder();
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: _FakeRageNoteRepository(),
+        voiceRecorder: recorder,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '녹음 중에는 넘어가면 안 됨');
+    await tester.pump();
+    await tester.tap(find.text('음성 녹음'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<FilledButton>(find.widgetWithText(FilledButton, '다음'))
+          .onPressed,
+      isNull,
+    );
+    expect(
+      tester
+          .widget<TextButton>(find.byKey(const ValueKey('text-step-skip')))
+          .onPressed,
+      isNull,
+    );
+
+    await tester.tap(find.text('녹음 중지'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<FilledButton>(find.widgetWithText(FilledButton, '다음'))
+          .onPressed,
+      isNotNull,
+    );
+    expect(
+      tester
+          .widget<TextButton>(find.byKey(const ValueKey('text-step-skip')))
+          .onPressed,
+      isNotNull,
+    );
+  });
+
+  testWidgets('saving stopped voice recording stores audio path', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final repository = _FakeRageNoteRepository();
+    final recorder = _FakeVoiceRecorder();
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+        voiceRecorder: recorder,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '녹음 중 저장할 기록');
+    await tester.pump();
+    await tester.tap(find.text('음성 녹음'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('녹음 중지'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('다음'));
+    await tester.tap(find.text('다음'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('reminder-step-skip')),
+    );
+    await tester.tap(find.byKey(const ValueKey('reminder-step-skip')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('기록하기'));
+    await tester.tap(find.text('기록하기'));
+    await tester.pumpAndSettle();
+
+    expect(recorder.stopCount, 1);
+    expect(repository.savedNotes, hasLength(1));
+    expect(repository.savedNotes.single.audioPath, 'voice/fake_1.m4a');
+    expect(find.text('포스팅하기'), findsOneWidget);
   });
 
   testWidgets('saving a note with reminder schedules local notification', (
@@ -882,6 +984,46 @@ void main() {
     expect(scheduler.calls.single.scheduledAt.isAfter(DateTime.now()), isTrue);
   });
 
+  testWidgets('saving advances even when reminder scheduling hangs', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final repository = _FakeRageNoteRepository();
+    final scheduler = _HangingReminderScheduler();
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+        reminderScheduler: scheduler,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const ValueKey('text-step-skip')));
+    await tester.tap(find.byKey(const ValueKey('text-step-skip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('1시간 후'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('다음'));
+    await tester.tap(find.text('다음'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('기록하기'));
+    await tester.tap(find.text('기록하기'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(repository.savedNotes, hasLength(1));
+    expect(scheduler.scheduleStarted, isTrue);
+    expect(find.text('포스팅하기'), findsOneWidget);
+    expect(find.text('저장 중...'), findsNothing);
+  });
+
   testWidgets('disabled reminder notifications skip local scheduling', (
     WidgetTester tester,
   ) async {
@@ -919,6 +1061,43 @@ void main() {
 
     expect(repository.savedNotes, hasLength(1));
     expect(scheduler.calls, isEmpty);
+  });
+
+  testWidgets('analytics failures do not block saving a record', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final repository = _FakeRageNoteRepository();
+
+    await tester.pumpWidget(
+      FuryNoteApp(
+        initialLocale: const Locale('ko'),
+        noteRepository: repository,
+        analytics: _FailingSaveAnalytics(),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openRecordTab(tester, label: '기록');
+
+    await tester.tap(find.text('매우 화남'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('직장'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const ValueKey('text-step-skip')));
+    await tester.tap(find.byKey(const ValueKey('text-step-skip')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('reminder-step-skip')),
+    );
+    await tester.tap(find.byKey(const ValueKey('reminder-step-skip')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('기록하기'));
+    await tester.tap(find.text('기록하기'));
+    await tester.pumpAndSettle();
+
+    expect(repository.savedNotes, hasLength(1));
+    expect(find.text('포스팅하기'), findsOneWidget);
+    expect(find.text('저장 중...'), findsNothing);
   });
 
   testWidgets(
@@ -1669,6 +1848,43 @@ class _FakeReminderScheduler implements ReminderScheduler {
     required String body,
   }) async {
     calls.add((id: id, scheduledAt: scheduledAt, body: body));
+  }
+}
+
+class _HangingReminderScheduler implements ReminderScheduler {
+  bool scheduleStarted = false;
+
+  @override
+  Future<void> initialize() async {}
+
+  @override
+  Future<void> scheduleRageReminder({
+    required int id,
+    required DateTime scheduledAt,
+    required String body,
+  }) {
+    scheduleStarted = true;
+    return Completer<void>().future;
+  }
+}
+
+class _FailingSaveAnalytics implements AppAnalytics {
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? parameters}) {
+    if (name == 'record_saved' ||
+        (name == 'record_funnel_step' && parameters?['step'] == 'post')) {
+      throw StateError('analytics failed');
+    }
+    return Future<void>.value();
+  }
+
+  @override
+  Future<void> logScreenView(
+    String screenName, {
+    String? screenClass,
+    Map<String, Object>? parameters,
+  }) {
+    return Future<void>.value();
   }
 }
 

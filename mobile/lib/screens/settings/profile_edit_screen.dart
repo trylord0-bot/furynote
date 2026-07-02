@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../main.dart';
 import '../../src/api/device_service.dart';
@@ -32,8 +33,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       return;
     }
     final savedName = AppProfileController.instance.savedDisplayName;
+    final l10n = AppLocalizations.of(context);
     _nickController.text = savedName == null || savedName.isEmpty
-        ? '화난 호랑이'
+        ? l10n.profileName
         : savedName;
     setState(() {});
   }
@@ -51,16 +53,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   void _onNickChanged(String value) {
     final text = value.trim();
+    final l10n = AppLocalizations.of(context);
     setState(() {
       if (text.isEmpty) {
         _hasError = true;
-        _errorMsg = '닉네임을 입력해주세요';
+        _errorMsg = l10n.nicknameRequiredError;
       } else if (text.contains('#')) {
         _hasError = true;
-        _errorMsg = '고유번호는 자동으로 붙어요';
+        _errorMsg = l10n.nicknameCodeAutomaticError;
       } else if (text.length < 2) {
         _hasError = true;
-        _errorMsg = '2자 이상 입력해주세요';
+        _errorMsg = l10n.nicknameTooShortError;
       } else {
         _hasError = false;
         _errorMsg = '';
@@ -86,19 +89,22 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       }
 
       if (!mounted) return;
-      FurySnackBar.show(context, '✅ "$displayName"으로 변경됐어요!');
+      final l10n = AppLocalizations.of(context);
+      FurySnackBar.show(context, l10n.profileSavedToast(displayName));
       Future.delayed(const Duration(milliseconds: 700), () {
         if (mounted) Navigator.of(context).pop();
       });
     } catch (_) {
       if (!mounted) return;
-      _showProfileToast('저장 중 오류가 발생했어요.', isError: true);
+      final l10n = AppLocalizations.of(context);
+      _showProfileToast(l10n.profileSaveFailedToast, isError: true);
     } finally {
       if (mounted) setState(() => _saving = false);
     }
   }
 
   Future<void> _showAvatarActions() async {
+    final l10n = AppLocalizations.of(context);
     final action = await showModalBottomSheet<_AvatarAction>(
       context: context,
       backgroundColor: FuryColors.panel,
@@ -124,17 +130,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 const SizedBox(height: 14),
                 _AvatarActionTile(
                   icon: Icons.photo_library_outlined,
-                  title: '앨범에서 선택',
+                  title: l10n.avatarPickGallery,
                   onTap: () => Navigator.pop(context, _AvatarAction.gallery),
                 ),
                 _AvatarActionTile(
                   icon: Icons.photo_camera_outlined,
-                  title: '카메라로 촬영',
+                  title: l10n.avatarPickCamera,
                   onTap: () => Navigator.pop(context, _AvatarAction.camera),
                 ),
                 _AvatarActionTile(
                   icon: Icons.restart_alt,
-                  title: '기본 아바타로 변경',
+                  title: l10n.avatarReset,
                   isDestructive: true,
                   onTap: () => Navigator.pop(context, _AvatarAction.clear),
                 ),
@@ -159,12 +165,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       case _AvatarAction.clear:
         await AppProfileController.instance.clearAvatar();
         setState(() => _avatarChanged = true);
-        _showProfileToast('기본 아바타로 변경됐어요.');
+        _showProfileToast(l10n.avatarResetToast);
         break;
     }
   }
 
   Future<void> _pickAvatar(ImageSource source) async {
+    final l10n = AppLocalizations.of(context);
     try {
       final image = await _imagePicker.pickImage(
         source: source,
@@ -179,11 +186,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       final bytes = await image.readAsBytes();
       await AppProfileController.instance.updateAvatar(bytes);
       setState(() => _avatarChanged = true);
-      _showProfileToast('프로필 사진이 적용됐어요.');
+      _showProfileToast(l10n.avatarAppliedToast);
     } on ProfileAvatarTooLargeException {
-      _showProfileToast('5MB 이하의 사진만 사용할 수 있어요.', isError: true);
+      _showProfileToast(l10n.avatarTooLargeToast, isError: true);
     } catch (_) {
-      _showProfileToast('사진을 불러오지 못했어요.', isError: true);
+      _showProfileToast(l10n.avatarLoadFailedToast, isError: true);
     }
   }
 
@@ -197,12 +204,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
   Widget build(BuildContext context) {
     final len = _nickController.text.length;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: FuryColors.phone,
       appBar: AppBar(
         backgroundColor: FuryColors.chrome,
-        title: const Text('프로필 수정'),
+        title: Text(l10n.profileEditTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 28, 20, 40),
@@ -213,9 +221,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '닉네임',
-                  style: TextStyle(
+                Text(
+                  l10n.nicknameLabel,
+                  style: const TextStyle(
                     color: FuryColors.muted,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
@@ -234,7 +242,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         fontWeight: FontWeight.w700,
                       ),
                       decoration: InputDecoration(
-                        hintText: '닉네임을 입력하세요',
+                        hintText: l10n.nicknameHint,
                         counterText: '',
                         filled: true,
                         fillColor: FuryColors.panel,
@@ -323,9 +331,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              '고유번호 (변경 불가)',
-                              style: TextStyle(
+                            Text(
+                              l10n.profileCodeLabel,
+                              style: const TextStyle(
                                 color: FuryColors.faint,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
@@ -371,9 +379,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text(
-                        '변경 저장',
-                        style: TextStyle(
+                    : Text(
+                        l10n.profileSaveButton,
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
                         ),
@@ -396,11 +404,12 @@ class _AvatarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
         Semantics(
           button: true,
-          label: '프로필 사진 변경',
+          label: l10n.avatarChangeLabel,
           child: InkWell(
             borderRadius: BorderRadius.circular(30),
             onTap: onTap,
@@ -453,19 +462,19 @@ class _AvatarSection extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         RichText(
-          text: const TextSpan(
+          text: TextSpan(
             children: [
               TextSpan(
-                text: '사진을 탭해서 변경',
-                style: TextStyle(
+                text: l10n.avatarChangeHint,
+                style: const TextStyle(
                   color: FuryColors.muted,
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               TextSpan(
-                text: '\nJPG, PNG, GIF · 최대 5MB',
-                style: TextStyle(color: FuryColors.faint, fontSize: 11),
+                text: '\n${l10n.avatarSizeHint}',
+                style: const TextStyle(color: FuryColors.faint, fontSize: 11),
               ),
             ],
           ),

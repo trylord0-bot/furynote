@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -193,5 +194,49 @@ CREATE TABLE ${RageNoteRepository.tableName} (
     expect(notes.single.audioPath, 'voice/rage.m4a');
     expect(notes.single.reminderAt, reminderAt);
     expect(notes.single.posted, isFalse);
+  });
+
+  test('shares one database open across concurrent repository calls', () async {
+    final tempDirectory = await Directory.systemTemp.createTemp(
+      'fury_note_repository_concurrent_open_test_',
+    );
+    final databasePath = p.join(tempDirectory.path, 'concurrent.db');
+    final pathGate = Completer<String>();
+    var pathRequests = 0;
+    final concurrentRepository = RageNoteRepository(
+      databaseFactory: databaseFactoryFfi,
+      databasePathProvider: () {
+        pathRequests++;
+        return pathGate.future;
+      },
+    );
+    addTearDown(() async {
+      if (!pathGate.isCompleted) {
+        pathGate.complete(databasePath);
+      }
+      await concurrentRepository.close();
+      await tempDirectory.delete(recursive: true);
+    });
+
+    final insertFuture = concurrentRepository.insert(
+      RageNote(
+        createdAt: DateTime(2026, 6, 12, 17),
+        rageLevel: 3,
+        rageEmoji: '😠',
+        rageLabel: '짜증',
+        categoryKey: 'people',
+        categoryEmoji: '🧑',
+        categoryLabel: '사람',
+        body: '',
+      ),
+    );
+    final countsFuture = concurrentRepository.getCounts();
+
+    expect(pathRequests, 1);
+
+    pathGate.complete(databasePath);
+    await insertFuture;
+    final counts = await countsFuture;
+    expect(counts.total, 1);
   });
 }

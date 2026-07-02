@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/main.dart';
 import 'package:fury_note/src/analytics/app_analytics.dart';
 import 'package:fury_note/src/api/api_client.dart';
@@ -121,7 +121,7 @@ class _CommentSheetState extends State<CommentSheet> {
   Future<void> _sendComment() async {
     final text = _textController.text.trim();
     if (text.isEmpty || _sending) return;
-    final l10n = AppLocalizations.of(context);
+    final l10n = resolveL10n(context);
     final nickname = AppProfileController.instance.displayName(
       fallback: l10n.profileName,
     );
@@ -173,11 +173,12 @@ class _CommentSheetState extends State<CommentSheet> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _sending = false);
-      FurySnackBar.show(context, '댓글 전송에 실패했어요. 다시 시도해주세요.', isError: true);
+      FurySnackBar.show(context, l10n.commentSendFailedToast, isError: true);
     }
   }
 
   Future<void> _confirmDelete(FeedComment comment) async {
+    final l10n = resolveL10n(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -186,27 +187,27 @@ class _CommentSheetState extends State<CommentSheet> {
           borderRadius: BorderRadius.circular(16),
           side: const BorderSide(color: FuryColors.border),
         ),
-        title: const Text(
-          '댓글 삭제',
-          style: TextStyle(
+        title: Text(
+          l10n.commentDeleteTitle,
+          style: const TextStyle(
             color: FuryColors.text,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
         ),
-        content: const Text(
-          '이 댓글을 삭제할까요?',
-          style: TextStyle(color: FuryColors.muted),
+        content: Text(
+          l10n.commentDeleteContent,
+          style: const TextStyle(color: FuryColors.muted),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('취소'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: FuryColors.red),
-            child: const Text('삭제'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -242,6 +243,7 @@ class _CommentSheetState extends State<CommentSheet> {
     final postRageLevel = widget.postRageLevel;
     final postCategory = widget.postCategory;
     final showPostSummary = postRageLevel != null && postCategory != null;
+    final l10n = resolveL10n(context);
 
     return SizedBox(
       height: screenHeight * 0.75,
@@ -263,7 +265,7 @@ class _CommentSheetState extends State<CommentSheet> {
             child: Row(
               children: [
                 Text(
-                  '댓글 $_commentCount개',
+                  l10n.commentsCount(_commentCount),
                   style: const TextStyle(
                     color: FuryColors.text,
                     fontSize: 15,
@@ -292,7 +294,7 @@ class _CommentSheetState extends State<CommentSheet> {
               avatarBytes: widget.postAvatarBytes,
               text: widget.postText ?? '',
               emoji: rageEmoji(postRageLevel),
-              category: categoryDisplay(postCategory),
+              category: l10n.categoryDisplay(postCategory),
             ),
             const Divider(color: FuryColors.border, height: 1),
           ],
@@ -303,11 +305,14 @@ class _CommentSheetState extends State<CommentSheet> {
                     child: CircularProgressIndicator(color: FuryColors.red),
                   )
                 : _comments.isEmpty
-                ? const Center(
+                ? Center(
                     child: Text(
-                      '아직 댓글이 없어요\n첫 번째 댓글을 남겨보세요 💬',
+                      l10n.commentsEmpty,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: FuryColors.muted, height: 1.6),
+                      style: const TextStyle(
+                        color: FuryColors.muted,
+                        height: 1.6,
+                      ),
                     ),
                   )
                 : ListView.builder(
@@ -351,7 +356,7 @@ class _CommentSheetState extends State<CommentSheet> {
                       fontSize: 14,
                     ),
                     decoration: InputDecoration(
-                      hintText: '댓글을 입력하세요...',
+                      hintText: l10n.commentInputHint,
                       hintStyle: const TextStyle(color: FuryColors.faint),
                       counterText: '',
                       border: OutlineInputBorder(
@@ -479,7 +484,7 @@ class _SourcePostSummary extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               displayText.isEmpty
-                  ? '<${AppLocalizations.of(context).noContent}>'
+                  ? '<${resolveL10n(context).noContent}>'
                   : displayText,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
@@ -589,7 +594,7 @@ class _CommentItem extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        relativeTime(comment.createdAt),
+                        relativeTime(context, comment.createdAt),
                         style: const TextStyle(
                           color: FuryColors.faint,
                           fontSize: 10,

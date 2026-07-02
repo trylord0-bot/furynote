@@ -34,7 +34,7 @@ ApiException parseApiException(Map<String, dynamic> json, int statusCode) {
   final error = _extractError(json);
   return ApiException(
     error?['code'] as String? ?? 'UNKNOWN',
-    error?['message'] as String? ?? '알 수 없는 오류가 발생했어요.',
+    error?['message'] as String? ?? 'Unknown error',
     statusCode,
   );
 }

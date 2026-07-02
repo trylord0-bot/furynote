@@ -2,23 +2,22 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/app_localizations_ko.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import '../main.dart';
 
-String relativeTime(DateTime value) {
-  final diff = DateTime.now().difference(value);
-  if (diff.inMinutes < 1) return '방금';
-  if (diff.inMinutes < 60) return '${diff.inMinutes}분 전';
-  if (diff.inHours < 24) return '${diff.inHours}시간 전';
-  return '${diff.inDays}일 전';
+AppLocalizations resolveL10n(BuildContext context) {
+  return Localizations.of<AppLocalizations>(context, AppLocalizations) ??
+      AppLocalizationsKo();
+}
+
+String relativeTime(BuildContext context, DateTime value) {
+  return resolveL10n(context).formatRelativeTime(value);
 }
 
 String profileNameFallback(BuildContext context) {
-  return Localizations.of<AppLocalizations>(
-        context,
-        AppLocalizations,
-      )?.profileName ??
-      '화난 호랑이';
+  return resolveL10n(context).profileName;
 }
 
 class FurySnackBar {
@@ -167,7 +166,7 @@ class FuryPostCard extends StatelessWidget {
                   ),
                 )
               : Text(
-                  '<${AppLocalizations.of(context).noContent}>',
+                  '<${resolveL10n(context).noContent}>',
                   style: const TextStyle(
                     color: FuryColors.faint,
                     fontSize: 13,
@@ -243,7 +242,7 @@ class FuryPostCard extends StatelessWidget {
           right: 14,
           child: GestureDetector(
             onTap: () {
-              final l10n = AppLocalizations.of(context);
+              final l10n = resolveL10n(context);
               final resolvedDeleteContent =
                   deleteContent ?? l10n.feedDeleteContent;
               showDialog<void>(

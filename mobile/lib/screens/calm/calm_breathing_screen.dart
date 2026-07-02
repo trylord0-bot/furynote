@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fury_note/l10n/app_localizations.dart';
 import '../../main.dart';
 
 class CalmBreathingScreen extends StatefulWidget {
@@ -14,18 +15,14 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
   int _phaseIndex = 0;
   int _cycleCount = 0;
 
-  static const _phases = [
-    ('들이마시기', 4.0),
-    ('참기', 7.0),
-    ('내쉬기', 8.0),
-  ];
+  static const _phaseDurations = [4, 7, 8];
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: _phases[0].$2.toInt()),
+      duration: Duration(seconds: _phaseDurations[0]),
     )..addStatusListener(_onStatus);
     _startCycle();
   }
@@ -38,9 +35,7 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
           _cycleCount++;
         }
       });
-      _controller.duration = Duration(
-        seconds: _phases[_phaseIndex].$2.toInt(),
-      );
+      _controller.duration = Duration(seconds: _phaseDurations[_phaseIndex]);
       _controller.reset();
       _controller.forward();
     }
@@ -58,7 +53,13 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final phase = _phases[_phaseIndex];
+    final l10n = AppLocalizations.of(context);
+    final phaseLabel = switch (_phaseIndex) {
+      0 => l10n.breathPhaseInhale,
+      1 => l10n.breathPhaseHold,
+      _ => l10n.breathPhaseExhale,
+    };
+    final phaseSeconds = _phaseDurations[_phaseIndex];
     final maxScale = 1.0;
     final minScale = 0.35;
 
@@ -66,7 +67,7 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
       backgroundColor: FuryColors.phone,
       appBar: AppBar(
         backgroundColor: FuryColors.chrome,
-        title: const Text('호흡 운동'),
+        title: Text(l10n.calmBreathingTitle),
       ),
       body: Center(
         child: Column(
@@ -77,12 +78,8 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
               builder: (context, child) {
                 final isInhale = _phaseIndex == 0;
                 final scale = isInhale
-                    ? minScale +
-                        (maxScale - minScale) *
-                            _controller.value
-                    : maxScale -
-                        (maxScale - minScale) *
-                            _controller.value;
+                    ? minScale + (maxScale - minScale) * _controller.value
+                    : maxScale - (maxScale - minScale) * _controller.value;
                 return Transform.scale(
                   scale: scale,
                   child: Container(
@@ -90,8 +87,9 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
                     height: 160,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: FuryColors.red
-                          .withValues(alpha: 0.12 + _controller.value * 0.2),
+                      color: FuryColors.red.withValues(
+                        alpha: 0.12 + _controller.value * 0.2,
+                      ),
                       border: Border.all(
                         color: FuryColors.red.withValues(
                           alpha: 0.3 + _controller.value * 0.4,
@@ -101,7 +99,7 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
                     ),
                     child: Center(
                       child: Text(
-                        phase.$1,
+                        phaseLabel,
                         style: TextStyle(
                           color: FuryColors.text,
                           fontSize: 18,
@@ -115,19 +113,13 @@ class _CalmBreathingScreenState extends State<CalmBreathingScreen>
             ),
             const SizedBox(height: 40),
             Text(
-              '${phase.$2.toInt()}초',
-              style: const TextStyle(
-                color: FuryColors.muted,
-                fontSize: 14,
-              ),
+              l10n.durationSeconds(phaseSeconds),
+              style: const TextStyle(color: FuryColors.muted, fontSize: 14),
             ),
             const SizedBox(height: 8),
             Text(
-              '${_cycleCount + 1}회차',
-              style: const TextStyle(
-                color: FuryColors.faint,
-                fontSize: 12,
-              ),
+              l10n.cycleCount(_cycleCount + 1),
+              style: const TextStyle(color: FuryColors.faint, fontSize: 12),
             ),
           ],
         ),

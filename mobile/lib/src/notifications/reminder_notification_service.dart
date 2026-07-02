@@ -138,7 +138,7 @@ class LocalReminderScheduler
       await _plugin.zonedSchedule(
         id: id,
         title: 'Fury Note',
-        body: body.isEmpty ? '아까 그 분노, 지금은 어떤가요?' : body,
+        body: body.isEmpty ? 'How does that anger feel now?' : body,
         scheduledDate: tz.TZDateTime.from(scheduledAt, tz.local),
         notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(

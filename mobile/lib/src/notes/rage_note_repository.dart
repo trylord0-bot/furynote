@@ -19,6 +19,7 @@ class RageNoteRepository {
   final DatabaseFactory? _databaseFactory;
   final DatabasePathProvider _databasePathProvider;
   Database? _database;
+  Future<Database>? _openingDatabase;
 
   Future<int> insert(RageNote note) async {
     final db = await _open();
@@ -122,8 +123,13 @@ created_at = ? AND rage_level = ? AND category_key = ? AND body = ?
   }
 
   Future<void> close() async {
+    final opening = _openingDatabase;
+    if (opening != null) {
+      await opening;
+    }
     final db = _database;
     _database = null;
+    _openingDatabase = null;
     await db?.close();
   }
 
@@ -133,9 +139,28 @@ created_at = ? AND rage_level = ? AND category_key = ? AND body = ?
       return existing;
     }
 
+    final opening = _openingDatabase;
+    if (opening != null) {
+      return opening;
+    }
+
+    final openFuture = _openDatabase();
+    _openingDatabase = openFuture;
+    try {
+      final db = await openFuture;
+      _database = db;
+      return db;
+    } finally {
+      if (identical(_openingDatabase, openFuture)) {
+        _openingDatabase = null;
+      }
+    }
+  }
+
+  Future<Database> _openDatabase() async {
     final factory = _databaseFactory ?? databaseFactory;
     final path = await _databasePathProvider();
-    _database = await factory.openDatabase(
+    return factory.openDatabase(
       path,
       options: OpenDatabaseOptions(
         version: 2,
@@ -153,7 +178,6 @@ created_at = ? AND rage_level = ? AND category_key = ? AND body = ?
         },
       ),
     );
-    return _database!;
   }
 
   Future<void> _createSchema(Database db) async {

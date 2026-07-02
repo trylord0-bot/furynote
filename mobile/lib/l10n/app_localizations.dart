@@ -158,6 +158,78 @@ abstract class AppLocalizations {
   /// **'Fury Note v1.0.0'**
   String get drawerVersion;
 
+  /// No description provided for @menuTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'메뉴'**
+  String get menuTooltip;
+
+  /// No description provided for @drawerRecordCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'🔥 분노 기록 {count}회'**
+  String drawerRecordCount(String count);
+
+  /// No description provided for @drawerSettingsSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임 변경 · 알림 설정'**
+  String get drawerSettingsSubtitle;
+
+  /// No description provided for @drawerGuideSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Fury Note 사용 방법'**
+  String get drawerGuideSubtitle;
+
+  /// No description provided for @drawerCalmGuideSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 조절 카드 · 오늘의 팁'**
+  String get drawerCalmGuideSubtitle;
+
+  /// No description provided for @relativeTimeJustNow.
+  ///
+  /// In ko, this message translates to:
+  /// **'방금 전'**
+  String get relativeTimeJustNow;
+
+  /// No description provided for @relativeTimeMinutesAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}분 전'**
+  String relativeTimeMinutesAgo(int count);
+
+  /// No description provided for @relativeTimeHoursAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}시간 전'**
+  String relativeTimeHoursAgo(int count);
+
+  /// No description provided for @relativeTimeDaysAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}일 전'**
+  String relativeTimeDaysAgo(int count);
+
+  /// No description provided for @dataSizeBytes.
+  ///
+  /// In ko, this message translates to:
+  /// **'{value} B'**
+  String dataSizeBytes(String value);
+
+  /// No description provided for @dataSizeKilobytes.
+  ///
+  /// In ko, this message translates to:
+  /// **'{value} KB'**
+  String dataSizeKilobytes(String value);
+
+  /// No description provided for @dataSizeMegabytes.
+  ///
+  /// In ko, this message translates to:
+  /// **'{value} MB'**
+  String dataSizeMegabytes(String value);
+
   /// No description provided for @recordTitle.
   ///
   /// In ko, this message translates to:
@@ -260,6 +332,12 @@ abstract class AppLocalizations {
   /// **'건너뛰기'**
   String get skip;
 
+  /// No description provided for @save.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장'**
+  String get save;
+
   /// No description provided for @saveNote.
   ///
   /// In ko, this message translates to:
@@ -301,6 +379,42 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'댓글이 등록되었어요'**
   String get commentPostedToast;
+
+  /// No description provided for @commentSendFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글 전송에 실패했어요. 다시 시도해주세요.'**
+  String get commentSendFailedToast;
+
+  /// No description provided for @commentDeleteTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글 삭제'**
+  String get commentDeleteTitle;
+
+  /// No description provided for @commentDeleteContent.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 댓글을 삭제할까요?'**
+  String get commentDeleteContent;
+
+  /// No description provided for @commentsCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글 {count}개'**
+  String commentsCount(int count);
+
+  /// No description provided for @commentsEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 댓글이 없어요\n첫 번째 댓글을 남겨보세요 💬'**
+  String get commentsEmpty;
+
+  /// No description provided for @commentInputHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'댓글을 입력하세요...'**
+  String get commentInputHint;
 
   /// No description provided for @apiErrorContentBlockedUrl.
   ///
@@ -434,6 +548,12 @@ abstract class AppLocalizations {
   /// **'없음'**
   String get none;
 
+  /// No description provided for @other.
+  ///
+  /// In ko, this message translates to:
+  /// **'기타'**
+  String get other;
+
   /// No description provided for @family.
   ///
   /// In ko, this message translates to:
@@ -469,6 +589,132 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'직접 입력'**
   String get custom;
+
+  /// No description provided for @recordCustomCategoryHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리를 입력하세요'**
+  String get recordCustomCategoryHint;
+
+  /// No description provided for @recordTextHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'여기에 적어보세요'**
+  String get recordTextHint;
+
+  /// No description provided for @recordMicPermissionRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'마이크 권한이 필요합니다.'**
+  String get recordMicPermissionRequired;
+
+  /// No description provided for @recordVoiceStartFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'{label}을 시작할 수 없습니다.'**
+  String recordVoiceStartFailed(String label);
+
+  /// No description provided for @recordVoiceStopRecording.
+  ///
+  /// In ko, this message translates to:
+  /// **'녹음 중지'**
+  String get recordVoiceStopRecording;
+
+  /// No description provided for @recordVoiceRecordAgain.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 녹음'**
+  String get recordVoiceRecordAgain;
+
+  /// No description provided for @recordVoiceSaved.
+  ///
+  /// In ko, this message translates to:
+  /// **'음성 녹음이 저장됐어요.'**
+  String get recordVoiceSaved;
+
+  /// No description provided for @recordAudioSummaryLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'음성'**
+  String get recordAudioSummaryLabel;
+
+  /// No description provided for @recordAudioIncluded.
+  ///
+  /// In ko, this message translates to:
+  /// **'녹음 포함'**
+  String get recordAudioIncluded;
+
+  /// No description provided for @recordSavingInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 중...'**
+  String get recordSavingInProgress;
+
+  /// No description provided for @recordPostingInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'전송 중...'**
+  String get recordPostingInProgress;
+
+  /// No description provided for @recordSaveFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록을 저장하지 못했습니다. 다시 시도해주세요.'**
+  String get recordSaveFailedToast;
+
+  /// No description provided for @recordProgressSemantics.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록 진행 상황'**
+  String get recordProgressSemantics;
+
+  /// No description provided for @hourSuffix.
+  ///
+  /// In ko, this message translates to:
+  /// **'시'**
+  String get hourSuffix;
+
+  /// No description provided for @minuteSuffix.
+  ///
+  /// In ko, this message translates to:
+  /// **'분'**
+  String get minuteSuffix;
+
+  /// No description provided for @reminderCustom.
+  ///
+  /// In ko, this message translates to:
+  /// **'직접 설정'**
+  String get reminderCustom;
+
+  /// No description provided for @reminderIn30Minutes.
+  ///
+  /// In ko, this message translates to:
+  /// **'30분 후'**
+  String get reminderIn30Minutes;
+
+  /// No description provided for @reminderIn1Hour.
+  ///
+  /// In ko, this message translates to:
+  /// **'1시간 후'**
+  String get reminderIn1Hour;
+
+  /// No description provided for @reminderIn2Hours.
+  ///
+  /// In ko, this message translates to:
+  /// **'2시간 후'**
+  String get reminderIn2Hours;
+
+  /// No description provided for @reminderIn6Hours.
+  ///
+  /// In ko, this message translates to:
+  /// **'6시간 후'**
+  String get reminderIn6Hours;
+
+  /// No description provided for @reminderTomorrow.
+  ///
+  /// In ko, this message translates to:
+  /// **'내일'**
+  String get reminderTomorrow;
 
   /// No description provided for @annoyed.
   ///
@@ -518,6 +764,42 @@ abstract class AppLocalizations {
   /// **'최신순으로 비슷한 분노를 둘러봐요'**
   String get feedSubtitle;
 
+  /// No description provided for @feedAllTab.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 피드'**
+  String get feedAllTab;
+
+  /// No description provided for @feedMineTab.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 쓴 피드'**
+  String get feedMineTab;
+
+  /// No description provided for @feedLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드를 불러오지 못했어요.'**
+  String get feedLoadFailed;
+
+  /// No description provided for @feedEmptyMine.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 작성한 피드가 없어요.\n첫 번째 분노를 공유해보세요!'**
+  String get feedEmptyMine;
+
+  /// No description provided for @feedEmptyAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!'**
+  String get feedEmptyAll;
+
+  /// No description provided for @feedPostFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드 전송에 실패했어요. 다시 시도해주세요.'**
+  String get feedPostFailedToast;
+
   /// No description provided for @like.
   ///
   /// In ko, this message translates to:
@@ -529,6 +811,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'댓글'**
   String get comment;
+
+  /// No description provided for @retry.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 시도'**
+  String get retry;
 
   /// No description provided for @statsTitle.
   ///
@@ -613,6 +901,42 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'날짜별 분노 기록을 확인하고 관리해요'**
   String get statsCalendarButtonSubtitle;
+
+  /// No description provided for @statsCalendarTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'달력으로 기록 보기'**
+  String get statsCalendarTitle;
+
+  /// No description provided for @statsOtherCategory.
+  ///
+  /// In ko, this message translates to:
+  /// **'기타'**
+  String get statsOtherCategory;
+
+  /// No description provided for @selectedDateRecordsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'{date} 기록'**
+  String selectedDateRecordsTitle(String date);
+
+  /// No description provided for @noRecordsOnSelectedDate.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택한 날짜에 작성된 기록이 없습니다.'**
+  String get noRecordsOnSelectedDate;
+
+  /// No description provided for @reminderAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'리마인더'**
+  String get reminderAction;
+
+  /// No description provided for @play.
+  ///
+  /// In ko, this message translates to:
+  /// **'재생'**
+  String get play;
 
   /// No description provided for @statsSummaryButtonTitle.
   ///
@@ -860,6 +1184,42 @@ abstract class AppLocalizations {
   /// **'포스팅으로 위로받기'**
   String get feedSupport;
 
+  /// No description provided for @calmReminderEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'리마인드가 도착하면 여기 표시돼요'**
+  String get calmReminderEmpty;
+
+  /// No description provided for @calmReminderFallbackText.
+  ///
+  /// In ko, this message translates to:
+  /// **'아까 그 분노, 지금은 어때요?'**
+  String get calmReminderFallbackText;
+
+  /// No description provided for @calmCheckTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금 분노는 어때요?'**
+  String get calmCheckTitle;
+
+  /// No description provided for @calmCheckSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'{emoji} {label} · 아까의 그 분노'**
+  String calmCheckSubtitle(String emoji, String label);
+
+  /// No description provided for @calmSavedCalmedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'잘 진정됐네요!'**
+  String get calmSavedCalmedToast;
+
+  /// No description provided for @calmSavedUpdatedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록됐어요'**
+  String get calmSavedUpdatedToast;
+
   /// No description provided for @profileName.
   ///
   /// In ko, this message translates to:
@@ -889,6 +1249,72 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'댓글 알림'**
   String get commentNotification;
+
+  /// No description provided for @settingsNotificationsSection.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림'**
+  String get settingsNotificationsSection;
+
+  /// No description provided for @settingsReminderSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'설정한 시간에 분노 노트 알림'**
+  String get settingsReminderSubtitle;
+
+  /// No description provided for @settingsCommentSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 포스팅에 댓글이 달리면 알림'**
+  String get settingsCommentSubtitle;
+
+  /// No description provided for @settingsDataSection.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터'**
+  String get settingsDataSection;
+
+  /// No description provided for @settingsDataImportSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 파일로 기록 복원'**
+  String get settingsDataImportSubtitle;
+
+  /// No description provided for @settingsSupportSection.
+  ///
+  /// In ko, this message translates to:
+  /// **'지원'**
+  String get settingsSupportSection;
+
+  /// No description provided for @settingsPrivacySubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집 정보 및 이용 목적 안내'**
+  String get settingsPrivacySubtitle;
+
+  /// No description provided for @settingsFeedbackTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백 보내기'**
+  String get settingsFeedbackTitle;
+
+  /// No description provided for @settingsFeedbackSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'불편한 점이나 개선 아이디어'**
+  String get settingsFeedbackSubtitle;
+
+  /// No description provided for @settingsRecordCountUnit.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록'**
+  String get settingsRecordCountUnit;
+
+  /// No description provided for @settingsPostCountUnit.
+  ///
+  /// In ko, this message translates to:
+  /// **'포스팅'**
+  String get settingsPostCountUnit;
 
   /// No description provided for @proPlan.
   ///
@@ -931,6 +1357,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'1회 결제 · 영구 사용'**
   String get dataExportOneTimePurchase;
+
+  /// No description provided for @dataExportDebugPrice.
+  ///
+  /// In ko, this message translates to:
+  /// **'DEBUG'**
+  String get dataExportDebugPrice;
 
   /// No description provided for @dataExportInProgress.
   ///
@@ -1022,6 +1454,66 @@ abstract class AppLocalizations {
   /// **'아직 만든 내보내기 파일이 없어요.'**
   String get dataExportEmptyHistory;
 
+  /// No description provided for @purchaseUpdateFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제 업데이트를 처리하지 못했어요.'**
+  String get purchaseUpdateFailed;
+
+  /// No description provided for @purchaseStatusFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 상태를 확인하지 못했어요.'**
+  String get purchaseStatusFailed;
+
+  /// No description provided for @purchaseProductNotFound.
+  ///
+  /// In ko, this message translates to:
+  /// **'스토어 상품을 찾지 못했어요.'**
+  String get purchaseProductNotFound;
+
+  /// No description provided for @purchaseStoreUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'스토어에 연결할 수 없어요.'**
+  String get purchaseStoreUnavailable;
+
+  /// No description provided for @purchaseProductInfoFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'스토어 상품 정보를 불러오지 못했어요.'**
+  String get purchaseProductInfoFailed;
+
+  /// No description provided for @purchaseProductUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매할 상품 정보가 아직 없어요.'**
+  String get purchaseProductUnavailable;
+
+  /// No description provided for @purchaseStartFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제를 시작하지 못했어요.'**
+  String get purchaseStartFailed;
+
+  /// No description provided for @purchaseCanceled.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제가 취소되었어요.'**
+  String get purchaseCanceled;
+
+  /// No description provided for @purchaseReceiptInvalid.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 영수증을 확인하지 못했어요.'**
+  String get purchaseReceiptInvalid;
+
+  /// No description provided for @purchaseReceiptVerifyFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 영수증 검증에 실패했어요.'**
+  String get purchaseReceiptVerifyFailed;
+
   /// No description provided for @dataImportTitle.
   ///
   /// In ko, this message translates to:
@@ -1111,6 +1603,246 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이 피드를 삭제할까요?'**
   String get feedDeleteContent;
+
+  /// No description provided for @calmBreathingTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'호흡 운동'**
+  String get calmBreathingTitle;
+
+  /// No description provided for @breathPhaseInhale.
+  ///
+  /// In ko, this message translates to:
+  /// **'들이마시기'**
+  String get breathPhaseInhale;
+
+  /// No description provided for @breathPhaseHold.
+  ///
+  /// In ko, this message translates to:
+  /// **'참기'**
+  String get breathPhaseHold;
+
+  /// No description provided for @breathPhaseExhale.
+  ///
+  /// In ko, this message translates to:
+  /// **'내쉬기'**
+  String get breathPhaseExhale;
+
+  /// No description provided for @durationSeconds.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}초'**
+  String durationSeconds(int count);
+
+  /// No description provided for @cycleCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}회차'**
+  String cycleCount(int count);
+
+  /// No description provided for @calmTimeoutRunning.
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중'**
+  String get calmTimeoutRunning;
+
+  /// No description provided for @calmTimeoutPaused.
+  ///
+  /// In ko, this message translates to:
+  /// **'일시정지'**
+  String get calmTimeoutPaused;
+
+  /// No description provided for @reset.
+  ///
+  /// In ko, this message translates to:
+  /// **'초기화'**
+  String get reset;
+
+  /// No description provided for @start.
+  ///
+  /// In ko, this message translates to:
+  /// **'시작'**
+  String get start;
+
+  /// No description provided for @pause.
+  ///
+  /// In ko, this message translates to:
+  /// **'일시정지'**
+  String get pause;
+
+  /// No description provided for @calmMeditationSceneWave.
+  ///
+  /// In ko, this message translates to:
+  /// **'파도'**
+  String get calmMeditationSceneWave;
+
+  /// No description provided for @calmMeditationSceneForest.
+  ///
+  /// In ko, this message translates to:
+  /// **'숲'**
+  String get calmMeditationSceneForest;
+
+  /// No description provided for @calmMeditationSceneSunset.
+  ///
+  /// In ko, this message translates to:
+  /// **'일몰'**
+  String get calmMeditationSceneSunset;
+
+  /// No description provided for @calmMeditationSceneMountain.
+  ///
+  /// In ko, this message translates to:
+  /// **'산'**
+  String get calmMeditationSceneMountain;
+
+  /// No description provided for @calmMeditationSceneCherryBlossom.
+  ///
+  /// In ko, this message translates to:
+  /// **'벚꽃'**
+  String get calmMeditationSceneCherryBlossom;
+
+  /// No description provided for @calmMeditationSceneNightSky.
+  ///
+  /// In ko, this message translates to:
+  /// **'밤하늘'**
+  String get calmMeditationSceneNightSky;
+
+  /// No description provided for @calmMeditationPrompt.
+  ///
+  /// In ko, this message translates to:
+  /// **'깊게 숨을 들이마시고 내쉬세요'**
+  String get calmMeditationPrompt;
+
+  /// No description provided for @autoplay.
+  ///
+  /// In ko, this message translates to:
+  /// **'자동 재생'**
+  String get autoplay;
+
+  /// No description provided for @profileEditTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필 수정'**
+  String get profileEditTitle;
+
+  /// No description provided for @nicknameLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임'**
+  String get nicknameLabel;
+
+  /// No description provided for @nicknameHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임을 입력하세요'**
+  String get nicknameHint;
+
+  /// No description provided for @nicknameRequiredError.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임을 입력해주세요'**
+  String get nicknameRequiredError;
+
+  /// No description provided for @nicknameCodeAutomaticError.
+  ///
+  /// In ko, this message translates to:
+  /// **'고유번호는 자동으로 붙어요'**
+  String get nicknameCodeAutomaticError;
+
+  /// No description provided for @nicknameTooShortError.
+  ///
+  /// In ko, this message translates to:
+  /// **'2자 이상 입력해주세요'**
+  String get nicknameTooShortError;
+
+  /// No description provided for @profileSavedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'✅ \"{name}\"으로 변경됐어요!'**
+  String profileSavedToast(String name);
+
+  /// No description provided for @profileSaveFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 중 오류가 발생했어요.'**
+  String get profileSaveFailedToast;
+
+  /// No description provided for @avatarPickGallery.
+  ///
+  /// In ko, this message translates to:
+  /// **'앨범에서 선택'**
+  String get avatarPickGallery;
+
+  /// No description provided for @avatarPickCamera.
+  ///
+  /// In ko, this message translates to:
+  /// **'카메라로 촬영'**
+  String get avatarPickCamera;
+
+  /// No description provided for @avatarReset.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본 아바타로 변경'**
+  String get avatarReset;
+
+  /// No description provided for @avatarResetToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본 아바타로 변경됐어요.'**
+  String get avatarResetToast;
+
+  /// No description provided for @avatarAppliedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필 사진이 적용됐어요.'**
+  String get avatarAppliedToast;
+
+  /// No description provided for @avatarTooLargeToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'5MB 이하의 사진만 사용할 수 있어요.'**
+  String get avatarTooLargeToast;
+
+  /// No description provided for @avatarLoadFailedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진을 불러오지 못했어요.'**
+  String get avatarLoadFailedToast;
+
+  /// No description provided for @profileCodeLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'고유번호 (변경 불가)'**
+  String get profileCodeLabel;
+
+  /// No description provided for @profileSaveButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'변경 저장'**
+  String get profileSaveButton;
+
+  /// No description provided for @avatarChangeLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필 사진 변경'**
+  String get avatarChangeLabel;
+
+  /// No description provided for @avatarChangeHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진을 탭해서 변경'**
+  String get avatarChangeHint;
+
+  /// No description provided for @avatarSizeHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'JPG, PNG, GIF · 최대 5MB'**
+  String get avatarSizeHint;
+
+  /// No description provided for @reminderNotificationFallbackBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'아까 그 분노, 지금은 어떤가요?'**
+  String get reminderNotificationFallbackBody;
 
   /// No description provided for @calmGuideTitle.
   ///

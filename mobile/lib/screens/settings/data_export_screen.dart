@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/src/backup/backup_service.dart';
 import 'package:fury_note/src/backup/data_export_service.dart';
 import 'package:fury_note/src/profile/app_profile.dart';
 import 'package:fury_note/src/purchase/pro_export_purchase_service.dart';
-import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../main.dart';
 import '../../widgets/shared_widgets.dart';
+
+String localizedPurchaseErrorMessage(AppLocalizations l10n, String code) {
+  return switch (code) {
+    'purchaseUpdateFailed' => l10n.purchaseUpdateFailed,
+    'purchaseStatusFailed' => l10n.purchaseStatusFailed,
+    'purchaseProductNotFound' => l10n.purchaseProductNotFound,
+    'purchaseStoreUnavailable' => l10n.purchaseStoreUnavailable,
+    'purchaseProductInfoFailed' => l10n.purchaseProductInfoFailed,
+    'purchaseProductUnavailable' => l10n.purchaseProductUnavailable,
+    'purchaseStartFailed' => l10n.purchaseStartFailed,
+    'purchaseCanceled' => l10n.purchaseCanceled,
+    'purchaseReceiptInvalid' => l10n.purchaseReceiptInvalid,
+    'purchaseReceiptVerifyFailed' => l10n.purchaseReceiptVerifyFailed,
+    _ => code,
+  };
+}
 
 String exportProfileDisplayName(Map<String, Object?> profile) {
   final displayName = (profile['display_name'] as String?)?.trim() ?? '';
@@ -44,7 +60,6 @@ class _DataExportScreenState extends State<DataExportScreen> {
   late final DataExportService _exportService;
   late final BackupHistoryStore _historyStore;
   late final bool _ownsPurchaseController;
-  final _dateFormat = DateFormat('yyyy.MM.dd HH:mm');
   var _history = <BackupHistoryEntry>[];
   var _exporting = false;
   var _exportAfterPurchase = false;
@@ -93,7 +108,11 @@ class _DataExportScreenState extends State<DataExportScreen> {
       await _purchaseController.buy();
       final message = _purchaseController.errorMessage;
       if (mounted && message != null) {
-        FurySnackBar.show(context, message);
+        final l10n = AppLocalizations.of(context);
+        FurySnackBar.show(
+          context,
+          localizedPurchaseErrorMessage(l10n, message),
+        );
       }
       return;
     }
@@ -194,8 +213,8 @@ class _DataExportScreenState extends State<DataExportScreen> {
             for (final entry in _history) ...[
               _HistoryTile(
                 entry: entry,
-                dateText: _dateFormat.format(entry.createdAt),
-                sizeText: _formatBytes(entry.byteCount),
+                dateText: l10n.formatDateTime(entry.createdAt),
+                sizeText: l10n.formatByteCount(entry.byteCount),
                 onShareTap: () => _shareEntry(entry),
               ),
               const SizedBox(height: 8),
@@ -203,13 +222,6 @@ class _DataExportScreenState extends State<DataExportScreen> {
         ],
       ),
     );
-  }
-
-  String _formatBytes(int bytes) {
-    if (bytes < 1024) return '$bytes B';
-    final kb = bytes / 1024;
-    if (kb < 1024) return '${kb.toStringAsFixed(1)} KB';
-    return '${(kb / 1024).toStringAsFixed(1)} MB';
   }
 }
 
@@ -230,6 +242,9 @@ class _ExportHeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final busy = controller.loading || controller.purchasing || exporting;
+    final displayPrice = controller.isDebugMode
+        ? l10n.dataExportDebugPrice
+        : controller.product?.price ?? l10n.formatKrw(2900);
     final buttonLabel = switch ((
       controller.canExport,
       exporting,
@@ -286,7 +301,7 @@ class _ExportHeroCard extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                controller.displayPrice,
+                displayPrice,
                 style: const TextStyle(
                   color: Color(0xFFFFD700),
                   fontSize: 22,
@@ -303,7 +318,7 @@ class _ExportHeroCard extends StatelessWidget {
           if (controller.errorMessage != null) ...[
             const SizedBox(height: 8),
             Text(
-              controller.errorMessage!,
+              localizedPurchaseErrorMessage(l10n, controller.errorMessage!),
               style: const TextStyle(color: FuryColors.red, fontSize: 11),
             ),
           ],

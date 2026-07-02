@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../main.dart';
 import '../src/api/device_service.dart';
@@ -130,13 +131,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 8),
           _SettingsSection(
-            label: '알림',
+            label: l10n.settingsNotificationsSection,
             children: [
               _SettingsTile(
                 icon: Icons.notifications_outlined,
                 iconColor: FuryColors.red,
                 title: l10n.reminderNotification,
-                subtitle: '설정한 시간에 분노 노트 알림',
+                subtitle: l10n.settingsReminderSubtitle,
                 trailing: Switch(
                   value: _remindNotification,
                   onChanged: _setReminderNotification,
@@ -146,8 +147,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _SettingsTile(
                 icon: Icons.chat_bubble_outline,
                 iconColor: FuryColors.orange,
-                title: '댓글 알림',
-                subtitle: '내 포스팅에 댓글이 달리면 알림',
+                title: l10n.commentNotification,
+                subtitle: l10n.settingsCommentSubtitle,
                 trailing: Switch(
                   value: _commentNotification,
                   onChanged: _setCommentNotification,
@@ -157,7 +158,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
           _SettingsSection(
-            label: '데이터',
+            label: l10n.settingsDataSection,
             children: [
               _SettingsTile(
                 icon: Icons.upload_outlined,
@@ -185,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.download_outlined,
                 iconColor: const Color(0xFFA8D8A8),
                 title: l10n.dataImportTitle,
-                subtitle: '백업 파일로 기록 복원',
+                subtitle: l10n.settingsDataImportSubtitle,
                 trailing: const Icon(
                   Icons.chevron_right,
                   color: Color(0xFF444444),
@@ -202,13 +203,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
           _SettingsSection(
-            label: '지원',
+            label: l10n.settingsSupportSection,
             children: [
               _SettingsTile(
                 icon: Icons.lock_outline,
                 iconColor: const Color(0xFF888888),
-                title: '개인정보처리방침',
-                subtitle: '수집 정보 및 이용 목적 안내',
+                title: l10n.privacyTitle,
+                subtitle: l10n.settingsPrivacySubtitle,
                 trailing: const Icon(
                   Icons.chevron_right,
                   color: Color(0xFF444444),
@@ -225,8 +226,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _SettingsTile(
                 icon: Icons.mail_outline,
                 iconColor: const Color(0xFFC9B8FF),
-                title: '피드백 보내기',
-                subtitle: '불편한 점이나 개선 아이디어',
+                title: l10n.settingsFeedbackTitle,
+                subtitle: l10n.settingsFeedbackSubtitle,
                 trailing: const Icon(
                   Icons.open_in_new,
                   color: Color(0xFF444444),
@@ -311,32 +312,32 @@ class _SettingsProfileCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '🔥 $recordCount',
+                          '🔥 ${l10n.formatInteger(recordCount)}',
                           style: const TextStyle(
                             color: FuryColors.red,
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const Text(
-                          ' 기록',
-                          style: TextStyle(
+                        Text(
+                          ' ${l10n.settingsRecordCountUnit}',
+                          style: const TextStyle(
                             color: FuryColors.faint,
                             fontSize: 11,
                           ),
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          '📮 $postedCount',
+                          '📮 ${l10n.formatInteger(postedCount)}',
                           style: const TextStyle(
                             color: FuryColors.red,
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const Text(
-                          ' 포스팅',
-                          style: TextStyle(
+                        Text(
+                          ' ${l10n.settingsPostCountUnit}',
+                          style: const TextStyle(
                             color: FuryColors.faint,
                             fontSize: 11,
                           ),

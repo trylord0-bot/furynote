@@ -39,6 +39,56 @@ class AppLocalizationsKo extends AppLocalizations {
   String get drawerVersion => 'Fury Note v1.0.0';
 
   @override
+  String get menuTooltip => '메뉴';
+
+  @override
+  String drawerRecordCount(String count) {
+    return '🔥 분노 기록 $count회';
+  }
+
+  @override
+  String get drawerSettingsSubtitle => '닉네임 변경 · 알림 설정';
+
+  @override
+  String get drawerGuideSubtitle => 'Fury Note 사용 방법';
+
+  @override
+  String get drawerCalmGuideSubtitle => '감정 조절 카드 · 오늘의 팁';
+
+  @override
+  String get relativeTimeJustNow => '방금 전';
+
+  @override
+  String relativeTimeMinutesAgo(int count) {
+    return '$count분 전';
+  }
+
+  @override
+  String relativeTimeHoursAgo(int count) {
+    return '$count시간 전';
+  }
+
+  @override
+  String relativeTimeDaysAgo(int count) {
+    return '$count일 전';
+  }
+
+  @override
+  String dataSizeBytes(String value) {
+    return '$value B';
+  }
+
+  @override
+  String dataSizeKilobytes(String value) {
+    return '$value KB';
+  }
+
+  @override
+  String dataSizeMegabytes(String value) {
+    return '$value MB';
+  }
+
+  @override
   String get recordTitle => '분노 기록';
 
   @override
@@ -90,6 +140,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get skip => '건너뛰기';
 
   @override
+  String get save => '저장';
+
+  @override
   String get saveNote => '기록하기';
 
   @override
@@ -109,6 +162,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get commentPostedToast => '댓글이 등록되었어요';
+
+  @override
+  String get commentSendFailedToast => '댓글 전송에 실패했어요. 다시 시도해주세요.';
+
+  @override
+  String get commentDeleteTitle => '댓글 삭제';
+
+  @override
+  String get commentDeleteContent => '이 댓글을 삭제할까요?';
+
+  @override
+  String commentsCount(int count) {
+    return '댓글 $count개';
+  }
+
+  @override
+  String get commentsEmpty => '아직 댓글이 없어요\n첫 번째 댓글을 남겨보세요 💬';
+
+  @override
+  String get commentInputHint => '댓글을 입력하세요...';
 
   @override
   String get apiErrorContentBlockedUrl => '링크가 포함된 글은 등록할 수 없어요.';
@@ -177,6 +250,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get none => '없음';
 
   @override
+  String get other => '기타';
+
+  @override
   String get family => '가족';
 
   @override
@@ -193,6 +269,71 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get custom => '직접 입력';
+
+  @override
+  String get recordCustomCategoryHint => '카테고리를 입력하세요';
+
+  @override
+  String get recordTextHint => '여기에 적어보세요';
+
+  @override
+  String get recordMicPermissionRequired => '마이크 권한이 필요합니다.';
+
+  @override
+  String recordVoiceStartFailed(String label) {
+    return '$label을 시작할 수 없습니다.';
+  }
+
+  @override
+  String get recordVoiceStopRecording => '녹음 중지';
+
+  @override
+  String get recordVoiceRecordAgain => '다시 녹음';
+
+  @override
+  String get recordVoiceSaved => '음성 녹음이 저장됐어요.';
+
+  @override
+  String get recordAudioSummaryLabel => '음성';
+
+  @override
+  String get recordAudioIncluded => '녹음 포함';
+
+  @override
+  String get recordSavingInProgress => '저장 중...';
+
+  @override
+  String get recordPostingInProgress => '전송 중...';
+
+  @override
+  String get recordSaveFailedToast => '기록을 저장하지 못했습니다. 다시 시도해주세요.';
+
+  @override
+  String get recordProgressSemantics => '기록 진행 상황';
+
+  @override
+  String get hourSuffix => '시';
+
+  @override
+  String get minuteSuffix => '분';
+
+  @override
+  String get reminderCustom => '직접 설정';
+
+  @override
+  String get reminderIn30Minutes => '30분 후';
+
+  @override
+  String get reminderIn1Hour => '1시간 후';
+
+  @override
+  String get reminderIn2Hours => '2시간 후';
+
+  @override
+  String get reminderIn6Hours => '6시간 후';
+
+  @override
+  String get reminderTomorrow => '내일';
 
   @override
   String get annoyed => '살짝 짜증';
@@ -219,10 +360,31 @@ class AppLocalizationsKo extends AppLocalizations {
   String get feedSubtitle => '최신순으로 비슷한 분노를 둘러봐요';
 
   @override
+  String get feedAllTab => '전체 피드';
+
+  @override
+  String get feedMineTab => '내가 쓴 피드';
+
+  @override
+  String get feedLoadFailed => '피드를 불러오지 못했어요.';
+
+  @override
+  String get feedEmptyMine => '아직 작성한 피드가 없어요.\n첫 번째 분노를 공유해보세요!';
+
+  @override
+  String get feedEmptyAll => '아직 피드가 없어요.\n첫 번째로 분노를 공유해보세요!';
+
+  @override
+  String get feedPostFailedToast => '피드 전송에 실패했어요. 다시 시도해주세요.';
+
+  @override
   String get like => '공감';
 
   @override
   String get comment => '댓글';
+
+  @override
+  String get retry => '다시 시도';
 
   @override
   String get statsTitle => '분노 통계';
@@ -265,6 +427,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get statsCalendarButtonSubtitle => '날짜별 분노 기록을 확인하고 관리해요';
+
+  @override
+  String get statsCalendarTitle => '달력으로 기록 보기';
+
+  @override
+  String get statsOtherCategory => '기타';
+
+  @override
+  String selectedDateRecordsTitle(String date) {
+    return '$date 기록';
+  }
+
+  @override
+  String get noRecordsOnSelectedDate => '선택한 날짜에 작성된 기록이 없습니다.';
+
+  @override
+  String get reminderAction => '리마인더';
+
+  @override
+  String get play => '재생';
 
   @override
   String get statsSummaryButtonTitle => '분노 보고서 보기';
@@ -402,6 +584,26 @@ class AppLocalizationsKo extends AppLocalizations {
   String get feedSupport => '포스팅으로 위로받기';
 
   @override
+  String get calmReminderEmpty => '리마인드가 도착하면 여기 표시돼요';
+
+  @override
+  String get calmReminderFallbackText => '아까 그 분노, 지금은 어때요?';
+
+  @override
+  String get calmCheckTitle => '지금 분노는 어때요?';
+
+  @override
+  String calmCheckSubtitle(String emoji, String label) {
+    return '$emoji $label · 아까의 그 분노';
+  }
+
+  @override
+  String get calmSavedCalmedToast => '잘 진정됐네요!';
+
+  @override
+  String get calmSavedUpdatedToast => '기록됐어요';
+
+  @override
   String get profileName => '화난 호랑이';
 
   @override
@@ -417,6 +619,39 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get commentNotification => '댓글 알림';
+
+  @override
+  String get settingsNotificationsSection => '알림';
+
+  @override
+  String get settingsReminderSubtitle => '설정한 시간에 분노 노트 알림';
+
+  @override
+  String get settingsCommentSubtitle => '내 포스팅에 댓글이 달리면 알림';
+
+  @override
+  String get settingsDataSection => '데이터';
+
+  @override
+  String get settingsDataImportSubtitle => '백업 파일로 기록 복원';
+
+  @override
+  String get settingsSupportSection => '지원';
+
+  @override
+  String get settingsPrivacySubtitle => '수집 정보 및 이용 목적 안내';
+
+  @override
+  String get settingsFeedbackTitle => '피드백 보내기';
+
+  @override
+  String get settingsFeedbackSubtitle => '불편한 점이나 개선 아이디어';
+
+  @override
+  String get settingsRecordCountUnit => '기록';
+
+  @override
+  String get settingsPostCountUnit => '포스팅';
 
   @override
   String get proPlan => 'PRO 데이터 내보내기';
@@ -439,6 +674,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get dataExportOneTimePurchase => '1회 결제 · 영구 사용';
+
+  @override
+  String get dataExportDebugPrice => 'DEBUG';
 
   @override
   String get dataExportInProgress => '내보내는 중';
@@ -488,6 +726,36 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dataExportEmptyHistory => '아직 만든 내보내기 파일이 없어요.';
 
   @override
+  String get purchaseUpdateFailed => '결제 업데이트를 처리하지 못했어요.';
+
+  @override
+  String get purchaseStatusFailed => '구매 상태를 확인하지 못했어요.';
+
+  @override
+  String get purchaseProductNotFound => '스토어 상품을 찾지 못했어요.';
+
+  @override
+  String get purchaseStoreUnavailable => '스토어에 연결할 수 없어요.';
+
+  @override
+  String get purchaseProductInfoFailed => '스토어 상품 정보를 불러오지 못했어요.';
+
+  @override
+  String get purchaseProductUnavailable => '구매할 상품 정보가 아직 없어요.';
+
+  @override
+  String get purchaseStartFailed => '결제를 시작하지 못했어요.';
+
+  @override
+  String get purchaseCanceled => '결제가 취소되었어요.';
+
+  @override
+  String get purchaseReceiptInvalid => '구매 영수증을 확인하지 못했어요.';
+
+  @override
+  String get purchaseReceiptVerifyFailed => '구매 영수증 검증에 실패했어요.';
+
+  @override
   String get dataImportTitle => '데이터 가져오기';
 
   @override
@@ -535,6 +803,132 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get feedDeleteContent => '이 피드를 삭제할까요?';
+
+  @override
+  String get calmBreathingTitle => '호흡 운동';
+
+  @override
+  String get breathPhaseInhale => '들이마시기';
+
+  @override
+  String get breathPhaseHold => '참기';
+
+  @override
+  String get breathPhaseExhale => '내쉬기';
+
+  @override
+  String durationSeconds(int count) {
+    return '$count초';
+  }
+
+  @override
+  String cycleCount(int count) {
+    return '$count회차';
+  }
+
+  @override
+  String get calmTimeoutRunning => '진행 중';
+
+  @override
+  String get calmTimeoutPaused => '일시정지';
+
+  @override
+  String get reset => '초기화';
+
+  @override
+  String get start => '시작';
+
+  @override
+  String get pause => '일시정지';
+
+  @override
+  String get calmMeditationSceneWave => '파도';
+
+  @override
+  String get calmMeditationSceneForest => '숲';
+
+  @override
+  String get calmMeditationSceneSunset => '일몰';
+
+  @override
+  String get calmMeditationSceneMountain => '산';
+
+  @override
+  String get calmMeditationSceneCherryBlossom => '벚꽃';
+
+  @override
+  String get calmMeditationSceneNightSky => '밤하늘';
+
+  @override
+  String get calmMeditationPrompt => '깊게 숨을 들이마시고 내쉬세요';
+
+  @override
+  String get autoplay => '자동 재생';
+
+  @override
+  String get profileEditTitle => '프로필 수정';
+
+  @override
+  String get nicknameLabel => '닉네임';
+
+  @override
+  String get nicknameHint => '닉네임을 입력하세요';
+
+  @override
+  String get nicknameRequiredError => '닉네임을 입력해주세요';
+
+  @override
+  String get nicknameCodeAutomaticError => '고유번호는 자동으로 붙어요';
+
+  @override
+  String get nicknameTooShortError => '2자 이상 입력해주세요';
+
+  @override
+  String profileSavedToast(String name) {
+    return '✅ \"$name\"으로 변경됐어요!';
+  }
+
+  @override
+  String get profileSaveFailedToast => '저장 중 오류가 발생했어요.';
+
+  @override
+  String get avatarPickGallery => '앨범에서 선택';
+
+  @override
+  String get avatarPickCamera => '카메라로 촬영';
+
+  @override
+  String get avatarReset => '기본 아바타로 변경';
+
+  @override
+  String get avatarResetToast => '기본 아바타로 변경됐어요.';
+
+  @override
+  String get avatarAppliedToast => '프로필 사진이 적용됐어요.';
+
+  @override
+  String get avatarTooLargeToast => '5MB 이하의 사진만 사용할 수 있어요.';
+
+  @override
+  String get avatarLoadFailedToast => '사진을 불러오지 못했어요.';
+
+  @override
+  String get profileCodeLabel => '고유번호 (변경 불가)';
+
+  @override
+  String get profileSaveButton => '변경 저장';
+
+  @override
+  String get avatarChangeLabel => '프로필 사진 변경';
+
+  @override
+  String get avatarChangeHint => '사진을 탭해서 변경';
+
+  @override
+  String get avatarSizeHint => 'JPG, PNG, GIF · 최대 5MB';
+
+  @override
+  String get reminderNotificationFallbackBody => '아까 그 분노, 지금은 어떤가요?';
 
   @override
   String get calmGuideTitle => '화가 올라올 때,\n먼저 몸을 안전하게 낮춰요';

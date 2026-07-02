@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
 import '../main.dart';
@@ -39,14 +40,6 @@ class _CalmScreenState extends State<CalmScreen> {
         _loaded = true;
       });
     }
-  }
-
-  String _relativeTime(AppLocalizations l10n, DateTime dt) {
-    final diff = DateTime.now().difference(dt);
-    if (diff.inDays >= 1) return '${diff.inDays}일 전';
-    if (diff.inHours >= 1) return '${diff.inHours}시간 전';
-    if (diff.inMinutes >= 1) return '${diff.inMinutes}분 전';
-    return '방금 전';
   }
 
   void _showReminderCheckSheet(BuildContext context, RageNote note) {
@@ -185,7 +178,7 @@ class _CalmScreenState extends State<CalmScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              '리마인드가 도착하면 여기 표시돼요',
+              l10n.calmReminderEmpty,
               style: const TextStyle(color: FuryColors.muted, fontSize: 13),
             ),
           )
@@ -220,7 +213,7 @@ class _CalmScreenState extends State<CalmScreen> {
                             children: [
                               Text(
                                 note.body.isEmpty
-                                    ? '아까 그 분노, 지금은 어때요?'
+                                    ? l10n.calmReminderFallbackText
                                     : note.body,
                                 style: const TextStyle(
                                   color: FuryColors.text,
@@ -232,7 +225,7 @@ class _CalmScreenState extends State<CalmScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '${note.rageLabel} · ${_relativeTime(l10n, note.createdAt)}',
+                                '${note.rageLabel} · ${l10n.formatRelativeTime(note.createdAt)}',
                                 style: const TextStyle(
                                   color: FuryColors.muted,
                                   fontSize: 12,
@@ -303,7 +296,7 @@ class _ReminderCheckSheetState extends State<_ReminderCheckSheet> {
             ),
             const SizedBox(height: 20),
             Text(
-              '지금 분노는 어때요?',
+              l10n.calmCheckTitle,
               style: const TextStyle(
                 color: FuryColors.text,
                 fontSize: 18,
@@ -312,7 +305,10 @@ class _ReminderCheckSheetState extends State<_ReminderCheckSheet> {
             ),
             const SizedBox(height: 4),
             Text(
-              '${widget.note.rageEmoji} ${widget.note.rageLabel} · 아까의 그 분노',
+              l10n.calmCheckSubtitle(
+                widget.note.rageEmoji,
+                widget.note.rageLabel,
+              ),
               style: const TextStyle(color: FuryColors.muted, fontSize: 13),
             ),
             const SizedBox(height: 20),
@@ -365,7 +361,9 @@ class _ReminderCheckSheetState extends State<_ReminderCheckSheet> {
                             widget.onSaved(choice);
                             FurySnackBar.show(
                               context,
-                              isCalmed ? '잘 진정됐네요!' : '기록됐어요',
+                              isCalmed
+                                  ? l10n.calmSavedCalmedToast
+                                  : l10n.calmSavedUpdatedToast,
                             );
                           },
                     style: ElevatedButton.styleFrom(

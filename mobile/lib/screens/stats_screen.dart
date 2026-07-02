@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:fury_note/l10n/app_localizations.dart';
+import 'package:fury_note/l10n/l10n_extensions.dart';
 import 'package:fury_note/screens/stats_calendar_screen.dart';
 import 'package:fury_note/src/notes/rage_note.dart';
 import 'package:fury_note/src/notes/rage_note_repository.dart';
@@ -103,9 +104,9 @@ class _StatsScreenState extends State<StatsScreen>
     return '${highest.rageEmoji} ${highest.rageLabel}';
   }
 
-  String _dailyAverageLabel(List<RageNote> records) {
+  String _dailyAverageLabel(AppLocalizations l10n, List<RageNote> records) {
     if (records.isEmpty) {
-      return '0.0';
+      return l10n.formatDecimal(0);
     }
     final dayCount = switch (_range) {
       'week' => 7,
@@ -123,7 +124,7 @@ class _StatsScreenState extends State<StatsScreen>
             .length
             .clamp(1, 100000),
     };
-    return (records.length / dayCount).toStringAsFixed(1);
+    return l10n.formatDecimal(records.length / dayCount);
   }
 
   List<_IntensityPoint> _intensityPoints() {
@@ -140,7 +141,10 @@ class _StatsScreenState extends State<StatsScreen>
     return [
       for (var i = 6; i >= 0; i--)
         _IntensityPoint(
-          label: _monthDayLabel(today.subtract(Duration(days: i))),
+          label: _monthDayLabel(
+            AppLocalizations.of(context),
+            today.subtract(Duration(days: i)),
+          ),
           value: _averageIntensityForDate(today.subtract(Duration(days: i))),
         ),
     ];
@@ -151,7 +155,7 @@ class _StatsScreenState extends State<StatsScreen>
     return [
       for (var day = 1; day <= now.day; day++)
         _IntensityPoint(
-          label: _sparseDayLabel(day, now.day),
+          label: _sparseDayLabel(AppLocalizations.of(context), day, now.day),
           value: _averageIntensityForDate(DateTime(now.year, now.month, day)),
         ),
     ];
@@ -176,7 +180,12 @@ class _StatsScreenState extends State<StatsScreen>
     return [
       for (var i = 0; i < days.length; i++)
         _IntensityPoint(
-          label: _sparseDateLabel(days[i], i, days.length),
+          label: _sparseDateLabel(
+            AppLocalizations.of(context),
+            days[i],
+            i,
+            days.length,
+          ),
           value: _averageIntensityForRecords(recordsByDay[days[i]]!),
         ),
     ];
@@ -194,34 +203,45 @@ class _StatsScreenState extends State<StatsScreen>
     return total / records.length;
   }
 
-  String _monthDayLabel(DateTime date) => '${date.month}/${date.day}';
+  String _monthDayLabel(AppLocalizations l10n, DateTime date) {
+    return l10n.formatMonthDay(date);
+  }
 
-  String _sparseDayLabel(int day, int totalDays) {
+  String _sparseDayLabel(AppLocalizations l10n, int day, int totalDays) {
     if (totalDays <= 12 || day == 1 || day == totalDays || day % 7 == 0) {
-      return '$day';
+      return l10n.formatInteger(day);
     }
     return '';
   }
 
-  String _sparseDateLabel(DateTime date, int index, int totalCount) {
+  String _sparseDateLabel(
+    AppLocalizations l10n,
+    DateTime date,
+    int index,
+    int totalCount,
+  ) {
     if (totalCount <= 7 || index == 0 || index == totalCount - 1) {
-      return _monthDayLabel(date);
+      return _monthDayLabel(l10n, date);
     }
 
     final interval = (totalCount / 6).ceil().clamp(1, totalCount);
     if (index % interval == 0) {
-      return _monthDayLabel(date);
+      return _monthDayLabel(l10n, date);
     }
 
     return '';
   }
 
-  List<_CategorySlice> _categoryDistributionSlices(List<RageNote> records) {
+  List<_CategorySlice> _categoryDistributionSlices(
+    AppLocalizations l10n,
+    List<RageNote> records,
+  ) {
     if (records.isEmpty) {
       return const [];
     }
     final defaultCounts = {
-      for (final category in _defaultDistributionCategories) category.key: 0,
+      for (final category in _defaultDistributionCategories(l10n))
+        category.key: 0,
     };
     final customCounts = <String, ({String label, int count})>{};
     for (final record in records) {
@@ -245,14 +265,15 @@ class _StatsScreenState extends State<StatsScreen>
         .skip(4)
         .fold<int>(0, (sum, category) => sum + category.count);
     final chartItems = [
-      for (final category in _defaultDistributionCategories)
+      for (final category in _defaultDistributionCategories(l10n))
         if (defaultCounts[category.key]! > 0)
           (
             label: '${category.emoji} ${category.label}',
             count: defaultCounts[category.key]!,
           ),
       ...visibleCustom,
-      if (remainingCustomCount > 0) (label: '기타', count: remainingCustomCount),
+      if (remainingCustomCount > 0)
+        (label: l10n.statsOtherCategory, count: remainingCustomCount),
     ];
 
     return [
@@ -352,7 +373,7 @@ class _StatsScreenState extends State<StatsScreen>
                   Expanded(
                     child: MetricTile(
                       label: l10n.totalRecords,
-                      value: '${filteredRecords.length}',
+                      value: l10n.formatInteger(filteredRecords.length),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -366,7 +387,7 @@ class _StatsScreenState extends State<StatsScreen>
                   Expanded(
                     child: MetricTile(
                       label: l10n.dailyAverage,
-                      value: _dailyAverageLabel(filteredRecords),
+                      value: _dailyAverageLabel(l10n, filteredRecords),
                     ),
                   ),
                 ],
@@ -379,7 +400,7 @@ class _StatsScreenState extends State<StatsScreen>
               const SizedBox(height: 12),
               _PieChartPanel(
                 title: l10n.statsCategoryDistribution,
-                slices: _categoryDistributionSlices(filteredRecords),
+                slices: _categoryDistributionSlices(l10n, filteredRecords),
                 noRecordsLabel: l10n.statsNoRecords,
               ),
               const SizedBox(height: 16),
@@ -469,13 +490,17 @@ const _categoryChartColors = <Color>[
   Color(0xFFA8D8A8),
 ];
 
-const _defaultDistributionCategories = <_DistributionCategory>[
-  _DistributionCategory(key: 'family', emoji: '👨‍👩‍👧', label: '가족'),
-  _DistributionCategory(key: 'romance', emoji: '💕', label: '연애'),
-  _DistributionCategory(key: 'work', emoji: '💼', label: '직장'),
-  _DistributionCategory(key: 'people', emoji: '🧑', label: '사람'),
-  _DistributionCategory(key: 'driving', emoji: '🚗', label: '운전'),
-];
+List<_DistributionCategory> _defaultDistributionCategories(
+  AppLocalizations l10n,
+) {
+  return [
+    _DistributionCategory(key: 'family', emoji: '👨‍👩‍👧', label: l10n.family),
+    _DistributionCategory(key: 'romance', emoji: '💕', label: l10n.romance),
+    _DistributionCategory(key: 'work', emoji: '💼', label: l10n.work),
+    _DistributionCategory(key: 'people', emoji: '🧑', label: l10n.people),
+    _DistributionCategory(key: 'driving', emoji: '🚗', label: l10n.driving),
+  ];
+}
 
 class _DistributionCategory {
   const _DistributionCategory({
@@ -732,7 +757,8 @@ class _PieLegendChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final percent = total == 0 ? 0 : (slice.count / total * 100).round();
+    final l10n = AppLocalizations.of(context);
+    final percent = total == 0 ? 0.0 : slice.count / total;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
@@ -754,7 +780,7 @@ class _PieLegendChip extends StatelessWidget {
           ),
           const SizedBox(width: 7),
           Text(
-            '${slice.label} $percent%',
+            '${slice.label} ${l10n.formatPercent(percent)}',
             style: const TextStyle(
               color: FuryColors.muted,
               fontSize: 11,
@@ -1180,7 +1206,7 @@ class _StatsSummaryCategoryPage extends StatelessWidget {
                   delay: const Duration(milliseconds: 310),
                   label: l10n.statsSummaryMetricAverage,
                   value: l10n.statsSummaryAverageValue(
-                    summary.averageLevel.toStringAsFixed(1),
+                    l10n.formatDecimal(summary.averageLevel),
                   ),
                   icon: Icons.show_chart,
                   color: FuryColors.yellow,
@@ -1547,7 +1573,7 @@ class _SummaryInsightBars extends StatelessWidget {
           _SummaryStatBar(
             label: l10n.statsSummaryCategoryShare,
             value: summary.percent / 100.0,
-            displayText: '${summary.percent}%',
+            displayText: l10n.formatPercent(summary.percent / 100.0),
             color: FuryColors.red,
             delay: const Duration(milliseconds: 0),
           ),
@@ -1555,7 +1581,7 @@ class _SummaryInsightBars extends StatelessWidget {
           _SummaryStatBar(
             label: l10n.statsSummaryCalmRate,
             value: calmRate,
-            displayText: '${(calmRate * 100).round()}%',
+            displayText: l10n.formatPercent(calmRate),
             color: const Color(0xFFA8D8A8),
             delay: const Duration(milliseconds: 60),
           ),
@@ -1563,7 +1589,7 @@ class _SummaryInsightBars extends StatelessWidget {
           _SummaryStatBar(
             label: l10n.statsSummaryShareRate,
             value: shareRate,
-            displayText: '${(shareRate * 100).round()}%',
+            displayText: l10n.formatPercent(shareRate),
             color: const Color(0xFF64B4FF),
             delay: const Duration(milliseconds: 120),
           ),
