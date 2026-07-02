@@ -356,6 +356,72 @@ def test_post_avatar_is_snapshotted_when_post_is_created() -> None:
     assert posts[0]["avatar_base64"] == "avatar-at-post-time"
 
 
+def test_posts_are_ranked_weekly_by_likes_then_recent_creation() -> None:
+    store = sqlite_store()
+    created_posts = {
+        "previous-week-popular": store.create_post(
+            "device-1",
+            "지난주",
+            "#1111",
+            3,
+            "work",
+            "지난주 인기 글",
+        ),
+        "current-week-low": store.create_post(
+            "device-2",
+            "이번주 낮은 좋아요",
+            "#2222",
+            3,
+            "work",
+            "이번주 낮은 좋아요 글",
+        ),
+        "current-week-high-old": store.create_post(
+            "device-3",
+            "이번주 높은 좋아요 옛글",
+            "#3333",
+            3,
+            "work",
+            "이번주 높은 좋아요 옛글",
+        ),
+        "current-week-high-new": store.create_post(
+            "device-4",
+            "이번주 높은 좋아요 새글",
+            "#4444",
+            3,
+            "work",
+            "이번주 높은 좋아요 새글",
+        ),
+    }
+    updates = [
+        ("previous-week-popular", "2026-06-28 09:00:00", 99),
+        ("current-week-low", "2026-07-02 09:00:00", 1),
+        ("current-week-high-old", "2026-06-30 09:00:00", 5),
+        ("current-week-high-new", "2026-07-01 09:00:00", 5),
+    ]
+    for key, created_at, like_count in updates:
+        store.session.execute(
+            text(
+                "UPDATE posts SET created_at = :created_at, like_count = :like_count "
+                "WHERE post_id = :post_id"
+            ),
+            {
+                "created_at": created_at,
+                "like_count": like_count,
+                "post_id": created_posts[key]["post_id"],
+            },
+        )
+    store.session.commit()
+
+    posts = store.list_posts_page("viewer", size=10)["posts"]
+
+    assert [post["text"] for post in posts] == [
+        "이번주 높은 좋아요 새글",
+        "이번주 높은 좋아요 옛글",
+        "이번주 낮은 좋아요 글",
+        "지난주 인기 글",
+    ]
+
+
 def test_comment_avatar_is_snapshotted_when_comment_is_created() -> None:
     store = sqlite_store()
     store.create_post("owner", "작성자", "#1234", 3, "people", "원글")

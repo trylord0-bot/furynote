@@ -153,8 +153,16 @@ class DbStore:
         )
         if mine_only:
             rows_q = rows_q.where(Post.device_id == device_id)
+        week_order_key = self._post_week_order_key()
         rows = self.session.execute(
-            rows_q.order_by(Post.created_at.desc()).offset(offset).limit(size)
+            rows_q.order_by(
+                week_order_key.desc(),
+                Post.like_count.desc(),
+                Post.created_at.desc(),
+                Post.id.desc(),
+            )
+            .offset(offset)
+            .limit(size)
         ).all()
 
         post_ids = [row[0].post_id for row in rows]
@@ -176,6 +184,12 @@ class DbStore:
             "next_cursor": str(next_offset) if has_more else None,
             "has_more": has_more,
         }
+
+    def _post_week_order_key(self):
+        dialect_name = self.session.get_bind().dialect.name
+        if dialect_name == "sqlite":
+            return func.strftime("%Y-%W", Post.created_at)
+        return func.yearweek(Post.created_at, 1)
 
     def delete_post(self, post_id: str, device_id: str) -> DeleteResult:
         post = self.session.execute(

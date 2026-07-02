@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from uuid import uuid4
 
@@ -116,7 +116,15 @@ class MemoryStore:
         visible = [post for post in self.posts.values() if post["deleted_at"] is None]
         if mine_only:
             visible = [post for post in visible if post["device_id"] == device_id]
-        visible.sort(key=lambda post: post["created_at"], reverse=True)
+        visible.sort(
+            key=lambda post: (
+                _week_start(post["created_at"]),
+                post["like_count"],
+                post["created_at"],
+                post["post_id"],
+            ),
+            reverse=True,
+        )
         offset = int(cursor) if cursor else 0
         page_items = visible[offset : offset + size]
         next_offset = offset + size
@@ -262,3 +270,8 @@ def get_store() -> MemoryStore:
 
 def reset_store() -> None:
     store.clear()
+
+
+def _week_start(value: datetime) -> datetime:
+    start = value - timedelta(days=value.weekday())
+    return start.replace(hour=0, minute=0, second=0, microsecond=0)
